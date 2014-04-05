@@ -18,11 +18,11 @@ public class WorldUtil {
 		
 		Environment env = WorldEnv.get(name);
 		if (env == null) {
-			P.log(Level.WARNING, "Failed to load world. Environment was unknown.");
+			FactionsPlugin.log(Level.WARNING, "Failed to load world. Environment was unknown.");
 			return false;
 		}
 		
-		P.p.getServer().createWorld(name, env);
+		FactionsPlugin.plugin.getServer().createWorld(name, env);
 		return true;
 	}*/
 

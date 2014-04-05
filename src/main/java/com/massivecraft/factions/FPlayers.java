@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class FPlayers extends PlayerEntityCollection<FPlayer> {
     public static FPlayers i = new FPlayers();
 
-    P p = P.p;
+    FactionsPlugin p = FactionsPlugin.plugin;
 
     private FPlayers() {
         super
@@ -20,8 +20,8 @@ public class FPlayers extends PlayerEntityCollection<FPlayer> {
                         FPlayer.class,
                         new CopyOnWriteArrayList<FPlayer>(),
                         new ConcurrentSkipListMap<String, FPlayer>(String.CASE_INSENSITIVE_ORDER),
-                        new File(P.p.getDataFolder(), "players.json"),
-                        P.p.gson
+                        new File(FactionsPlugin.plugin.getDataFolder(), "players.json"),
+                        FactionsPlugin.plugin.gson
                 );
 
         this.setCreative(true);

@@ -37,7 +37,7 @@ public class CmdReload extends FCommand {
         } else if (file.startsWith("f")) {
             Factions.i.loadFromDisc();
             fileName = "factions.json";
-        } else if (file.startsWith("p")) {
+        } else if (file.startsWith("plugin")) {
             FPlayers.i.loadFromDisc();
             fileName = "players.json";
         } else if (file.startsWith("a")) {
@@ -47,7 +47,7 @@ public class CmdReload extends FCommand {
             Factions.i.loadFromDisc();
             Board.load();
         } else {
-            P.p.log("RELOAD CANCELLED - SPECIFIED FILE INVALID");
+            FactionsPlugin.plugin.log("RELOAD CANCELLED - SPECIFIED FILE INVALID");
             msg("<b>Invalid file specified. <i>Valid files: all, conf, board, factions, players");
             return;
         }

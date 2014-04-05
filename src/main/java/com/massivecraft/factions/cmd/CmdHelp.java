@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 
@@ -159,7 +159,7 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.txt.parse("<c>/f autoclaim [safezone|warzone] <i>take a guess"));
         pageLines.add(p.cmdBase.cmdSafeunclaimall.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdWarunclaimall.getUseageTemplate(true));
-        pageLines.add(p.txt.parse("<i>Note: " + p.cmdBase.cmdUnclaim.getUseageTemplate(false) + P.p.txt.parse("<i>") + " works on safe/war zones as well."));
+        pageLines.add(p.txt.parse("<i>Note: " + p.cmdBase.cmdUnclaim.getUseageTemplate(false) + FactionsPlugin.plugin.txt.parse("<i>") + " works on safe/war zones as well."));
         pageLines.add(p.cmdBase.cmdPeaceful.getUseageTemplate(true));
         helpPages.add(pageLines);
 

@@ -26,9 +26,9 @@ import java.util.*;
 
 
 public class FactionsEntityListener implements Listener {
-    public P p;
+    public FactionsPlugin p;
 
-    public FactionsEntityListener(P p) {
+    public FactionsEntityListener(FactionsPlugin p) {
         this.p = p;
     }
 

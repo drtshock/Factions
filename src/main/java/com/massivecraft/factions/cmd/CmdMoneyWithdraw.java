@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
@@ -33,6 +33,6 @@ public class CmdMoneyWithdraw extends FCommand {
         boolean success = Econ.transferMoney(fme, faction, fme, amount);
 
         if (success && Conf.logMoneyTransactions)
-            P.p.log(ChatColor.stripColor(P.p.txt.parse("%s withdrew %s from the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+            FactionsPlugin.plugin.log(ChatColor.stripColor(FactionsPlugin.plugin.txt.parse("%s withdrew %s from the faction bank: %s", fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
     }
 }

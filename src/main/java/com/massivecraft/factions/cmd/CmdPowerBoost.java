@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdPowerBoost extends FCommand {
@@ -10,7 +10,7 @@ public class CmdPowerBoost extends FCommand {
         super();
         this.aliases.add("powerboost");
 
-        this.requiredArgs.add("p|f|player|faction");
+        this.requiredArgs.add("plugin|f|player|faction");
         this.requiredArgs.add("name");
         this.requiredArgs.add("#");
 
@@ -29,9 +29,9 @@ public class CmdPowerBoost extends FCommand {
         boolean doPlayer = true;
         if (type.equals("f") || type.equals("faction")) {
             doPlayer = false;
-        } else if (!type.equals("p") && !type.equals("player")) {
-            msg("<b>You must specify \"p\" or \"player\" to target a player or \"f\" or \"faction\" to target a faction.");
-            msg("<b>ex. /f powerboost p SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5");
+        } else if (!type.equals("plugin") && !type.equals("player")) {
+            msg("<b>You must specify \"plugin\" or \"player\" to target a player or \"f\" or \"faction\" to target a faction.");
+            msg("<b>ex. /f powerboost plugin SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5");
             return;
         }
 
@@ -57,6 +57,6 @@ public class CmdPowerBoost extends FCommand {
 
         msg("<i>" + target + " now has a power bonus/penalty of " + targetPower + " to min and max power levels.");
         if (!senderIsConsole)
-            P.p.log(fme.getName() + " has set the power bonus/penalty for " + target + " to " + targetPower + ".");
+            FactionsPlugin.plugin.log(fme.getName() + " has set the power bonus/penalty for " + target + " to " + targetPower + ".");
     }
 }

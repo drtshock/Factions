@@ -22,9 +22,9 @@ import java.util.Map;
 
 
 public class FactionsPlayerListener implements Listener {
-    public P p;
+    public FactionsPlugin p;
 
-    public FactionsPlayerListener(P p) {
+    public FactionsPlayerListener(FactionsPlugin p) {
         this.p = p;
     }
 

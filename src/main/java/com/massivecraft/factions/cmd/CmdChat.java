@@ -35,14 +35,14 @@ public class CmdChat extends FCommand {
 
         if (modeString != null) {
             modeString.toLowerCase();
-            if (modeString.startsWith("p")) {
+            if (modeString.startsWith("plugin")) {
                 modeTarget = ChatMode.PUBLIC;
             } else if (modeString.startsWith("a")) {
                 modeTarget = ChatMode.ALLIANCE;
             } else if (modeString.startsWith("f")) {
                 modeTarget = ChatMode.FACTION;
             } else {
-                msg("<b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'p'");
+                msg("<b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'plugin'");
                 return;
             }
         }

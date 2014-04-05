@@ -33,9 +33,9 @@ import java.util.Set;
 import java.util.logging.Level;
 
 
-public class P extends MPlugin {
+public class FactionsPlugin extends MPlugin {
     // Our single plugin instance
-    public static P p;
+    public static FactionsPlugin plugin;
 
     // Listeners
     public final FactionsPlayerListener playerListener;
@@ -63,8 +63,8 @@ public class P extends MPlugin {
     public FCmdRoot cmdBase;
     public CmdAutoHelp cmdAutoHelp;
 
-    public P() {
-        p = this;
+    public FactionsPlugin() {
+        plugin = this;
         this.playerListener = new FactionsPlayerListener(this);
         this.chatListener = new FactionsChatListener(this);
         this.entityListener = new FactionsEntityListener(this);

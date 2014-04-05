@@ -1,14 +1,14 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.MCommand;
 
 import java.util.ArrayList;
 
-public class CmdAutoHelp extends MCommand<P> {
+public class CmdAutoHelp extends MCommand<FactionsPlugin> {
     public CmdAutoHelp() {
-        super(P.p);
+        super(FactionsPlugin.plugin);
         this.aliases.add("?");
         this.aliases.add("h");
         this.aliases.add("help");

@@ -12,10 +12,10 @@ import java.util.Set;
 
 /**
  * The PlayerEntityCollection is an EntityCollection with the extra features a player skin usually requires.
- * <p/>
+ * <plugin/>
  * This entity collection is not only creative. It even creates the instance for the player when the player logs in to
  * the server.
- * <p/>
+ * <plugin/>
  * This way we can be sure that PlayerEntityCollection.get() will contain all entities in
  * PlayerEntityCollection.getOnline()
  */

@@ -5,7 +5,7 @@ import com.earth2me.essentials.Teleport;
 import com.earth2me.essentials.Trade;
 import com.earth2me.essentials.chat.EssentialsChat;
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -72,12 +72,12 @@ public class EssentialsFeatures {
     public static void integrateChat(EssentialsChat instance) {
         essChat = instance;
         try {
-            P.p.log("Found and will integrate chat with newer " + essChat.getDescription().getFullName());
+            FactionsPlugin.plugin.log("Found and will integrate chat with newer " + essChat.getDescription().getFullName());
 
             // curly braces used to be accepted by the format string EssentialsChat but no longer are, so... deal with chatTagReplaceString which might need updating
             if (Conf.chatTagReplaceString.contains("{")) {
                 Conf.chatTagReplaceString = Conf.chatTagReplaceString.replace("{", "[").replace("}", "]");
-                P.p.log("NOTE: as of Essentials 2.8+, we've had to switch the default chat replacement tag from \"{FACTION}\" to \"[FACTION]\". This has automatically been updated for you.");
+                FactionsPlugin.plugin.log("NOTE: as of Essentials 2.8+, we've had to switch the default chat replacement tag from \"{FACTION}\" to \"[FACTION]\". This has automatically been updated for you.");
             }
         } catch (NoSuchMethodError ex) {
             essChat = null;

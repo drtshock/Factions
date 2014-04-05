@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 
 
@@ -38,7 +38,7 @@ public class CmdPermanent extends FCommand {
             faction.setPermanent(true);
         }
 
-        P.p.log((fme == null ? "A server admin" : fme.getName()) + " " + change + " the faction \"" + faction.getTag() + "\".");
+        FactionsPlugin.plugin.log((fme == null ? "A server admin" : fme.getName()) + " " + change + " the faction \"" + faction.getTag() + "\".");
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.i.getOnline()) {

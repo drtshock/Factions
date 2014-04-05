@@ -46,7 +46,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
             FPlayer fplayer = iterator.next();
             if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis) {
                 if (Conf.logFactionLeave || Conf.logFactionKick)
-                    P.p.log("Player " + fplayer.getName() + " was auto-removed due to inactivity.");
+                    FactionsPlugin.plugin.log("Player " + fplayer.getName() + " was auto-removed due to inactivity.");
 
                 // if player is faction admin, sort out the faction since he's going away
                 if (fplayer.getRole() == Role.ADMIN) {

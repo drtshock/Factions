@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 
 public class CmdMoney extends FCommand {
     public CmdMoneyBalance cmdMoneyBalance = new CmdMoneyBalance();
@@ -38,7 +38,7 @@ public class CmdMoney extends FCommand {
     @Override
     public void perform() {
         this.commandChain.add(this);
-        P.p.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
+        FactionsPlugin.plugin.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
     }
 
 }
