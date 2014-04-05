@@ -22,7 +22,7 @@ public class LWCFeatures {
         if (test == null || !test.isEnabled()) return;
 
         lwc = ((LWCPlugin) test).getLWC();
-        P.p.log("Successfully hooked into LWC!" + (Conf.lwcIntegration ? "" : " Integration is currently disabled, though (\"lwcIntegration\")."));
+        FactionsPlugin.plugin.log("Successfully hooked into LWC!" + (Conf.lwcIntegration ? "" : " Integration is currently disabled, though (\"lwcIntegration\")."));
     }
 
     public static boolean getEnabled() {

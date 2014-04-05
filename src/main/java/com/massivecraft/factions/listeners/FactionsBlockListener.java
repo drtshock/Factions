@@ -15,9 +15,9 @@ import org.bukkit.event.block.*;
 
 
 public class FactionsBlockListener implements Listener {
-    public P p;
+    public FactionsPlugin p;
 
-    public FactionsBlockListener(P p) {
+    public FactionsBlockListener(FactionsPlugin p) {
         this.p = p;
     }
 

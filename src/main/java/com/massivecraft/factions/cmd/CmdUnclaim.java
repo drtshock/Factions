@@ -35,7 +35,7 @@ public class CmdUnclaim extends FCommand {
                 msg("<i>Safe zone was unclaimed.");
 
                 if (Conf.logLandUnclaims)
-                    P.p.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());
+                    FactionsPlugin.plugin.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());
             } else {
                 msg("<b>This is a safe zone. You lack permissions to unclaim.");
             }
@@ -46,7 +46,7 @@ public class CmdUnclaim extends FCommand {
                 msg("<i>War zone was unclaimed.");
 
                 if (Conf.logLandUnclaims)
-                    P.p.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());
+                    FactionsPlugin.plugin.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());
             } else {
                 msg("<b>This is a war zone. You lack permissions to unclaim.");
             }
@@ -60,7 +60,7 @@ public class CmdUnclaim extends FCommand {
             msg("<i>You unclaimed this land.");
 
             if (Conf.logLandUnclaims)
-                P.p.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());
+                FactionsPlugin.plugin.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());
 
             return;
         }
@@ -97,7 +97,7 @@ public class CmdUnclaim extends FCommand {
         myFaction.msg("%s<i> unclaimed some land.", fme.describeTo(myFaction, true));
 
         if (Conf.logLandUnclaims)
-            P.p.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());
+            FactionsPlugin.plugin.log(fme.getName() + " unclaimed land at (" + flocation.getCoordString() + ") from the faction: " + otherFaction.getTag());
     }
 
 }

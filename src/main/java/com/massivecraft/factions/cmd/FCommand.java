@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 
-public abstract class FCommand extends MCommand<P> {
+public abstract class FCommand extends MCommand<FactionsPlugin> {
     public boolean disableOnLock;
 
     public FPlayer fme;
@@ -22,7 +22,7 @@ public abstract class FCommand extends MCommand<P> {
     public boolean isMoneyCommand;
 
     public FCommand() {
-        super(P.p);
+        super(FactionsPlugin.plugin);
 
         // Due to safety reasons it defaults to disable on lock.
         disableOnLock = true;
@@ -136,7 +136,7 @@ public abstract class FCommand extends MCommand<P> {
         }
 
         if (msg && ret == null) {
-            this.msg("<b>No player \"<p>%s<b>\" could be found.", name);
+            this.msg("<b>No player \"<plugin>%s<b>\" could be found.", name);
         }
 
         return ret;
@@ -166,7 +166,7 @@ public abstract class FCommand extends MCommand<P> {
         }
 
         if (msg && ret == null) {
-            this.msg("<b>No player match found for \"<p>%s<b>\".", name);
+            this.msg("<b>No player match found for \"<plugin>%s<b>\".", name);
         }
 
         return ret;
@@ -215,7 +215,7 @@ public abstract class FCommand extends MCommand<P> {
         }
 
         if (msg && ret == null) {
-            this.msg("<b>The faction or player \"<p>%s<b>\" could not be found.", name);
+            this.msg("<b>The faction or player \"<plugin>%s<b>\" could not be found.", name);
         }
 
         return ret;

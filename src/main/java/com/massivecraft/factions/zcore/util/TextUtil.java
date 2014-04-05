@@ -77,7 +77,7 @@ public class TextUtil {
                 .replace("`g", ChatColor.GREEN.toString()).replace("`G", ChatColor.DARK_GREEN.toString())
                 .replace("`a", ChatColor.AQUA.toString()).replace("`A", ChatColor.DARK_AQUA.toString())
                 .replace("`b", ChatColor.BLUE.toString()).replace("`B", ChatColor.DARK_BLUE.toString())
-                .replace("`p", ChatColor.LIGHT_PURPLE.toString()).replace("`P", ChatColor.DARK_PURPLE.toString())
+                .replace("`plugin", ChatColor.LIGHT_PURPLE.toString()).replace("`FactionsPlugin", ChatColor.DARK_PURPLE.toString())
                 .replace("`k", ChatColor.BLACK.toString()).replace("`s", ChatColor.GRAY.toString())
                 .replace("`S", ChatColor.DARK_GRAY.toString()).replace("`w", ChatColor.WHITE.toString());
     }

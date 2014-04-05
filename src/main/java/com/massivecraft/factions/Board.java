@@ -14,7 +14,7 @@ import java.util.Map.Entry;
 
 
 public class Board {
-    private static transient File file = new File(P.p.getDataFolder(), "board.json");
+    private static transient File file = new File(FactionsPlugin.plugin.getDataFolder(), "board.json");
     private static transient HashMap<FLocation, String> flocationIds = new HashMap<FLocation, String>();
 
     //----------------------------------------------//
@@ -110,7 +110,7 @@ public class Board {
                 if (Conf.onUnclaimResetLwcLocks && LWCFeatures.getEnabled()) {
                     LWCFeatures.clearAllChests(entry.getKey());
                 }
-                P.p.log("Board cleaner removed " + entry.getValue() + " from " + entry.getKey());
+                FactionsPlugin.plugin.log("Board cleaner removed " + entry.getValue() + " from " + entry.getKey());
                 iter.remove();
             }
         }
@@ -158,7 +158,7 @@ public class Board {
     public static ArrayList<String> getMap(Faction faction, FLocation flocation, double inDegrees) {
         ArrayList<String> ret = new ArrayList<String>();
         Faction factionLoc = getFactionAt(flocation);
-        ret.add(P.p.txt.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(faction)));
+        ret.add(FactionsPlugin.plugin.txt.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(faction)));
 
         int halfWidth = Conf.mapWidth / 2;
         int halfHeight = Conf.mapHeight / 2;
@@ -215,7 +215,7 @@ public class Board {
         }
 
         // Get the compass
-        ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, P.p.txt.parse("<a>"));
+        ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, FactionsPlugin.plugin.txt.parse("<a>"));
 
         // Add the compass
         ret.set(1, asciiCompass.get(0) + ret.get(1).substring(3 * 3));
@@ -283,10 +283,10 @@ public class Board {
         //Factions.log("Saving board to disk");
 
         try {
-            DiscUtil.write(file, P.p.gson.toJson(dumpAsSaveFormat()));
+            DiscUtil.write(file, FactionsPlugin.plugin.gson.toJson(dumpAsSaveFormat()));
         } catch (Exception e) {
             e.printStackTrace();
-            P.p.log("Failed to save the board to disk.");
+            FactionsPlugin.plugin.log("Failed to save the board to disk.");
             return false;
         }
 
@@ -294,10 +294,10 @@ public class Board {
     }
 
     public static boolean load() {
-        P.p.log("Loading board from disk");
+        FactionsPlugin.plugin.log("Loading board from disk");
 
         if (!file.exists()) {
-            P.p.log("No board to load from disk. Creating new file.");
+            FactionsPlugin.plugin.log("No board to load from disk. Creating new file.");
             save();
             return true;
         }
@@ -305,11 +305,11 @@ public class Board {
         try {
             Type type = new TypeToken<Map<String, Map<String, String>>>() {
             }.getType();
-            Map<String, Map<String, String>> worldCoordIds = P.p.gson.fromJson(DiscUtil.read(file), type);
+            Map<String, Map<String, String>> worldCoordIds = FactionsPlugin.plugin.gson.fromJson(DiscUtil.read(file), type);
             loadFromSaveFormat(worldCoordIds);
         } catch (Exception e) {
             e.printStackTrace();
-            P.p.log("Failed to load the board from disk.");
+            FactionsPlugin.plugin.log("Failed to load the board from disk.");
             return false;
         }
 

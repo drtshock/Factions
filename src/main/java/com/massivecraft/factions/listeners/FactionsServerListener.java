@@ -1,6 +1,6 @@
 package com.massivecraft.factions.listeners;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -10,9 +10,9 @@ import org.bukkit.plugin.Plugin;
 
 
 public class FactionsServerListener implements Listener {
-    public P p;
+    public FactionsPlugin p;
 
-    public FactionsServerListener(P p) {
+    public FactionsServerListener(FactionsPlugin p) {
         this.p = p;
     }
 

@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -78,7 +78,7 @@ public class CmdKick extends FCommand {
         }
 
         if (Conf.logFactionKick)
-            P.p.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + you.getName() + " from the faction: " + yourFaction.getTag());
+            FactionsPlugin.plugin.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + you.getName() + " from the faction: " + yourFaction.getTag());
 
         if (you.getRole() == Role.ADMIN)
             yourFaction.promoteNewLeader();

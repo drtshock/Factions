@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -230,9 +230,9 @@ public class CmdConfig extends FCommand {
         if (!success.isEmpty()) {
             if (sender instanceof Player) {
                 sendMessage(success);
-                P.p.log(success + " Command was run by " + fme.getName() + ".");
-            } else  // using P.p.log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
-                P.p.log(success);
+                FactionsPlugin.plugin.log(success + " Command was run by " + fme.getName() + ".");
+            } else  // using FactionsPlugin.plugin.log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
+                FactionsPlugin.plugin.log(success);
         }
         // save change to disk
         Conf.save();

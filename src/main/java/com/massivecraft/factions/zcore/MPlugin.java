@@ -156,7 +156,7 @@ public abstract class MPlugin extends JavaPlugin {
         this.rawTags.put("b", "<rose>"); // bad
         this.rawTags.put("h", "<pink>"); // highligh
         this.rawTags.put("c", "<aqua>"); // command
-        this.rawTags.put("p", "<teal>"); // parameter
+        this.rawTags.put("plugin", "<teal>"); // parameter
     }
 
     public void initTXT() {
@@ -178,7 +178,7 @@ public abstract class MPlugin extends JavaPlugin {
     // COMMAND HANDLING
     // -------------------------------------------- //
 
-    // can be overridden by P method, to provide option
+    // can be overridden by FactionsPlugin method, to provide option
     public boolean logPlayerCommands() {
         return true;
     }

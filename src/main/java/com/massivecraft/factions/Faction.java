@@ -440,7 +440,7 @@ public class Faction extends Entity implements EconomyParticipator {
         ArrayList<Player> ret = new ArrayList<Player>();
         if (this.isPlayerFreeType()) return ret;
 
-        for (Player player : P.p.getServer().getOnlinePlayers()) {
+        for (Player player : FactionsPlugin.plugin.getServer().getOnlinePlayers()) {
             FPlayer fplayer = FPlayers.i.get(player);
             if (fplayer.getFaction() == this) {
                 ret.add(player);
@@ -455,7 +455,7 @@ public class Faction extends Entity implements EconomyParticipator {
         // only real factions can have players online, not safe zone / war zone
         if (this.isPlayerFreeType()) return false;
 
-        for (Player player : P.p.getServer().getOnlinePlayers()) {
+        for (Player player : FactionsPlugin.plugin.getServer().getOnlinePlayers()) {
             FPlayer fplayer = FPlayers.i.get(player);
             if (fplayer.getFaction() == this) {
                 return true;
@@ -496,7 +496,7 @@ public class Faction extends Entity implements EconomyParticipator {
 
             // no members left and faction isn't permanent, so disband it
             if (Conf.logFactionDisband)
-                P.p.log("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left.");
+                FactionsPlugin.plugin.log("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left.");
 
             for (FPlayer fplayer : FPlayers.i.getOnline()) {
                 fplayer.msg("The faction %s<i> was disbanded.", this.getTag(fplayer));
@@ -508,7 +508,7 @@ public class Faction extends Entity implements EconomyParticipator {
                 oldLeader.setRole(Role.NORMAL);
             replacements.get(0).setRole(Role.ADMIN);
             this.msg("<i>Faction admin <h>%s<i> has been removed. %s<i> has been promoted as the new faction admin.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
-            P.p.log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
+            FactionsPlugin.plugin.log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
         }
     }
 
@@ -517,7 +517,7 @@ public class Faction extends Entity implements EconomyParticipator {
     // Messages
     //----------------------------------------------//
     public void msg(String message, Object... args) {
-        message = P.p.txt.parse(message, args);
+        message = FactionsPlugin.plugin.txt.parse(message, args);
 
         for (FPlayer fplayer : this.getFPlayersWhereOnline(true)) {
             fplayer.sendMessage(message);

@@ -226,7 +226,7 @@ public abstract class MCommand<T extends MPlugin> {
         }
 
         if (args.size() > 0) {
-            ret.append(p.txt.parseTags("<p> "));
+            ret.append(p.txt.parseTags("<plugin> "));
             ret.append(TextUtil.implode(args, " "));
         }
 
@@ -359,7 +359,7 @@ public abstract class MCommand<T extends MPlugin> {
         }
 
         if (msg && ret == null) {
-            this.msg("<b>No player \"<p>%s<b>\" could not be found.", name);
+            this.msg("<b>No player \"<plugin>%s<b>\" could not be found.", name);
         }
 
         return ret;
@@ -389,7 +389,7 @@ public abstract class MCommand<T extends MPlugin> {
         }
 
         if (msg && ret == null) {
-            this.msg("<b>No player match found for \"<p>%s<b>\".", name);
+            this.msg("<b>No player match found for \"<plugin>%s<b>\".", name);
         }
 
         return ret;

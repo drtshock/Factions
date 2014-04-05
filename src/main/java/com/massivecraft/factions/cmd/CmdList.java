@@ -70,10 +70,10 @@ public class CmdList extends FCommand {
         ArrayList<String> lines = new ArrayList<String>();
 
 /*		// this code was really slow on large servers, getting full info for every faction and then only showing 9 of them; rewritten below
-        lines.add(p.txt.parse("<i>Factionless<i> %d online", Factions.i.getNone().getFPlayersWhereOnline(true).size()));
+        lines.add(plugin.txt.parse("<i>Factionless<i> %d online", Factions.i.getNone().getFPlayersWhereOnline(true).size()));
 		for (Faction faction : factionList)
 		{
-			lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d",
+			lines.add(plugin.txt.parse("%s<i> %d/%d online, %d/%d/%d",
 				faction.getTag(fme),
 				faction.getFPlayersWhereOnline(true).size(),
 				faction.getFPlayers().size(),
@@ -83,7 +83,7 @@ public class CmdList extends FCommand {
 			);
 		}
 		
-		sendMessage(p.txt.getPage(lines, this.argAsInt(0, 1), "Faction List"));
+		sendMessage(plugin.txt.getPage(lines, this.argAsInt(0, 1), "Faction List"));
  */
 
         factionList.add(0, Factions.i.getNone());

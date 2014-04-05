@@ -374,11 +374,11 @@ public class Conf {
     private static transient Conf i = new Conf();
 
     public static void load() {
-        P.p.persist.loadOrSaveDefault(i, Conf.class, "conf");
+        FactionsPlugin.plugin.persist.loadOrSaveDefault(i, Conf.class, "conf");
     }
 
     public static void save() {
-        P.p.persist.save(i);
+        FactionsPlugin.plugin.persist.save(i);
     }
 }
 
