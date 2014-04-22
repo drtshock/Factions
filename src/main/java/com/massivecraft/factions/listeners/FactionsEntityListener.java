@@ -3,6 +3,7 @@ package com.massivecraft.factions.listeners;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -57,6 +58,7 @@ import com.massivecraft.factions.util.MiscUtil;
 
 public class FactionsEntityListener implements Listener {
     public P p;
+    private static final EnumSet<Material> ignoredMaterials = EnumSet.of(Material.AIR, Material.BEDROCK, Material.WATER, Material.STATIONARY_WATER, Material.LAVA, Material.STATIONARY_LAVA, Material.OBSIDIAN, Material.PORTAL, Material.ENCHANTMENT_TABLE, Material.ENDER_PORTAL, Material.ENDER_PORTAL_FRAME, Material.ENDER_CHEST);
 
     public FactionsEntityListener(P p) {
         this.p = p;
@@ -212,7 +214,7 @@ public class FactionsEntityListener implements Listener {
                 for (Block target : targets) {
                     Material type = target.getType();
                     // ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet
-                    if (type != Material.AIR && type != Material.BEDROCK && type != Material.WATER && type != Material.STATIONARY_WATER && type != Material.LAVA && type != Material.STATIONARY_LAVA && type != Material.OBSIDIAN && type != Material.PORTAL && type != Material.ENCHANTMENT_TABLE && type != Material.ENDER_PORTAL && type != Material.ENDER_PORTAL_FRAME && type != Material.ENDER_CHEST)
+                    if (!ignoredMaterials.contains(type))
                         target.breakNaturally();
                 }
             }
