@@ -1,27 +1,5 @@
 package com.massivecraft.factions;
 
-import com.massivecraft.factions.cmd.CmdAutoHelp;
-import com.massivecraft.factions.cmd.FCmdRoot;
-import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.Worldguard;
-import com.massivecraft.factions.listeners.*;
-import com.massivecraft.factions.struct.ChatMode;
-import com.massivecraft.factions.util.AutoLeaveTask;
-import com.massivecraft.factions.util.LazyLocation;
-import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
-import com.massivecraft.factions.util.MyLocationTypeAdapter;
-import com.massivecraft.factions.zcore.MPlugin;
-import com.massivecraft.factions.zcore.util.TextUtil;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
-import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -29,6 +7,30 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
+import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import com.massivecraft.factions.cmd.CmdAutoHelp;
+import com.massivecraft.factions.cmd.FCmdRoot;
+import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.Worldguard;
+import com.massivecraft.factions.listeners.FactionsBlockListener;
+import com.massivecraft.factions.listeners.FactionsChatListener;
+import com.massivecraft.factions.listeners.FactionsEntityListener;
+import com.massivecraft.factions.listeners.FactionsExploitListener;
+import com.massivecraft.factions.listeners.FactionsPlayerListener;
+import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.util.AutoLeaveTask;
+import com.massivecraft.factions.util.LazyLocation;
+import com.massivecraft.factions.util.MapFLocToStringSetTypeAdapter;
+import com.massivecraft.factions.util.MyLocationTypeAdapter;
+import com.massivecraft.factions.zcore.MPlugin;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
 
 public class P extends MPlugin {

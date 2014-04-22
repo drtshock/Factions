@@ -18,7 +18,6 @@ public class Conf {
 
     public static ChatColor colorPeaceful = ChatColor.GOLD;
     public static ChatColor colorWar = ChatColor.DARK_RED;
-    //public static ChatColor colorWilderness = ChatColor.DARK_GREEN;
 
     // Power
     public static double powerPlayerMax = 10.0;
