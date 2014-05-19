@@ -1,18 +1,41 @@
 package com.massivecraft.factions.listeners;
 
-import com.massivecraft.factions.*;
-import com.massivecraft.factions.event.PowerLossEvent;
-import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.util.MiscUtil;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Creeper;
+import org.bukkit.entity.Enderman;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Fireball;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.Wither;
+import org.bukkit.entity.WitherSkull;
 import org.bukkit.entity.minecart.ExplosiveMinecart;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityCombustByEntityEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
@@ -21,12 +44,21 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
-import java.text.MessageFormat;
-import java.util.*;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.event.PowerLossEvent;
+import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.util.MiscUtil;
 
 
 public class FactionsEntityListener implements Listener {
     public P p;
+    private static final EnumSet<Material> ignoredMaterials = EnumSet.of(Material.AIR, Material.BEDROCK, Material.WATER, Material.STATIONARY_WATER, Material.LAVA, Material.STATIONARY_LAVA, Material.OBSIDIAN, Material.PORTAL, Material.ENCHANTMENT_TABLE, Material.ENDER_PORTAL, Material.ENDER_PORTAL_FRAME, Material.ENDER_CHEST);
 
     public FactionsEntityListener(P p) {
         this.p = p;
@@ -180,9 +212,9 @@ public class FactionsEntityListener implements Listener {
                 targets.add(center.getRelative(1, 0, 0));
                 targets.add(center.getRelative(-1, 0, 0));
                 for (Block target : targets) {
-                    int id = target.getTypeId();
+                    Material type = target.getType();
                     // ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet
-                    if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 90 && id != 116 && id != 119 && id != 120 && id != 130)
+                    if (!ignoredMaterials.contains(type))
                         target.breakNaturally();
                 }
             }
@@ -194,7 +226,7 @@ public class FactionsEntityListener implements Listener {
     public void onEntityCombustByEntity(EntityCombustByEntityEvent event) {
         if (event.isCancelled()) return;
 
-        EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE, 0);
+        EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE, 0.0);
         if (!this.canDamagerHurtDamagee(sub, false))
             event.setCancelled(true);
         sub = null;
@@ -229,7 +261,7 @@ public class FactionsEntityListener implements Listener {
         Iterator<LivingEntity> iter = event.getAffectedEntities().iterator();
         while (iter.hasNext()) {
             LivingEntity target = iter.next();
-            EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent((Entity) thrower, target, EntityDamageEvent.DamageCause.CUSTOM, 0);
+            EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent((Entity) thrower, target, EntityDamageEvent.DamageCause.CUSTOM, 0.0);
             if (!this.canDamagerHurtDamagee(sub, true))
                 event.setIntensity(target, 0.0);  // affected entity list doesn't accept modification (so no iter.remove()), but this works
             sub = null;

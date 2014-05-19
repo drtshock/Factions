@@ -11,7 +11,6 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.Map.Entry;
 
-
 public class Board {
     private static transient File file = new File(P.p.getDataFolder(), "board.json");
     private static transient HashMap<FLocation, String> flocationIds = new HashMap<FLocation, String>();
@@ -308,23 +307,5 @@ public class Board {
 
         return true;
     }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
