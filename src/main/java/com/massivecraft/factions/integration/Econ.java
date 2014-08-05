@@ -174,7 +174,7 @@ public class Econ {
         }
 
         // Transfer money
-        EconomyResponse erw = econ.withdrawPlayer(Bukkit.getOfflinePlayer(from.getAccountId()), amount);
+        EconomyResponse erw = econ.withdrawPlayer(fromAcc, amount);
 
         if (erw.transactionSuccess()) {
             EconomyResponse erd = econ.depositPlayer(toAcc, amount);
