@@ -305,6 +305,27 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
+        Faction myFaction = me.getFaction();
+        Relation rel = myFaction.getRelationTo(otherFaction);
+
+        // fix cactus dupe
+        if (rel.isNeutral() || rel.isEnemy() || rel.isAlly() || !otherFaction.playerHasOwnershipRights(me, loc))) {
+            if (player.getItemInHand() != null) {
+                Material mat = player.getItemInHand().getType();
+                switch (mat) {
+                case CHEST:
+                case SIGN_POST:
+                case TRAPPED_CHEST:
+                case SIGN:
+                case WOOD_DOOR:
+                case IRON_DOOR:
+                    return false;
+                default:
+                    break;
+                }
+            }
+        }
+
         // We only care about some material types.
         if (otherFaction.hasPlayersOnline()) {
             if (!Conf.territoryProtectedMaterials.contains(material)) {
@@ -315,9 +336,6 @@ public class FactionsPlayerListener implements Listener {
                 return true;
             }
         }
-
-        Faction myFaction = me.getFaction();
-        Relation rel = myFaction.getRelationTo(otherFaction);
 
         // You may use any block unless it is another faction's territory...
         if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials)) {
