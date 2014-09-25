@@ -311,19 +311,14 @@ public class FactionsPlayerListener implements Listener {
         // fix cactus dupe
         if (rel.isNeutral() || rel.isEnemy() || rel.isAlly() || !otherFaction.playerHasOwnershipRights(me, loc))) {
             if (player.getItemInHand() != null) {
-                int id = player.getItemInHand().getTypeId();
-                switch (id) {
-                case 54: // CHEST
-                case 63: // SIGN_POST
-                case 146: // TRAPPED_CHEST
-                case 323: // SIGN
-                case 324: // WOOD_DOOR
-                case 330: // IRON_DOOR
-                case 427: // SPRUCE_DOOR
-                case 428: // BIRCH_DOOR
-                case 429: // JUNGLE_DOOR
-                case 430: // ACACIA_DOOR
-                case 431: // DARK_OAK_DOOR
+                Material mat = player.getItemInHand().getType();
+                switch (mat) {
+                case CHEST:
+                case SIGN_POST:
+                case TRAPPED_CHEST:
+                case SIGN:
+                case WOOD_DOOR:
+                case IRON_DOOR:
                     return false;
                 default:
                     break;
