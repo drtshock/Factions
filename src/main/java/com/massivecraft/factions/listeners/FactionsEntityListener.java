@@ -201,15 +201,17 @@ public class FactionsEntityListener implements Listener {
         }
 
         ProjectileSource thrower = event.getPotion().getShooter();
-        if (!(thrower instanceof Player)) {
+        if (!(thrower instanceof Entity)) {
             return;
         }
 
-        Player player = (Player) thrower;
-        FPlayer fPlayer = FPlayers.i.get(player);
-        if(badjuju && fPlayer.getFaction().isPeaceful()){
-            event.setCancelled(true);
-            return;
+        if(thrower instanceof Player){
+            Player player = (Player) thrower;
+            FPlayer fPlayer = FPlayers.i.get(player);
+            if(badjuju && fPlayer.getFaction().isPeaceful()){
+                event.setCancelled(true);
+                return;
+            }
         }
 
         // scan through affected entities to make sure they're all valid targets
