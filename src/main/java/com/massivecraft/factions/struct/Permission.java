@@ -59,6 +59,7 @@ public enum Permission {
     SAVE("save"),
     SETHOME("sethome"),
     SETHOME_ANY("sethome.any"),
+    STATUS("status"),
     SHOW("show"),
     TAG("tag"),
     TITLE("title"),
