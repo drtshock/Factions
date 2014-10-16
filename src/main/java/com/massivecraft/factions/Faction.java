@@ -10,6 +10,8 @@ import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.persist.Entity;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -170,7 +172,7 @@ public class Faction extends Entity implements EconomyParticipator {
             return;
         }
 
-        msg("<b>Your faction home has been un-set since it is no longer in your territory.");
+        msg(TL.FACTION_CONFIRM_VALID_HOME.toString());
         this.home = null;
     }
 
@@ -517,7 +519,7 @@ public class Faction extends Entity implements EconomyParticipator {
             }
 
             for (FPlayer fplayer : FPlayers.i.getOnline()) {
-                fplayer.msg("The faction %s<i> was disbanded.", this.getTag(fplayer));
+                fplayer.msg(TL.FACTION_DISBANDED.toString(), this.getTag(fplayer));
             }
 
             this.detach();
@@ -526,7 +528,7 @@ public class Faction extends Entity implements EconomyParticipator {
                 oldLeader.setRole(Role.NORMAL);
             }
             replacements.get(0).setRole(Role.ADMIN);
-            this.msg("<i>Faction admin <h>%s<i> has been removed. %s<i> has been promoted as the new faction admin.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
+            this.msg(TL.FACTION_ADMIN_REMOVED.toString(), oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
             P.p.log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
         }
     }

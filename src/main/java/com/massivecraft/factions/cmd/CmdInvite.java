@@ -3,7 +3,10 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
+
 import mkremins.fanciful.FancyMessage;
+
 import org.bukkit.ChatColor;
 
 public class CmdInvite extends FCommand {
@@ -33,8 +36,8 @@ public class CmdInvite extends FCommand {
         }
 
         if (you.getFaction() == myFaction) {
-            msg("%s<i> is already a member of %s", you.getName(), myFaction.getTag());
-            msg("<i>You might want to: " + p.cmdBase.cmdKick.getUseageTemplate(false));
+            msg(TL.CMD_INVITE_ALREADY_MEMBER.toString(), you.getName(), myFaction.getTag());
+            msg(TL.CMD_INVITE_KICK.toString() + p.cmdBase.cmdKick.getUseageTemplate(false));
             return;
         }
 
@@ -47,16 +50,16 @@ public class CmdInvite extends FCommand {
 
         // Tooltips, colors, and commands only apply to the string immediately before it.
         FancyMessage message = new FancyMessage(fme.describeTo(you, true))
-                                       .tooltip("Click to join!").command("f join " + myFaction.getTag())
-                                       .then(" has invited you to join ").color(ChatColor.YELLOW)
-                                       .tooltip("Click to join!").command("f join " + myFaction.getTag())
+                                       .tooltip(TL.CMD_INVITE_TOOLTIP.toString()).command("f join " + myFaction.getTag())
+                                       .then(TL.CMD_INVITE_HAS.toString()).color(ChatColor.YELLOW)
+                                       .tooltip(TL.CMD_INVITE_TOOLTIP.toString()).command("f join " + myFaction.getTag())
                                        .then(myFaction.describeTo(you))
-                                       .tooltip("Click to join!").command("f join " + myFaction.getTag());
+                                       .tooltip(TL.CMD_INVITE_TOOLTIP.toString()).command("f join " + myFaction.getTag());
 
         message.send(you.getPlayer());
 
         //you.msg("%s<i> invited you to %s", fme.describeTo(you, true), myFaction.describeTo(you));
-        myFaction.msg("%s<i> invited %s<i> to your faction.", fme.describeTo(myFaction, true), you.describeTo(myFaction));
+        myFaction.msg(TL.CMD_INVITE_INVITED.toString(), fme.describeTo(myFaction, true), you.describeTo(myFaction));
     }
 
 }

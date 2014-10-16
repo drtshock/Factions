@@ -6,6 +6,9 @@ import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 
 
@@ -48,11 +51,11 @@ public class CmdDisband extends FCommand {
         }
 
         if (!faction.isNormal()) {
-            msg("<i>You cannot disband the Wilderness, SafeZone, or WarZone.");
+            msg(TL.CMD_DISBAND_NOT_NORMAL.toString());
             return;
         }
         if (faction.isPermanent()) {
-            msg("<i>This faction is designated as permanent, so you cannot disband it.");
+            msg(TL.CMD_DISBAND_PERMANENT.toString());
             return;
         }
 
@@ -69,11 +72,11 @@ public class CmdDisband extends FCommand {
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.i.getOnline()) {
-            String who = senderIsConsole ? "A server admin" : fme.describeTo(fplayer);
+            String who = senderIsConsole ? MiscUtil.capitalizeFirstLetter(TL.A_SERVER_ADMIN.toString()) : fme.describeTo(fplayer);
             if (fplayer.getFaction() == faction) {
-                fplayer.msg("<h>%s<i> disbanded your faction.", who);
+                fplayer.msg(TL.CMD_DISBAND_YOUR.toString(), who);
             } else {
-                fplayer.msg("<h>%s<i> disbanded the faction %s.", who, faction.getTag(fplayer));
+                fplayer.msg(TL.CMD_DISBAND_OTHER.toString(), who, faction.getTag(fplayer));
             }
         }
         if (Conf.logFactionDisband) {
@@ -87,7 +90,7 @@ public class CmdDisband extends FCommand {
 
             if (amount > 0.0) {
                 String amountString = Econ.moneyString(amount);
-                msg("<i>You have been given the disbanded faction's bank, totaling %s.", amountString);
+                msg(TL.CMD_DISBAND_BANK.toString(), amountString);
                 P.p.log(fme.getName() + " has been given bank holdings of " + amountString + " from disbanding " + faction.getTag() + ".");
             }
         }

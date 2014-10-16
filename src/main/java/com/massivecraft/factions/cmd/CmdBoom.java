@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdBoom extends FCommand {
 
@@ -24,7 +25,7 @@ public class CmdBoom extends FCommand {
     @Override
     public void perform() {
         if (!myFaction.isPeaceful()) {
-            fme.msg("<b>This command is only usable by factions which are specially designated as peaceful.");
+            fme.msg(TL.CMD_BOOM_NOT_PEACEFUL.toString());
             return;
         }
 
@@ -35,9 +36,9 @@ public class CmdBoom extends FCommand {
 
         myFaction.setPeacefulExplosionsEnabled(this.argAsBool(0, !myFaction.getPeacefulExplosionsEnabled()));
 
-        String enabled = myFaction.noExplosionsInTerritory() ? "disabled" : "enabled";
+        String enabled = myFaction.noExplosionsInTerritory() ? TL.DISABLED.toString() : TL.ENABLED.toString();
 
         // Inform
-        myFaction.msg("%s<i> has " + enabled + " explosions in your faction's territory.", fme.describeTo(myFaction));
+        myFaction.msg(TL.CMD_BOOM_CONFIRM.toString(), fme.describeTo(myFaction), enabled);
     }
 }

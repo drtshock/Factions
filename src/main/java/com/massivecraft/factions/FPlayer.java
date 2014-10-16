@@ -14,6 +14,8 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.persist.PlayerEntity;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -586,12 +588,12 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         boolean perm = myFaction.isPermanent();
 
         if (!perm && this.getRole() == Role.ADMIN && myFaction.getFPlayers().size() > 1) {
-            msg("<b>You must give the admin role to someone else first.");
+            msg(TL.PLAYER_GIVE_ADMIN.toString());
             return;
         }
 
         if (!Conf.canLeaveWithNegativePower && this.getPower() < 0) {
-            msg("<b>You cannot leave until your power is positive.");
+            msg(TL.PLAYER_CANNOT_LEAVE_POWER.toString());
             return;
         }
 
@@ -657,9 +659,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
         if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(location)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
-            error = P.p.txt.parse("<b>This land is protected");
+            error = P.p.txt.parse(TL.CLAIM_WG_PROTECTED.toString());
         } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
-            error = P.p.txt.parse("<b>Sorry, this world has land claiming disabled.");
+            error = P.p.txt.parse(TL.CLAIM_DISABLED.toString());
         } else if (this.isAdminBypassing()) {
             return true;
         } else if (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer())) {
@@ -667,39 +669,39 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         } else if (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer())) {
             return true;
         } else if (myFaction != forFaction) {
-            error = P.p.txt.parse("<b>You can't claim land for <h>%s<b>.", forFaction.describeTo(this));
+            error = P.p.txt.parse(TL.CLAIM_WRONG_FACTION.toString(), forFaction.describeTo(this));
         } else if (forFaction == currentFaction) {
-            error = P.p.txt.parse("%s<i> already own this land.", forFaction.describeTo(this, true));
+            error = P.p.txt.parse(TL.CLAIM_ALREADY_OWN.toString(), forFaction.describeTo(this, true));
         } else if (this.getRole().value < Role.MODERATOR.value) {
-            error = P.p.txt.parse("<b>You must be <h>%s<b> to claim land.", Role.MODERATOR.toString());
+            error = P.p.txt.parse(TL.CLAIM_MODERATOR.toString(), Role.MODERATOR.toString());
         } else if (forFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers) {
-            error = P.p.txt.parse("Factions must have at least <h>%s<b> members to claim land.", Conf.claimsRequireMinFactionMembers);
+            error = P.p.txt.parse(TL.CLAIM_NEED_MEMBERS.toString(), Conf.claimsRequireMinFactionMembers);
         } else if (currentFaction.isSafeZone()) {
-            error = P.p.txt.parse("<b>You can not claim a Safe Zone.");
+            error = P.p.txt.parse(TL.CLAIM_SAFE_ZONE.toString());
         } else if (currentFaction.isWarZone()) {
-            error = P.p.txt.parse("<b>You can not claim a War Zone.");
+            error = P.p.txt.parse(TL.CLAIM_WAR_ZONE.toString());
         } else if (ownedLand >= forFaction.getPowerRounded()) {
-            error = P.p.txt.parse("<b>You can't claim more land! You need more power!");
+            error = P.p.txt.parse(TL.CLAIM_NEED_POWER.toString());
         } else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal()) {
-            error = P.p.txt.parse("<b>Limit reached. You can't claim more land!");
+            error = P.p.txt.parse(TL.CLAIM_LIMIT.toString());
         } else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
-            error = P.p.txt.parse("<b>You can't claim the land of your allies.");
+            error = P.p.txt.parse(TL.CLAIM_ALLY.toString());
         } else if (Conf.claimsMustBeConnected && !this.isAdminBypassing() && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.isConnectedLocation(flocation, myFaction) && (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())) {
             if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction) {
-                error = P.p.txt.parse("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
+                error = P.p.txt.parse(TL.CLAIM_CONNECTED_FACTION.toString());
             } else {
-                error = P.p.txt.parse("<b>You can only claim additional land which is connected to your first claim!");
+                error = P.p.txt.parse(TL.CLAIM_CONNECTED.toString());
             }
         } else if (currentFaction.isNormal()) {
             if (myFaction.isPeaceful()) {
-                error = P.p.txt.parse("%s<i> owns this land. Your faction is peaceful, so you cannot claim land from other factions.", currentFaction.getTag(this));
+                error = P.p.txt.parse(TL.CLAIM_PEACEFUL.toString(), currentFaction.getTag(this));
             } else if (currentFaction.isPeaceful()) {
-                error = P.p.txt.parse("%s<i> owns this land, and is a peaceful faction. You cannot claim land from them.", currentFaction.getTag(this));
+                error = P.p.txt.parse(TL.CLAIM_PEACEFUL_TARGET.toString(), currentFaction.getTag(this));
             } else if (!currentFaction.hasLandInflation()) {
                 // TODO more messages WARN current faction most importantly
-                error = P.p.txt.parse("%s<i> owns this land and is strong enough to keep it.", currentFaction.getTag(this));
+                error = P.p.txt.parse(TL.CLAIM_STRONGER.toString(), currentFaction.getTag(this));
             } else if (!Board.isBorderLocation(flocation)) {
-                error = P.p.txt.parse("<b>You must start claiming land at the border of the territory.");
+                error = P.p.txt.parse(TL.CLAIM_BORDER.toString());
             }
         }
         // TODO: Add more else if statements.
@@ -761,7 +763,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         informTheseFPlayers.add(this);
         informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
         for (FPlayer fp : informTheseFPlayers) {
-            fp.msg("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>.", this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
+            fp.msg(TL.CLAIM_NOTIFY.toString(), this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
         }
 
         Board.setFactionAt(forFaction, flocation);
