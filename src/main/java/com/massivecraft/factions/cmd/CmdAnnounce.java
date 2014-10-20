@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
 import net.minecraft.util.org.apache.commons.lang3.StringUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class CmdAnnounce extends FCommand {
@@ -26,7 +25,7 @@ public class CmdAnnounce extends FCommand {
 
     @Override
     public void perform() {
-        String prefix = ChatColor.GREEN + myFaction.getTag() + ChatColor.YELLOW + " [" + ChatColor.GRAY + me.getName() + ChatColor.YELLOW + "] " + ChatColor.RESET;
+        String prefix = p.txt.parse("<green>%s<yellow> [<gray>%s<yellow>]<reset>", myFaction.getTag(), me.getName());
         String message = StringUtils.join(args, " ");
 
         for (Player player : myFaction.getOnlinePlayers()) {
