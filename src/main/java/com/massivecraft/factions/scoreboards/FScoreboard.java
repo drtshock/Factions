@@ -1,6 +1,7 @@
 package com.massivecraft.factions.scoreboards;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -166,7 +167,9 @@ public class FScoreboard {
 
         // Update faction prefix
         if(P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
-            String prefix = faction.getRelationTo(this.fplayer).getColor() + "[" + faction.getTag().substring(0, Math.min(9, faction.getTag().length())) + "] " + ChatColor.RESET;
+            String prefix = TL.DEFAULT_PREFIX.toString();
+            prefix = prefix.replace("{relationcolor}", faction.getRelationTo(this.fplayer).getColor().toString());
+            prefix = prefix.replace("{faction}", faction.getTag().substring(0, Math.min(23 - prefix.length(), faction.getTag().length())));
             if (team.getPrefix() == null || !team.getPrefix().equals(prefix)) {
                 team.setPrefix(prefix);
             }
