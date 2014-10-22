@@ -167,11 +167,9 @@ public class FScoreboard {
 
         // Update faction prefix
         if(P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
-            String prefix = TL.DEFAULT_PREFIX.toString().replace("{relationcolor}", faction.getRelationTo(this.fplayer).getColor().toString());
-            String prefixNoTag = prefix.replace("{faction}", "");
-            if (!prefixNoTag.equals(prefix)) {
-                prefix = prefix.replace("{faction}", faction.getTag().substring(0, Math.min(14 - prefixNoTag.length(), faction.getTag().length())));
-            }
+            String prefix = TL.DEFAULT_PREFIX.toString();
+            prefix = prefix.replace("{relationcolor}", faction.getRelationTo(this.fplayer).getColor().toString());
+            prefix = prefix.replace("{faction}", faction.getTag().substring(0, Math.min(23 - prefix.length(), faction.getTag().length())));
             if (team.getPrefix() == null || !team.getPrefix().equals(prefix)) {
                 team.setPrefix(prefix);
             }
