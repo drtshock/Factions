@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdChat extends FCommand {
 
@@ -26,7 +27,7 @@ public class CmdChat extends FCommand {
     @Override
     public void perform() {
         if (!Conf.factionOnlyChat) {
-            msg("<b>The built in chat chat channels are disabled on this server.");
+            TLmsg(TL.CMD_CHAT_DISABLED, values);
             return;
         }
 
@@ -42,7 +43,7 @@ public class CmdChat extends FCommand {
             } else if (modeString.startsWith("f")) {
                 modeTarget = ChatMode.FACTION;
             } else {
-                msg("<b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'p'");
+                TLmsg(TL.CMD_CHAT_UNRECOGNIZED, values);
                 return;
             }
         }
@@ -50,11 +51,11 @@ public class CmdChat extends FCommand {
         fme.setChatMode(modeTarget);
 
         if (fme.getChatMode() == ChatMode.PUBLIC) {
-            msg("<i>Public chat mode.");
+            TLmsg(TL.CMD_CHAT_PUBLIC, values);
         } else if (fme.getChatMode() == ChatMode.ALLIANCE) {
-            msg("<i>Alliance only chat mode.");
+            TLmsg(TL.CMD_CHAT_ALLIANCE, values);
         } else {
-            msg("<i>Faction only chat mode.");
+            TLmsg(TL.CMD_CHAT_FACTION, values);
         }
     }
 }

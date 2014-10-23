@@ -4,11 +4,13 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.MCommand;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -23,6 +25,8 @@ public abstract class FCommand extends MCommand<P> {
     public boolean senderMustBeAdmin;
 
     public boolean isMoneyCommand;
+    
+    public HashMap<String,String> values;
 
     public FCommand() {
         super(P.p);
@@ -36,6 +40,7 @@ public abstract class FCommand extends MCommand<P> {
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
+        values = new HashMap<String,String>();
     }
 
     @Override

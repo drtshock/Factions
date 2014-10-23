@@ -6,6 +6,9 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 
 public class CmdAdmin extends FCommand {
@@ -35,19 +38,22 @@ public class CmdAdmin extends FCommand {
 
         boolean permAny = Permission.ADMIN_ANY.has(sender, false);
         Faction targetFaction = fyou.getFaction();
+        values.put("targetplayer", fyou.describeTo(fme));
+        values.put("admin", senderIsConsole ? TL.A_SERVER_ADMIN.toString() : fme.describeTo(fyou));
+        values.put("adminUC", MiscUtil.capitalizeFirstLetter(values.get("admin")));
 
         if (targetFaction != myFaction && !permAny) {
-            msg("%s<i> is not a member in your faction.", fyou.describeTo(fme, true));
+            TLmsg(TL.CMD_ADMIN_NOT_MEMBER, values);
             return;
         }
 
         if (fme != null && fme.getRole() != Role.ADMIN && !permAny) {
-            msg("<b>You are not the faction admin.");
+            TLmsg(TL.CMD_ADMIN_NOT_ADMIN, values);
             return;
         }
 
         if (fyou == fme && !permAny) {
-            msg("<b>The target player musn't be yourself.");
+            TLmsg(TL.CMD_ADMIN_TARGET_SELF, values);
             return;
         }
 
@@ -65,8 +71,8 @@ public class CmdAdmin extends FCommand {
         // if target player is currently admin, demote and replace him
         if (fyou == admin) {
             targetFaction.promoteNewLeader();
-            msg("<i>You have demoted %s<i> from the position of faction admin.", fyou.describeTo(fme, true));
-            fyou.msg("<i>You have been demoted from the position of faction admin by %s<i>.", senderIsConsole ? "a server admin" : fme.describeTo(fyou, true));
+            TLmsg(TL.CMD_ADMIN_DEMOTE_SELFMSG, values);
+            fyou.TLmsg(TL.CMD_ADMIN_DEMOTE_OTHERMSG, values);
             return;
         }
 
@@ -75,11 +81,12 @@ public class CmdAdmin extends FCommand {
             admin.setRole(Role.MODERATOR);
         }
         fyou.setRole(Role.ADMIN);
-        msg("<i>You have promoted %s<i> to the position of faction admin.", fyou.describeTo(fme, true));
+        TLmsg(TL.CMD_ADMIN_PROMOTE, values);
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.i.getOnline()) {
-            fplayer.msg("%s<i> gave %s<i> the leadership of %s<i>.", senderIsConsole ? "A server admin" : fme.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
+            values.put("targetfaction", targetFaction.describeTo(fplayer));
+            fplayer.TLmsg(TL.CMD_ADMIN_LEADERSHIP, values);
         }
     }
 

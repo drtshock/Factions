@@ -3,6 +3,8 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 
 public class CmdJoin extends FCommand {
@@ -32,41 +34,48 @@ public class CmdJoin extends FCommand {
 
         FPlayer fplayer = this.argAsBestFPlayerMatch(1, fme, false);
         boolean samePlayer = fplayer == fme;
+        values.put("player", fplayer.describeTo(faction, true));
+        values.put("target", fplayer.describeTo(fme, false));
+        values.put("targetUC", fplayer.describeTo(fme, true));
+        values.put("is-are", samePlayer ? TL.ARE.toString() : TL.IS.toString());
+        values.put("your-their", samePlayer ? TL.YOUR.toString() : TL.THEIR.toString());
+        values.put("faction", faction.getTag(fme));
+        values.put("memberlimit", String.valueOf(Conf.factionMemberLimit));
 
         if (!samePlayer && !Permission.JOIN_OTHERS.has(sender, false)) {
-            msg("<b>You do not have permission to move other players into a faction.");
+            TLmsg(TL.CMD_JOIN_OTHERS_PERM, values);
             return;
         }
 
         if (!faction.isNormal()) {
-            msg("<b>Players may only join normal factions. This is a system faction.");
+            TLmsg(TL.CMD_JOIN_SYSTEM, values);
             return;
         }
 
         if (faction == fplayer.getFaction()) {
-            msg("<b>%s %s already a member of %s", fplayer.describeTo(fme, true), (samePlayer ? "are" : "is"), faction.getTag(fme));
+            TLmsg(TL.CMD_JOIN_ALREADY_MEMBER, values);
             return;
         }
 
         if (Conf.factionMemberLimit > 0 && faction.getFPlayers().size() >= Conf.factionMemberLimit) {
-            msg(" <b>!<white> The faction %s is at the limit of %d members, so %s cannot currently join.", faction.getTag(fme), Conf.factionMemberLimit, fplayer.describeTo(fme, false));
+            TLmsg(TL.CMD_JOIN_LIMIT, values);
             return;
         }
 
         if (fplayer.hasFaction()) {
-            msg("<b>%s must leave %s current faction first.", fplayer.describeTo(fme, true), (samePlayer ? "your" : "their"));
+            TLmsg(TL.CMD_JOIN_MUST_LEAVE, values);
             return;
         }
 
         if (!Conf.canLeaveWithNegativePower && fplayer.getPower() < 0) {
-            msg("<b>%s cannot join a faction with a negative power level.", fplayer.describeTo(fme, true));
+            TLmsg(TL.CMD_JOIN_NEG_POWER, values);
             return;
         }
 
         if (!(faction.getOpen() || faction.isInvited(fplayer) || fme.isAdminBypassing() || Permission.JOIN_ANY.has(sender, false))) {
-            msg("<i>This faction requires invitation.");
+            TLmsg(TL.CMD_JOIN_REQUIRES_INVITE, values);
             if (samePlayer) {
-                faction.msg("%s<i> tried to join your faction.", fplayer.describeTo(faction, true));
+                faction.TLmsg(TL.CMD_JOIN_TRIED_NOTIFY, values);
             }
             return;
         }
@@ -88,12 +97,12 @@ public class CmdJoin extends FCommand {
             return;
         }
 
-        fme.msg("<i>%s successfully joined %s.", fplayer.describeTo(fme, true), faction.getTag(fme));
+        fme.TLmsg(TL.CMD_JOIN_SUCCESS, values);
 
         if (!samePlayer) {
-            fplayer.msg("<i>%s moved you into the faction %s.", fme.describeTo(fplayer, true), faction.getTag(fplayer));
+            fplayer.TLmsg(TL.CMD_JOIN_MOVED, values);
         }
-        faction.msg("<i>%s joined your faction.", fplayer.describeTo(faction, true));
+        faction.TLmsg(TL.CMD_JOIN_YOUR, values);
 
         fplayer.resetFactionData();
         fplayer.setFaction(faction);

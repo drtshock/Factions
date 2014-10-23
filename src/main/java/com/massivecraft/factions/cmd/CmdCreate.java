@@ -5,6 +5,8 @@ import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -33,12 +35,12 @@ public class CmdCreate extends FCommand {
         String tag = this.argAsString(0);
 
         if (fme.hasFaction()) {
-            msg("<b>You must leave your current faction first.");
+            TLmsg(TL.CMD_CREATE_MUST_LEAVE, values);
             return;
         }
 
         if (Factions.i.isTagTaken(tag)) {
-            msg("<b>That tag is already in use.");
+            TLmsg(TL.CMD_CREATE_TAG_IN_USE, values);
             return;
         }
 
@@ -69,7 +71,7 @@ public class CmdCreate extends FCommand {
 
         // TODO: Why would this even happen??? Auto increment clash??
         if (faction == null) {
-            msg("<b>There was an internal error while trying to create your faction. Please try again.");
+            TLmsg(TL.CMD_CREATE_INTERNAL_ERROR, values);
             return;
         }
 
@@ -86,10 +88,13 @@ public class CmdCreate extends FCommand {
         fme.setFaction(faction);
 
         for (FPlayer follower : FPlayers.i.getOnline()) {
-            follower.msg("%s<i> created a new faction %s", fme.describeTo(follower, true), faction.getTag(follower));
+            values.put("player", fme.describeTo(follower, true));
+            values.put("faction", faction.getTag(follower));
+            follower.TLmsg(TL.CMD_CREATE_NOTIFY, values);
         }
 
-        msg("<i>You should now: %s", p.cmdBase.cmdDescription.getUseageTemplate());
+        values.put("createdesc", p.cmdBase.cmdDescription.getUseageTemplate());
+        TLmsg(TL.CMD_CREATE_CHANGE_DESCRIPTION, values);
 
         if (Conf.logFactionCreate) {
             P.p.log(fme.getName() + " created a new faction: " + tag);

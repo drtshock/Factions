@@ -6,6 +6,8 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.SmokeUtil;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -36,28 +38,30 @@ public class CmdHome extends FCommand {
     public void perform() {
         // TODO: Hide this command on help also.
         if (!Conf.homesEnabled) {
-            fme.msg("<b>Sorry, Faction homes are disabled on this server.");
+            fme.TLmsg(TL.CMD_HOME_DISABLED, values);
             return;
         }
 
         if (!Conf.homesTeleportCommandEnabled) {
-            fme.msg("<b>Sorry, the ability to teleport to Faction homes is disabled on this server.");
+            fme.TLmsg(TL.CMD_HOME_TELEPORT_DISABLED, values);
             return;
         }
 
         if (!myFaction.hasHome()) {
-            fme.msg("<b>Your faction does not have a home. " + (fme.getRole().value < Role.MODERATOR.value ? "<i> Ask your leader to:" : "<i>You should:"));
+            values.put("homenotset", TL.CMD_HOME_NOT_SET.toString());
+            values.put("askleader-youshould", fme.getRole().value < Role.MODERATOR.value ? TL.CMD_HOME_ASK_LEADER.toString() : TL.CMD_HOME_YOU_SHOULD.toString());
+            fme.TLmsg(TL.CMD_HOME_FMT, values);
             fme.sendMessage(p.cmdBase.cmdSethome.getUseageTemplate());
             return;
         }
 
         if (!Conf.homesTeleportAllowedFromEnemyTerritory && fme.isInEnemyTerritory()) {
-            fme.msg("<b>You cannot teleport to your faction home while in the territory of an enemy faction.");
+            fme.TLmsg(TL.CMD_HOME_ENEMY_TERRITORY, values);
             return;
         }
 
         if (!Conf.homesTeleportAllowedFromDifferentWorld && me.getWorld().getUID() != myFaction.getHome().getWorld().getUID()) {
-            fme.msg("<b>You cannot teleport to your faction home while in a different world.");
+            fme.TLmsg(TL.CMD_HOME_WRONG_WORLD, values);
             return;
         }
 
@@ -94,7 +98,8 @@ public class CmdHome extends FCommand {
                     continue;
                 }
 
-                fme.msg("<b>You cannot teleport to your faction home while an enemy is within " + Conf.homesTeleportAllowedEnemyDistance + " blocks of you.");
+                values.put("proximity", String.valueOf(Conf.homesTeleportAllowedEnemyDistance));
+                fme.TLmsg(TL.CMD_HOME_ENEMY_PROXIM, values);
                 return;
             }
         }

@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdDeinvite extends FCommand {
 
@@ -30,16 +31,23 @@ public class CmdDeinvite extends FCommand {
         }
 
         if (you.getFaction() == myFaction) {
-            msg("%s<i> is already a member of %s", you.getName(), myFaction.getTag());
-            msg("<i>You might want to: %s", p.cmdBase.cmdKick.getUseageTemplate(false));
+            values.put("target", you.getName());
+            values.put("faction", myFaction.getTag());
+            values.put("kickdesc", p.cmdBase.cmdKick.getUseageTemplate(false));
+            TLmsg(TL.CMD_INVITE_ALREADY_MEMBER, values);
+            TLmsg(TL.CMD_INVITE_KICK, values);
             return;
         }
 
         myFaction.deinvite(you);
 
-        you.msg("%s<i> revoked your invitation to <h>%s<i>.", fme.describeTo(you), myFaction.describeTo(you));
+        values.put("player", fme.describeTo(you));
+        values.put("faction", myFaction.describeTo(you));
+        you.TLmsg(TL.CMD_DEINVITE_REVOKED_PLAYER, values);
 
-        myFaction.msg("%s<i> revoked %s's<i> invitation.", fme.describeTo(myFaction), you.describeTo(myFaction));
+        values.put("player", fme.describeTo(myFaction));
+        values.put("target", you.describeTo(myFaction));
+        myFaction.TLmsg(TL.CMD_DEINVITE_REVOKED_FACTION, values);
     }
 
 }

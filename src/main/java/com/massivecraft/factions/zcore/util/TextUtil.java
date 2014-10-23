@@ -1,5 +1,6 @@
 package com.massivecraft.factions.zcore.util;
 
+import org.apache.commons.lang.text.StrSubstitutor;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
@@ -25,6 +26,19 @@ public class TextUtil {
 
     public String parse(String str) {
         return this.parseTags(parseColor(str));
+    }
+    
+    // -------------------------------------------- //
+    // String formatting from hashmap
+    // -------------------------------------------- //
+    
+    public String substitute(String str, HashMap<String, String> values) {
+        StrSubstitutor sub = new StrSubstitutor(values, "{", "}");
+        return this.parse(sub.replace(str));
+    }
+    
+    public String substitute(TL str, HashMap<String,String> values) {
+        return this.substitute(str.toString(), values);
     }
 
     // -------------------------------------------- //
@@ -114,6 +128,7 @@ public class TextUtil {
         return material.toString().replace('_', ' ').toLowerCase();
     }
 
+    @SuppressWarnings("deprecation")
     public static String getMaterialName(int materialId) {
         return getMaterialName(Material.getMaterial(materialId));
     }

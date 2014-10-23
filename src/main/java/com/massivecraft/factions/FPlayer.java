@@ -14,12 +14,15 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.persist.PlayerEntity;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -347,34 +350,34 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         return this.getColorTo(fplayer) + this.getNameAndTitle();
     }
 
-	/*public String getNameAndTag(Faction faction)
+    /*public String getNameAndTag(Faction faction)
     {
-		return this.getRelationColor(faction)+this.getNameAndTag();
-	}
-	public String getNameAndTag(FPlayer fplayer)
-	{
-		return this.getRelationColor(fplayer)+this.getNameAndTag();
-	}*/
+        return this.getRelationColor(faction)+this.getNameAndTag();
+    }
+    public String getNameAndTag(FPlayer fplayer)
+    {
+        return this.getRelationColor(fplayer)+this.getNameAndTag();
+    }*/
 
     // TODO: Removed for refactoring.
 
-	/*public String getNameAndRelevant(Faction faction)
+    /*public String getNameAndRelevant(Faction faction)
     {
-		// Which relation?
-		Relation rel = this.getRelationTo(faction);
-		
-		// For member we show title
-		if (rel == Relation.MEMBER) {
-			return rel.getColor() + this.getNameAndTitle();
-		}
-		
-		// For non members we show tag
-		return rel.getColor() + this.getNameAndTag();
-	}
-	public String getNameAndRelevant(FPlayer fplayer)
-	{
-		return getNameAndRelevant(fplayer.getFaction());
-	}*/
+        // Which relation?
+        Relation rel = this.getRelationTo(faction);
+        
+        // For member we show title
+        if (rel == Relation.MEMBER) {
+            return rel.getColor() + this.getNameAndTitle();
+        }
+        
+        // For non members we show tag
+        return rel.getColor() + this.getNameAndTag();
+    }
+    public String getNameAndRelevant(FPlayer fplayer)
+    {
+        return getNameAndRelevant(fplayer.getFaction());
+    }*/
 
     // Chat Tag:
     // These are injected into the format of global chat messages.
@@ -578,12 +581,12 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         boolean perm = myFaction.isPermanent();
 
         if (!perm && this.getRole() == Role.ADMIN && myFaction.getFPlayers().size() > 1) {
-            msg("<b>You must give the admin role to someone else first.");
+            msg(TL.PLAYER_GIVE_ADMIN.toString());
             return;
         }
 
         if (!Conf.canLeaveWithNegativePower && this.getPower() < 0) {
-            msg("<b>You cannot leave until your power is positive.");
+            msg(TL.PLAYER_CANNOT_LEAVE_POWER.toString());
             return;
         }
 
@@ -647,12 +650,20 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         Faction myFaction = getFaction();
         Faction currentFaction = Board.getFactionAt(flocation);
         int ownedLand = forFaction.getLandRounded();
+        
+        HashMap<String,String> values = new HashMap<String,String>();
+        values.put("forfaction", forFaction.describeTo(this));
+        values.put("forfactionUC", forFaction.describeTo(this, true));
+        values.put("curfaction", currentFaction.describeTo(this));
+        values.put("curfactionUC", currentFaction.describeTo(this, true));
+        values.put("moderator", Role.MODERATOR.toString());
+        values.put("minmembers", String.valueOf(Conf.claimsRequireMinFactionMembers));
 
         if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(location)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
-            error = P.p.txt.parse("<b>This land is protected");
+            error = P.p.txt.substitute(TL.CLAIM_WG_PROTECTED, values);
         } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
-            error = P.p.txt.parse("<b>Sorry, this world has land claiming disabled.");
+            error = P.p.txt.substitute(TL.CLAIM_DISABLED, values);
         } else if (this.isAdminBypassing()) {
             return true;
         } else if (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer())) {
@@ -660,39 +671,39 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         } else if (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer())) {
             return true;
         } else if (myFaction != forFaction) {
-            error = P.p.txt.parse("<b>You can't claim land for <h>%s<b>.", forFaction.describeTo(this));
+            error = P.p.txt.substitute(TL.CLAIM_WRONG_FACTION, values);
         } else if (forFaction == currentFaction) {
-            error = P.p.txt.parse("%s<i> already own this land.", forFaction.describeTo(this, true));
+            error = P.p.txt.substitute(TL.CLAIM_ALREADY_OWN, values);
         } else if (this.getRole().value < Role.MODERATOR.value) {
-            error = P.p.txt.parse("<b>You must be <h>%s<b> to claim land.", Role.MODERATOR.toString());
+            error = P.p.txt.substitute(TL.CLAIM_MODERATOR, values);
         } else if (forFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers) {
-            error = P.p.txt.parse("Factions must have at least <h>%s<b> members to claim land.", Conf.claimsRequireMinFactionMembers);
+            error = P.p.txt.substitute(TL.CLAIM_NEED_MEMBERS, values);
         } else if (currentFaction.isSafeZone()) {
-            error = P.p.txt.parse("<b>You can not claim a Safe Zone.");
+            error = P.p.txt.substitute(TL.CLAIM_SAFE_ZONE, values);
         } else if (currentFaction.isWarZone()) {
-            error = P.p.txt.parse("<b>You can not claim a War Zone.");
+            error = P.p.txt.substitute(TL.CLAIM_WAR_ZONE, values);
         } else if (ownedLand >= forFaction.getPowerRounded()) {
-            error = P.p.txt.parse("<b>You can't claim more land! You need more power!");
+            error = P.p.txt.substitute(TL.CLAIM_NEED_POWER, values);
         } else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal()) {
-            error = P.p.txt.parse("<b>Limit reached. You can't claim more land!");
+            error = P.p.txt.substitute(TL.CLAIM_LIMIT, values);
         } else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
-            error = P.p.txt.parse("<b>You can't claim the land of your allies.");
+            error = P.p.txt.substitute(TL.CLAIM_ALLY, values);
         } else if (Conf.claimsMustBeConnected && !this.isAdminBypassing() && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.isConnectedLocation(flocation, myFaction) && (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())) {
             if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction) {
-                error = P.p.txt.parse("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!");
+                error = P.p.txt.substitute(TL.CLAIM_CONNECTED_FACTION, values);
             } else {
-                error = P.p.txt.parse("<b>You can only claim additional land which is connected to your first claim!");
+                error = P.p.txt.substitute(TL.CLAIM_CONNECTED, values);
             }
         } else if (currentFaction.isNormal()) {
             if (myFaction.isPeaceful()) {
-                error = P.p.txt.parse("%s<i> owns this land. Your faction is peaceful, so you cannot claim land from other factions.", currentFaction.getTag(this));
+                error = P.p.txt.substitute(TL.CLAIM_PEACEFUL, values);
             } else if (currentFaction.isPeaceful()) {
-                error = P.p.txt.parse("%s<i> owns this land, and is a peaceful faction. You cannot claim land from them.", currentFaction.getTag(this));
+                error = P.p.txt.substitute(TL.CLAIM_PEACEFUL_TARGET, values);
             } else if (!currentFaction.hasLandInflation()) {
                 // TODO more messages WARN current faction most importantly
-                error = P.p.txt.parse("%s<i> owns this land and is strong enough to keep it.", currentFaction.getTag(this));
+                error = P.p.txt.substitute(TL.CLAIM_STRONGER, values);
             } else if (!Board.isBorderLocation(flocation)) {
-                error = P.p.txt.parse("<b>You must start claiming land at the border of the territory.");
+                error = P.p.txt.substitute(TL.CLAIM_BORDER, values);
             }
         }
         // TODO: Add more else if statements.
@@ -754,7 +765,11 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         informTheseFPlayers.add(this);
         informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
         for (FPlayer fp : informTheseFPlayers) {
-            fp.msg("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>.", this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
+            HashMap<String,String> values = new HashMap<String,String>();
+            values.put("player", this.describeTo(fp, true));
+            values.put("forfaction", forFaction.describeTo(fp));
+            values.put("curfaction", currentFaction.describeTo(fp));
+            fp.TLmsg(TL.CLAIM_NOTIFY, values);
         }
 
         Board.setFactionAt(forFaction, flocation);
@@ -780,5 +795,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
     public void msg(String str, Object... args) {
         this.sendMessage(P.p.txt.parse(str, args));
+    }
+    
+    public void TLmsg(TL str, HashMap<String,String> values) {
+        this.sendMessage(P.p.txt.substitute(str.toString(), values));
     }
 }

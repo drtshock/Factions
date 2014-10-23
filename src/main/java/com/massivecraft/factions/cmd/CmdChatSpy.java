@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdChatSpy extends FCommand {
 
@@ -25,10 +26,10 @@ public class CmdChatSpy extends FCommand {
         fme.setSpyingChat(this.argAsBool(0, !fme.isSpyingChat()));
 
         if (fme.isSpyingChat()) {
-            fme.msg("<i>You have enabled chat spying mode.");
+            fme.TLmsg(TL.CMD_CHATSPY_ENABLED, values);
             P.p.log(fme.getName() + " has ENABLED chat spying mode.");
         } else {
-            fme.msg("<i>You have disabled chat spying mode.");
+            fme.TLmsg(TL.CMD_CHATSPY_DISABLED, values);
             P.p.log(fme.getName() + " DISABLED chat spying mode.");
         }
     }
