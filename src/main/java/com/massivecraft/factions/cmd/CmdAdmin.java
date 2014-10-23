@@ -38,9 +38,9 @@ public class CmdAdmin extends FCommand {
 
         boolean permAny = Permission.ADMIN_ANY.has(sender, false);
         Faction targetFaction = fyou.getFaction();
-    	values.put("targetplayer", fyou.describeTo(fme));
-    	values.put("admin", senderIsConsole ? TL.A_SERVER_ADMIN.toString() : fme.describeTo(fyou));
-    	values.put("adminUC", MiscUtil.capitalizeFirstLetter(values.get("admin")));
+        values.put("targetplayer", fyou.describeTo(fme));
+        values.put("admin", senderIsConsole ? TL.A_SERVER_ADMIN.toString() : fme.describeTo(fyou));
+        values.put("adminUC", MiscUtil.capitalizeFirstLetter(values.get("admin")));
 
         if (targetFaction != myFaction && !permAny) {
             TLmsg(TL.CMD_ADMIN_NOT_MEMBER, values);
@@ -85,7 +85,7 @@ public class CmdAdmin extends FCommand {
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.i.getOnline()) {
-        	values.put("targetfaction", targetFaction.describeTo(fplayer));
+            values.put("targetfaction", targetFaction.describeTo(fplayer));
             fplayer.TLmsg(TL.CMD_ADMIN_LEADERSHIP, values);
         }
     }

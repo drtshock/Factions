@@ -251,7 +251,7 @@ public abstract class MCommand<T extends MPlugin> {
     }
     
     public void TLmsg(TL str, HashMap<String,String> values) {
-    	sender.sendMessage(p.txt.substitute(str, values));
+        sender.sendMessage(p.txt.substitute(str, values));
     }
 
     public void sendMessage(String msg) {

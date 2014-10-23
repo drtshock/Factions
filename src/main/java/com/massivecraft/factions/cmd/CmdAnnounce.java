@@ -28,8 +28,8 @@ public class CmdAnnounce extends FCommand {
 
     @Override
     public void perform() {
-    	values.put("faction", myFaction.getTag());
-    	values.put("user", me.getName());
+        values.put("faction", myFaction.getTag());
+        values.put("user", me.getName());
         String message = StringUtils.join(args, " ");
 
         for (Player player : myFaction.getOnlinePlayers()) {

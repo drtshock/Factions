@@ -54,7 +54,7 @@ public class CmdConfig extends FCommand {
         String fieldName = properFieldNames.get(field);
 
         if (fieldName == null || fieldName.isEmpty()) {
-        	values.put("field", field);
+            values.put("field", field);
             TLmsg(TL.CMD_CONFIG_INVALID_OPTION, values);
             return;
         }

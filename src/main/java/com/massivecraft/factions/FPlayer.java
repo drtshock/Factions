@@ -350,34 +350,34 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         return this.getColorTo(fplayer) + this.getNameAndTitle();
     }
 
-	/*public String getNameAndTag(Faction faction)
+    /*public String getNameAndTag(Faction faction)
     {
-		return this.getRelationColor(faction)+this.getNameAndTag();
-	}
-	public String getNameAndTag(FPlayer fplayer)
-	{
-		return this.getRelationColor(fplayer)+this.getNameAndTag();
-	}*/
+        return this.getRelationColor(faction)+this.getNameAndTag();
+    }
+    public String getNameAndTag(FPlayer fplayer)
+    {
+        return this.getRelationColor(fplayer)+this.getNameAndTag();
+    }*/
 
     // TODO: Removed for refactoring.
 
-	/*public String getNameAndRelevant(Faction faction)
+    /*public String getNameAndRelevant(Faction faction)
     {
-		// Which relation?
-		Relation rel = this.getRelationTo(faction);
-		
-		// For member we show title
-		if (rel == Relation.MEMBER) {
-			return rel.getColor() + this.getNameAndTitle();
-		}
-		
-		// For non members we show tag
-		return rel.getColor() + this.getNameAndTag();
-	}
-	public String getNameAndRelevant(FPlayer fplayer)
-	{
-		return getNameAndRelevant(fplayer.getFaction());
-	}*/
+        // Which relation?
+        Relation rel = this.getRelationTo(faction);
+        
+        // For member we show title
+        if (rel == Relation.MEMBER) {
+            return rel.getColor() + this.getNameAndTitle();
+        }
+        
+        // For non members we show tag
+        return rel.getColor() + this.getNameAndTag();
+    }
+    public String getNameAndRelevant(FPlayer fplayer)
+    {
+        return getNameAndRelevant(fplayer.getFaction());
+    }*/
 
     // Chat Tag:
     // These are injected into the format of global chat messages.
@@ -765,7 +765,7 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         informTheseFPlayers.add(this);
         informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
         for (FPlayer fp : informTheseFPlayers) {
-        	HashMap<String,String> values = new HashMap<String,String>();
+            HashMap<String,String> values = new HashMap<String,String>();
             values.put("player", this.describeTo(fp, true));
             values.put("forfaction", forFaction.describeTo(fp));
             values.put("curfaction", currentFaction.describeTo(fp));
@@ -798,6 +798,6 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
     }
     
     public void TLmsg(TL str, HashMap<String,String> values) {
-    	this.sendMessage(P.p.txt.substitute(str.toString(), values));
+        this.sendMessage(P.p.txt.substitute(str.toString(), values));
     }
 }

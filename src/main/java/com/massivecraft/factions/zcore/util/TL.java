@@ -24,15 +24,15 @@ import org.bukkit.configuration.file.YamlConfiguration;
  */
 public enum TL {
 
-	// Misc
-	A_SERVER_ADMIN("a-server-admin", "a server admin"),
-	ARE("are", "are"),
+    // Misc
+    A_SERVER_ADMIN("a-server-admin", "a server admin"),
+    ARE("are", "are"),
     DISABLED("disabled", "disabled"),
     ENABLED("enabled", "enabled"),
     IS("is", "is"),
     THEIR("their", "their"),
     YOUR("your", "your"),
-	
+    
     // com.massivecraft.factions.FPlayer - claim errors
     CLAIM_ALLY("claim-ally", "&cYou can't claim the land of your allies."),
     CLAIM_ALREADY_OWN("claim-already-own", "{forfactionUC}&r&e already own this land."),

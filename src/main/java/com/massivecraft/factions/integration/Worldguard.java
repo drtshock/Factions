@@ -69,8 +69,8 @@ public class Worldguard {
 
     // Check if player can build at location by worldguards rules.
     // Returns:
-    //	True: Player can build in the region.
-    //	False: Player can not build in the region.
+    //  True: Player can build in the region.
+    //  False: Player can not build in the region.
     public static boolean playerCanBuild(Player player, Location loc) {
         if (!enabled) {
             // No WG hooks so we'll always bypass this check.

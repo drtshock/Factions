@@ -33,12 +33,12 @@ public class TextUtil {
     // -------------------------------------------- //
     
     public String substitute(String str, HashMap<String, String> values) {
-    	StrSubstitutor sub = new StrSubstitutor(values, "{", "}");
-    	return this.parse(sub.replace(str));
+        StrSubstitutor sub = new StrSubstitutor(values, "{", "}");
+        return this.parse(sub.replace(str));
     }
     
     public String substitute(TL str, HashMap<String,String> values) {
-    	return this.substitute(str.toString(), values);
+        return this.substitute(str.toString(), values);
     }
 
     // -------------------------------------------- //
@@ -129,7 +129,7 @@ public class TextUtil {
     }
 
     @SuppressWarnings("deprecation")
-	public static String getMaterialName(int materialId) {
+    public static String getMaterialName(int materialId) {
         return getMaterialName(Material.getMaterial(materialId));
     }
 

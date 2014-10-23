@@ -31,11 +31,11 @@ public class CmdAutoClaim extends FCommand {
             TLmsg(TL.CMD_AUTOCLAIM_DISABLED, values);
             return;
         }
-    	values.put("forfaction", forFaction.describeTo(fme));
+        values.put("forfaction", forFaction.describeTo(fme));
 
         if (!fme.canClaimForFaction(forFaction)) {
             if (myFaction == forFaction) {
-            	values.put("moderator", Role.MODERATOR.toString());
+                values.put("moderator", Role.MODERATOR.toString());
                 TLmsg(TL.CMD_AUTOCLAIM_RANK, values);
             } else {
                 TLmsg(TL.CMD_AUTOCLAIM_WRONG_FACTION, values);

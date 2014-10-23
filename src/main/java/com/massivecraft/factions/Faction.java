@@ -553,7 +553,7 @@ public class Faction extends Entity implements EconomyParticipator {
             }
 
             for (FPlayer fplayer : FPlayers.i.getOnline()) {
-            	values.put("faction", this.getTag(fplayer));
+                values.put("faction", this.getTag(fplayer));
                 fplayer.TLmsg(TL.FACTION_DISBANDED, values);
             }
 
@@ -581,7 +581,7 @@ public class Faction extends Entity implements EconomyParticipator {
     }
     
     public void TLmsg(TL message, HashMap<String,String> values) {
-    	for (FPlayer fplayer : this.getFPlayersWhereOnline(true)) {
+        for (FPlayer fplayer : this.getFPlayersWhereOnline(true)) {
             fplayer.TLmsg(message, values);
         }
     }
