@@ -25,7 +25,7 @@ public class CmdBoom extends FCommand {
     @Override
     public void perform() {
         if (!myFaction.isPeaceful()) {
-            fme.msg(TL.CMD_BOOM_NOT_PEACEFUL.toString());
+            fme.TLmsg(TL.CMD_BOOM_NOT_PEACEFUL, values);
             return;
         }
 
@@ -36,9 +36,9 @@ public class CmdBoom extends FCommand {
 
         myFaction.setPeacefulExplosionsEnabled(this.argAsBool(0, !myFaction.getPeacefulExplosionsEnabled()));
 
-        String enabled = myFaction.noExplosionsInTerritory() ? TL.DISABLED.toString() : TL.ENABLED.toString();
-
         // Inform
-        myFaction.msg(TL.CMD_BOOM_CONFIRM.toString(), fme.describeTo(myFaction), enabled);
+        values.put("player", fme.describeTo(myFaction));
+        values.put("enabled", myFaction.noExplosionsInTerritory() ? TL.DISABLED.toString() : TL.ENABLED.toString());
+        myFaction.TLmsg(TL.CMD_BOOM_CONFIRM, values);
     }
 }

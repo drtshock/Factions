@@ -35,12 +35,12 @@ public class CmdCreate extends FCommand {
         String tag = this.argAsString(0);
 
         if (fme.hasFaction()) {
-            msg(TL.CMD_CREATE_MUST_LEAVE.toString());
+            TLmsg(TL.CMD_CREATE_MUST_LEAVE, values);
             return;
         }
 
         if (Factions.i.isTagTaken(tag)) {
-            msg(TL.CMD_CREATE_TAG_IN_USE.toString());
+            TLmsg(TL.CMD_CREATE_TAG_IN_USE, values);
             return;
         }
 
@@ -71,7 +71,7 @@ public class CmdCreate extends FCommand {
 
         // TODO: Why would this even happen??? Auto increment clash??
         if (faction == null) {
-            msg(TL.CMD_CREATE_INTERNAL_ERROR.toString());
+            TLmsg(TL.CMD_CREATE_INTERNAL_ERROR, values);
             return;
         }
 
@@ -88,10 +88,13 @@ public class CmdCreate extends FCommand {
         fme.setFaction(faction);
 
         for (FPlayer follower : FPlayers.i.getOnline()) {
-            follower.msg(TL.CMD_CREATE_NOTIFY.toString(), fme.describeTo(follower, true), faction.getTag(follower));
+            values.put("player", fme.describeTo(follower, true));
+            values.put("faction", faction.getTag(follower));
+            follower.TLmsg(TL.CMD_CREATE_NOTIFY, values);
         }
 
-        msg(TL.CMD_CREATE_CHANGE_DESCRIPTION.toString(), p.cmdBase.cmdDescription.getUseageTemplate());
+        values.put("createdesc", p.cmdBase.cmdDescription.getUseageTemplate());
+        TLmsg(TL.CMD_CREATE_CHANGE_DESCRIPTION, values);
 
         if (Conf.logFactionCreate) {
             P.p.log(fme.getName() + " created a new faction: " + tag);

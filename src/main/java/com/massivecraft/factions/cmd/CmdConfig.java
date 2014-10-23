@@ -3,6 +3,8 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -52,11 +54,12 @@ public class CmdConfig extends FCommand {
         String fieldName = properFieldNames.get(field);
 
         if (fieldName == null || fieldName.isEmpty()) {
-            msg("<b>No configuration setting \"<h>%s<b>\" exists.", field);
+        	values.put("field", field);
+            TLmsg(TL.CMD_CONFIG_INVALID_OPTION, values);
             return;
         }
 
-        String success;
+        TL success = TL.CMD_CONFIG_DUMMY;
 
         String value = args.get(1);
         for (int i = 2; i < args.size(); i++) {
@@ -65,6 +68,7 @@ public class CmdConfig extends FCommand {
 
         try {
             Field target = Conf.class.getField(fieldName);
+            values.put("field", fieldName);
 
             // boolean
             if (target.getType() == boolean.class) {
@@ -72,9 +76,9 @@ public class CmdConfig extends FCommand {
                 target.setBoolean(null, targetValue);
 
                 if (targetValue) {
-                    success = "\"" + fieldName + "\" option set to true (enabled).";
+                    success = TL.CMD_CONFIG_BOOLEAN_TRUE;
                 } else {
-                    success = "\"" + fieldName + "\" option set to false (disabled).";
+                    success = TL.CMD_CONFIG_BOOLEAN_FALSE;
                 }
             }
 
@@ -83,9 +87,10 @@ public class CmdConfig extends FCommand {
                 try {
                     int intVal = Integer.parseInt(value);
                     target.setInt(null, intVal);
-                    success = "\"" + fieldName + "\" option set to " + intVal + ".";
+                    values.put("value", String.valueOf(intVal));
+                    success = TL.CMD_CONFIG_SUCCESS;
                 } catch (NumberFormatException ex) {
-                    sendMessage("Cannot set \"" + fieldName + "\": integer (whole number) value required.");
+                    TLmsg(TL.CMD_CONFIG_INT_ERROR, values);
                     return;
                 }
             }
@@ -95,9 +100,10 @@ public class CmdConfig extends FCommand {
                 try {
                     long longVal = Long.parseLong(value);
                     target.setLong(null, longVal);
-                    success = "\"" + fieldName + "\" option set to " + longVal + ".";
+                    values.put("value", String.valueOf(longVal));
+                    success = TL.CMD_CONFIG_SUCCESS;
                 } catch (NumberFormatException ex) {
-                    sendMessage("Cannot set \"" + fieldName + "\": long integer (whole number) value required.");
+                    TLmsg(TL.CMD_CONFIG_LONG_ERROR, values);
                     return;
                 }
             }
@@ -107,9 +113,10 @@ public class CmdConfig extends FCommand {
                 try {
                     double doubleVal = Double.parseDouble(value);
                     target.setDouble(null, doubleVal);
-                    success = "\"" + fieldName + "\" option set to " + doubleVal + ".";
+                    values.put("value", String.valueOf(doubleVal));
+                    success = TL.CMD_CONFIG_SUCCESS;
                 } catch (NumberFormatException ex) {
-                    sendMessage("Cannot set \"" + fieldName + "\": double (numeric) value required.");
+                    TLmsg(TL.CMD_CONFIG_DOUBLE_ERROR, values);
                     return;
                 }
             }
@@ -119,9 +126,10 @@ public class CmdConfig extends FCommand {
                 try {
                     float floatVal = Float.parseFloat(value);
                     target.setFloat(null, floatVal);
-                    success = "\"" + fieldName + "\" option set to " + floatVal + ".";
+                    values.put("value", String.valueOf(floatVal));
+                    success = TL.CMD_CONFIG_SUCCESS;
                 } catch (NumberFormatException ex) {
-                    sendMessage("Cannot set \"" + fieldName + "\": float (numeric) value required.");
+                    TLmsg(TL.CMD_CONFIG_FLOAT_ERROR, values);
                     return;
                 }
             }
@@ -129,11 +137,13 @@ public class CmdConfig extends FCommand {
             // String
             else if (target.getType() == String.class) {
                 target.set(null, value);
-                success = "\"" + fieldName + "\" option set to \"" + value + "\".";
+                values.put("value", value);
+                success = TL.CMD_CONFIG_SUCCESS;
             }
 
             // ChatColor
             else if (target.getType() == ChatColor.class) {
+                values.put("value", value.toUpperCase());
                 ChatColor newColor = null;
                 try {
                     newColor = ChatColor.valueOf(value.toUpperCase());
@@ -141,11 +151,11 @@ public class CmdConfig extends FCommand {
 
                 }
                 if (newColor == null) {
-                    sendMessage("Cannot set \"" + fieldName + "\": \"" + value.toUpperCase() + "\" is not a valid color.");
+                    TLmsg(TL.CMD_CONFIG_COLOR_ERROR, values);
                     return;
                 }
                 target.set(null, newColor);
-                success = "\"" + fieldName + "\" color option set to \"" + value.toUpperCase() + "\".";
+                success = TL.CMD_CONFIG_COLOR_SUCCESS;
             }
 
             // Set<?> or other parameterized collection
@@ -155,12 +165,13 @@ public class CmdConfig extends FCommand {
 
                 // not a Set, somehow, and that should be the only collection we're using in Conf.java
                 if (targSet.getRawType() != Set.class) {
-                    sendMessage("\"" + fieldName + "\" is not a data collection type which can be modified with this command.");
+                    TLmsg(TL.CMD_CONFIG_SET_TYPE_ERROR, values);
                     return;
                 }
 
                 // Set<Material>
                 else if (innerType == Material.class) {
+                    values.put("value", value.toUpperCase());
                     Material newMat = null;
                     try {
                         newMat = Material.valueOf(value.toUpperCase());
@@ -168,7 +179,7 @@ public class CmdConfig extends FCommand {
 
                     }
                     if (newMat == null) {
-                        sendMessage("Cannot change \"" + fieldName + "\" set: \"" + value.toUpperCase() + "\" is not a valid material.");
+                        TLmsg(TL.CMD_CONFIG_MATERIAL_ERROR, values);
                         return;
                     }
 
@@ -178,61 +189,62 @@ public class CmdConfig extends FCommand {
                     if (matSet.contains(newMat)) {
                         matSet.remove(newMat);
                         target.set(null, matSet);
-                        success = "\"" + fieldName + "\" set: Material \"" + value.toUpperCase() + "\" removed.";
+                        success = TL.CMD_CONFIG_MATERIAL_REMOVE;
                     }
                     // Material not present yet, add it
                     else {
                         matSet.add(newMat);
                         target.set(null, matSet);
-                        success = "\"" + fieldName + "\" set: Material \"" + value.toUpperCase() + "\" added.";
+                        success = TL.CMD_CONFIG_MATERIAL_ADD;
                     }
                 }
 
                 // Set<String>
                 else if (innerType == String.class) {
+                    values.put("value", value);
                     @SuppressWarnings("unchecked") Set<String> stringSet = (Set<String>) target.get(null);
 
                     // String already present, so remove it
                     if (stringSet.contains(value)) {
                         stringSet.remove(value);
                         target.set(null, stringSet);
-                        success = "\"" + fieldName + "\" set: \"" + value + "\" removed.";
+                        success = TL.CMD_CONFIG_SET_REMOVE;
                     }
                     // String not present yet, add it
                     else {
                         stringSet.add(value);
                         target.set(null, stringSet);
-                        success = "\"" + fieldName + "\" set: \"" + value + "\" added.";
+                        success = TL.CMD_CONFIG_SET_ADD;
                     }
                 }
 
                 // Set of unknown type
                 else {
-                    sendMessage("\"" + fieldName + "\" is not a data type set which can be modified with this command.");
+                    TLmsg(TL.CMD_CONFIG_SET_ERROR, values);
                     return;
                 }
             }
 
             // unknown type
             else {
-                sendMessage("\"" + fieldName + "\" is not a data type which can be modified with this command.");
+                TLmsg(TL.CMD_CONFIG_TYPE_ERROR, values);
                 return;
             }
         } catch (NoSuchFieldException ex) {
-            sendMessage("Configuration setting \"" + fieldName + "\" couldn't be matched, though it should be... please report this error.");
+            TLmsg(TL.CMD_CONFIG_FIELD_MISSING, values);
             return;
         } catch (IllegalAccessException ex) {
-            sendMessage("Error setting configuration setting \"" + fieldName + "\" to \"" + value + "\".");
+            TLmsg(TL.CMD_CONFIG_ERROR, values);
             return;
         }
 
-        if (!success.isEmpty()) {
+        if (!success.equals(TL.CMD_CONFIG_DUMMY)) {
             if (sender instanceof Player) {
-                sendMessage(success);
+                TLmsg(success, values);
                 P.p.log(success + " Command was run by " + fme.getName() + ".");
             } else  // using P.p.log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
             {
-                P.p.log(success);
+                P.p.log(P.p.txt.substitute(success, values));
             }
         }
         // save change to disk

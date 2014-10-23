@@ -27,7 +27,7 @@ public class CmdChat extends FCommand {
     @Override
     public void perform() {
         if (!Conf.factionOnlyChat) {
-            msg(TL.CMD_CHAT_DISABLED.toString());
+            TLmsg(TL.CMD_CHAT_DISABLED, values);
             return;
         }
 
@@ -43,7 +43,7 @@ public class CmdChat extends FCommand {
             } else if (modeString.startsWith("f")) {
                 modeTarget = ChatMode.FACTION;
             } else {
-                msg(TL.CMD_CHAT_UNRECOGNIZED.toString());
+                TLmsg(TL.CMD_CHAT_UNRECOGNIZED, values);
                 return;
             }
         }
@@ -51,11 +51,11 @@ public class CmdChat extends FCommand {
         fme.setChatMode(modeTarget);
 
         if (fme.getChatMode() == ChatMode.PUBLIC) {
-            msg(TL.CMD_CHAT_PUBLIC.toString());
+            TLmsg(TL.CMD_CHAT_PUBLIC, values);
         } else if (fme.getChatMode() == ChatMode.ALLIANCE) {
-            msg(TL.CMD_CHAT_ALLIANCE.toString());
+            TLmsg(TL.CMD_CHAT_ALLIANCE, values);
         } else {
-            msg(TL.CMD_CHAT_FACTION.toString());
+            TLmsg(TL.CMD_CHAT_FACTION, values);
         }
     }
 }

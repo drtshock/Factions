@@ -22,6 +22,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -649,12 +650,20 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         Faction myFaction = getFaction();
         Faction currentFaction = Board.getFactionAt(flocation);
         int ownedLand = forFaction.getLandRounded();
+        
+        HashMap<String,String> values = new HashMap<String,String>();
+        values.put("forfaction", forFaction.describeTo(this));
+        values.put("forfactionUC", forFaction.describeTo(this, true));
+        values.put("curfaction", currentFaction.describeTo(this));
+        values.put("curfactionUC", currentFaction.describeTo(this, true));
+        values.put("moderator", Role.MODERATOR.toString());
+        values.put("minmembers", String.valueOf(Conf.claimsRequireMinFactionMembers));
 
         if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(location)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
-            error = P.p.txt.parse(TL.CLAIM_WG_PROTECTED.toString());
+            error = P.p.txt.substitute(TL.CLAIM_WG_PROTECTED, values);
         } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
-            error = P.p.txt.parse(TL.CLAIM_DISABLED.toString());
+            error = P.p.txt.substitute(TL.CLAIM_DISABLED, values);
         } else if (this.isAdminBypassing()) {
             return true;
         } else if (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer())) {
@@ -662,39 +671,39 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         } else if (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer())) {
             return true;
         } else if (myFaction != forFaction) {
-            error = P.p.txt.parse(TL.CLAIM_WRONG_FACTION.toString(), forFaction.describeTo(this));
+            error = P.p.txt.substitute(TL.CLAIM_WRONG_FACTION, values);
         } else if (forFaction == currentFaction) {
-            error = P.p.txt.parse(TL.CLAIM_ALREADY_OWN.toString(), forFaction.describeTo(this, true));
+            error = P.p.txt.substitute(TL.CLAIM_ALREADY_OWN, values);
         } else if (this.getRole().value < Role.MODERATOR.value) {
-            error = P.p.txt.parse(TL.CLAIM_MODERATOR.toString(), Role.MODERATOR.toString());
+            error = P.p.txt.substitute(TL.CLAIM_MODERATOR, values);
         } else if (forFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers) {
-            error = P.p.txt.parse(TL.CLAIM_NEED_MEMBERS.toString(), Conf.claimsRequireMinFactionMembers);
+            error = P.p.txt.substitute(TL.CLAIM_NEED_MEMBERS, values);
         } else if (currentFaction.isSafeZone()) {
-            error = P.p.txt.parse(TL.CLAIM_SAFE_ZONE.toString());
+            error = P.p.txt.substitute(TL.CLAIM_SAFE_ZONE, values);
         } else if (currentFaction.isWarZone()) {
-            error = P.p.txt.parse(TL.CLAIM_WAR_ZONE.toString());
+            error = P.p.txt.substitute(TL.CLAIM_WAR_ZONE, values);
         } else if (ownedLand >= forFaction.getPowerRounded()) {
-            error = P.p.txt.parse(TL.CLAIM_NEED_POWER.toString());
+            error = P.p.txt.substitute(TL.CLAIM_NEED_POWER, values);
         } else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal()) {
-            error = P.p.txt.parse(TL.CLAIM_LIMIT.toString());
+            error = P.p.txt.substitute(TL.CLAIM_LIMIT, values);
         } else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
-            error = P.p.txt.parse(TL.CLAIM_ALLY.toString());
+            error = P.p.txt.substitute(TL.CLAIM_ALLY, values);
         } else if (Conf.claimsMustBeConnected && !this.isAdminBypassing() && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.isConnectedLocation(flocation, myFaction) && (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())) {
             if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction) {
-                error = P.p.txt.parse(TL.CLAIM_CONNECTED_FACTION.toString());
+                error = P.p.txt.substitute(TL.CLAIM_CONNECTED_FACTION, values);
             } else {
-                error = P.p.txt.parse(TL.CLAIM_CONNECTED.toString());
+                error = P.p.txt.substitute(TL.CLAIM_CONNECTED, values);
             }
         } else if (currentFaction.isNormal()) {
             if (myFaction.isPeaceful()) {
-                error = P.p.txt.parse(TL.CLAIM_PEACEFUL.toString(), currentFaction.getTag(this));
+                error = P.p.txt.substitute(TL.CLAIM_PEACEFUL, values);
             } else if (currentFaction.isPeaceful()) {
-                error = P.p.txt.parse(TL.CLAIM_PEACEFUL_TARGET.toString(), currentFaction.getTag(this));
+                error = P.p.txt.substitute(TL.CLAIM_PEACEFUL_TARGET, values);
             } else if (!currentFaction.hasLandInflation()) {
                 // TODO more messages WARN current faction most importantly
-                error = P.p.txt.parse(TL.CLAIM_STRONGER.toString(), currentFaction.getTag(this));
+                error = P.p.txt.substitute(TL.CLAIM_STRONGER, values);
             } else if (!Board.isBorderLocation(flocation)) {
-                error = P.p.txt.parse(TL.CLAIM_BORDER.toString());
+                error = P.p.txt.substitute(TL.CLAIM_BORDER, values);
             }
         }
         // TODO: Add more else if statements.
@@ -756,7 +765,11 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
         informTheseFPlayers.add(this);
         informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
         for (FPlayer fp : informTheseFPlayers) {
-            fp.msg(TL.CLAIM_NOTIFY.toString(), this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
+        	HashMap<String,String> values = new HashMap<String,String>();
+            values.put("player", this.describeTo(fp, true));
+            values.put("forfaction", forFaction.describeTo(fp));
+            values.put("curfaction", currentFaction.describeTo(fp));
+            fp.TLmsg(TL.CLAIM_NOTIFY, values);
         }
 
         Board.setFactionAt(forFaction, flocation);
@@ -782,5 +795,9 @@ public class FPlayer extends PlayerEntity implements EconomyParticipator {
 
     public void msg(String str, Object... args) {
         this.sendMessage(P.p.txt.parse(str, args));
+    }
+    
+    public void TLmsg(TL str, HashMap<String,String> values) {
+    	this.sendMessage(P.p.txt.substitute(str.toString(), values));
     }
 }

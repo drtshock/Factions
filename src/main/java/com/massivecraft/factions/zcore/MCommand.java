@@ -1,11 +1,14 @@
 package com.massivecraft.factions.zcore;
 
+import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -245,6 +248,10 @@ public abstract class MCommand<T extends MPlugin> {
 
     public void msg(String str, Object... args) {
         sender.sendMessage(p.txt.parse(str, args));
+    }
+    
+    public void TLmsg(TL str, HashMap<String,String> values) {
+    	sender.sendMessage(p.txt.substitute(str, values));
     }
 
     public void sendMessage(String msg) {

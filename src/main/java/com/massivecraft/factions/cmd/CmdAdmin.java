@@ -38,19 +38,22 @@ public class CmdAdmin extends FCommand {
 
         boolean permAny = Permission.ADMIN_ANY.has(sender, false);
         Faction targetFaction = fyou.getFaction();
+    	values.put("targetplayer", fyou.describeTo(fme));
+    	values.put("admin", senderIsConsole ? TL.A_SERVER_ADMIN.toString() : fme.describeTo(fyou));
+    	values.put("adminUC", MiscUtil.capitalizeFirstLetter(values.get("admin")));
 
         if (targetFaction != myFaction && !permAny) {
-            msg(TL.CMD_ADMIN_NOT_MEMBER.toString(), fyou.describeTo(fme, true));
+            TLmsg(TL.CMD_ADMIN_NOT_MEMBER, values);
             return;
         }
 
         if (fme != null && fme.getRole() != Role.ADMIN && !permAny) {
-            msg(TL.CMD_ADMIN_NOT_ADMIN.toString());
+            TLmsg(TL.CMD_ADMIN_NOT_ADMIN, values);
             return;
         }
 
         if (fyou == fme && !permAny) {
-            msg(TL.CMD_ADMIN_TARGET_SELF.toString());
+            TLmsg(TL.CMD_ADMIN_TARGET_SELF, values);
             return;
         }
 
@@ -68,8 +71,8 @@ public class CmdAdmin extends FCommand {
         // if target player is currently admin, demote and replace him
         if (fyou == admin) {
             targetFaction.promoteNewLeader();
-            msg(TL.CMD_ADMIN_DEMOTE_SELFMSG.toString(), fyou.describeTo(fme, true));
-            fyou.msg(TL.CMD_ADMIN_DEMOTE_OTHERMSG.toString(), senderIsConsole ? TL.A_SERVER_ADMIN.toString() : fme.describeTo(fyou, true));
+            TLmsg(TL.CMD_ADMIN_DEMOTE_SELFMSG, values);
+            fyou.TLmsg(TL.CMD_ADMIN_DEMOTE_OTHERMSG, values);
             return;
         }
 
@@ -78,11 +81,12 @@ public class CmdAdmin extends FCommand {
             admin.setRole(Role.MODERATOR);
         }
         fyou.setRole(Role.ADMIN);
-        msg(TL.CMD_ADMIN_PROMOTE.toString(), fyou.describeTo(fme, true));
+        TLmsg(TL.CMD_ADMIN_PROMOTE, values);
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.i.getOnline()) {
-            fplayer.msg(TL.CMD_ADMIN_LEADERSHIP.toString(), senderIsConsole ? MiscUtil.capitalizeFirstLetter(TL.A_SERVER_ADMIN.toString()) : fme.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
+        	values.put("targetfaction", targetFaction.describeTo(fplayer));
+            fplayer.TLmsg(TL.CMD_ADMIN_LEADERSHIP, values);
         }
     }
 

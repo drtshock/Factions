@@ -28,10 +28,10 @@ public class CmdBypass extends FCommand {
 
         // TODO: Move this to a transient field in the model??
         if (fme.isAdminBypassing()) {
-            fme.msg(TL.CMD_BYPASS_ENABLE.toString());
+            fme.TLmsg(TL.CMD_BYPASS_ENABLE, values);
             P.p.log(fme.getName() + " has ENABLED admin bypass mode.");
         } else {
-            fme.msg(TL.CMD_BYPASS_DISABLE.toString());
+            fme.TLmsg(TL.CMD_BYPASS_DISABLE, values);
             P.p.log(fme.getName() + " DISABLED admin bypass mode.");
         }
     }

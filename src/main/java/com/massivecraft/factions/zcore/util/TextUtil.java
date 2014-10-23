@@ -29,24 +29,16 @@ public class TextUtil {
     }
     
     // -------------------------------------------- //
-    // Support translation enum
-    // -------------------------------------------- //
-    
-    public String parse(TL str, Object... args) {
-    	return this.parse(str.toString(), args);
-    }
-    
-    public String parse(TL str) {
-    	return this.parseTags(parseColor(str.toString()));
-    }
-    
-    // -------------------------------------------- //
     // String formatting from hashmap
     // -------------------------------------------- //
     
-    public String parse(TL str, HashMap<String, Object> values) {
+    public String substitute(String str, HashMap<String, String> values) {
     	StrSubstitutor sub = new StrSubstitutor(values, "{", "}");
-    	return this.parse(sub.replace(str.toString()));
+    	return this.parse(sub.replace(str));
+    }
+    
+    public String substitute(TL str, HashMap<String,String> values) {
+    	return this.substitute(str.toString(), values);
     }
 
     // -------------------------------------------- //

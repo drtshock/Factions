@@ -536,6 +536,8 @@ public class Faction extends Entity implements EconomyParticipator {
         if (replacements == null || replacements.isEmpty()) {
             replacements = this.getFPlayersWhereRole(Role.NORMAL);
         }
+        
+        HashMap<String,String> values = new HashMap<String,String>();
 
         if (replacements == null || replacements.isEmpty()) {    // faction admin is the only member; one-man faction
             if (this.isPermanent()) {
@@ -551,7 +553,8 @@ public class Faction extends Entity implements EconomyParticipator {
             }
 
             for (FPlayer fplayer : FPlayers.i.getOnline()) {
-                fplayer.msg(TL.FACTION_DISBANDED.toString(), this.getTag(fplayer));
+            	values.put("faction", this.getTag(fplayer));
+                fplayer.TLmsg(TL.FACTION_DISBANDED, values);
             }
 
             this.detach();
@@ -574,6 +577,12 @@ public class Faction extends Entity implements EconomyParticipator {
 
         for (FPlayer fplayer : this.getFPlayersWhereOnline(true)) {
             fplayer.sendMessage(message);
+        }
+    }
+    
+    public void TLmsg(TL message, HashMap<String,String> values) {
+    	for (FPlayer fplayer : this.getFPlayersWhereOnline(true)) {
+            fplayer.TLmsg(message, values);
         }
     }
 
