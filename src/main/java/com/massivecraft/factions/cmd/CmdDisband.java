@@ -51,11 +51,11 @@ public class CmdDisband extends FCommand {
         }
 
         if (!faction.isNormal()) {
-            msg(TL.CMD_DISBAND_NOT_NORMAL.toString());
+            TLmsg(TL.CMD_DISBAND_NOT_NORMAL, values);
             return;
         }
         if (faction.isPermanent()) {
-            msg(TL.CMD_DISBAND_PERMANENT.toString());
+            TLmsg(TL.CMD_DISBAND_PERMANENT, values);
             return;
         }
 
@@ -72,11 +72,12 @@ public class CmdDisband extends FCommand {
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.i.getOnline()) {
-            String who = senderIsConsole ? MiscUtil.capitalizeFirstLetter(TL.A_SERVER_ADMIN.toString()) : fme.describeTo(fplayer);
+            values.put("who", senderIsConsole ? MiscUtil.capitalizeFirstLetter(TL.A_SERVER_ADMIN.toString()) : fme.describeTo(fplayer));
             if (fplayer.getFaction() == faction) {
-                fplayer.msg(TL.CMD_DISBAND_YOUR.toString(), who);
+                fplayer.TLmsg(TL.CMD_DISBAND_YOUR, values);
             } else {
-                fplayer.msg(TL.CMD_DISBAND_OTHER.toString(), who, faction.getTag(fplayer));
+                values.put("faction", faction.getTag(fplayer));
+                fplayer.TLmsg(TL.CMD_DISBAND_OTHER, values);
             }
         }
         if (Conf.logFactionDisband) {
@@ -90,7 +91,8 @@ public class CmdDisband extends FCommand {
 
             if (amount > 0.0) {
                 String amountString = Econ.moneyString(amount);
-                msg(TL.CMD_DISBAND_BANK.toString(), amountString);
+                values.put("total", amountString);
+                TLmsg(TL.CMD_DISBAND_BANK, values);
                 P.p.log(fme.getName() + " has been given bank holdings of " + amountString + " from disbanding " + faction.getTag() + ".");
             }
         }

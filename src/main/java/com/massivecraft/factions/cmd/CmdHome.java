@@ -38,28 +38,30 @@ public class CmdHome extends FCommand {
     public void perform() {
         // TODO: Hide this command on help also.
         if (!Conf.homesEnabled) {
-            fme.msg(TL.CMD_HOME_DISABLED.toString());
+            fme.TLmsg(TL.CMD_HOME_DISABLED, values);
             return;
         }
 
         if (!Conf.homesTeleportCommandEnabled) {
-            fme.msg(TL.CMD_HOME_TELEPORT_DISABLED.toString());
+            fme.TLmsg(TL.CMD_HOME_TELEPORT_DISABLED, values);
             return;
         }
 
         if (!myFaction.hasHome()) {
-            fme.msg(TL.CMD_HOME_NOT_SET.toString() + " " + (fme.getRole().value < Role.MODERATOR.value ? TL.CMD_HOME_ASK_LEADER.toString() : TL.CMD_HOME_YOU_SHOULD.toString()));
+            values.put("homenotset", TL.CMD_HOME_NOT_SET.toString());
+            values.put("askleader-youshould", fme.getRole().value < Role.MODERATOR.value ? TL.CMD_HOME_ASK_LEADER.toString() : TL.CMD_HOME_YOU_SHOULD.toString());
+            fme.TLmsg(TL.CMD_HOME_FMT, values);
             fme.sendMessage(p.cmdBase.cmdSethome.getUseageTemplate());
             return;
         }
 
         if (!Conf.homesTeleportAllowedFromEnemyTerritory && fme.isInEnemyTerritory()) {
-            fme.msg(TL.CMD_HOME_ENEMY_TERRITORY.toString());
+            fme.TLmsg(TL.CMD_HOME_ENEMY_TERRITORY, values);
             return;
         }
 
         if (!Conf.homesTeleportAllowedFromDifferentWorld && me.getWorld().getUID() != myFaction.getHome().getWorld().getUID()) {
-            fme.msg(TL.CMD_HOME_WRONG_WORLD.toString());
+            fme.TLmsg(TL.CMD_HOME_WRONG_WORLD, values);
             return;
         }
 
@@ -96,7 +98,8 @@ public class CmdHome extends FCommand {
                     continue;
                 }
 
-                fme.msg(TL.CMD_HOME_ENEMY_PROXIM.toString(), Conf.homesTeleportAllowedEnemyDistance);
+                values.put("proximity", String.valueOf(Conf.homesTeleportAllowedEnemyDistance));
+                fme.TLmsg(TL.CMD_HOME_ENEMY_PROXIM, values);
                 return;
             }
         }

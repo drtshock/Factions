@@ -31,16 +31,23 @@ public class CmdDeinvite extends FCommand {
         }
 
         if (you.getFaction() == myFaction) {
-            msg(TL.CMD_INVITE_ALREADY_MEMBER.toString(), you.getName(), myFaction.getTag());
-            msg(TL.CMD_INVITE_KICK.toString(), p.cmdBase.cmdKick.getUseageTemplate(false));
+            values.put("target", you.getName());
+            values.put("faction", myFaction.getTag());
+            values.put("kickdesc", p.cmdBase.cmdKick.getUseageTemplate(false));
+            TLmsg(TL.CMD_INVITE_ALREADY_MEMBER, values);
+            TLmsg(TL.CMD_INVITE_KICK, values);
             return;
         }
 
         myFaction.deinvite(you);
 
-        you.msg(TL.CMD_DEINVITE_REVOKED_PLAYER.toString(), fme.describeTo(you), myFaction.describeTo(you));
+        values.put("player", fme.describeTo(you));
+        values.put("faction", myFaction.describeTo(you));
+        you.TLmsg(TL.CMD_DEINVITE_REVOKED_PLAYER, values);
 
-        myFaction.msg(TL.CMD_DEINVITE_REVOKED_FACTION.toString(), fme.describeTo(myFaction), you.describeTo(myFaction));
+        values.put("player", fme.describeTo(myFaction));
+        values.put("target", you.describeTo(myFaction));
+        myFaction.TLmsg(TL.CMD_DEINVITE_REVOKED_FACTION, values);
     }
 
 }

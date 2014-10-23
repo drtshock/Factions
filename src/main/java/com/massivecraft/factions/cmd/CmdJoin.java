@@ -34,41 +34,48 @@ public class CmdJoin extends FCommand {
 
         FPlayer fplayer = this.argAsBestFPlayerMatch(1, fme, false);
         boolean samePlayer = fplayer == fme;
+        values.put("player", fplayer.describeTo(faction, true));
+        values.put("target", fplayer.describeTo(fme, false));
+        values.put("targetUC", fplayer.describeTo(fme, true));
+        values.put("is-are", samePlayer ? TL.ARE.toString() : TL.IS.toString());
+        values.put("your-their", samePlayer ? TL.YOUR.toString() : TL.THEIR.toString());
+        values.put("faction", faction.getTag(fme));
+        values.put("memberlimit", String.valueOf(Conf.factionMemberLimit));
 
         if (!samePlayer && !Permission.JOIN_OTHERS.has(sender, false)) {
-            msg(TL.CMD_JOIN_OTHERS_PERM.toString());
+            TLmsg(TL.CMD_JOIN_OTHERS_PERM, values);
             return;
         }
 
         if (!faction.isNormal()) {
-            msg(TL.CMD_JOIN_SYSTEM.toString());
+            TLmsg(TL.CMD_JOIN_SYSTEM, values);
             return;
         }
 
         if (faction == fplayer.getFaction()) {
-            msg(TL.CMD_JOIN_ALREADY_MEMBER.toString(), fplayer.describeTo(fme, true), (samePlayer ? TL.ARE.toString() : TL.IS.toString()), faction.getTag(fme));
+            TLmsg(TL.CMD_JOIN_ALREADY_MEMBER, values);
             return;
         }
 
         if (Conf.factionMemberLimit > 0 && faction.getFPlayers().size() >= Conf.factionMemberLimit) {
-            msg(TL.CMD_JOIN_LIMIT.toString(), faction.getTag(fme), Conf.factionMemberLimit, fplayer.describeTo(fme, false));
+            TLmsg(TL.CMD_JOIN_LIMIT, values);
             return;
         }
 
         if (fplayer.hasFaction()) {
-            msg(TL.CMD_JOIN_MUST_LEAVE.toString(), fplayer.describeTo(fme, true), (samePlayer ? TL.YOUR.toString() : TL.THEIR.toString()));
+            TLmsg(TL.CMD_JOIN_MUST_LEAVE, values);
             return;
         }
 
         if (!Conf.canLeaveWithNegativePower && fplayer.getPower() < 0) {
-            msg(TL.CMD_JOIN_NEG_POWER.toString(), fplayer.describeTo(fme, true));
+            TLmsg(TL.CMD_JOIN_NEG_POWER, values);
             return;
         }
 
         if (!(faction.getOpen() || faction.isInvited(fplayer) || fme.isAdminBypassing() || Permission.JOIN_ANY.has(sender, false))) {
-            msg(TL.CMD_JOIN_REQUIRES_INVITE.toString());
+            TLmsg(TL.CMD_JOIN_REQUIRES_INVITE, values);
             if (samePlayer) {
-                faction.msg(TL.CMD_JOIN_TRIED_NOTIFY.toString(), fplayer.describeTo(faction, true));
+                faction.TLmsg(TL.CMD_JOIN_TRIED_NOTIFY, values);
             }
             return;
         }
@@ -90,12 +97,12 @@ public class CmdJoin extends FCommand {
             return;
         }
 
-        fme.msg(TL.CMD_JOIN_SUCCESS.toString(), fplayer.describeTo(fme, true), faction.getTag(fme));
+        fme.TLmsg(TL.CMD_JOIN_SUCCESS, values);
 
         if (!samePlayer) {
-            fplayer.msg(TL.CMD_JOIN_MOVED.toString(), fme.describeTo(fplayer, true), faction.getTag(fplayer));
+            fplayer.TLmsg(TL.CMD_JOIN_MOVED, values);
         }
-        faction.msg(TL.CMD_JOIN_YOUR.toString(), fplayer.describeTo(faction, true));
+        faction.TLmsg(TL.CMD_JOIN_YOUR, values);
 
         fplayer.resetFactionData();
         fplayer.setFaction(faction);

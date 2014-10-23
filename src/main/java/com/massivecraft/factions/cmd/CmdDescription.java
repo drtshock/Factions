@@ -36,14 +36,16 @@ public class CmdDescription extends FCommand {
         myFaction.setDescription(TextUtil.implode(args, " ").replaceAll("(&([a-f0-9]))", "& $2"));  // since "&" color tags seem to work even through plain old FPlayer.sendMessage() for some reason, we need to break those up
 
         if (!Conf.broadcastDescriptionChanges) {
-            fme.msg(TL.CMD_DESCRIPTION_CHANGED.toString(), myFaction.describeTo(fme));
+            values.put("faction", myFaction.describeTo(fme));
+            fme.TLmsg(TL.CMD_DESCRIPTION_CHANGED, values);
             fme.sendMessage(myFaction.getDescription());
             return;
         }
 
         // Broadcast the description to everyone
         for (FPlayer fplayer : FPlayers.i.getOnline()) {
-            fplayer.msg(TL.CMD_DESCRIPTION_CHANGED_NOTIFY.toString(), myFaction.describeTo(fplayer));
+            values.put("faction", myFaction.describeTo(fplayer));
+            fplayer.TLmsg(TL.CMD_DESCRIPTION_CHANGED_NOTIFY, values);
             fplayer.sendMessage(myFaction.getDescription());  // players can inject "&" or "`" or "<i>" or whatever in their description; &k is particularly interesting looking
         }
     }
