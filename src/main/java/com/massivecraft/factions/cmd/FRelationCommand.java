@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.event.FactionRelationEvent;
+import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import org.bukkit.Bukkit;
@@ -85,5 +86,7 @@ public abstract class FRelationCommand extends FCommand {
             myFaction.msg("<i>This will have no effect while your faction is peaceful.");
         }
 
+        FScoreboard.applyUpdates(myFaction);
+        FScoreboard.applyUpdates(them);
     }
 }

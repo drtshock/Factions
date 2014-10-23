@@ -1,11 +1,14 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.scoreboards.FDefaultBoard;
+import com.massivecraft.factions.event.FPlayerJoinEvent;
+import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.scoreboards.FScoreboard;
+import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -55,17 +58,11 @@ public class FactionsPlayerListener implements Listener {
             }
         }, 33L); // Don't ask me why.
 
-        if (P.p.getConfig().getBoolean("scoreboard.default-enabled", false) && P.p.cmdBase.cmdSB.showBoard(me)) {
-            Bukkit.getScheduler().runTaskLater(P.p, new Runnable() { // I think we still have to delay this a few seconds.
-                @Override
-                public void run() {
-                    if (me.getPlayer().isOnline()) { // In case people are quickly joining and quitting.
-                        FScoreboard board = new FDefaultBoard(me);
-                        me.setActiveBoard(board);
-                    }
-                }
-            }, 20L);
+        FScoreboard.init(me);
+        if (P.p.getConfig().getBoolean("scoreboard.default-enabled", false)) {
+            FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), P.p.getConfig().getInt("default-update-interval", 20));
         }
+        FScoreboard.get(me).setSidebarVisibility(P.p.cmdBase.cmdSB.showBoard(me));
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -81,6 +78,8 @@ public class FactionsPlayerListener implements Listener {
         if (myFaction != null) {
             myFaction.memberLoggedOff();
         }
+
+        FScoreboard.remove(me);
     }
 
     // Holds the next time a player can have a map shown.
@@ -90,6 +89,11 @@ public class FactionsPlayerListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         if (event.isCancelled()) {
             return;
+        }
+
+        // clear visualization
+        if (event.getFrom().getBlockX() != event.getTo().getBlockX() || event.getFrom().getBlockY() != event.getTo().getBlockY() || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
+            VisualizeUtil.clear(event.getPlayer());
         }
 
         // quick check to make sure player is moving between chunks; good performance boost
@@ -518,5 +522,15 @@ public class FactionsPlayerListener implements Listener {
             badGuy.leave(false);
             badGuy.detach();
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    final public void onFactionJoin(FPlayerJoinEvent event) {
+        FScoreboard.applyUpdatesLater(event.getFaction());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onFactionLeave(FPlayerLeaveEvent event) {
+        FScoreboard.applyUpdatesLater(event.getFaction());
     }
 }
