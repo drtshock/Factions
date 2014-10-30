@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.VisualizeUtil;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -23,9 +24,18 @@ public class CmdSeeChunk extends FCommand {
         senderMustBeAdmin = false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void perform() {
-        World world = me.getWorld();
+    	if (!(me.isOnGround()))
+    	{
+    		if (!(me.isFlying()))
+    		{
+    			return;
+    		}
+    	}
+    	
+    	World world = me.getWorld();
         FLocation flocation = new FLocation(me);
         int chunkX = (int) flocation.getX();
         int chunkZ = (int) flocation.getZ();
