@@ -35,7 +35,7 @@ public class CmdSeeChunk extends FCommand {
     		}
     	}
     	
-    	World world = me.getWorld();
+        World world = me.getWorld();
         FLocation flocation = new FLocation(me);
         int chunkX = (int) flocation.getX();
         int chunkZ = (int) flocation.getZ();
