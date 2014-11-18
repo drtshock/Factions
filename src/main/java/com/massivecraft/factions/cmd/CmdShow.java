@@ -96,32 +96,32 @@ public class CmdShow extends FCommand {
 
             Relation rel = otherFaction.getRelationTo(faction);
             String s = otherFaction.getTag(fme);
-            if (rel.isAlly()) {
-                if (firstAlly) {
-                    currentAllies.then(s).tooltip(getToolTips(otherFaction));
-                } else {
-                    currentAllies.then(", " + s).tooltip(getToolTips(otherFaction));
-                }
-                firstAlly = false;
+			if (rel.isAlly()) {
+				if (firstAlly) {
+					currentAllies.then(s).tooltip(getToolTips(otherFaction));
+				} else {
+					currentAllies.then(", " + s).tooltip(getToolTips(otherFaction));
+				}
+				firstAlly = false;
 
-                if (currentAllies.toJSONString().length() >= 32700) { // Client gets kicked at 32767, some leniency
-                    allies.add(currentAllies);
-                    currentAllies = new FancyMessage();
-                }
-            } else if (rel.isEnemy()) {
-                if (firstEnemy) {
-                    currentEnemies.then(s).tooltip(getToolTips(otherFaction));
-                } else {
-                    currentEnemies.then(", " + s).tooltip(getToolTips(otherFaction));
-                }
-                firstEnemy = false;
+				if (currentAllies.toJSONString().length() >= 22700) { // Client gets kicked at 32767, some leniency
+					allies.add(currentAllies);
+					currentAllies = new FancyMessage("");
+				}
+			} else if (rel.isEnemy()) {
+				if (firstEnemy) {
+					currentEnemies.then(s).tooltip(getToolTips(otherFaction));
+				} else {
+					currentEnemies.then(", " + s).tooltip(getToolTips(otherFaction));
+				}
+				firstEnemy = false;
 
-                if (currentEnemies.toJSONString().length() >= 32700) { // Client gets kicked at 32767, some leniency
-                    enemies.add(currentEnemies);
-                    currentEnemies = new FancyMessage();
-                }
-            }
-        }
+				if (currentEnemies.toJSONString().length() >= 22700) { // Client gets kicked at 32767, some leniency
+					enemies.add(currentEnemies);
+					currentEnemies = new FancyMessage("");
+				}
+			}
+		}
         allies.add(currentAllies);
         enemies.add(currentEnemies);
 
