@@ -5,12 +5,15 @@ import org.bukkit.Bukkit;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 
-import lombok.*;
-
-@Getter
-@Setter
 public class FactionsTax {
 	private boolean gracePeriod;
+	
+	public boolean isGracePeriod() {
+		return gracePeriod;
+	}
+	public void setGracePeriod(boolean gracePeriod) {
+		this.gracePeriod = gracePeriod;
+	}
 	public void enable() {
 		if (!Conf.taxEnabled) return;
 		if (Conf.taxFirstStartedMill == 0)  { //Haven't started taxes before
