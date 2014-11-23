@@ -20,18 +20,17 @@ public class FactionsTaxPlayerListener implements Listener {
 	}
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
-		TaxPlayer taxPlayer = TaxPlayer.getTaxPlayer(player);
-		TaxFaction taxFaction = taxPlayer.getFaction();
+		TaxPlayer player = TaxPlayer.getTaxPlayer(event.getPlayer());
+		TaxFaction taxFaction = player.getFaction();
 		if (tax.isGracePeriod()) {
-			player.sendMessage(Conf.graceMsgTitle);
-			player.sendMessage(Conf.graceMsgBody);
+			player.msg(Conf.graceMsgTitle);
+			player.msg(Conf.graceMsgBody);
 		} else {
-			if (!taxPlayer.canAfford(Conf.safeTaxPeriodsTillWarning)) {
-				player.sendMessage(Conf.taxCantAffordMsg);
+			if (!player.canAfford(Conf.safeTaxPeriodsTillWarning)) {
+				player.msg(Conf.taxCantAffordMsg);
 			}
 			if (!taxFaction.canAfford(Conf.safeUpkeepPeriodsTillWarning)) {
-				player.sendMessage(Conf.upkeepCantAffordMsg);
+				player.msg(Conf.upkeepCantAffordMsg);
 			}
 		}
 	}
