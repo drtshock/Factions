@@ -7,9 +7,11 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.tax.TaxRules;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -39,7 +41,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected Set<String> invites = new HashSet<String>();
     protected HashMap<String, List<String>> announcements = new HashMap<String, List<String>>();
     protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<String, LazyLocation>();
-
+    protected TaxRules taxRules;
+    
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
     }
@@ -756,5 +759,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         for (FPlayer fPlayer : fplayers) {
             fPlayer.resetFactionData(false);
         }
+    }
+    
+    //Taxes
+    @Override
+    public TaxRules getTaxRules() {
+    	return taxRules;
     }
 }

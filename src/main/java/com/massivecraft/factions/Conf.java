@@ -257,8 +257,8 @@ public class Conf {
     public static long taxPeriodMill = 86400000; //One Day
     public static long playerInactiveMill = 259200000; //3 Days
     public static long lastTaxMill = 0; //Never taxed before
-    public static long taxStartedMill = 0; //Tax not yet enabled
-    public static long taxStartedGraceMill = 604800000; //1 Week
+    public static long taxFirstStartedMill = 0; //Tax not yet enabled
+    public static long taxFirstStartedGraceMill = 604800000; //1 Week
     public static boolean displayGraceMsg = true;
     public static String graceMsgTitle = "FactionsTax Enabled";
     public static String[] graceMsgBody = new String[] {"FactionsTax was Just Enabled", "Type /f tax to see commands", "Type /f tax info for info", "This notice will dissapear once taxing starts"};
