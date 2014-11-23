@@ -6,11 +6,12 @@ import java.util.Map;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Role;
 
-import lombok.*;
-
 public class TaxRules {
-	@Getter
 	private double defaultTax;
+	
+	public double getDefaultTax() {
+		return defaultTax;
+	}
 	private Map<Role, Double> roleTaxMap = new HashMap<Role, Double>();
 	private Map<FPlayer, Double> playerTaxMap = new HashMap<FPlayer, Double>();
 	

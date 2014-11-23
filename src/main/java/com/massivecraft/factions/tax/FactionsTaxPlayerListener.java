@@ -8,13 +8,16 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayers;
 
-import lombok.*;
-
-@Getter
-@RequiredArgsConstructor
 public class FactionsTaxPlayerListener implements Listener {
+	public FactionsTaxPlayerListener(FactionsTax tax) {
+		this.tax = tax;
+	}
+	
 	private final FactionsTax tax;
 
+	public FactionsTax getTax() {
+		return tax;
+	}
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();

@@ -5,13 +5,14 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.integration.Econ;
 
-import lombok.*;
-
-@Getter
-@RequiredArgsConstructor(access=AccessLevel.PRIVATE)
 public class TaxFaction {
+	public TaxFaction(Faction faction) {
+		this.faction = faction;
+	}
 	private final Faction faction;
-	
+	public Faction getFaction() {
+		return faction;
+	}
 	public boolean canAfford(int upkeepPeriods) {
 		double owedUpkeep = getUpkeep() * upkeepPeriods;
 		return owedUpkeep < getBalance();
