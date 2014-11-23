@@ -1,0 +1,11 @@
+package com.massivecraft.factions.tax.cmd;
+
+import com.massivecraft.factions.cmd.FCommand;
+
+public class CmdTaxPlayer extends FCommand {
+
+	@Override
+	public void perform() {
+	}
+
+}

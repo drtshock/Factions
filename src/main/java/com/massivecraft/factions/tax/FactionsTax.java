@@ -31,5 +31,4 @@ public class FactionsTax {
 	public void registerListeners() {
 		Bukkit.getPluginManager().registerEvents(playerListener, P.p);
 	}
-
 }
