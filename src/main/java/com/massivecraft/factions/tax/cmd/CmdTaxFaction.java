@@ -18,7 +18,6 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.tax.TaxFaction;
 import com.massivecraft.factions.tax.TaxRules;
 import com.massivecraft.factions.tax.format.FormatUtil;
-import com.massivecraft.factions.tax.format.TextUtil;
 import com.massivecraft.factions.tax.format.TimeDiffUtil;
 import com.massivecraft.factions.tax.format.TimeUnit;
 import com.massivecraft.factions.zcore.util.UUIDFetcher;

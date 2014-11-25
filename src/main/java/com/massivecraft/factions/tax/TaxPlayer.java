@@ -52,6 +52,7 @@ public class TaxPlayer {
 	public void msg(String msg, Object... args) {
 		getPlayer().msg(msg, args);
 	}
+	
 	public void msg(String[] msgs) {
 		for (String msg : msgs) {
 			msg(msg);
