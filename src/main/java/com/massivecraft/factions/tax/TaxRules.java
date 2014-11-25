@@ -14,7 +14,8 @@ public class TaxRules {
 	private double defaultTax = 0;
 	private Map<Role, Double> roleTaxMap = new HashMap<Role, Double>();
 	private Map<UUID, Double> playerTaxMap = new HashMap<UUID, Double>();
-	private boolean kickNotPaying;
+	private boolean kickNotPaying = false; //Don't kick non paying members by default
+	private boolean payUpkeepIfEnabled = true; //By default factions pay upkeep if enabled
 	
 	public double getDefaultTax() {
 		return defaultTax;
@@ -34,5 +35,13 @@ public class TaxRules {
 	
 	public void setKickNotPaying(boolean kickNotPaying) {
 		this.kickNotPaying = kickNotPaying;
+	}
+	
+	public boolean isPayUpkeepIfEnabled() {
+		return payUpkeepIfEnabled;
+	}
+	
+	public void setPayUpkeepIfEnabled(boolean payUpkeepIfEnabled) {
+		this.payUpkeepIfEnabled = payUpkeepIfEnabled;
 	}
 }

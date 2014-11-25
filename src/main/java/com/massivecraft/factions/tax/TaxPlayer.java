@@ -1,9 +1,12 @@
 package com.massivecraft.factions.tax;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.event.FPlayerLeaveEvent;
+import com.massivecraft.factions.event.FPlayerLeaveEvent.PlayerLeaveReason;
 import com.massivecraft.factions.integration.Econ;
 
 public class TaxPlayer {
@@ -42,7 +45,11 @@ public class TaxPlayer {
 	
 	public boolean canAffordTax(int taxPeriods) {
 		double owedTax = getTax() * taxPeriods;
-		return getBalance() > owedTax;
+		return canAfford(owedTax);
+	}
+	
+	public boolean canAffordTax() {
+		return canAffordTax(1);
 	}
 	
 	public double getBalance() {
@@ -51,6 +58,39 @@ public class TaxPlayer {
 	
 	public void msg(String msg, Object... args) {
 		getPlayer().msg(msg, args);
+	}
+	
+	public boolean canAfford(double amount) {
+		return amount < getBalance();
+	}
+	
+	public void deposit(double amount) {
+		if (amount < 0) {
+			charge(-amount); 
+		} else {
+			Econ.deposit(getPlayer().getAccountId(), amount);
+		}
+	}
+	
+	public void punish() {
+		if (getFaction().getTaxRules().isKickNotPaying()) {
+			FPlayerLeaveEvent event = new FPlayerLeaveEvent(getPlayer(), getFaction().getFaction(), PlayerLeaveReason.KICKED);
+			Bukkit.getPluginManager().callEvent(event);
+			msg("You were kicked because you can't pay your taxes!");
+		} else {
+			msg("You can't pay your taxes but your faction let you stay.");
+		}
+	}
+	
+	public boolean charge(double amount) {
+		if (amount < 0) {
+			deposit(-amount);
+			return true;
+		} else if (!canAfford(amount)) {
+			return false;
+		} else {
+			return Econ.withdraw(getPlayer().getAccountId(), amount);
+		}
 	}
 	
 	public void msg(String[] msgs) {
