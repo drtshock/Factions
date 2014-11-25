@@ -18,6 +18,10 @@ public class FormatUtil {
 		return P.p.txt.parse(str, args);
 	}
 	
+	public static String upperCaseFirst(String str) {
+		return P.p.txt.upperCaseFirst(str);
+	}
+	
 	public static String formatMoney(double money) {
 		return Econ.moneyString(money);
 	}

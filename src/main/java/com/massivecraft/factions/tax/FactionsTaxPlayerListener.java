@@ -9,6 +9,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayers;
 
 public class FactionsTaxPlayerListener implements Listener {
+	
 	public FactionsTaxPlayerListener(FactionsTax tax) {
 		this.tax = tax;
 	}
@@ -26,10 +27,10 @@ public class FactionsTaxPlayerListener implements Listener {
 			player.msg(Conf.graceMsgTitle);
 			player.msg(Conf.graceMsgBody);
 		} else {
-			if (!player.canAfford(Conf.safeTaxPeriodsTillWarning)) {
+			if (!player.canAffordTax(Conf.safeTaxPeriodsTillWarning)) {
 				player.msg(Conf.taxCantAffordMsg);
 			}
-			if (!taxFaction.canAfford(Conf.safeUpkeepPeriodsTillWarning)) {
+			if (!taxFaction.canAffordUpkeep(Conf.safeUpkeepPeriodsTillWarning)) {
 				player.msg(Conf.upkeepCantAffordMsg);
 			}
 		}
