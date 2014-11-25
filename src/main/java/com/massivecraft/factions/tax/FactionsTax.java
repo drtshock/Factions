@@ -10,7 +10,6 @@ import com.massivecraft.factions.tax.format.TimeDiffUtil;
 import com.massivecraft.factions.tax.format.TimeUnit;
 
 public class FactionsTax {
-	private FactionsTax() {}
 	private boolean gracePeriod;
 	
 	public boolean isGracePeriod() {
@@ -19,8 +18,13 @@ public class FactionsTax {
 	public void setGracePeriod(boolean gracePeriod) {
 		this.gracePeriod = gracePeriod;
 	}
+	
+	public boolean isEnabled() {
+		return Conf.taxEnabled;
+	}
+	
 	public void enable() {
-		if (!Conf.taxEnabled) return;
+		if (!isEnabled()) return;
 		checkGracePeriod();
 		scheduleTaxTask();
 		registerListeners();
@@ -46,5 +50,10 @@ public class FactionsTax {
 		} else {
 			setGracePeriod(false);
 		}
+	}
+	
+	
+	public static FactionsTax getInstance() {
+		return P.p.getTax();
 	}
 }
