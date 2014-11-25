@@ -30,10 +30,17 @@ public class TaxPlayer {
 	}
 	
 	public double getTax() {
-		return getPlayer().getFaction().getTaxRules().getTaxForPlayer(getPlayer());
+		TaxRules taxRules = getFaction().getTaxRules();
+		if (taxRules.getPlayerTaxMap().containsKey(getPlayer().getPlayer().getUniqueId())) {
+			return taxRules.getPlayerTaxMap().get(getPlayer().getPlayer().getUniqueId());
+		} else if (taxRules.getRoleTaxMap().containsKey(getPlayer().getRole())) {
+			return taxRules.getRoleTaxMap().get(getPlayer().getRole());
+		} else {
+			return taxRules.getDefaultTax();
+		}
 	}
 	
-	public boolean canAfford(int taxPeriods) {
+	public boolean canAffordTax(int taxPeriods) {
 		double owedTax = getTax() * taxPeriods;
 		return getBalance() > owedTax;
 	}

@@ -1,15 +1,9 @@
 package com.massivecraft.factions.tax;
 
-import java.util.LinkedHashMap;
-
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.tax.format.TimeDiffUtil;
-import com.massivecraft.factions.tax.format.TimeUnit;
-import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class TaxFaction {
 	public TaxFaction(Faction faction) {
@@ -19,23 +13,22 @@ public class TaxFaction {
 	public Faction getFaction() {
 		return faction;
 	}
-	public boolean canAfford(int upkeepPeriods) {
+	public boolean canAffordUpkeep(int upkeepPeriods) {
 		double owedUpkeep = getUpkeep() * upkeepPeriods;
 		return owedUpkeep < getBalance();
+	}
+	
+	public boolean canAffordUpkeep() {
+		return canAffordUpkeep(1);
+	}
+	
+	public long getAffordableTime() {
+		return getAffordablePeriods() * Conf.taxPeriodMill;
 	}
 	
 	public int getAffordablePeriods() {
 		return (int) (getBalance() / getUpkeep());
 	}
-	
-	public String getTimeCanAfford() {
-		//Lets hope this works
-		long affordableMill = Conf.taxPeriodMill * getAffordablePeriods();
-	    LinkedHashMap<TimeUnit, Long> unitCounts = TimeDiffUtil.unitcounts(affordableMill, TimeUnit.getAllButMillis());
-	    unitCounts = TimeDiffUtil.limit(unitCounts, 2);
-		return TimeDiffUtil.formatedVerboose(unitCounts);
-	}
-	
 	public double getBalance() {
 		return Econ.getBalance(getFaction().getAccountId());
 	}
@@ -45,6 +38,10 @@ public class TaxFaction {
 		return chunkUpkeep + Conf.baseUpkeep;
 	}
 	
+	public boolean isKickNotPaying() {
+		return getTaxRules().isKickNotPaying();
+	}
+	
 	public int getNumberOfChunks() {
 		return Board.getInstance().getFactionCoordCount(getFaction());
 	}
@@ -52,4 +49,8 @@ public class TaxFaction {
 	public static TaxFaction getTaxFaction(Faction faction) {
 		return new TaxFaction(faction);
 	}
-}
+	
+	public TaxRules getTaxRules() {
+		return getFaction().getTaxRules();
+	}
+} 
