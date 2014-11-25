@@ -25,4 +25,8 @@ public class FormatUtil {
 	public static String formatMoney(double money) {
 		return Econ.moneyString(money);
 	}
+	
+	public static String titleize(String str) {
+		return P.p.txt.titleize(str);
+	}
 }
