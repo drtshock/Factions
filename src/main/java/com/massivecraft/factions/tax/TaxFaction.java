@@ -1,8 +1,16 @@
 package com.massivecraft.factions.tax;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.event.FPlayerLeaveEvent;
+import com.massivecraft.factions.event.FPlayerLeaveEvent.PlayerLeaveReason;
+import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.integration.Econ;
 
 public class TaxFaction {
@@ -15,7 +23,7 @@ public class TaxFaction {
 	}
 	public boolean canAffordUpkeep(int upkeepPeriods) {
 		double owedUpkeep = getUpkeep() * upkeepPeriods;
-		return owedUpkeep < getBalance();
+		return canAfford(owedUpkeep);
 	}
 	
 	public boolean canAffordUpkeep() {
@@ -34,6 +42,7 @@ public class TaxFaction {
 	}
 	
 	public double getUpkeep() {
+		if (!shouldPayUpkeep()) return 0;
 		double chunkUpkeep = getNumberOfChunks() * Conf.upkeepPerChunk;
 		return chunkUpkeep + Conf.baseUpkeep;
 	}
@@ -52,5 +61,57 @@ public class TaxFaction {
 	
 	public TaxRules getTaxRules() {
 		return getFaction().getTaxRules();
+	}
+	
+	public boolean shouldPayUpkeep() {
+		return getFaction().getTaxRules().isPayUpkeepIfEnabled() && Conf.baseUpkeep != 0 && Conf.upkeepPerChunk == 0;
+	}
+	
+	public void punish() {
+		if (Conf.upkeepFailDisband) {
+			msgAll("Your faction has been disbanded because you can't pay your upkeep.");
+			FactionDisbandEvent disbandEvent = new FactionDisbandEvent(null, getFaction().getId());
+			Bukkit.getPluginManager().callEvent(disbandEvent);
+			if (disbandEvent.isCancelled()) { //Must respect isCancelled()
+				return;
+			}
+			for (FPlayer player : getFaction().getFPlayers()) {
+				FPlayerLeaveEvent event = new FPlayerLeaveEvent(player, getFaction(), PlayerLeaveReason.DISBAND);
+				Bukkit.getPluginManager().callEvent(event);
+			}
+		} else if (Conf.upkeepFailUnclaimall) {
+			msgAll("All %s chunks of your faction have been unclaimed because you can't pay your upkeep.", getNumberOfChunks());
+			getFaction().clearAllClaimOwnership(); 
+		} else {
+			msgAll("You can't pay your upkeep but punishment is disabled.");
+		}
+	}
+	
+	public void msgAll(String msg, Object... args) {
+		getFaction().msg(msg, args);
+	}
+	
+	public void debug(String msg) {
+		P.p.debug(msg);
+	}
+	
+	public void deposit(double amount) {
+		if (amount < 0) charge(-amount);
+		Econ.deposit(getFaction().getAccountId(), amount);
+	}
+	
+	public boolean charge(double amount) {
+		if (amount < 0) {
+			deposit(-amount);
+			return true;
+		} else if (!canAfford(amount)) {
+			return false;
+		} else {
+			return Econ.withdraw(getFaction().getAccountId(), amount);
+		}
+	}
+	
+	public boolean canAfford(double amount) {
+		return amount < getBalance();
 	}
 } 
