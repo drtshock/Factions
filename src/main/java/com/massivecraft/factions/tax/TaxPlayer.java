@@ -8,6 +8,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FPlayerLeaveEvent.PlayerLeaveReason;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.util.EasyCache;
 
 public class TaxPlayer {
 	public TaxPlayer(FPlayer player) {
@@ -23,9 +24,16 @@ public class TaxPlayer {
 	public TaxFaction getFaction() {
 		return faction;
 	}
+	private static EasyCache<FPlayer, TaxPlayer> playerCache = new EasyCache<FPlayer, TaxPlayer>(new EasyCache.Loader<FPlayer, TaxPlayer>() {
+
+		@Override
+		public TaxPlayer load(FPlayer key) {
+			return new TaxPlayer(key);
+		}
+		
+	});
 	public static TaxPlayer getTaxPlayer(FPlayer player) {
-		//TODO cache
-		return new TaxPlayer(player);
+		return playerCache.get(player);
 	}
 	
 	public static TaxPlayer getTaxPlayer(OfflinePlayer player) {
