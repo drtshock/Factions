@@ -35,5 +35,4 @@ public class TaxRules {
 	public void setKickNotPaying(boolean kickNotPaying) {
 		this.kickNotPaying = kickNotPaying;
 	}
-	
 }
