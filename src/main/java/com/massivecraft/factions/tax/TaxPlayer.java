@@ -3,6 +3,7 @@ package com.massivecraft.factions.tax;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
@@ -24,6 +25,15 @@ public class TaxPlayer {
 	public TaxFaction getFaction() {
 		return faction;
 	}
+	
+	public long getAffordableTime() {
+	    return getAffordablePeriods() * Conf.taxPeriodMill;
+	}
+	
+	public int getAffordablePeriods() {
+		return (int) (getBalance() / getTax());
+	}
+	
 	private static EasyCache<FPlayer, TaxPlayer> playerCache = new EasyCache<FPlayer, TaxPlayer>(new EasyCache.Loader<FPlayer, TaxPlayer>() {
 
 		@Override
