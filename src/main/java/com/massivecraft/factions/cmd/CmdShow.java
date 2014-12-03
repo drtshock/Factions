@@ -104,9 +104,9 @@ public class CmdShow extends FCommand {
                 }
                 firstAlly = false;
 
-                if (currentAllies.toJSONString().length() >= 32700) { // Client gets kicked at 32767, some leniency
+                if (currentAllies.toJSONString().length() >= 22700) { // Client gets kicked at 32767, some leniency
                     allies.add(currentAllies);
-                    currentAllies = new FancyMessage();
+                    currentAllies = new FancyMessage("");
                 }
             } else if (rel.isEnemy()) {
                 if (firstEnemy) {
@@ -115,10 +115,9 @@ public class CmdShow extends FCommand {
                     currentEnemies.then(", " + s).tooltip(getToolTips(otherFaction));
                 }
                 firstEnemy = false;
-
-                if (currentEnemies.toJSONString().length() >= 32700) { // Client gets kicked at 32767, some leniency
+                if (currentEnemies.toJSONString().length() >= 22700) { // Client gets kicked at 32767, some leniency
                     enemies.add(currentEnemies);
-                    currentEnemies = new FancyMessage();
+                    currentEnemies = new FancyMessage("");
                 }
             }
         }
