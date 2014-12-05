@@ -64,7 +64,7 @@ public class EngineDynmap
 	// -------------------------------------------- //
 
 	private static EngineDynmap i = new EngineDynmap();
-	public static EngineDynmap get() { return i; }
+	public static EngineDynmap getInstance() { return i; }
 	private EngineDynmap() {}
 
 	public Factions getPlugin()

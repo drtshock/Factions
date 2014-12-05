@@ -1,7 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.struct.Permission;
 
 public class CmdReload extends FCommand {
@@ -24,6 +27,9 @@ public class CmdReload extends FCommand {
 
     @Override
     public void perform() {
+    	Bukkit.getScheduler().cancelTasks(p);
+    	EngineDynmap.getInstance().init();
+    	
         long timeInitStart = System.currentTimeMillis();
         Conf.load();
         P.p.reloadConfig();

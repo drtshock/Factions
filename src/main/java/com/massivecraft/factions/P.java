@@ -110,7 +110,7 @@ public class P extends MPlugin {
             Worldguard.init(this);
         }
         
-        EngineDynmap.get().init();
+        EngineDynmap.getInstance().init();
 
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
@@ -148,6 +148,7 @@ public class P extends MPlugin {
 
     @Override
     public void onDisable() {
+    	Bukkit.getScheduler().cancelTasks(this);
         // only save data if plugin actually completely loaded successfully
         if (this.loadSuccessful) {
             Conf.save();
