@@ -27,6 +27,7 @@ import org.dynmap.utils.TileFlags;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
@@ -301,15 +302,15 @@ public class EngineDynmap extends Thread
 	// Thread Safe: YES
 	public Map<String, TempAreaMarker> createAreas()
 	{
-		Map<String, Map<Faction, Set<Location>>> worldFactionChunks = createWorldFactionChunks();
+		Map<String, Map<Faction, Set<FLocation>>> worldFactionChunks = createWorldFactionChunks();
 		return createAreas(worldFactionChunks);
 	}
 	
 	// Thread Safe: YES
-	public Map<String, Map<Faction, Set<Location>>> createWorldFactionChunks()
+	public Map<String, Map<Faction, Set<FLocation>>> createWorldFactionChunks()
 	{
 		// Create map "world name --> faction --> set of chunk coords"
-		Map<String, Map<Faction, Set<PS>>> worldFactionChunks = new HashMap<String, Map<Faction, Set<PS>>>();
+		Map<String, Map<Faction, Set<FLocation>>> worldFactionChunks = new HashMap<String, Map<Faction, Set<FLocation>>>();
 	
 		// Note: The board is the world. The board id is the world name.
 		for (Board board : BoardColl.get().getAll())
@@ -317,10 +318,10 @@ public class EngineDynmap extends Thread
 			String world = board.getId();
 			
 			// Get the factionChunks creatively.
-			Map<Faction, Set<Location>> factionChunks = worldFactionChunks.get(world);
+			Map<Faction, Set<FLocation>> factionChunks = worldFactionChunks.get(world);
 			if (factionChunks == null)
 			{
-				factionChunks = new HashMap<Faction, Set<Location>>();
+				factionChunks = new HashMap<Faction, Set<FLocation>>();
 				worldFactionChunks.put(world, factionChunks);
 			}
 					
@@ -334,10 +335,10 @@ public class EngineDynmap extends Thread
 				if (faction == null) continue;
 				
 				// Get the chunks creatively.
-				Set<PS> chunks = factionChunks.get(faction);
+				Set<FLocation> chunks = factionChunks.get(faction);
 				if (chunks == null)
 				{
-					chunks = new HashSet<PS>();
+					chunks = new HashSet<FLocation>();
 					factionChunks.put(faction, chunks);
 				}
 				
@@ -349,21 +350,21 @@ public class EngineDynmap extends Thread
 	}
 	
 	// Thread Safe: YES
-	public Map<String, TempAreaMarker> createAreas(Map<String, Map<Faction, Set<PS>>> worldFactionChunks)
+	public Map<String, TempAreaMarker> createAreas(Map<String, Map<Faction, Set<FLocation>>> worldFactionChunks)
 	{
 		Map<String, TempAreaMarker> ret = new HashMap<String, TempAreaMarker>();
 		
 		// For each world
-		for (Entry<String, Map<Faction, Set<PS>>> entry : worldFactionChunks.entrySet())
+		for (Entry<String, Map<Faction, Set<FLocation>>> entry : worldFactionChunks.entrySet())
 		{
 			String world = entry.getKey();
-			Map<Faction, Set<PS>> factionChunks = entry.getValue();
+			Map<Faction, Set<FLocation>> factionChunks = entry.getValue();
 			
 			// For each faction and its chunks in that world
-			for (Entry<Faction, Set<PS>> entry1 : factionChunks.entrySet())
+			for (Entry<Faction, Set<FLocation>> entry1 : factionChunks.entrySet())
 			{
 				Faction faction = entry1.getKey();
-				Set<PS> chunks = entry1.getValue();
+				Set<FLocation> chunks = entry1.getValue();
 				Map<String, TempAreaMarker> worldFactionMarkers = createAreas(world, faction, chunks);
 				ret.putAll(worldFactionMarkers);
 			}
@@ -375,7 +376,7 @@ public class EngineDynmap extends Thread
 	// Thread Safe: YES
 	// Handle specific faction on specific world
 	// "handle faction on world"
-	public Map<String, TempAreaMarker> createAreas(String world, Faction faction, Set<PS> chunks)
+	public Map<String, TempAreaMarker> createAreas(String world, Faction faction, Set<FLocation> chunks)
 	{	
 		Map<String, TempAreaMarker> ret = new HashMap<String, TempAreaMarker>();
 		
@@ -396,10 +397,10 @@ public class EngineDynmap extends Thread
 		
 		// Loop through chunks: set flags on chunk map
 		TileFlags allChunkFlags = new TileFlags();
-		LinkedList<PS> allChunks = new LinkedList<PS>();
-		for (PS chunk : chunks)
+		LinkedList<FLocation> allChunks = new LinkedList<FLocation>();
+		for (FLocation chunk : chunks)
 		{
-			allChunkFlags.setFlag(chunk.getChunkX(), chunk.getChunkZ(), true); // Set flag for chunk
+			allChunkFlags.setFlag((int)chunk.getX(), (int)chunk.getZ(), true); // Set flag for chunk
 			allChunks.addLast(chunk);
 		}
 		
@@ -407,21 +408,21 @@ public class EngineDynmap extends Thread
 		while (allChunks != null)
 		{
 			TileFlags ourChunkFlags = null;
-			LinkedList<PS> ourChunks = null;
-			LinkedList<PS> newChunks = null;
+			LinkedList<FLocation> ourChunks = null;
+			LinkedList<FLocation> newChunks = null;
 			
 			int minimumX = Integer.MAX_VALUE;
 			int minimumZ = Integer.MAX_VALUE;
-			for (PS chunk : allChunks)
+			for (FLocation chunk : allChunks)
 			{
-				int chunkX = chunk.getChunkX();
-				int chunkZ = chunk.getChunkZ();
+				int chunkX = (int)chunk.getX();
+				int chunkZ = (int)chunk.getZ();
 				
 				// If we need to start shape, and this block is not part of one yet
 				if (ourChunkFlags == null && allChunkFlags.getFlag(chunkX, chunkZ))
 				{
 					ourChunkFlags = new TileFlags(); // Create map for shape
-					ourChunks = new LinkedList<PS>();
+					ourChunks = new LinkedList<FLocation>();
 					floodFillTarget(allChunkFlags, ourChunkFlags, chunkX, chunkZ); // Copy shape
 					ourChunks.add(chunk); // Add it to our chunk list
 					minimumX = chunkX;
@@ -444,7 +445,7 @@ public class EngineDynmap extends Thread
 				// Else, keep it in the list for the next polygon
 				else
 				{
-					if (newChunks == null) newChunks = new LinkedList<PS>();
+					if (newChunks == null) newChunks = new LinkedList<FLocation>();
 					newChunks.add(chunk);
 				}
 			}
@@ -748,7 +749,10 @@ public class EngineDynmap extends Thread
 		}
 		ret = ret.replace("%money%", money);
 		
+		
 		// Flags and Open
+		//TODO: Do we have flags? If so, fixy fix. Otherwise, either add flags or remove the koment bloc.
+		/*
 		Map<MFlag, Boolean> flags = new LinkedHashMap<MFlag, Boolean>();
 		for (MFlag mflag : MFlag.getAll())
 		{
@@ -785,7 +789,7 @@ public class EngineDynmap extends Thread
 			String flagTable = getHtmlAsciTable(flagTableParts, cols);
 			ret = ret.replace("%flags.table" + cols + "%", flagTable);
 		}
-		
+		*/
 		// Players
 		Set<FPlayer> playersList = faction.getFPlayers();
 		String playersCount = String.valueOf(playersList.size());
