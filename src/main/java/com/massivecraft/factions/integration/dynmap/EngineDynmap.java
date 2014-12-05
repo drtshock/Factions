@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +35,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.persist.MemoryBoard;
 
 // This source code is a heavily modified version of mikeprimms plugin Dynmap-Factions.
-public class EngineDynmap extends Thread
+public class EngineDynmap
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -87,9 +86,12 @@ public class EngineDynmap extends Thread
 	public MarkerAPI markerApi;
 	public MarkerSet markerset;
 
-	@Override
-	public void run()
+	public void init()
 	{
+		Plugin plugin=Bukkit.getServer().getPluginManager().getPlugin("Dynmap");
+		if(plugin==null) return;
+		if(!plugin.isEnabled()) return;
+		
 		// Should we even use dynmap?
 		if (!Conf.dynmapUse)
 		{

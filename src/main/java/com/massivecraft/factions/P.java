@@ -110,7 +110,7 @@ public class P extends MPlugin {
             Worldguard.init(this);
         }
         
-        EngineDynmap.get().start();
+        EngineDynmap.get().init();
 
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
