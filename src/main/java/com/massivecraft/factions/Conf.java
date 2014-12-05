@@ -284,11 +284,8 @@ public class Conf {
 		"<span style=\"font-weight: bold;\">Members:</span> %players.normals.count%</br>\n" +
 		"<span style=\"font-weight: bold;\">TOTAL:</span> %players.count%</br>\n" +
 		"</br>\n" +
-		"<span style=\"font-weight: bold;\">Age:</span> %age%</br>\n" +
 		"<span style=\"font-weight: bold;\">Bank:</span> %money%</br>\n" +
 		"</br>\n" +
-		"<span style=\"font-weight: bold;\">Flags:</span></br>\n" +
-		"%flags.table3%\n" +
 		"</div>";
 	
 	// Enable the %money% macro. Only do this if you know your economy manager is thread safe.

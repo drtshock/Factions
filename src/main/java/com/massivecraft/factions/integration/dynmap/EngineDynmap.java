@@ -67,21 +67,6 @@ public class EngineDynmap
 	public static EngineDynmap getInstance() { return i; }
 	private EngineDynmap() {}
 
-	public Factions getPlugin()
-	{
-		return Factions.getInstance();
-	}
-	
-	public Long getPeriod()
-	{
-		return 15 * 20L; // Every 15 seconds
-	}
-	
-	public boolean isSync()
-	{
-		return false;
-	}
-
 	public DynmapAPI dynmapApi;
 	public MarkerAPI markerApi;
 	public MarkerSet markerset;
@@ -112,9 +97,6 @@ public class EngineDynmap
 				
 					long sbefore = System.currentTimeMillis();
 					
-					// We do what we can here.
-					// You /can/ run this method from the main server thread but it's not recommended at all.
-					// This method is supposed to be run async to avoid locking the main server thread.
 					final Map<String, TempMarker> homes = createHomes();
 					final Map<String, TempAreaMarker> areas = createAreas();
 					final Map<String, Set<String>> playerSets = createPlayersets();
@@ -171,10 +153,6 @@ public class EngineDynmap
 		
 		return true;
 	}
-	
-	// -------------------------------------------- //
-	// UPDATE: Layer
-	// -------------------------------------------- //
 	
 	// Thread Safe / Asynchronous: Yes
 	public TempMarkerSet createLayer()
@@ -823,10 +801,7 @@ public class EngineDynmap
 					ret.append("<br>\n");
 					count = 0;
 				}
-				else
-				{
-					ret.append(" | ");
-				}
+				else ret.append(" | ");
 			}
 		}
 		
@@ -887,20 +862,14 @@ public class EngineDynmap
 		Set<String> visible = Conf.dynmapVisibleFactions;
 		Set<String> hidden = Conf.dynmapHiddenFactions;
 		
-		if (visible.size() > 0)
+		if (!visible.contains(factionId) && !visible.contains(factionName) && !visible.contains("world:" + world))
 		{
-			if (!visible.contains(factionId) && !visible.contains(factionName) && !visible.contains("world:" + world))
-			{
-				return false;
-			}
+			return false;
 		}
 
-		if (hidden.size() > 0)
+		if (hidden.contains(factionId) || hidden.contains(factionName) || hidden.contains("world:" + world))
 		{
-			if (hidden.contains(factionId) || hidden.contains(factionName) || hidden.contains("world:" + world))
-			{
-				return false;
-			}
+			return false;
 		}
 
 		return true;
@@ -963,31 +932,6 @@ public class EngineDynmap
 			}
 		}
 		return cnt;
-	}
-	
-	//Only useful function I've seen in MassiveCore so far. 
-	private static String implode(final List<String> flagMapParts, final String glue, final String format)
-	{
-		Object[] list=flagMapParts.toArray();
-		StringBuilder ret = new StringBuilder();
-		for (int i=0; i<list.length; i++)
-		{
-			Object item = list[i];
-			String str = (item == null ? "NULL" : item.toString());
-			if (i!=0)
-			{
-				ret.append(glue);
-			}
-			if (format != null)
-			{
-				ret.append(String.format(format, str));
-			}
-			else
-			{
-				ret.append(str);
-			}
-		}
-		return ret.toString();
 	}
 	
 }
