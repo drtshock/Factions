@@ -34,23 +34,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.persist.MemoryBoard;
-/*
-import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.TerritoryAccess;
-import com.massivecraft.factions.entity.Board;
-import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColl;
-import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.factions.entity.MFlag;
-import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.massivecore.EngineAbstract;
-import com.massivecraft.massivecore.money.Money;
-import com.massivecraft.massivecore.ps.PS;
-import com.massivecraft.massivecore.util.TimeDiffUtil;
-import com.massivecraft.massivecore.util.TimeUnit;
-import com.massivecraft.massivecore.util.Txt;
-*/
+
 // This source code is a heavily modified version of mikeprimms plugin Dynmap-Factions.
 public class EngineDynmap extends Thread
 {
@@ -117,25 +101,27 @@ public class EngineDynmap extends Thread
 			return;
 		}
 		
-		long before = System.currentTimeMillis();
-		
-		// We do what we can here.
-		// You /can/ run this method from the main server thread but it's not recommended at all.
-		// This method is supposed to be run async to avoid locking the main server thread.
-		final Map<String, TempMarker> homes = createHomes();
-		final Map<String, TempAreaMarker> areas = createAreas();
-		final Map<String, Set<String>> playerSets = createPlayersets();
-		
-		long after = System.currentTimeMillis();
-		long duration = after-before;
-		updateLog("Async", duration);
-		
 		// Shedule non thread safe sync at the end!
-		Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable()
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable()
 		{
 			@Override
 			public void run()
 			{
+				
+					long sbefore = System.currentTimeMillis();
+					
+					// We do what we can here.
+					// You /can/ run this method from the main server thread but it's not recommended at all.
+					// This method is supposed to be run async to avoid locking the main server thread.
+					final Map<String, TempMarker> homes = createHomes();
+					final Map<String, TempAreaMarker> areas = createAreas();
+					final Map<String, Set<String>> playerSets = createPlayersets();
+					
+					long safter = System.currentTimeMillis();
+					long sduration = safter-sbefore;
+					updateLog("Async", sduration);
+				
+				
 				long before = System.currentTimeMillis();
 				
 				if (!updateCore()) return;
@@ -151,7 +137,7 @@ public class EngineDynmap extends Thread
 				long duration = after-before;
 				updateLog("Sync", duration);
 			}
-		});
+		},100l,100l);
 	}
 	
 	//Async

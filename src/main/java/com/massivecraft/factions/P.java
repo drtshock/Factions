@@ -158,6 +158,7 @@ public class P extends MPlugin {
         }
 
         cmdBase.cmdSB.save();
+        
         super.onDisable();
     }
 
