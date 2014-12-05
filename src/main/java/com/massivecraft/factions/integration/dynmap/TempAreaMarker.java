@@ -4,8 +4,6 @@ import org.dynmap.markers.AreaMarker;
 import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerSet;
 
-import com.massivecraft.massivecore.util.MUtil;
-
 public class TempAreaMarker
 {
 	// -------------------------------------------- //
@@ -73,13 +71,13 @@ public class TempAreaMarker
 		}
 		
 		// Label
-		if (!MUtil.equals(marker.getLabel(), this.label))
+		if (!marker.getLabel().equals(this.label))
 		{
 			marker.setLabel(this.label);
 		}
 		
 		// Description
-		if (!MUtil.equals(marker.getDescription(), this.description))
+		if (!marker.getDescription().equals( this.description))
 		{
 			marker.setDescription(this.description);
 		}
@@ -87,11 +85,11 @@ public class TempAreaMarker
 		// Line Style
 		if
 		(
-			!MUtil.equals(marker.getLineWeight(), this.lineWeight)
+			marker.getLineWeight()!=this.lineWeight
 			||
-			!MUtil.equals(marker.getLineOpacity(), this.lineOpacity)
+			marker.getLineOpacity()!=this.lineOpacity
 			||
-			!MUtil.equals(marker.getLineColor(), this.lineColor)
+			marker.getLineColor()!=this.lineColor
 		)
 		{
 			marker.setLineStyle(this.lineWeight, this.lineOpacity, this.lineColor);
@@ -100,16 +98,15 @@ public class TempAreaMarker
 		// Fill Style
 		if
 		(
-			!MUtil.equals(marker.getFillOpacity(), this.fillOpacity)
+			(marker.getFillOpacity()!=this.fillOpacity)
 			||
-			!MUtil.equals(marker.getFillColor(), this.fillColor)
+			(marker.getFillColor()!=this.fillColor)
 		)
 		{
 			marker.setFillStyle(this.fillOpacity, this.fillColor);
 		}
-		
 		// Boost Flag
-		if (!MUtil.equals(marker.getBoostFlag(), this.boost))
+		if (marker.getBoostFlag()!=this.boost)
 		{
 			marker.setBoostFlag(this.boost);
 		}

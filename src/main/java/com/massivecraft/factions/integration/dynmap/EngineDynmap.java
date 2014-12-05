@@ -42,7 +42,7 @@ import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
 
 // This source code is a heavily modified version of mikeprimms plugin Dynmap-Factions.
-public class EngineDynmap extends EngineAbstract
+public class EngineDynmap
 {
 	// -------------------------------------------- //
 	// CONSTANTS

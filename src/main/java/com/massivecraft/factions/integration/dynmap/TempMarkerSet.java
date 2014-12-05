@@ -35,7 +35,7 @@ public class TempMarkerSet
 	public void update(MarkerAPI markerApi, MarkerSet markerset)
 	{
 		// Name
-		if (markerset.getMarkerSetLabel().equals(this.label))
+		if (!markerset.getMarkerSetLabel().equals(this.label))
 		{
 			markerset.setMarkerSetLabel(this.label);
 		}

@@ -5,8 +5,7 @@ import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 
-import com.massivecraft.factions.entity.MConf;
-import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.factions.Conf;
 
 public class TempMarker
 {
@@ -71,18 +70,18 @@ public class TempMarker
 			);
 		}
 		
-		if (!MUtil.equals(marker.getLabel(), this.label))
+		if (!marker.getLabel().equals(this.label))
 		{
 			marker.setLabel(this.label);
 		}
 		
 		MarkerIcon icon = getMarkerIcon(markerApi, this.iconName);
-		if (!MUtil.equals(marker.getMarkerIcon(), icon))
+		if (marker.getMarkerIcon()==null||marker.getMarkerIcon().equals(icon))
 		{
 			marker.setMarkerIcon(icon);
 		}
 		
-		if (!MUtil.equals(marker.getDescription(), this.description))
+		if (!marker.getDescription().equals(this.description))
 		{
 			marker.setDescription(this.description);
 		}
@@ -95,7 +94,7 @@ public class TempMarker
 	public static MarkerIcon getMarkerIcon(MarkerAPI markerApi, String name)
 	{
 		MarkerIcon ret = markerApi.getMarkerIcon(name);
-		if (ret == null) ret = markerApi.getMarkerIcon(MConf.DYNMAP_STYLE_HOME_MARKER);
+		if (ret == null) ret = markerApi.getMarkerIcon(Conf.DYNMAP_STYLE_HOME_MARKER);
 		return ret;
 	}
 	
