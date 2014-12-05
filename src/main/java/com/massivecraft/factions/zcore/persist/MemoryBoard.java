@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-
 
 public abstract class MemoryBoard extends Board {
     public HashMap<FLocation, String> flocationIds = new HashMap<FLocation, String>();
