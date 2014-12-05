@@ -33,6 +33,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.persist.MemoryBoard;
 /*
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
@@ -313,37 +314,27 @@ public class EngineDynmap extends Thread
 		Map<String, Map<Faction, Set<FLocation>>> worldFactionChunks = new HashMap<String, Map<Faction, Set<FLocation>>>();
 	
 		// Note: The board is the world. The board id is the world name.
-		for (Board board : BoardColl.get().getAll())
+		MemoryBoard boardyay=(MemoryBoard) Board.getInstance();
+
+		for (Entry<FLocation,String> chunkOfDoom: boardyay.flocationIds.entrySet())
 		{
-			String world = board.getId();
+			String world = chunkOfDoom.getKey().getWorldName();
+			Faction chunkOwner=Factions.getInstance().getFactionById(chunkOfDoom.getValue());
 			
-			// Get the factionChunks creatively.
 			Map<Faction, Set<FLocation>> factionChunks = worldFactionChunks.get(world);
 			if (factionChunks == null)
 			{
 				factionChunks = new HashMap<Faction, Set<FLocation>>();
 				worldFactionChunks.put(world, factionChunks);
 			}
-					
-			// Populate the factionChunks
-			for (Entry<Location, TerritoryAccess> entry : board.getMap().entrySet())
-			{
-				Location chunk = entry.getKey();
-				TerritoryAccess territoryAccess = entry.getValue();
-				String factionId = territoryAccess.getHostFactionId();
-				Faction faction = Faction.get(factionId);
-				if (faction == null) continue;
-				
-				// Get the chunks creatively.
-				Set<FLocation> chunks = factionChunks.get(faction);
-				if (chunks == null)
-				{
-					chunks = new HashSet<FLocation>();
-					factionChunks.put(faction, chunks);
-				}
-				
-				chunks.add(chunk);
+			
+			Set<FLocation> factionTerritory= factionChunks.get(chunkOwner);
+			if (factionTerritory==null){
+				factionTerritory = new HashSet<FLocation>();
+				factionChunks.put(chunkOwner, factionTerritory);
 			}
+			
+			factionTerritory.add(chunkOfDoom.getKey());
 		}
 
 		return worldFactionChunks;
@@ -944,15 +935,15 @@ public class EngineDynmap extends Thread
 	// Thread Safe / Asynchronous: Yes
 	public static void info(String msg)
 	{
-		//String message = DYNMAP_INTEGRATION + msg;
-		//Factions.get().log(message);
+		String message = DYNMAP_INTEGRATION + msg;
+		System.out.println(message);
 	}
 
 	// Thread Safe / Asynchronous: Yes
 	public static void severe(String msg)
 	{
-		//String message = DYNMAP_INTEGRATION + ChatColor.RED.toString() + msg;
-		//Factions.get().log(message);
+		String message = DYNMAP_INTEGRATION + ChatColor.RED.toString() + msg;
+		System.out.println(message);
 	}
 	
 	enum Direction
