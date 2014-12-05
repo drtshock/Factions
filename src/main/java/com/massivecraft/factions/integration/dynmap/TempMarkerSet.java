@@ -3,22 +3,13 @@ package com.massivecraft.factions.integration.dynmap;
 import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerSet;
 
-import com.massivecraft.massivecore.util.MUtil;
-
 public class TempMarkerSet
 {
-	// -------------------------------------------- //
-	// FIELDS
-	// -------------------------------------------- //
 	
 	public String label;
 	public int minimumZoom;
 	public int priority;
 	public boolean hideByDefault;
-	
-	// -------------------------------------------- //
-	// CREATE
-	// -------------------------------------------- //
 	
 	public MarkerSet create(MarkerAPI markerApi, String id)
 	{
@@ -41,35 +32,28 @@ public class TempMarkerSet
 		return ret;
 	}
 	
-	// -------------------------------------------- //
-	// UPDATE
-	// -------------------------------------------- //
-	
 	public void update(MarkerAPI markerApi, MarkerSet markerset)
 	{
 		// Name
-		if (!MUtil.equals(markerset.getMarkerSetLabel(), this.label))
+		if (markerset.getMarkerSetLabel().equals(this.label))
 		{
 			markerset.setMarkerSetLabel(this.label);
 		}
 
-		// Minimum Zoom
 		if (this.minimumZoom > 0)
 		{
-			if (!MUtil.equals(markerset.getMinZoom(), this.minimumZoom))
+			if (markerset.getMinZoom()!=this.minimumZoom)
 			{
 				markerset.setMinZoom(this.minimumZoom);
 			}
 		}
 
-		// Priority
-		if (!MUtil.equals(markerset.getLayerPriority(), this.priority))
+		if (markerset.getLayerPriority()!=this.priority)
 		{
 			markerset.setLayerPriority(this.priority);
 		}
 
-		// Hide by Default
-		if (!MUtil.equals(markerset.getHideByDefault(), this.hideByDefault))
+		if (markerset.getHideByDefault()!=this.hideByDefault)
 		{
 			markerset.setHideByDefault(this.hideByDefault);
 		}
