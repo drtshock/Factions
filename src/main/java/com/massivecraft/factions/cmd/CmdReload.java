@@ -27,9 +27,6 @@ public class CmdReload extends FCommand {
 
     @Override
     public void perform() {
-    	Bukkit.getScheduler().cancelTasks(p);
-    	EngineDynmap.getInstance().init();
-    	
         long timeInitStart = System.currentTimeMillis();
         Conf.load();
         P.p.reloadConfig();
