@@ -15,6 +15,7 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.dynmap.DynmapAPI;
 import org.dynmap.markers.AreaMarker;
@@ -24,7 +25,14 @@ import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PlayerSet;
 import org.dynmap.utils.TileFlags;
 
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.Role;
+/*
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.TerritoryAccess;
 import com.massivecraft.factions.entity.Board;
@@ -40,9 +48,9 @@ import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
-
+*/
 // This source code is a heavily modified version of mikeprimms plugin Dynmap-Factions.
-public class EngineDynmap
+public class EngineDynmap extends Thread
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -50,7 +58,7 @@ public class EngineDynmap
 
 	public final static int BLOCKS_PER_CHUNK = 16;
 	
-	public final static String DYNMAP_INTEGRATION = Txt.parse("<h>Dynmap Integration: <i>");
+	public final static String DYNMAP_INTEGRATION = "\u00A7dDynmap Integration: \u00A7e";
 	
 	public final static String FACTIONS = "factions";
 	public final static String FACTIONS_ = FACTIONS + "_";
@@ -74,47 +82,30 @@ public class EngineDynmap
 	public static EngineDynmap get() { return i; }
 	private EngineDynmap() {}
 
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-
-	@Override
-	public Plugin getPlugin()
+	public Factions getPlugin()
 	{
-		return Factions.get();
+		return Factions.getInstance();
 	}
 	
-	@Override
 	public Long getPeriod()
 	{
-		// Every 15 seconds
-		return 15 * 20L;
+		return 15 * 20L; // Every 15 seconds
 	}
 	
-	@Override
 	public boolean isSync()
 	{
 		return false;
 	}
 
-	// -------------------------------------------- //
-	// FIELDS
-	// -------------------------------------------- //
-
 	public DynmapAPI dynmapApi;
 	public MarkerAPI markerApi;
 	public MarkerSet markerset;
 
-	// -------------------------------------------- //
-	// RUN: UPDATE
-	// -------------------------------------------- //
-	
-	// Thread Safe / Asynchronous: Yes
 	@Override
 	public void run()
 	{
 		// Should we even use dynmap?
-		if (!MConf.get().dynmapUse)
+		if (!Conf.dynmapUse)
 		{
 			if (this.markerset != null)
 			{
@@ -138,7 +129,7 @@ public class EngineDynmap
 		updateLog("Async", duration);
 		
 		// Shedule non thread safe sync at the end!
-		Bukkit.getScheduler().scheduleSyncDelayedTask(Factions.get(), new Runnable()
+		Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable()
 		{
 			@Override
 			public void run()
@@ -161,17 +152,13 @@ public class EngineDynmap
 		});
 	}
 	
-	// Thread Safe / Asynchronous: Yes
+	//Async
 	public static void updateLog(String name, long millis)
 	{
-		if (!MConf.get().dynmapUpdateLog) return;
-		String message = Txt.parse("<i>%s took <h>%dms<i>.", "Faction Dynmap " + name, millis);
-		Factions.get().log(message);
+		if (!Conf.dynmapUpdateLog) return;
+		//String message = Txt.parse("<i>%s took <h>%dms<i>.", "Faction Dynmap " + name, millis);
+		//Factions.get().log(message);
 	}
-
-	// -------------------------------------------- //
-	// UPDATE: CORE
-	// -------------------------------------------- //
 	
 	// Thread Safe / Asynchronous: No
 	public boolean updateCore()
@@ -203,10 +190,10 @@ public class EngineDynmap
 	public TempMarkerSet createLayer()
 	{
 		TempMarkerSet ret = new TempMarkerSet();
-		ret.label = MConf.get().dynmapLayerName;
-		ret.minimumZoom = MConf.get().dynmapLayerMinimumZoom;
-		ret.priority = MConf.get().dynmapLayerPriority;
-		ret.hideByDefault = !MConf.get().dynmapLayerVisible;
+		ret.label = Conf.dynmapLayerName;
+		ret.minimumZoom = Conf.dynmapLayerMinimumZoom;
+		ret.priority = Conf.dynmapLayerPriority;
+		ret.hideByDefault = !Conf.dynmapLayerVisible;
 		return ret;
 	}
 	
@@ -240,9 +227,9 @@ public class EngineDynmap
 		Map<String, TempMarker> ret = new HashMap<String, TempMarker>();
 		
 		// Loop current factions
-		for (Faction faction : FactionColl.get().getAll())
+		for (Faction faction : Factions.getInstance().getAllFactions())
 		{
-			PS ps = faction.getHome();
+			Location ps = faction.getHome();
 			if (ps == null) continue;
 			
 			DynmapStyle style = getStyle(faction);
@@ -250,11 +237,11 @@ public class EngineDynmap
 			String markerId = FACTIONS_HOME_ + faction.getId();
 			
 			TempMarker temp = new TempMarker();
-			temp.label = ChatColor.stripColor(faction.getName());
-			temp.world = ps.getWorld();
-			temp.x = ps.getLocationX();
-			temp.y = ps.getLocationY();
-			temp.z = ps.getLocationZ();
+			temp.label = ChatColor.stripColor(faction.getTag());
+			temp.world = ps.getWorld().toString();
+			temp.x = ps.getX();
+			temp.y = ps.getY();
+			temp.z = ps.getZ();
 			temp.iconName = style.getHomeMarker();
 			temp.description = getDescription(faction);
 			
@@ -314,12 +301,12 @@ public class EngineDynmap
 	// Thread Safe: YES
 	public Map<String, TempAreaMarker> createAreas()
 	{
-		Map<String, Map<Faction, Set<PS>>> worldFactionChunks = createWorldFactionChunks();
+		Map<String, Map<Faction, Set<Location>>> worldFactionChunks = createWorldFactionChunks();
 		return createAreas(worldFactionChunks);
 	}
 	
 	// Thread Safe: YES
-	public Map<String, Map<Faction, Set<PS>>> createWorldFactionChunks()
+	public Map<String, Map<Faction, Set<Location>>> createWorldFactionChunks()
 	{
 		// Create map "world name --> faction --> set of chunk coords"
 		Map<String, Map<Faction, Set<PS>>> worldFactionChunks = new HashMap<String, Map<Faction, Set<PS>>>();
@@ -330,17 +317,17 @@ public class EngineDynmap
 			String world = board.getId();
 			
 			// Get the factionChunks creatively.
-			Map<Faction, Set<PS>> factionChunks = worldFactionChunks.get(world);
+			Map<Faction, Set<Location>> factionChunks = worldFactionChunks.get(world);
 			if (factionChunks == null)
 			{
-				factionChunks = new HashMap<Faction, Set<PS>>();
+				factionChunks = new HashMap<Faction, Set<Location>>();
 				worldFactionChunks.put(world, factionChunks);
 			}
 					
 			// Populate the factionChunks
-			for (Entry<PS, TerritoryAccess> entry : board.getMap().entrySet())
+			for (Entry<Location, TerritoryAccess> entry : board.getMap().entrySet())
 			{
-				PS chunk = entry.getKey();
+				Location chunk = entry.getKey();
 				TerritoryAccess territoryAccess = entry.getValue();
 				String factionId = territoryAccess.getHostFactionId();
 				Faction faction = Faction.get(factionId);
@@ -568,7 +555,7 @@ public class EngineDynmap
 			String markerId = FACTIONS_ + world + "__" + faction.getId() + "__" + markerIndex;
 			
 			TempAreaMarker temp = new TempAreaMarker();
-			temp.label = faction.getName();
+			temp.label = faction.getTag();
 			temp.world = world;
 			temp.x = x;
 			temp.z = z;
@@ -653,12 +640,12 @@ public class EngineDynmap
 		if (faction.isNone()) return null;
 		
 		Set<String> ret = new HashSet<String>();
-		
-		for (MPlayer mplayer : faction.getMPlayers())
+
+		for (FPlayer fplayer : faction.getFPlayers())
 		{
 			// NOTE: We add both UUID and name. This might be a good idea for future proofing.
-			ret.add(mplayer.getId());
-			ret.add(mplayer.getName());
+			ret.add(fplayer.getId());
+			ret.add(fplayer.getName());
 		}
 		
 		return ret;
@@ -667,11 +654,11 @@ public class EngineDynmap
 	// Thread Safe / Asynchronous: Yes
 	public Map<String, Set<String>> createPlayersets()
 	{
-		if (!MConf.get().dynmapVisibilityByFaction) return null;
+		if (!Conf.dynmapVisibilityByFaction) return null;
 		
 		Map<String, Set<String>> ret = new HashMap<String, Set<String>>();
 	
-		for (Faction faction : FactionColl.get().getAll())
+		for (Faction faction : Factions.getInstance().getAllFactions())
 		{
 			String playersetId = createPlayersetId(faction);
 			if (playersetId == null) continue;
@@ -730,10 +717,10 @@ public class EngineDynmap
 	// Thread Safe / Asynchronous: Yes
 	private String getDescription(Faction faction)
 	{
-		String ret = "<div class=\"regioninfo\">" + MConf.get().dynmapDescription + "</div>";
+		String ret = "<div class=\"regioninfo\">" + Conf.dynmapDescription + "</div>";
 		
 		// Name
-		String name = faction.getName();
+		String name = faction.getTag();
 		name = ChatColor.stripColor(name);
 		name = escapeHtml(name);
 		ret = ret.replace("%name%", name);
@@ -743,19 +730,21 @@ public class EngineDynmap
 		description = ChatColor.stripColor(description);
 		description = escapeHtml(description);
 		ret = ret.replace("%description%", description);
-		
+		/*
 		// Age
 		long ageMillis = faction.getCreatedAtMillis() - System.currentTimeMillis();
 		LinkedHashMap<TimeUnit, Long> ageUnitcounts = TimeDiffUtil.limit(TimeDiffUtil.unitcounts(ageMillis, TimeUnit.getAllButMillisSecondsAndMinutes()), 3);
 		String age = TimeDiffUtil.formatedVerboose(ageUnitcounts, "");
 		age = ChatColor.stripColor(age);
 		ret = ret.replace("%age%", age);
-		
+		*/
 		// Money
+		
 		String money = "unavailable";
-		if (MConf.get().bankEnabled && MConf.get().dynmapDescriptionMoney)
+		if (Conf.bankEnabled && Conf.dynmapDescriptionMoney)
 		{
-			money = Money.format(Money.get(faction));
+			//TODO: Fix.
+			//money = Money.format(Money.get(faction));
 		}
 		ret = ret.replace("%money%", money);
 		
@@ -788,7 +777,7 @@ public class EngineDynmap
 			flagTableParts.add(color);
 		}
 		
-		String flagMap = Txt.implode(flagMapParts, "<br>\n");
+		String flagMap = implode(flagMapParts, "<br>\n","");
 		ret = ret.replace("%flags.map%", flagMap);
 		
 		for (int cols = 1; cols <= 10; cols++)
@@ -798,35 +787,36 @@ public class EngineDynmap
 		}
 		
 		// Players
-		List<MPlayer> playersList = faction.getMPlayers();
+		Set<FPlayer> playersList = faction.getFPlayers();
 		String playersCount = String.valueOf(playersList.size());
 		String players = getHtmlPlayerString(playersList);
 		
-		MPlayer playersLeaderObject = faction.getLeader();
+		FPlayer playersLeaderObject = faction.getFPlayerAdmin();
 		String playersLeader = getHtmlPlayerName(playersLeaderObject);
 		
-		List<MPlayer> playersOfficersList = faction.getMPlayersWhereRole(Rel.OFFICER);
-		String playersOfficersCount = String.valueOf(playersOfficersList.size());
-		String playersOfficers = getHtmlPlayerString(playersOfficersList);
+		ArrayList<FPlayer> playersAdminsList = faction.getFPlayersWhereRole(Role.ADMIN);
+		String playersAdminsCount = String.valueOf(playersAdminsList.size());
+		String playersAdmins = getHtmlPlayerString(playersAdminsList);
 		
-		List<MPlayer> playersMembersList = faction.getMPlayersWhereRole(Rel.MEMBER);
-		String playersMembersCount = String.valueOf(playersMembersList.size());
-		String playersMembers = getHtmlPlayerString(playersMembersList);
+		ArrayList<FPlayer> playersModeratorsList = faction.getFPlayersWhereRole(Role.MODERATOR);
+		String playersModeratorsCount = String.valueOf(playersModeratorsList.size());
+		String playersModerators = getHtmlPlayerString(playersModeratorsList);
+
 		
-		List<MPlayer> playersRecruitsList = faction.getMPlayersWhereRole(Rel.RECRUIT);
-		String playersRecruitsCount = String.valueOf(playersRecruitsList.size());
-		String playersRecruits = getHtmlPlayerString(playersRecruitsList);
+		ArrayList<FPlayer> playersNormalsList = faction.getFPlayersWhereRole(Role.NORMAL);
+		String playersNormalsCount = String.valueOf(playersNormalsList.size());
+		String playersNormals = getHtmlPlayerString(playersNormalsList);
 		
 		
 		ret = ret.replace("%players%", players);
 		ret = ret.replace("%players.count%", playersCount);
 		ret = ret.replace("%players.leader%", playersLeader);
-		ret = ret.replace("%players.officers%", playersOfficers);
-		ret = ret.replace("%players.officers.count%", playersOfficersCount);
-		ret = ret.replace("%players.members%", playersMembers);
-		ret = ret.replace("%players.members.count%", playersMembersCount);
-		ret = ret.replace("%players.recruits%", playersRecruits);
-		ret = ret.replace("%players.recruits.count%", playersRecruitsCount);
+		ret = ret.replace("%players.admins%", playersAdmins);
+		ret = ret.replace("%players.admins.count%", playersAdminsCount);
+		ret = ret.replace("%players.moderators%", playersModerators);
+		ret = ret.replace("%players.moderators.count%", playersModeratorsCount);
+		ret = ret.replace("%players.normals%", playersNormals);
+		ret = ret.replace("%players.normals.count%", playersNormalsCount);
 		
 		return ret;
 	}
@@ -860,21 +850,21 @@ public class EngineDynmap
 		return ret.toString();
 	}
 	
-	public static String getHtmlPlayerString(List<MPlayer> mplayers)
+	public static String getHtmlPlayerString(Collection<FPlayer> playersOfficersList)
 	{
 		String ret = "";
-		for (MPlayer mplayer : mplayers)
+		for (FPlayer fplayer : playersOfficersList)
 		{
 			if (ret.length() > 0) ret += ", ";
-			ret += getHtmlPlayerName(mplayer);
+			ret += getHtmlPlayerName(fplayer);
 		}
 		return ret;
 	}
 	
-	public static String getHtmlPlayerName(MPlayer mplayer)
+	public static String getHtmlPlayerName(FPlayer fplayer)
 	{
-		if (mplayer == null) return "none";
-		return escapeHtml(mplayer.getName());
+		if (fplayer == null) return "none";
+		return escapeHtml(fplayer.getName());
 	}
 	
 	public static String boolcolor(String string, boolean bool)
@@ -908,11 +898,11 @@ public class EngineDynmap
 		if (faction == null) return false;
 		final String factionId = faction.getId();
 		if (factionId == null) return false;
-		final String factionName = faction.getName();
+		final String factionName = faction.getTag();
 		if (factionName == null) return false;
 		
-		Set<String> visible = MConf.get().dynmapVisibleFactions;
-		Set<String> hidden = MConf.get().dynmapHiddenFactions;
+		Set<String> visible = Conf.dynmapVisibleFactions;
+		Set<String> hidden = Conf.dynmapHiddenFactions;
 		
 		if (visible.size() > 0)
 		{
@@ -938,27 +928,27 @@ public class EngineDynmap
 	{
 		DynmapStyle ret;
 
-		ret = MConf.get().dynmapFactionStyles.get(faction.getId());
+		ret = Conf.dynmapFactionStyles.get(faction.getId());
 		if (ret != null) return ret;
 
-		ret = MConf.get().dynmapFactionStyles.get(faction.getName());
+		ret = Conf.dynmapFactionStyles.get(faction.getTag());
 		if (ret != null) return ret;
 
-		return MConf.get().dynmapDefaultStyle;
+		return Conf.dynmapDefaultStyle;
 	}
 
 	// Thread Safe / Asynchronous: Yes
 	public static void info(String msg)
 	{
-		String message = DYNMAP_INTEGRATION + msg;
-		Factions.get().log(message);
+		//String message = DYNMAP_INTEGRATION + msg;
+		//Factions.get().log(message);
 	}
 
 	// Thread Safe / Asynchronous: Yes
 	public static void severe(String msg)
 	{
-		String message = DYNMAP_INTEGRATION + ChatColor.RED.toString() + msg;
-		Factions.get().log(message);
+		//String message = DYNMAP_INTEGRATION + ChatColor.RED.toString() + msg;
+		//Factions.get().log(message);
 	}
 	
 	enum Direction
@@ -992,6 +982,29 @@ public class EngineDynmap
 		return cnt;
 	}
 	
-	
+	//Only useful function I've seen in MassiveCore so far. 
+	private static String implode(final List<String> flagMapParts, final String glue, final String format)
+	{
+		Object[] list=flagMapParts.toArray();
+		StringBuilder ret = new StringBuilder();
+		for (int i=0; i<list.length; i++)
+		{
+			Object item = list[i];
+			String str = (item == null ? "NULL" : item.toString());
+			if (i!=0)
+			{
+				ret.append(glue);
+			}
+			if (format != null)
+			{
+				ret.append(String.format(format, str));
+			}
+			else
+			{
+				ret.append(str);
+			}
+		}
+		return ret.toString();
+	}
 	
 }
