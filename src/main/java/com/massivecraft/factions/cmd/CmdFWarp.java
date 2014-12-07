@@ -4,7 +4,10 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
+
 import mkremins.fanciful.FancyMessage;
+
 import org.bukkit.ChatColor;
 
 public class CmdFWarp extends FCommand {
@@ -24,13 +27,13 @@ public class CmdFWarp extends FCommand {
     public void perform() {
         //TODO: check if in combat.
         if (args.size() == 0) {
-            FancyMessage msg = new FancyMessage("Warps: ").color(ChatColor.GOLD);
+            FancyMessage msg = new FancyMessage(TL.COMMAND_FWARP_WARPS.toString()).color(ChatColor.GOLD);
             for (String s : myFaction.getWarps().keySet()) {
-                msg.then(s + " ").tooltip("Click to warp!").command("f warp " + s).color(ChatColor.WHITE);
+                msg.then(s + " ").tooltip(TL.COMMAND_FWARP_CLICKTOWARP.toString()).command("f warp " + s).color(ChatColor.WHITE);
             }
             sendFancyMessage(msg);
         } else if (args.size() > 1) {
-            fme.msg("<i>/f warp <warpname>");
+            fme.msg(TL.COMMAND_FWARP_COMMANDFORMAT.toString());
         } else {
             String warpName = argAsString(0);
             if (myFaction.isWarp(argAsString(0))) {
@@ -38,14 +41,14 @@ public class CmdFWarp extends FCommand {
                     return;
                 }
                 fme.getPlayer().teleport(myFaction.getWarp(warpName).getLocation());
-                fme.msg("<i>Warped to <a>%s", warpName);
+                fme.msg(TL.COMMAND_FWARP_WARPED.toString(), warpName);
             } else {
-                fme.msg("<i>Couldn't find warp <a>%s", warpName);
+                fme.msg(TL.COMMAND_FWARP_INVALID.toString(), warpName);
             }
         }
     }
 
     private boolean transact(FPlayer player) {
-        return P.p.getConfig().getBoolean("warp-cost.enabled", false) && !player.isAdminBypassing() && Econ.modifyMoney(player, P.p.getConfig().getDouble("warp-cost.warp", 5), "to warp", "for warping");
+        return P.p.getConfig().getBoolean("warp-cost.enabled", false) && !player.isAdminBypassing() && Econ.modifyMoney(player, P.p.getConfig().getDouble("warp-cost.warp", 5), TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
     }
 }
