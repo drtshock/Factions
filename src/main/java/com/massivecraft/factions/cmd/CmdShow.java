@@ -138,6 +138,9 @@ public class CmdShow extends FCommand {
                     online.then(", " + name).tooltip(getToolTips(p));
                 }
                 firstOnline = false;
+                if (online.toJSONString().length() >= 32700) { // Client gets kicked at 32767, some leniency
+                    online = new FancyMessage();
+                }
             } else {
                 if (firstOffline) {
                     offline.then(name).tooltip(getToolTips(p));
@@ -145,6 +148,9 @@ public class CmdShow extends FCommand {
                     offline.then(", " + name).tooltip(getToolTips(p));
                 }
                 firstOffline = false;
+                if (offline.toJSONString().length() >= 32700) { // Client gets kicked at 32767, some leniency
+                    offline = new FancyMessage();
+                }
             }
         }
 
