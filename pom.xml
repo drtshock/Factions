@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>Factions</artifactId>
-    <version>1.6.9.5-U0.1.12-SNAPSHOT</version>
+    <version>1.6.9.5-U0.1.12</version>
     <packaging>jar</packaging>
 
     <name>Factions</name>
@@ -108,7 +108,7 @@
         <dependency>
             <groupId>mkremins</groupId>
             <artifactId>fanciful</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.2.1-SNAPSHOT</version>
         </dependency>
         <dependency>
 			<groupId>org.dynmap</groupId>
@@ -143,10 +143,6 @@
         <repository>
             <id>repo.mikeprimm.com</id>
             <url>http://repo.mikeprimm.com/</url>
-        </repository>
-        <repository>
-            <id>fanciful-mvn-repo</id>
-            <url>https://raw.github.com/mkremins/fanciful/mvn-repo/</url>
         </repository>
     </repositories>
 </project>
