@@ -1,7 +1,10 @@
 package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.Role;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
@@ -10,6 +13,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 public class MiscUtil {
 
@@ -76,6 +80,14 @@ public class MiscUtil {
         }
 
         return errors;
+    }
+    
+    public static Set<FPlayer> rankOrder(Set<FPlayer> players){
+    	Set<FPlayer> ret=new HashSet<FPlayer>();
+    	for(FPlayer p:players) if(p.getRole().equals(Role.ADMIN)) ret.add(p);
+    	for(FPlayer p:players) if(p.getRole().equals(Role.MODERATOR)) ret.add(p);
+    	for(FPlayer p:players) if(p.getRole().equals(Role.NORMAL)) ret.add(p);
+    	return ret;
     }
 }
 
