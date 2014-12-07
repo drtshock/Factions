@@ -7,12 +7,15 @@ import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.integration.Worldguard;
+import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TextUtil;
+
 import net.milkbowl.vault.permission.Permission;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -106,6 +109,8 @@ public class P extends MPlugin {
         if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
             Worldguard.init(this);
         }
+        
+        EngineDynmap.getInstance().init();
 
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
@@ -143,6 +148,7 @@ public class P extends MPlugin {
 
     @Override
     public void onDisable() {
+    	Bukkit.getScheduler().cancelTasks(this);
         // only save data if plugin actually completely loaded successfully
         if (this.loadSuccessful) {
             Conf.save();
@@ -153,6 +159,7 @@ public class P extends MPlugin {
         }
 
         cmdBase.cmdSB.save();
+        
         super.onDisable();
     }
 
