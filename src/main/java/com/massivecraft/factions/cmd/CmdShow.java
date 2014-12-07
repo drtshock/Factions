@@ -150,6 +150,7 @@ public class CmdShow extends FCommand {
                 } else {
                     offline.then(", " + name).tooltip(getToolTips(p));
                 }
+                firstOffline = false;
                 if (offline.toJSONString().length() >= 32700) { // Client gets kicked at 32767, some leniency
                     offline = new FancyMessage();
                 }
