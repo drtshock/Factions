@@ -4,11 +4,17 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+<<<<<<< HEAD
 import com.massivecraft.factions.zcore.util.TL;
 
+=======
+import com.massivecraft.factions.util.LazyLocation;
+>>>>>>> bd8f572cbf9f261762441910f5c11ad4568178c7
 import mkremins.fanciful.FancyMessage;
 
 import org.bukkit.ChatColor;
+
+import java.util.Map;
 
 public class CmdFWarp extends FCommand {
 
@@ -28,7 +34,8 @@ public class CmdFWarp extends FCommand {
         //TODO: check if in combat.
         if (args.size() == 0) {
             FancyMessage msg = new FancyMessage(TL.COMMAND_FWARP_WARPS.toString()).color(ChatColor.GOLD);
-            for (String s : myFaction.getWarps().keySet()) {
+            Map<String, LazyLocation> warps = myFaction.getWarps();
+            for (String s : warps.keySet()) {
                 msg.then(s + " ").tooltip(TL.COMMAND_FWARP_CLICKTOWARP.toString()).command("f warp " + s).color(ChatColor.WHITE);
             }
             sendFancyMessage(msg);
