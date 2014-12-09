@@ -74,9 +74,9 @@ public class CmdConfig extends FCommand {
                 target.setBoolean(null, targetValue);
 
                 if (targetValue) {
-                    success = "\"" + fieldName + TL.COMMAND_CONFIG_SET_TRUE;
+                    success = "\"" + fieldName + TL.COMMAND_CONFIG_SET_TRUE.toString();
                 } else {
-                    success = "\"" + fieldName + TL.COMMAND_CONFIG_SET_FALSE;
+                    success = "\"" + fieldName + TL.COMMAND_CONFIG_SET_FALSE.toString();
                 }
             }
 
