@@ -68,7 +68,7 @@ public class CmdAdmin extends FCommand {
         if (fyou == admin) {
             targetFaction.promoteNewLeader();
             msg(TL.COMMAND_ADMIN_DEMOTES.toString(), fyou.describeTo(fme, true));
-            fyou.msg(TL.COMMAND_ADMIN_DEMOTED.toString(), senderIsConsole ? TL.GENERIC_SERVERADMIN : fme.describeTo(fyou, true));
+            fyou.msg(TL.COMMAND_ADMIN_DEMOTED.toString(), senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fyou, true));
             return;
         }
 
