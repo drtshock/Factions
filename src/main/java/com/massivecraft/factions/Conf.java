@@ -247,7 +247,8 @@ public class Conf {
     public static double econCostEnemy = 0.0;
     public static double econCostNeutral = 0.0;
     public static double econCostNoBoom = 0.0;
-
+    public static double econCostWarp = 0.0;
+    
 
     // -------------------------------------------- //
     // INTEGRATION: DYNMAP
