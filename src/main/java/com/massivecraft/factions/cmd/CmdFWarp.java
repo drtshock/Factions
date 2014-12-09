@@ -1,13 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.P;
-import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.util.LazyLocation;
+
 import mkremins.fanciful.FancyMessage;
 
 import org.bukkit.ChatColor;
@@ -42,7 +39,7 @@ public class CmdFWarp extends FCommand {
         } else {
             String warpName = argAsString(0);
             if (myFaction.isWarp(argAsString(0))) {
-                if (!transact(fme)) {
+                if (!payForCommand(Conf.econCostWarp, TL.COMMAND_FWARP_TOWARP, TL.COMMAND_FWARP_FORWARPING)) {
                     return;
                 }
                 fme.getPlayer().teleport(myFaction.getWarp(warpName).getLocation());
@@ -53,7 +50,4 @@ public class CmdFWarp extends FCommand {
         }
     }
 
-    private boolean transact(FPlayer player) {
-        return P.p.getConfig().getBoolean("warp-cost.enabled", false) && !player.isAdminBypassing() && Econ.modifyMoney(player, P.p.getConfig().getDouble("warp-cost.warp", 5), TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
-    }
 }
