@@ -29,21 +29,21 @@ public class CmdDescription extends FCommand {
     @Override
     public void perform() {
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostDesc, TL.COMMAND_DESCRIPTION_TOCHANGE.toString(), TL.COMMAND_DESCRIPTION_FORCHANGE.toString())) {
+        if (!payForCommand(Conf.econCostDesc, TL.COMMAND_DESCRIPTION_TOCHANGE, TL.COMMAND_DESCRIPTION_FORCHANGE)) {
             return;
         }
 
         myFaction.setDescription(TextUtil.implode(args, " ").replaceAll("(&([a-f0-9]))", "& $2"));  // since "&" color tags seem to work even through plain old FPlayer.sendMessage() for some reason, we need to break those up
 
         if (!Conf.broadcastDescriptionChanges) {
-            fme.msg(TL.COMMAND_DESCRIPTION_CHANGED.toString(), myFaction.describeTo(fme));
+            fme.msg(TL.COMMAND_DESCRIPTION_CHANGED, myFaction.describeTo(fme));
             fme.sendMessage(myFaction.getDescription());
             return;
         }
 
         // Broadcast the description to everyone
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-            fplayer.msg(TL.COMMAND_DESCRIPTION_CHANGES.toString(), myFaction.describeTo(fplayer));
+            fplayer.msg(TL.COMMAND_DESCRIPTION_CHANGES, myFaction.describeTo(fplayer));
             fplayer.sendMessage(myFaction.getDescription());  // players can inject "&" or "`" or "<i>" or whatever in their description; &k is particularly interesting looking
         }
     }

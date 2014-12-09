@@ -51,7 +51,7 @@ public class CmdKick extends FCommand {
         }
 
         if (fme == toKick) {
-            msg(TL.COMMAND_KICK_SELF.toString());
+            msg(TL.COMMAND_KICK_SELF);
             msg(TL.GENERIC_YOUMAYWANT.toString() + p.cmdBase.cmdLeave.getUseageTemplate(false));
             return;
         }

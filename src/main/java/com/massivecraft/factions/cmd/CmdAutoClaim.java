@@ -28,15 +28,15 @@ public class CmdAutoClaim extends FCommand {
         Faction forFaction = this.argAsFaction(0, myFaction);
         if (forFaction == null || forFaction == fme.getAutoClaimFor()) {
             fme.setAutoClaimFor(null);
-            msg(TL.COMMAND_AUTOCLAIM_DISABLED.toString());
+            msg(TL.COMMAND_AUTOCLAIM_DISABLED);
             return;
         }
 
         if (!fme.canClaimForFaction(forFaction)) {
             if (myFaction == forFaction) {
-                msg(TL.COMMAND_AUTOCLAIM_REQUIREDRANK.toString(), Role.MODERATOR.toString());
+                msg(TL.COMMAND_AUTOCLAIM_REQUIREDRANK, Role.MODERATOR.toString());
             } else {
-                msg(TL.COMMAND_AUTOCLAIM_OTHERFACTION.toString(), forFaction.describeTo(fme));
+                msg(TL.COMMAND_AUTOCLAIM_OTHERFACTION, forFaction.describeTo(fme));
             }
 
             return;
@@ -44,7 +44,7 @@ public class CmdAutoClaim extends FCommand {
 
         fme.setAutoClaimFor(forFaction);
 
-        msg(TL.COMMAND_AUTOCLAIM_ENABLED.toString(), forFaction.describeTo(fme));
+        msg(TL.COMMAND_AUTOCLAIM_ENABLED, forFaction.describeTo(fme));
         fme.attemptClaim(forFaction, me.getLocation(), true);
     }
 

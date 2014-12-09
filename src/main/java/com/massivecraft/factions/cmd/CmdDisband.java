@@ -74,9 +74,9 @@ public class CmdDisband extends FCommand {
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
             String who = senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer);
             if (fplayer.getFaction() == faction) {
-                fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_YOURS.toString(), who);
+                fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_YOURS, who);
             } else {
-                fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS.toString(), who, faction.getTag(fplayer));
+                fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS, who, faction.getTag(fplayer));
             }
         }
         if (Conf.logFactionDisband) {
@@ -91,7 +91,7 @@ public class CmdDisband extends FCommand {
 
             if (amount > 0.0) {
                 String amountString = Econ.moneyString(amount);
-                msg(TL.COMMAND_DISBAND_HOLDINGS.toString(), amountString);
+                msg(TL.COMMAND_DISBAND_HOLDINGS, amountString);
                 //TODO: Format this correctly and translate
                 P.p.log(fme.getName() + " has been given bank holdings of " + amountString + " from disbanding " + faction.getTag() + ".");
             }

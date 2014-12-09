@@ -36,12 +36,12 @@ public class CmdCreate extends FCommand {
         String tag = this.argAsString(0);
 
         if (fme.hasFaction()) {
-            msg(TL.COMMAND_CREATE_MUSTLEAVE.toString());
+            msg(TL.COMMAND_CREATE_MUSTLEAVE);
             return;
         }
 
         if (Factions.getInstance().isTagTaken(tag)) {
-            msg(TL.COMMAND_CREATE_INUSE.toString());
+            msg(TL.COMMAND_CREATE_INUSE);
             return;
         }
 
@@ -64,7 +64,7 @@ public class CmdCreate extends FCommand {
         }
 
         // then make 'em pay (if applicable)
-        if (!payForCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE.toString(), TL.COMMAND_CREATE_FORCREATE.toString())) {
+        if (!payForCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE, TL.COMMAND_CREATE_FORCREATE)) {
             return;
         }
 
@@ -72,7 +72,7 @@ public class CmdCreate extends FCommand {
 
         // TODO: Why would this even happen??? Auto increment clash??
         if (faction == null) {
-            msg(TL.COMMAND_CREATE_ERROR.toString());
+            msg(TL.COMMAND_CREATE_ERROR);
             return;
         }
 
@@ -89,10 +89,10 @@ public class CmdCreate extends FCommand {
         fme.setFaction(faction);
 
         for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
-            follower.msg(TL.COMMAND_CREATE_CREATED.toString(), fme.describeTo(follower, true), faction.getTag(follower));
+            follower.msg(TL.COMMAND_CREATE_CREATED, fme.describeTo(follower, true), faction.getTag(follower));
         }
 
-        msg(TL.COMMAND_CREATE_YOUSHOULD.toString(), p.cmdBase.cmdDescription.getUseageTemplate());
+        msg(TL.COMMAND_CREATE_YOUSHOULD, p.cmdBase.cmdDescription.getUseageTemplate());
 
         if (Conf.logFactionCreate) {
             P.p.log(fme.getName() + TL.COMMAND_CREATE_CREATED_LOG.toString() + tag);

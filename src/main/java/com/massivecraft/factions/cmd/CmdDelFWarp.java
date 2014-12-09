@@ -28,9 +28,9 @@ public class CmdDelFWarp extends FCommand {
                 return;
             }
             myFaction.removeWarp(warp);
-            fme.msg(TL.COMMAND_DELFWARP_DELETED.toString(), warp);
+            fme.msg(TL.COMMAND_DELFWARP_DELETED, warp);
         } else {
-            fme.msg(TL.COMMAND_DELFWARP_INVALID.toString(), warp);
+            fme.msg(TL.COMMAND_DELFWARP_INVALID, warp);
         }
     }
 

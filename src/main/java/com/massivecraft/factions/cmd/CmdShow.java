@@ -57,10 +57,10 @@ public class CmdShow extends FCommand {
 
         String peaceStatus = "";
         if (faction.isPeaceful()) {
-            peaceStatus = "     " + Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL;
+            peaceStatus = "     " + Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString();
         }
 
-        msg(TL.COMMAND_SHOW_JOINING + peaceStatus,(faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED : TL.COMMAND_SHOW_INVITATION));
+        msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus,(faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
 
         double powerBoost = faction.getPowerBoost();
         String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString():TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");

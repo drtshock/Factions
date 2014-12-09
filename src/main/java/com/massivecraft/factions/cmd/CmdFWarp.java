@@ -36,7 +36,7 @@ public class CmdFWarp extends FCommand {
             }
             sendFancyMessage(msg);
         } else if (args.size() > 1) {
-            fme.msg(TL.COMMAND_FWARP_COMMANDFORMAT.toString());
+            fme.msg(TL.COMMAND_FWARP_COMMANDFORMAT);
         } else {
             String warpName = argAsString(0);
             if (myFaction.isWarp(argAsString(0))) {
@@ -44,9 +44,9 @@ public class CmdFWarp extends FCommand {
                     return;
                 }
                 fme.getPlayer().teleport(myFaction.getWarp(warpName).getLocation());
-                fme.msg(TL.COMMAND_FWARP_WARPED.toString(), warpName);
+                fme.msg(TL.COMMAND_FWARP_WARPED, warpName);
             } else {
-                fme.msg(TL.COMMAND_FWARP_INVALID.toString(), warpName);
+                fme.msg(TL.COMMAND_FWARP_INVALID, warpName);
             }
         }
     }

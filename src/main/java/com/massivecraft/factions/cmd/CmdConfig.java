@@ -54,7 +54,7 @@ public class CmdConfig extends FCommand {
         String fieldName = properFieldNames.get(field);
 
         if (fieldName == null || fieldName.isEmpty()) {
-            msg(TL.COMMAND_CONFIG_NOEXIST.toString(), field);
+            msg(TL.COMMAND_CONFIG_NOEXIST, field);
             return;
         }
 

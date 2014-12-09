@@ -38,12 +38,12 @@ public class CmdHome extends FCommand {
     public void perform() {
         // TODO: Hide this command on help also.
         if (!Conf.homesEnabled) {
-            fme.msg(TL.COMMAND_HOME_DISABLED.toString());
+            fme.msg(TL.COMMAND_HOME_DISABLED);
             return;
         }
 
         if (!Conf.homesTeleportCommandEnabled) {
-            fme.msg(TL.COMMAND_HOME_TELEPORTDISABLED.toString());
+            fme.msg(TL.COMMAND_HOME_TELEPORTDISABLED);
             return;
         }
 
@@ -54,12 +54,12 @@ public class CmdHome extends FCommand {
         }
 
         if (!Conf.homesTeleportAllowedFromEnemyTerritory && fme.isInEnemyTerritory()) {
-            fme.msg(TL.COMMAND_HOME_INENEMY.toString());
+            fme.msg(TL.COMMAND_HOME_INENEMY);
             return;
         }
 
         if (!Conf.homesTeleportAllowedFromDifferentWorld && me.getWorld().getUID() != myFaction.getHome().getWorld().getUID()) {
-            fme.msg(TL.COMMAND_HOME_WRONGWORLD.toString());
+            fme.msg(TL.COMMAND_HOME_WRONGWORLD);
             return;
         }
 
@@ -96,7 +96,7 @@ public class CmdHome extends FCommand {
                     continue;
                 }
 
-                fme.msg(TL.COMMAND_HOME_ENEMYNEAR.toString(),String.valueOf(Conf.homesTeleportAllowedEnemyDistance));
+                fme.msg(TL.COMMAND_HOME_ENEMYNEAR,String.valueOf(Conf.homesTeleportAllowedEnemyDistance));
                 return;
             }
         }

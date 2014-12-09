@@ -39,17 +39,17 @@ public class CmdAdmin extends FCommand {
         Faction targetFaction = fyou.getFaction();
 
         if (targetFaction != myFaction && !permAny) {
-            msg(TL.COMMAND_ADMIN_NOTMEMBER.toString(), fyou.describeTo(fme, true));
+            msg(TL.COMMAND_ADMIN_NOTMEMBER, fyou.describeTo(fme, true));
             return;
         }
 
         if (fme != null && fme.getRole() != Role.ADMIN && !permAny) {
-            msg(TL.COMMAND_ADMIN_NOTADMIN.toString());
+            msg(TL.COMMAND_ADMIN_NOTADMIN);
             return;
         }
 
         if (fyou == fme && !permAny) {
-            msg(TL.COMMAND_ADMIN_TARGETSELF.toString());
+            msg(TL.COMMAND_ADMIN_TARGETSELF);
             return;
         }
 
@@ -67,8 +67,8 @@ public class CmdAdmin extends FCommand {
         // if target player is currently admin, demote and replace him
         if (fyou == admin) {
             targetFaction.promoteNewLeader();
-            msg(TL.COMMAND_ADMIN_DEMOTES.toString(), fyou.describeTo(fme, true));
-            fyou.msg(TL.COMMAND_ADMIN_DEMOTED.toString(), senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fyou, true));
+            msg(TL.COMMAND_ADMIN_DEMOTES, fyou.describeTo(fme, true));
+            fyou.msg(TL.COMMAND_ADMIN_DEMOTED, senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fyou, true));
             return;
         }
 
@@ -77,11 +77,11 @@ public class CmdAdmin extends FCommand {
             admin.setRole(Role.MODERATOR);
         }
         fyou.setRole(Role.ADMIN);
-        msg(TL.COMMAND_ADMIN_PROMOTES.toString(), fyou.describeTo(fme, true));
+        msg(TL.COMMAND_ADMIN_PROMOTES, fyou.describeTo(fme, true));
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-            fplayer.msg(TL.COMMAND_ADMIN_PROMOTED.toString(), senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
+            fplayer.msg(TL.COMMAND_ADMIN_PROMOTED, senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
         }
     }
 

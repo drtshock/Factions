@@ -36,41 +36,41 @@ public class CmdJoin extends FCommand {
         boolean samePlayer = fplayer == fme;
 
         if (!samePlayer && !Permission.JOIN_OTHERS.has(sender, false)) {
-            msg(TL.COMMAND_JOIN_CANNOTFORCE.toString());
+            msg(TL.COMMAND_JOIN_CANNOTFORCE);
             return;
         }
 
         if (!faction.isNormal()) {
-            msg(TL.COMMAND_JOIN_SYSTEMFACTION.toString());
+            msg(TL.COMMAND_JOIN_SYSTEMFACTION);
             return;
         }
 
         if (faction == fplayer.getFaction()) {
         	//TODO:TL
-            msg(TL.COMMAND_JOIN_ALREADYMEMBER.toString(), fplayer.describeTo(fme, true), (samePlayer ? "are" : "is"), faction.getTag(fme));
+            msg(TL.COMMAND_JOIN_ALREADYMEMBER, fplayer.describeTo(fme, true), (samePlayer ? "are" : "is"), faction.getTag(fme));
             return;
         }
 
         if (Conf.factionMemberLimit > 0 && faction.getFPlayers().size() >= Conf.factionMemberLimit) {
-            msg(TL.COMMAND_JOIN_ATLIMIT.toString(), faction.getTag(fme), Conf.factionMemberLimit, fplayer.describeTo(fme, false));
+            msg(TL.COMMAND_JOIN_ATLIMIT, faction.getTag(fme), Conf.factionMemberLimit, fplayer.describeTo(fme, false));
             return;
         }
 
         if (fplayer.hasFaction()) {
         	//TODO:TL
-            msg(TL.COMMAND_JOIN_INOTHERFACTION.toString(), fplayer.describeTo(fme, true), (samePlayer ? "your" : "their"));
+            msg(TL.COMMAND_JOIN_INOTHERFACTION, fplayer.describeTo(fme, true), (samePlayer ? "your" : "their"));
             return;
         }
 
         if (!Conf.canLeaveWithNegativePower && fplayer.getPower() < 0) {
-            msg(TL.COMMAND_JOIN_NEGATIVEPOWER.toString(), fplayer.describeTo(fme, true));
+            msg(TL.COMMAND_JOIN_NEGATIVEPOWER, fplayer.describeTo(fme, true));
             return;
         }
 
         if (!(faction.getOpen() || faction.isInvited(fplayer) || fme.isAdminBypassing() || Permission.JOIN_ANY.has(sender, false))) {
-            msg(TL.COMMAND_JOIN_REQUIRESINVITATION.toString());
+            msg(TL.COMMAND_JOIN_REQUIRESINVITATION);
             if (samePlayer) {
-                faction.msg(TL.COMMAND_JOIN_ATTEMPTEDJOIN.toString(), fplayer.describeTo(faction, true));
+                faction.msg(TL.COMMAND_JOIN_ATTEMPTEDJOIN, fplayer.describeTo(faction, true));
             }
             return;
         }
@@ -92,12 +92,12 @@ public class CmdJoin extends FCommand {
             return;
         }
 
-        fme.msg(TL.COMMAND_JOIN_SUCCESS.toString(), fplayer.describeTo(fme, true), faction.getTag(fme));
+        fme.msg(TL.COMMAND_JOIN_SUCCESS, fplayer.describeTo(fme, true), faction.getTag(fme));
 
         if (!samePlayer) {
-            fplayer.msg(TL.COMMAND_JOIN_MOVED.toString(), fme.describeTo(fplayer, true), faction.getTag(fplayer));
+            fplayer.msg(TL.COMMAND_JOIN_MOVED, fme.describeTo(fplayer, true), faction.getTag(fplayer));
         }
-        faction.msg(TL.COMMAND_JOIN_JOINED.toString(), fplayer.describeTo(faction, true));
+        faction.msg(TL.COMMAND_JOIN_JOINED, fplayer.describeTo(faction, true));
 
         fplayer.resetFactionData();
         fplayer.setFaction(faction);

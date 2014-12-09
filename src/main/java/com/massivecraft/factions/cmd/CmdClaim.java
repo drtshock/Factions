@@ -34,7 +34,7 @@ public class CmdClaim extends FCommand {
         int radius = this.argAsInt(1, 1);
 
         if (radius < 1) {
-            msg(TL.COMMAND_CLAIM_INVALIDRADIUS.toString());
+            msg(TL.COMMAND_CLAIM_INVALIDRADIUS);
             return;
         }
 
@@ -44,7 +44,7 @@ public class CmdClaim extends FCommand {
         } else {
             // radius claim
             if (!Permission.CLAIM_RADIUS.has(sender, false)) {
-                msg(TL.COMMAND_CLAIM_DENIED.toString());
+                msg(TL.COMMAND_CLAIM_DENIED);
                 return;
             }
 

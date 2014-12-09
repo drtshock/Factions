@@ -36,7 +36,7 @@ public class CmdInvite extends FCommand {
         }
 
         if (you.getFaction() == myFaction) {
-            msg(TL.COMMAND_INVITE_ALREADYMEMBER.toString(), you.getName(), myFaction.getTag());
+            msg(TL.COMMAND_INVITE_ALREADYMEMBER, you.getName(), myFaction.getTag());
             msg(TL.GENERIC_YOUMAYWANT.toString() + p.cmdBase.cmdKick.getUseageTemplate(false));
             return;
         }
@@ -57,7 +57,7 @@ public class CmdInvite extends FCommand {
         message.send(you.getPlayer());
 
         //you.msg("%s<i> invited you to %s", fme.describeTo(you, true), myFaction.describeTo(you));
-        myFaction.msg(TL.COMMAND_INVITE_INVITED.toString(), fme.describeTo(myFaction, true), you.describeTo(myFaction));
+        myFaction.msg(TL.COMMAND_INVITE_INVITED, fme.describeTo(myFaction, true), you.describeTo(myFaction));
     }
 
 }

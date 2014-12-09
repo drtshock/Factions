@@ -25,12 +25,12 @@ public class CmdBoom extends FCommand {
     @Override
     public void perform() {
         if (!myFaction.isPeaceful()) {
-            fme.msg(TL.COMMAND_BOOM_PEACEFULONLY.toString());
+            fme.msg(TL.COMMAND_BOOM_PEACEFULONLY);
             return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostNoBoom, TL.COMMAND_BOOM_TOTOGGLE.toString(), TL.COMMAND_BOOM_FORTOGGLE.toString())) {
+        if (!payForCommand(Conf.econCostNoBoom, TL.COMMAND_BOOM_TOTOGGLE, TL.COMMAND_BOOM_FORTOGGLE)) {
             return;
         }
 
@@ -39,6 +39,6 @@ public class CmdBoom extends FCommand {
         String enabled = myFaction.noExplosionsInTerritory() ? TL.GENERIC_DISABLED.toString() : TL.GENERIC_ENABLED.toString();
 
         // Inform
-        myFaction.msg(TL.COMMAND_BOOM_ENABLED.toString(), fme.describeTo(myFaction),enabled);
+        myFaction.msg(TL.COMMAND_BOOM_ENABLED, fme.describeTo(myFaction),enabled);
     }
 }
