@@ -11,7 +11,7 @@ root:
   REQUIRESUNICODE: 'true'
   DEFAULT: 'false'
   STATE: partial
-  LOCAL
+  LOCAL:
     AUTHOR: エヴェリン雪「korikisulda」
     RESPONSIBLE: 'エヴェリン雪・ツイッター、ＩＲＣ：「korikisulda」'
     LANGUAGE: 日本語
