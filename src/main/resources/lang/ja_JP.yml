@@ -415,8 +415,8 @@ GENERIC:
   CONSOLEONLY: プレーヤはそのコマンド使用出来ませんよ・
   TRASLATION:
     VERSION: 翻訳：%s・%s「%s」%s
-     CONTRIBUTORS:  翻訳者：%s
-     RESPONSIBLE: 翻訳の主任：%s
+    CONTRIBUTORS:  翻訳者：%s
+    RESPONSIBLE: 翻訳の主任：%s
 RELATION:
   MEMBER: 員
   ALLY: 連盟
