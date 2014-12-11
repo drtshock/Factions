@@ -34,36 +34,35 @@ COMMAND:
   AUTOHELP:
     HELPFOR: ヘルプ・コマンド"
   BOOM:
-    PEACEFULONLY: <b>This command is only usable by factions which are specifically designated as peaceful.
-    TOTOGGLE: to toggle explosions
-    FORTOGGLE: for toggling explosions
-    ENABLED: '%s<i> has %s explosions in your faction''s territory.'
+    PEACEFULONLY: <b>安らかじゃない党派は爆発トグルが禁止です・
+    TOTOGGLE: 爆発トグルし
+    FORTOGGLE: 爆発トグルした
+    ENABLED: '%s<i> は爆発を%sしました'
   BYPASS:
-    ENABLE: <i>You have enabled admin bypass mode. You will be able to build or destroy anywhere.
-    ENABLELOG: ' has ENABLED admin bypass mode.'
-    DISABLE: <i>You have disabled admin bypass mode.
-    DISABLELOG: ' has DISABLED admin bypass mode.'
+    ENABLE: <i>アドミンバイパスモードで入っています
+    ENABLELOG: はアドミンバイパスモードで入っています
+    DISABLE: <i>アドミンバイパスモードで出た
+    DISABLELOG: はアドミンバイパスモードで出た
   CHAT:
     DISABLED: <b>The built in chat chat channels are disabled on this server.
-    INVALIDMODE: <b>不正なチャットモード・<i>'a','f' か 'p'と入力して下さい・
+    INVALIDMODE: <b>不正なチャットモード・<i>a,fかpと入力して下さい・
     MODE:
       PUBLIC: <i>只公開チャットモード
       ALLIANCE: <i>只連盟チャットモード
       FACTION: <i>只党派チャットモード
-
   CHATSPY:
-    ENABLE: <i>You have enabled chat spying mode.
-    ENABLELOG: ' has ENABLED chat spying mode.'
-    DISABLE: <i>You have disabled chat spying mode.
-    DISABLELOG: ' has DISABLED chat spying mode.'
+    ENABLE: <i>チャットスパイモードで入ってします
+    ENABLELOG: はチャットスパイモードで入ってします
+    DISABLE: <i>チャットスパイモードで出た
+    DISABLELOG: はチャットスパイモードで出た
   CLAIM:
-    INVALIDRADIUS: <b>If you specify a radius, it must be at least 1.
-    DENIED: <b>You do not have permission to claim in a radius.
+    INVALIDRADIUS: <b>半径を指定しますなら１以上を指定して下さい・
+    DENIED: <b>半径で引き取る許可がありません・
   CONFIG:
-    NOEXIST: <b>No configuration setting "<h>%s<b>" exists.
+    NOEXIST: <b>設定オプション"<h>%s<b>"はありません・
     SET:
-      'TRUE': '" option set to true (enabled).'
-      'FALSE': '" option set to false (disabled).'
+      'TRUE': '"オプションは正に変わりました'
+      'FALSE': '"オプションは正じゃなくに変わりました'
       ADDED: '"%s" set: "%s" added.'
       REMOVED: '"%s" set: "%s" removed.'
     OPTIONSET: '" option set to '
@@ -74,8 +73,7 @@ COMMAND:
     FLOATREQUIRED: 'Cannot set "%s": A float (numeric) value required.'
     INVALID:
       COLOUR: 'Cannot set "%s": "%s" is not a valid color.'
-      COLLECTION: '"%s" is not a data collection type which can be modified with this
-        command.'
+      COLLECTION: '"%s" is not a data collection type which can be modified with this command.'
       MATERIAL: 'Cannot change "%s" set: "%s" is not a valid material.'
       TYPESET: '"%s" is not a data type set which can be modified with this command.'
     MATERIAL:
@@ -97,7 +95,7 @@ COMMAND:
     YOUSHOULD: '<i>You should now: %s'
   DEINVITE:
     CANDEINVITE: 'Players you can deinvite: '
-    CLICKTODEINVITE: 'Click to revoke invite for '
+    CLICKTODEINVITE: 'Click to revoke invite for %s'
     ALREADYMEMBER: '%s<i> is already a member of %s'
     MIGHTWANT: '<i>You might want to: %s'
     REVOKED: '%s<i> revoked your invitation to <h>%s<i>.'
@@ -410,8 +408,8 @@ GENERIC:
   YOUSHOULD: '<i>You should:'
   YOUMAYWANT: '<i>You may want to: '
   SERVERADMIN: サーバアドミン
-  DISABLED: disabled
-  ENABLED: enabled
+  DISABLED: ディセーブル
+  ENABLED: エネーブル
   CONSOLEONLY: プレーヤはそのコマンド使用出来ませんよ・
   TRASLATION:
     VERSION: 翻訳：%s・%s「%s」%s
