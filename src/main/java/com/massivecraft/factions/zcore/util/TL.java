@@ -122,7 +122,7 @@ public enum TL {
 	COMMAND_CREATE_CREATED_LOG(" created a new faction: "),
 	
 	COMMAND_DEINVITE_CANDEINVITE("Players you can deinvite: "),
-	COMMAND_DEINVITE_CLICKTODEINVITE("Click to revoke invite for "),
+	COMMAND_DEINVITE_CLICKTODEINVITE("Click to revoke invite for %s"),
 	COMMAND_DEINVITE_ALREADYMEMBER("%s<i> is already a member of %s"),
 	COMMAND_DEINVITE_MIGHTWANT("<i>You might want to: %s"),
 	COMMAND_DEINVITE_REVOKED("%s<i> revoked your invitation to <h>%s<i>."),

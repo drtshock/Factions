@@ -44,7 +44,7 @@ COMMAND:
     DISABLE: <i>アドミンバイパスモードで出た
     DISABLELOG: はアドミンバイパスモードで出た
   CHAT:
-    DISABLED: <b>The built in chat chat channels are disabled on this server.
+    DISABLED: <b>党派チャットは禁止されました・
     INVALIDMODE: <b>不正なチャットモード・<i>a,fかpと入力して下さい・
     MODE:
       PUBLIC: <i>只公開チャットモード
@@ -118,13 +118,13 @@ COMMAND:
       NOTYOURS: <h>%s<i> disbanded the faction %s.
     HOLDINGS: <i>You have been given the disbanded faction's bank, totaling %s.
   FWARP:
-    CLICKTOWARP: Click to warp!
-    COMMANDFORMAT: <i>/f warp <warpname>
-    WARPED: <i>Warped to <a>%s
-    INVALID: <i>Couldn't find warp <a>%s
-    TOWARP: to warp
-    FORWARPING: for warping
-    WARPS: 'Warps: '
+    CLICKTOWARP: クリック為にワープ「テレポート」!
+    COMMANDFORMAT: <i>/f warp <ワープ名>
+    WARPED: <a>%s<i>にテレポートしました
+    INVALID: <a>%s<i>が見つかりません
+    TOWARP: ワープし
+    FORWARPING: ワープした
+    WARPS: 'ワープリスト: '
   HELP:
     '404': <b>指定ページは不正です・
     NEXTCREATE: <i>Learn how to create a faction on the next page.
@@ -171,9 +171,9 @@ COMMAND:
       '2': '<i>More commands for server admins:'
       '3': '<i>Even more commands for server admins:'
   HOME:
-    DISABLED: <b>Sorry, Faction homes are disabled on this server.
-    TELEPORTDISABLED: <b>Sorry, the ability to teleport to Faction homes is disabled on this server.
-    NOHOME: '<b>Your faction does not have a home. '
+    DISABLED: <b>党派ホームは禁止されました・
+    TELEPORTDISABLED: <b>党派ホームテレポートは禁止されました・
+    NOHOME: '<b>党派のホームはありません'
     INENEMY: <b>You cannot teleport to your faction home while in the territory of an enemy faction.
     WRONGWORLD: <b>You cannot teleport to your faction home while in a different world.
     ENEMYNEAR: <b>You cannot teleport to your faction home while an enemy is within %s blocks of you.
@@ -303,7 +303,7 @@ COMMAND:
     BOOST: <i>%s now has a power bonus/penalty of %d to min and max power levels.
     BOOSTLOG: '%s has set the power bonus/penalty for %s to %d.'
   RELOAD:
-    TIME: <i>Reloaded <h>conf.json <i>from disk, took <h>%dms<i>.
+    TIME: <h>conf.json <i>をリロードしました・<h>%dミリ秒〜<i>.
   SAFEUNCLAIMALL:
     SHORT: Unclaim all safezone land
     UNCLAIMED: <i>You unclaimed ALL safe zone land.
@@ -316,7 +316,7 @@ COMMAND:
     TOSET: to set warp
     FORSET: for setting warp
   SETHOME:
-    DISABLED: <b>Sorry, Faction homes are disabled on this server.
+    DISABLED: <b>党派ホームは禁止されました・
     NOTCLAIMED: <b>Sorry, your faction home can only be set inside your own claimed territory.
     TOSET: to set the faction home
     FORSET: for setting the faction home
@@ -384,11 +384,11 @@ COMMAND:
     SUCCESS: <i>You unclaimed ALL war zone land.
     LOG: '%s unclaimed all war zones.'
   RELATIONS:
-    ALLTHENOPE: <b>Nope! You can't.
-    MORENOPE: <b>Nope! You can't declare a relation to yourself :)
-    ALREADYINRELATIONSHIP: <b>You already have that relation wish set with %s.
-    TOMARRY: to change a relation wish
-    FORMARRY: for changing a relation wish
+    ALLTHENOPE: <b>いいえ！出来ません・
+    MORENOPE: <b>いいえ・自分は自分には関係出来ません・
+    ALREADYINRELATIONSHIP: <b> %sの関係はもうありますよ・
+    TOMARRY: 関係は変わり
+    FORMARRY: 関係は変わった
     MUTUAL: <i>Your faction is now %s<i> to %s
     PEACEFUL: <i>This will have no effect while your faction is peaceful.
     PEACEFULOTHER: <i>This will have no effect while their faction is peaceful.
