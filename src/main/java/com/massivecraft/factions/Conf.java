@@ -325,7 +325,6 @@ public class Conf {
     );
 
 
-    
     //Taxes
     public static boolean taxEnabled = false;
     public static double maxTax = 10;
