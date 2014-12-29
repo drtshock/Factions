@@ -122,4 +122,6 @@ public class TaxFaction {
 	public boolean canAfford(double amount) {
 		return amount < getBalance();
 	}
+	
+	
 } 
