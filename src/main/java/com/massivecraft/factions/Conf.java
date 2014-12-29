@@ -246,27 +246,6 @@ public class Conf {
     public static double econCostNeutral = 0.0;
     public static double econCostNoBoom = 0.0;
     
-    //Taxes
-    public static boolean taxEnabled = false;
-    public static double maxTax = 10;
-    public static double minTax = -10;
-    public static double baseUpkeep = 0;
-    public static double upkeepPerChunk = 0.1;
-    public static boolean upkeepFailUnclaimall = false;
-    public static boolean upkeepFailDisband = false;
-    public static long taxPeriodMill = 86400000; //One Day
-    public static long playerInactiveMill = 259200000; //3 Days
-    public static long lastTaxMill = 0; //Never taxed before
-    public static long taxFirstStartedMill = 0; //Tax not yet enabled
-    public static long taxFirstStartedGraceMill = 604800000; //1 Week
-    public static boolean displayGraceMsg = true;
-    public static String graceMsgTitle = "FactionsTax Enabled";
-    public static String[] graceMsgBody = new String[] {"FactionsTax was Just Enabled", "Type /f tax to see commands", "Type /f tax info for info", "This notice will dissapear once taxing starts"};
-    public static int safeTaxPeriodsTillWarning = 7; //Warn if can't afford 7 days
-    public static String[] taxCantAffordMsg = new String[] {"You can't afford another week of taxes", "Type /f tax player for more info", "Earn More Money to pay your taxes"};
-    public static int safeUpkeepPeriodsTillWarning = 7; //Warn if can't afford 7 days
-    public static String[] upkeepCantAffordMsg = new String[] {"Your faction can't afford another week of upkeep", "Someone should type /f money deposit to deposit money in the faction bank"};
-    
     //Faction banks, to pay for land claiming and other costs instead of individuals paying for them
     public static boolean bankEnabled = true;
     public static boolean bankMembersCanWithdraw = false; //Have to be at least moderator to withdraw or pay money to another faction
