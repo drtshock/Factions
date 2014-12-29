@@ -44,4 +44,22 @@ public class TaxRules {
 	public void setPayUpkeepIfEnabled(boolean payUpkeepIfEnabled) {
 		this.payUpkeepIfEnabled = payUpkeepIfEnabled;
 	}
+	
+	public void setDefaultTax(double tax) {
+		this.defaultTax = tax;
+	}
+	
+	public void clear() {
+		defaultTax = 0;
+		roleTaxMap.clear();
+		playerTaxMap.clear();
+	}
+	
+	public void setPlayerTax(FPlayer player, double tax) {
+		playerTaxMap.put(UUID.fromString(player.getId()), tax);
+	}
+	
+	public void setRankTax(Role rank, double tax) {
+		roleTaxMap.put(rank, tax);
+	}
 }
