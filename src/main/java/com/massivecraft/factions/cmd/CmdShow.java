@@ -43,7 +43,11 @@ public class CmdShow extends FCommand {
         }
 
         if (faction.isNone()) {
-            msg(TL.COMMAND_SHOW_NOFACTION);
+            if (faction == myFaction) {
+                msg(TL.COMMAND_SHOW_NOFACTION_SELF);
+            } else {
+                msg(TL.COMMAND_SHOW_NOFACTION_OTHER);
+            }
             return;
         }
 
