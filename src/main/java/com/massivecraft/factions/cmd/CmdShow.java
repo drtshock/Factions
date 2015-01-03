@@ -5,6 +5,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.util.TL;
 
 import java.util.Collection;
 
@@ -29,13 +30,19 @@ public class CmdShow extends FCommand {
         Faction faction = this.myFaction;
         if (argIsSet(0)) {
             faction = argAsFaction(0);
-            if (faction == null) {
+            if (faction == null || faction.isNone()) {
+                msg(TL.COMMAND_SHOW_NOFACTION_OTHER);
                 return;
             }
 
         }
 
-        if (!payForCommand(Conf.econCostShow, "to show faction information", "for showing faction information")) {
+        if (faction.isNone()) {
+            msg(TL.COMMAND_SHOW_NOFACTION_SELF);
+            return;
+        }
+
+        if (!payForCommand(Conf.econCostShow, TL.COMMAND_SHOW_TOSHOW, TL.COMMAND_SHOW_FORSHOW)) {
             return;
         }
 
@@ -44,24 +51,24 @@ public class CmdShow extends FCommand {
         Collection<FPlayer> normals = faction.getFPlayersWhereRole(Role.NORMAL);
 
         msg((p).txt.titleize(faction.getTag(this.fme)));
-        msg("<a>Description: <i>%s", faction.getDescription());
+        msg(TL.COMMAND_SHOW_DESCRIPTION, faction.getDescription());
         if (!faction.isNormal()) {
             return;
         }
 
         String peaceStatus = "";
         if (faction.isPeaceful()) {
-            peaceStatus = "     " + Conf.colorNeutral + "This faction is Peaceful";
+            peaceStatus = "     " + Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString();
         }
 
-        msg("<a>Joining: <i>" + (faction.getOpen() ? "no invitation is needed" : "invitation is required") + peaceStatus);
+        msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus, (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
 
         double powerBoost = faction.getPowerBoost();
-        String boost = (powerBoost == 0) ? "" : (powerBoost > 0.0D ? " (bonus: " : " (penalty: ") + powerBoost + ")";
-        msg("<a>Land / Power / Maxpower: <i> %d/%d/%d %s", faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
+        String boost = (powerBoost == 0) ? "" : (powerBoost > 0.0D ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toStrin()) + powerBoost + ")";
+         msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
 
         if (faction.isPermanent()) {
-            msg("<a>This faction is permanent, remaining even with no members.");
+            msg(TL.COMMAND_SHOW_PERMANENT);
         }
 
         if (Econ.shouldBeUsed()) {
@@ -69,18 +76,18 @@ public class CmdShow extends FCommand {
             double refund = value * Conf.econClaimRefundMultiplier;
             if (value > 0.0D) {
                 String stringValue = Econ.moneyString(value);
-                String stringRefund = refund > 0.0D ? " (" + Econ.moneyString(refund) + " depreciated)" : "";
-                msg("<a>Total land value: <i>" + stringValue + stringRefund);
+                String stringRefund = (refund > 0.0) ? (TL.COMMAND_SHOW_DEPRECIATED.format(Econ.moneyString(refund))) : "";
+                msg(TL.COMMAND_SHOW_LANDVALUE, stringValue, stringRefund);
             }
 
             if (Conf.bankEnabled) {
-                msg("<a>Bank contains: <i>" + Econ.moneyString(Econ.getBalance(faction.getAccountId())));
+                msg(TL.COMMAND_SHOW_BANKCONTAINS, Econ.moneyString(Econ.getBalance(faction.getAccountId())));
             }
 
         }
 
-        String allyList = p.txt.parse("<a>Allies: ");
-        String enemyList = p.txt.parse("<a>Enemies: ");
+        String allyList = p.txt.parse("<a>" + TL.COMMAND_SHOW_ALLIES);
+        String enemyList = p.txt.parse("<a>" + TL.COMMAND_SHOW_ENEMIES);
         for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
             if (otherFaction != faction) {
                 Relation rel = otherFaction.getRelationTo(faction);
@@ -104,8 +111,8 @@ public class CmdShow extends FCommand {
         sendMessage(allyList);
         sendMessage(enemyList);
 
-        String onlineList = p.txt.parse("<a>") + "Members online: ";
-        String offlineList = p.txt.parse("<a>") + "Members offline: ";
+        String onlineList = p.txt.parse("<a>" + TL.COMMAND_SHOW_MEMBERSONLINE);
+        String offlineList = p.txt.parse("<a>" + TL.COMMAND_SHOW_MEMBERSOFFLINE);
         for (FPlayer follower : admins) {
             String listpart = follower.getNameAndTitle(this.fme) + p.txt.parse("<i>") + ", ";
             if (follower.isOnlineAndVisibleTo(this.me)) {
