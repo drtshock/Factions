@@ -57,7 +57,7 @@ public class CmdShow extends FCommand {
         msg("<a>Joining: <i>" + (faction.getOpen() ? "no invitation is needed" : "invitation is required") + peaceStatus);
 
         double powerBoost = faction.getPowerBoost();
-        String boost = (powerBoost > 0.0D ? " (bonus: " : " (penalty: ") + powerBoost + ")";
+        String boost = (powerBoost == 0) ? "" : (powerBoost > 0.0D ? " (bonus: " : " (penalty: ") + powerBoost + ")";
         msg("<a>Land / Power / Maxpower: <i> %d/%d/%d %s", faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
 
         if (faction.isPermanent()) {
