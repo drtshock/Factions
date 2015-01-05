@@ -132,8 +132,12 @@ public class P extends MPlugin {
     }
 
     private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        perms = rsp.getProvider();
+        try {
+            RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+            perms = rsp.getProvider();
+        } catch(NoClassDefFoundError ex) {
+            return false;
+        }
         return perms != null;
     }
 
