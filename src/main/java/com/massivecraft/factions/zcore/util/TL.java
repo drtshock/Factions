@@ -359,8 +359,8 @@ public enum TL {
     COMMAND_SHOW_DEPRECIATED("(%s depreciated)"), //This is spelled correctly.
     COMMAND_SHOW_LANDVALUE("<a>Total land value: <i>%s%s"),
     COMMAND_SHOW_BANKCONTAINS("<a>Bank contains: <i>%s"),
-    COMMAND_SHOW_ALLIES("Allies: "),
-    COMMAND_SHOW_ENEMIES("Enemies: "),
+    COMMAND_SHOW_ALLIES("<a>Allies: "),
+    COMMAND_SHOW_ENEMIES("<a>Enemies: "),
     COMMAND_SHOW_MEMBERSONLINE("Members online: "),
     COMMAND_SHOW_MEMBERSOFFLINE("Members offline: "),
 

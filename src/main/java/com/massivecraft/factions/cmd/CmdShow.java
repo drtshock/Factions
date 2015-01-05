@@ -111,8 +111,8 @@ public class CmdShow extends FCommand {
         sendMessage(allyList);
         sendMessage(enemyList);
 
-        String onlineList = p.txt.parse("<a>" + TL.COMMAND_SHOW_MEMBERSONLINE);
-        String offlineList = p.txt.parse("<a>" + TL.COMMAND_SHOW_MEMBERSOFFLINE);
+        String onlineList = TL.COMMAND_SHOW_MEMBERSONLINE;
+        String offlineList = TL.COMMAND_SHOW_MEMBERSOFFLINE;
         for (FPlayer follower : admins) {
             String listpart = follower.getNameAndTitle(this.fme) + p.txt.parse("<i>") + ", ";
             if (follower.isOnlineAndVisibleTo(this.me)) {
