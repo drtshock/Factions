@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.util.TL;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +33,7 @@ public class CmdList extends FCommand {
     @Override
     public void perform() {
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostList, "to list the factions", "for listing the factions")) {
+        if (!payForCommand(Conf.econCostList, TL.COMMAND_LIST_TOLIST.toString(), TL.COMMAND_LIST_FORLIST.toString())) {
             return;
         }
 
@@ -89,11 +90,11 @@ public class CmdList extends FCommand {
             end = factionList.size();
         }
 
-        lines.add(p.txt.titleize("Faction List " + pagenumber + "/" + pagecount));
+        lines.add(p.txt.titleize(TL.COMMAND_LIST_FACTIONLIST.toString() + pagenumber + "/" + pagecount));
 
         for (Faction faction : factionList.subList(start, end)) {
             if (faction.isNone()) {
-                lines.add(p.txt.parse("<i>Factionless<i> %d online", Factions.getInstance().getNone().getFPlayersWhereOnline(true).size()));
+                lines.add(TL.COMMAND_LIST_ONLINEFACTIONLESS.toString() + String.valueOf(Factions.getInstance().getNone().getFPlayersWhereOnline(true).size()));
                 continue;
             }
             lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d", faction.getTag(fme), faction.getFPlayersWhereOnline(true).size(), faction.getFPlayers().size(), faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded()));
