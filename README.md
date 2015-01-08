@@ -41,13 +41,6 @@ Note that you may optionally skip the slash and just write
 
 * `f`
 
-Installing
-----------
-1. Download the latest release: [http://ci.drtshock.net/job/FactionsUUID/](http://ci.drtshock.net/job/FactionsUUID/)<br>
-1. Put Factions.jar in the plugins folder.
-
-A default config file will be created on the first run.
-
 License
 ----------
 This project has a LGPL license just like the Bukkit project.<br>
