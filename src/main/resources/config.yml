@@ -166,8 +166,8 @@ tax:
     #This can be handy to clear out old factions, or old land
     upkeepFail:
       unclaimAll: false
-  	  disband: false
-  	
+      disband: false
+
   #Time between taxations in minites
   #Default: 1 day
   taxPeriod: 86400
