@@ -10,7 +10,6 @@ public class CmdTax extends FCommand {
     public CmdTaxPlayer taxPlayer = new CmdTaxPlayer();
     public CmdTaxSet taxSet = new CmdTaxSet();
 
-
     public CmdTax() {
         this.aliases.add("tax");
 
@@ -27,6 +26,7 @@ public class CmdTax extends FCommand {
         this.addSubCommand(taxPlayer);
         this.addSubCommand(taxSet);
     }
+
     @Override
     public void perform() {
         commandChain.add(this);

@@ -16,12 +16,14 @@ public class TaxPlayer {
         this.player = player;
         this.faction = TaxFaction.getTaxFaction(player.getFaction());
     }
+
     private final FPlayer player;
     private final TaxFaction faction;
 
     public FPlayer getPlayer() {
         return player;
     }
+
     public TaxFaction getFaction() {
         return faction;
     }

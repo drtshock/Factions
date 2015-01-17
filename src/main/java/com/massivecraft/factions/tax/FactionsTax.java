@@ -52,7 +52,6 @@ public class FactionsTax {
         }
     }
 
-
     public static FactionsTax getInstance() {
         return P.p.getTax();
     }

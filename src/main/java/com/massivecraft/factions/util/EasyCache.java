@@ -3,7 +3,6 @@ package com.massivecraft.factions.util;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
-
 /**
  * 
  * A simple wrapper for guava cache

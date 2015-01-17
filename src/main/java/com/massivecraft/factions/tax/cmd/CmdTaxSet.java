@@ -21,6 +21,7 @@ public class CmdTaxSet extends FCommand {
         //TODO full help
         senderMustBeAdmin = true;
     }
+    
     @Override
     public void perform() {
         if (senderIsConsole && !argIsSet(3)) {

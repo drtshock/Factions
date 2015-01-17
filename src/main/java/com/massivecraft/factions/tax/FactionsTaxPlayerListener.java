@@ -19,6 +19,7 @@ public class FactionsTaxPlayerListener implements Listener {
     public FactionsTax getTax() {
         return tax;
     }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         TaxPlayer player = TaxPlayer.getTaxPlayer(event.getPlayer());

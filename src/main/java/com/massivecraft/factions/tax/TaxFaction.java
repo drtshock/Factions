@@ -18,10 +18,13 @@ public class TaxFaction {
     public TaxFaction(Faction faction) {
         this.faction = faction;
     }
+
     private final Faction faction;
+
     public Faction getFaction() {
         return faction;
     }
+
     public boolean canAffordUpkeep(int upkeepPeriods) {
         double owedUpkeep = getUpkeep() * upkeepPeriods;
         return canAfford(owedUpkeep);

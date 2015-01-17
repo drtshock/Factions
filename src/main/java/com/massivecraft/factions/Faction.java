@@ -226,7 +226,7 @@ public interface Faction extends EconomyParticipator {
     public void remove();
 
     public void setId(String id);
-    
+
     //Tax
     public TaxRules getTaxRules();
 }

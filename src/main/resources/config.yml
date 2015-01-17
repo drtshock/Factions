@@ -181,14 +181,10 @@ tax:
   gracePeriod: 604800
   # Show a message when taxes are enabled
   graceMessage: true
-  
+
   # If a player or faction can't pay taxes for x periods, they are warned
   # How many tax periods should a player be able to afford until he is warned
   taxPeriodsTillWarning: 7
-<<<<<<< HEAD
-  #How many tax periods should a faction be able to afford until it is warned
-  upkeepPeriodsTillWarning: 7
-=======
+
   # How many tax periods should a faction be able to afford until it is warned
   upkeepPeriodsTillWarning: 7
->>>>>>> Put spaces before the comments in config.yml

@@ -153,7 +153,6 @@ public class TimeDiffUtil
     // FORMAT
     // -------------------------------------------- //
 
-
     public static final String FORMAT_ENTRY_VERBOOSE = P.p.txt.parse("<v>%1$d<k>%3$s");
     public static final String FORMAT_COMMA_VERBOOSE = "%s, ";
     public static final String FORMAT_AND_VERBOOSE = " %sand ";
