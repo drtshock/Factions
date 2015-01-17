@@ -153,37 +153,42 @@ warmups:
 # Tax Settings
 tax:
   enabled: false
-  #The maximum and minimum tax a faction leader can set
+  # The maximum and minimum tax a faction leader can set
   maxTax: 10
   minTax: -10
-  #These are upkeep settings
-  #Upkeep is calculated using the formula upkeep = baseUpkeep + (upkeepPerChunk * chunks in faction)
-  #By default, since baseUpkeep is 0, upkeep is 0.1 * chunks in faction
+  # These are upkeep settings
+  # Upkeep is calculated using the formula upkeep = baseUpkeep + (upkeepPerChunk * chunks in faction)
+  # By default, since baseUpkeep is 0, upkeep is 0.1 * chunks in faction
   upkeep:
     baseUpkeep: 0
     upkeepPerChunk: 0.1
-    #What to do if a faction can't pay its upkeep
-    #This can be handy to clear out old factions, or old land
+    # What to do if a faction can't pay its upkeep
+    # This can be handy to clear out old factions, or old land
     upkeepFail:
       unclaimAll: false
       disband: false
 
-  #Time between taxations in minites
-  #Default: 1 day
+  # Time between taxations in minites
+  # Default: 1 day
   taxPeriod: 86400
-  #Time before a player becomes inactive in minites
-  #When a player is inactive, they won't be charged taxes
-  #Default: 3 days
+  # Time before a player becomes inactive in minites
+  # When a player is inactive, they won't be charged taxes
+  # Default: 3 days
   inactiveTime: 259200
   
-  #Time in minutes, till taxes start after taxes are enabled
-  #Default: 1 Week
+  # Time in minutes, till taxes start after taxes are enabled
+  # Default: 1 Week
   gracePeriod: 604800
-  #Show a message when taxes are enabled
+  # Show a message when taxes are enabled
   graceMessage: true
   
-  #If a player or faction can't pay taxes for x periods, they are warned
-  #How many tax periods should a player be able to afford until he is warned
+  # If a player or faction can't pay taxes for x periods, they are warned
+  # How many tax periods should a player be able to afford until he is warned
   taxPeriodsTillWarning: 7
+<<<<<<< HEAD
   #How many tax periods should a faction be able to afford until it is warned
   upkeepPeriodsTillWarning: 7
+=======
+  # How many tax periods should a faction be able to afford until it is warned
+  upkeepPeriodsTillWarning: 7
+>>>>>>> Put spaces before the comments in config.yml
