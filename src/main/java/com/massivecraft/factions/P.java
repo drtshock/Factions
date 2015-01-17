@@ -33,14 +33,14 @@ import java.util.logging.Level;
 
 
 public class P extends MPlugin {
-	
-	//Expansions
-	private final FactionsTax tax = new FactionsTax();
-	
-	public FactionsTax getTax() {
-		return tax;
-	}
-	
+
+    //Expansions
+    private final FactionsTax tax = new FactionsTax();
+
+    public FactionsTax getTax() {
+        return tax;
+    }
+
     // Our single plugin instance.
     // Single 4 life.
     public static P p;
@@ -318,5 +318,4 @@ public class P extends MPlugin {
     public void debug(String s) {
         debug(Level.INFO, s);
     }
-
 }

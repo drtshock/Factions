@@ -9,24 +9,24 @@ import com.massivecraft.factions.integration.Econ;
  *
  */
 public class FormatUtil {
-	private FormatUtil() {}
-	
-	public static final String YES = parse("<g>YES");
-	public static final String NO = parse("<b>NO");
-	
-	public static String parse(String str, Object... args) {
-		return P.p.txt.parse(str, args);
-	}
-	
-	public static String upperCaseFirst(String str) {
-		return P.p.txt.upperCaseFirst(str);
-	}
-	
-	public static String formatMoney(double money) {
-		return Econ.moneyString(money);
-	}
-	
-	public static String titleize(String str) {
-		return P.p.txt.titleize(str);
-	}
+    private FormatUtil() {}
+
+    public static final String YES = parse("<g>YES");
+    public static final String NO = parse("<b>NO");
+
+    public static String parse(String str, Object... args) {
+        return P.p.txt.parse(str, args);
+    }
+
+    public static String upperCaseFirst(String str) {
+        return P.p.txt.upperCaseFirst(str);
+    }
+
+    public static String formatMoney(double money) {
+        return Econ.moneyString(money);
+    }
+
+    public static String titleize(String str) {
+        return P.p.txt.titleize(str);
+    }
 }
