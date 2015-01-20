@@ -419,19 +419,78 @@ public enum TL {
     COMMAND_RELATIONS_PROPOSAL_2("<i>Type <c>/%1$s %2$s %3$s<i> to accept."),
     COMMAND_RELATIONS_PROPOSAL_SENT("%1$s<i> were informed that you wish to be %2$s"),
     /**
-     * More generic translations, which will apply to more than one class.
+     * Leaving
      */
+    LEAVE_PASSADMIN("<b>You must give the admin role to someone else first."),
+    LEAVE_NEGATIVEPOWER("<b>You cannot leave until your power is positive."),
+    LEAVE_TOLEAVE("to leave your faction."),
+    LEAVE_FORLEAVE("for leaving your faction."),
+    LEAVE_LEFT("%s<i> left faction %s<i>."),
+    LEAVE_DISBANDED("<i>%s<i> was disbanded."),
+    LEAVE_DISBANDEDLOG("The faction %s (%s) was disbanded due to the last player (%s) leaving."),
+    /**
+     * Claiming
+     */
+    CLAIM_PROTECTED("<b>This land is protected"),
+    CLAIM_DISABLED("<b>Sorry, this world has land claiming disabled."),
+    CLAIM_CANTCLAIM("<b>You can't claim land for <h>%s<b>."),
+    CLAIM_ALREADYOWN("%s<i> already own this land."),
+    CLAIM_MUSTBE("<b>You must be <h>%s<b> to claim land."),
+    CLAIM_MEMBERS("Factions must have at least <h>%s<b> members to claim land."),
+    CLAIM_SAFEZONE("<b>You can not claim a Safe Zone."),
+    CLAIM_WARZONE("<b>You can not claim a War Zone."),
+    CLAIM_POWER("<b>You can't claim more land! You need more power!"),
+    CLAIM_LIMIT("<b>Limit reached. You can't claim more land!"),
+    CLAIM_ALLY("<b>You can't claim the land of your allies."),
+    CLAIM_CONTIGIOUS("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!"),
+    CLAIM_FACTIONCONTIGUOUS("<b>You can only claim additional land which is connected to your first claim!"),
+    CLAIM_PEACEFUL("%s<i> owns this land. Your faction is peaceful, so you cannot claim land from other factions."),
+    CLAIM_PEACEFULTARGET("%s<i> owns this land, and is a peaceful faction. You cannot claim land from them."),
+    CLAIM_THISISSPARTA("%s<i> owns this land and is strong enough to keep it."),
+    CLAIM_BORDER("<b>You must start claiming land at the border of the territory."),
+    CLAIM_TOCLAIM("to claim this land"),
+    CLAIM_FORCLAIM("for claiming this land"),
+    CLAIM_CLAIMED("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>."),
+    CLAIM_CLAIMEDLOG("%s claimed land at (%s) for the faction: %s"),
+    /**
+     * More generic, or less easily categorisable translations, which may apply to more than one class
+     */
+    GENERIC_NOPERMISSION("<b>You don't have permission to %1$s."),
+    GENERIC_DOTHAT("do that"),  //Ugh nuke this from high orbit
+    GENERIC_NOPLAYERMATCH("<b>No player match found for \"<p>%1$s<b>\"."),
+    GENERIC_NOPLAYERFOUND("<b>No player \"<p>%1$s<b>\" could not be found."),
+    GENERIC_ARGS_TOOFEW("<b>Too few arguments. <i>Use like this:"),
+    GENERIC_ARGS_TOOMANY("<b>Strange argument \"<p>%1$s<b>\". <i>Use the command like this:"),
+    GENERIC_OWNERS("Owner(s): %1$s"),
+    GENERIC_PUBLICLAND("Public faction land."),
+    GENERIC_FACTIONLESS("factionless"),
     GENERIC_SERVERADMIN("A server admin"),
     GENERIC_DISABLED("disabled"),
     GENERIC_ENABLED("enabled"),
     GENERIC_CONSOLEONLY("This command cannot be run as a player."),
+    GENERIC_PLAYERONLY("<b>This command can only be used by ingame players."),
     GENERIC_ASKYOURLEADER("<i> Ask your leader to:"),
     GENERIC_YOUSHOULD("<i>You should:"),
     GENERIC_YOUMAYWANT("<i>You may want to: "),
     GENERIC_TRANSLATION_VERSION("Translation: %1$s(%2$s,%3$s) State: %4$s"),
     GENERIC_TRANSLATION_CONTRIBUTORS("Translation contributors: %1$s"),
     GENERIC_TRANSLATION_RESPONSIBLE("Responsible for translation: %1$s"),
-
+    GENERIC_FACTIONTAG_TOOSHORT("<i>The faction tag can't be shorter than <h>%1$s<i> chars."),
+    GENERIC_FACTIONTAG_TOOLONG("<i>The faction tag can't be longer than <h>%s<i> chars."),
+    GENERIC_FACTIONTAG_ALPHANUMERIC("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed."),
+    /**
+     * ASCII compass (for chat map)
+     */
+    COMPASS_SHORT_NORTH("N"),
+    COMPASS_SHORT_EAST("E"),
+    COMPASS_SHORT_SOUTH("S"),
+    COMPASS_SHORT_WEST("W"),
+    /**
+     * Chat modes
+     */
+    CHAT_FACTION("faction chat"),
+    CHAT_ALLIANCE("alliance chat"),
+    CHAT_PUBLIC("public chat"),
     /**
      * Relations
      */

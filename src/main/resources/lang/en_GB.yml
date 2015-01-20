@@ -25,7 +25,7 @@ COMMAND:
   CONFIG:
     COLOURSET: '" colour option set to "'
     INVALID:
-      COLOUR: 'Cannot set "%s": "%s" is not a valid colour.'
-      COLLECTION: '"%s" is not a data collection type which can be modified with this
+      COLOUR: 'Cannot set "%1$s": "%2$s" is not a valid colour.'
+      COLLECTION: '"%1$s" is not a data collection type which can be modified with this
         command.'
 
