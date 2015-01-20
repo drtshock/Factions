@@ -52,9 +52,9 @@ public abstract class MCommand<T extends MPlugin> {
 
     public String getHelpShort() {
         if (this.helpShort == null) {
-            String pdesc = p.perm.getPermissionDescription(this.permission);
+            TL pdesc = TL.valueOf(this.permission.toUpperCase().replace('.', '_'));
             if (pdesc != null) {
-                return pdesc;
+                return pdesc.toString();
             }
             return "*info unavailable*";
         }

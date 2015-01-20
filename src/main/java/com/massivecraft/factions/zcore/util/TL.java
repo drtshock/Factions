@@ -453,6 +453,63 @@ public enum TL {
     CLAIM_CLAIMED("<h>%s<i> claimed land for <h>%s<i> from <h>%s<i>."),
     CLAIM_CLAIMEDLOG("%s claimed land at (%s) for the faction: %s"),
     /**
+     * Command descriptions
+     */
+    FACTIONS_ADMIN("hand over your admin rights"),
+    FACTIONS_AUTOCLAIM("auto-claim land as you walk around"),
+    FACTIONS_BYPASS("enable admin bypass mode"),
+    FACTIONS_CHAT("change chat mode"),
+    FACTIONS_CHATSPY("enable admin chat spy mode"),
+    FACTIONS_CLAIM("claim land where you are standing"),
+    FACTIONS_CONFIG("change a conf.json setting"),
+    FACTIONS_CREATE("create a new faction"),
+    FACTIONS_DEINVITE("remove a pending invitation"),
+    FACTIONS_DISBAND("disband a faction"),
+    FACTIONS_HELP("display a help page"),
+    FACTIONS_HOME("teleport to the faction home"),
+    FACTIONS_INVITE("invite a player to your faction"),
+    FACTIONS_JOIN("join a faction"),
+    FACTIONS_KICK("kick a player from the faction"),
+    FACTIONS_LEAVE("leave your faction"),
+    FACTIONS_LIST("see a list of the factions"),
+    FACTIONS_LOCK("lock all write stuff"),
+    FACTIONS_MANAGESAFEZONE("claim land as a safe zone and build/destroy within safe zones"),
+    FACTIONS_MANAGEWARZONE("claim land as a war zone and build/destroy within war zones"),
+    FACTIONS_MAP("show the territory map, and set optional auto update"),
+    FACTIONS_MOD("give or revoke moderator rights"),
+    FACTIONS_MONEY_BALANCE ("show your factions current money balance"),
+    FACTIONS_MONEY_DEPOSIT ("deposit money into a faction bank"),
+    FACTIONS_MONEY_WITHDRAW ("withdraw money from your faction bank"),
+    FACTIONS_MONEY_F2F ("transfer money from faction to faction"),
+    FACTIONS_MONEY_F2P ("transfer money from faction to player"),
+    FACTIONS_MONEY_P2F ("transfer money from player to faction"),
+    FACTIONS_NOBOOM ("toggle explosions (peaceful factions only),"),
+    FACTIONS_OPEN ("switch if invitation is required to join"),
+    FACTIONS_OWNER ("set ownership of claimed land"),
+    FACTIONS_OWNERLIST ("list owner(s), of this claimed land"),
+    FACTIONS_SETPEACEFUL("designate a faction as peaceful"),
+    FACTIONS_SETPERMANENT("designate a faction as permanent"),
+    FACTIONS_SETPERMANENTPOWER("set permanent power for a faction"),
+    FACTIONS_POWER("show player power info"),
+    FACTIONS_POWERBOOST("apply permanent power bonus/penalty to specified player or faction"),
+    FACTIONS_RELATION("set relation wish to another faction"),
+    FACTIONS_RELOAD("reload data file(s), from disk"),
+    FACTIONS_SAVE("save all data to disk"),
+    FACTIONS_SETHOME("set the faction home"),
+    FACTIONS_SHOW("show faction information"),
+    FACTIONS_TAG("change the faction tag"),
+    FACTIONS_TITLE("set or remove a players title"),
+    FACTIONS_VERSION("see the version of the plugin"),
+    FACTIONS_UNCLAIM("unclaim the land where you are standing"),
+    FACTIONS_UNCLAIMALL("unclaim all of your factions land"),
+    FACTIONS_SCOREBOARD("ability to toggle scoreboards"),
+    FACTIONS_SHOWINVITES("show pending invites to your faction"),
+    FACTIONS_SEECHUNK("see the chunk you stand in"),
+    FACTIONS_SETWARP("set a warp for your faction"),
+    FACTIONS_WARP("access your faction warps"),
+    FACTIONS_MODIFYPOWER("modify other player's power"),
+    FACTIONS_MONITORLOGINS("monitor join and leaves of faction members"),
+    /**
      * More generic, or less easily categorisable translations, which may apply to more than one class
      */
     GENERIC_NOPERMISSION("<b>You don't have permission to %1$s."),
@@ -520,7 +577,7 @@ public enum TL {
     /**
      * Warmups
      */
-    WARMUPS_NOTIFY_TELEPORT("&eYou will teleport to &d%1$s &ein &d%2$d &eseconds."),
+    WARMUPS_NOTIFY_TELEPORT("&eYou will teleport to &d%1$s &ein &d%2$d &eseconds.")
     ;
 
     private String path;
