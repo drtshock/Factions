@@ -52,14 +52,12 @@ public abstract class MCommand<T extends MPlugin> {
 
     public String getHelpShort() {
         if (this.helpShort == null) {
-            TL pdesc = TL.valueOf(this.permission.toUpperCase().replace('.', '_'));
-            if (pdesc != null) {
-                return pdesc.toString();
-            }
-            return "*info unavailable*";
+           return getUsageTranslation().toString();
         }
         return this.helpShort;
     }
+    
+    public abstract TL getUsageTranslation();
 
     public List<String> helpLong;
     public CommandVisibility visibility;

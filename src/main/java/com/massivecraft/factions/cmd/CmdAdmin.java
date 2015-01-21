@@ -83,5 +83,9 @@ public class CmdAdmin extends FCommand {
             fplayer.msg(TL.COMMAND_ADMIN_PROMOTED, senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
         }
     }
+    
+    public TL getUsageTranslation(){
+        return TL.COMMAND_ADMIN_DESCRIPTION;
+    }
 
 }
