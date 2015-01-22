@@ -30,7 +30,7 @@ public enum Role {
     public String toString() {
         return this.nicename;
     }
-    
+
     public TL getTranslation(){
         return translation;
     }

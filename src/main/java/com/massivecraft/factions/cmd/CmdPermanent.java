@@ -26,7 +26,6 @@ public class CmdPermanent extends FCommand {
         senderMustBeAdmin = false;
     }
 
-    //TODO: TL
     @Override
     public void perform() {
         Faction faction = this.argAsFaction(0);
@@ -42,8 +41,7 @@ public class CmdPermanent extends FCommand {
             change = TL.COMMAND_PERMANENT_GRANT.toString();
             faction.setPermanent(true);
         }
-        
-        //TODO: TL maybe? No clear policy on logs though tbh and I'm lazy atm so
+
         P.p.log((fme == null ? "A server admin" : fme.getName()) + " " + change + " the faction \"" + faction.getTag() + "\".");
 
         // Inform all players
@@ -53,7 +51,6 @@ public class CmdPermanent extends FCommand {
                 fplayer.msg(TL.COMMAND_PERMANENT_YOURS,blame,change);
             } else {
                 fplayer.msg(TL.COMMAND_PERMANENT_OTHER,blame,change,faction.getTag(fplayer));
-            
             }
         }
     }

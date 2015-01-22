@@ -55,7 +55,7 @@ public class CmdShow extends FCommand {
             peaceStatus = " " + Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString();
         }
 
-        msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus,(faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
+        msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus, (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
 
         double powerBoost = faction.getPowerBoost();
         String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString():TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
@@ -71,11 +71,11 @@ public class CmdShow extends FCommand {
             if (value > 0.0D) {
                 String stringValue = Econ.moneyString(value);
                 String stringRefund = (refund > 0.0) ? (TL.COMMAND_SHOW_DEPRECIATED.format(Econ.moneyString(refund))) : "";
-                msg(TL.COMMAND_SHOW_LANDVALUE,stringValue,stringRefund);
+                msg(TL.COMMAND_SHOW_LANDVALUE, stringValue,stringRefund);
             }
 
             if (Conf.bankEnabled) {
-                msg(TL.COMMAND_SHOW_BANKCONTAINS,Econ.moneyString(Econ.getBalance(faction.getAccountId())));
+                msg(TL.COMMAND_SHOW_BANKCONTAINS, Econ.moneyString(Econ.getBalance(faction.getAccountId())));
             }
 
         }
