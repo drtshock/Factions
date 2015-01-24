@@ -10,9 +10,13 @@ import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.tax.FactionsTax;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -28,6 +32,13 @@ import java.util.logging.Level;
 
 
 public class P extends MPlugin {
+
+    //Expansions
+    private final FactionsTax tax = new FactionsTax();
+
+    public FactionsTax getTax() {
+        return tax;
+    }
 
     // Our single plugin instance.
     // Single 4 life.
@@ -68,6 +79,7 @@ public class P extends MPlugin {
         Essentials.setup();
         FPlayers.getInstance().load();
         Factions.getInstance().load();
+        getTax().enable();
         for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
             Faction faction = Factions.getInstance().getFactionById(fPlayer.getFactionId());
             if (faction == null) {
