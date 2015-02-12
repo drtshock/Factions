@@ -43,7 +43,7 @@ Note that you may optionally skip the slash and just write
 
 Installing
 ----------
-1. Download the latest release: [http://ci.drtshock.net/job/FactionsUUID/](http://ci.drtshock.net/job/FactionsUUID/)<br>
+1. Download the latest release: [SpigotMC](http://www.spigotmc.org/resources/factionsuuid.1035/)<br>
 1. Put Factions.jar in the plugins folder.
 
 A default config file will be created on the first run.
