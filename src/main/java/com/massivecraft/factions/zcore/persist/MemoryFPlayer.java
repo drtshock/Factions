@@ -700,9 +700,9 @@ public abstract class MemoryFPlayer implements FPlayer {
             error = P.p.txt.parse(TL.CLAIM_TOOCLOSETOOTHERFACTION.format(factionBuffer));
         } else if (Board.getInstance().isOutsideWorldBorder(flocation, worldBuffer)) {
             if(worldBuffer > 0) {
-                error = P.p.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString()); 
+                error = P.p.txt.parse(TL.CLAIM_OUTSIDEBORDERBUFFER.format(worldBuffer));                 
             } else {
-                error = P.p.txt.parse(TL.CLAIM_OUTSIDEBORDERBUFFER.format(worldBuffer)); 
+                error = P.p.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString()); 
             }
         } else if (currentFaction.isNormal()) {
             if (myFaction.isPeaceful()) {
