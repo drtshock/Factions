@@ -42,8 +42,6 @@ public class CmdPermanentPower extends FCommand {
 
         // Inform all players
         for (FPlayer fplayer : targetFaction.getFPlayersWhereOnline(true)) {
-            if(fplayer == fme) 
-                continue;
             String blame = (fme == null ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true));
             fplayer.msg(TL.COMMAND_PERMANENTPOWER_FACTION, blame, change);
         }
