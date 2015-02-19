@@ -32,7 +32,7 @@ public class TaxFaction {
 	}
 	
 	public long getAffordableTime() {
-		return getAffordablePeriods() * Conf.taxPeriodMill;
+		return getAffordablePeriods() * TaxConfig.getTaxPeriod();
 	}
 	
 	public int getAffordablePeriods() {
@@ -44,8 +44,8 @@ public class TaxFaction {
 	
 	public double getUpkeep() {
 		if (!shouldPayUpkeep()) return 0;
-		double chunkUpkeep = getNumberOfChunks() * Conf.upkeepPerChunk;
-		return chunkUpkeep + Conf.baseUpkeep;
+		double chunkUpkeep = getNumberOfChunks() * TaxConfig.getUpkeepPerChunk();
+		return chunkUpkeep + TaxConfig.getBaseUpkeep();
 	}
 	
 	public boolean isKickNotPaying() {
@@ -72,11 +72,11 @@ public class TaxFaction {
 	}
 	
 	public boolean shouldPayUpkeep() {
-		return getFaction().getTaxRules().isPayUpkeepIfEnabled() && Conf.baseUpkeep != 0 && Conf.upkeepPerChunk == 0;
+		return getFaction().getTaxRules().isPayUpkeepIfEnabled() && TaxConfig.getBaseUpkeep() != 0 && TaxConfig.getUpkeepPerChunk() == 0;
 	}
 	
 	public void punish() {
-		if (Conf.upkeepFailDisband) {
+		if (TaxConfig.isDisbandOnUpkeepFail()) {
 			msgAll("Your faction has been disbanded because you can't pay your upkeep.");
 			FactionDisbandEvent disbandEvent = new FactionDisbandEvent(null, getFaction().getId());
 			Bukkit.getPluginManager().callEvent(disbandEvent);
@@ -87,7 +87,7 @@ public class TaxFaction {
 				FPlayerLeaveEvent event = new FPlayerLeaveEvent(player, getFaction(), PlayerLeaveReason.DISBAND);
 				Bukkit.getPluginManager().callEvent(event);
 			}
-		} else if (Conf.upkeepFailUnclaimall) {
+		} else if (TaxConfig.isUnclaimAllOnUpkeepFail()) {
 			msgAll("All %s chunks of your faction have been unclaimed because you can't pay your upkeep.", getNumberOfChunks());
 			getFaction().clearAllClaimOwnership(); 
 		} else {

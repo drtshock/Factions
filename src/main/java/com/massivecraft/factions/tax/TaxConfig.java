@@ -10,60 +10,66 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.tax.format.TimeDiffUtil;
 
 public class TaxConfig {
-	private YamlConfiguration config;
-	public YamlConfiguration getConfig() {
+	private TaxConfig() {}
+	
+	private static YamlConfiguration config;
+	public static YamlConfiguration getConfig() {
 		if (config == null) {
 			YamlConfiguration.loadConfiguration(new File(P.p.getDataFolder(), "config.yml"));	
 		}
 		return config;
 	}
-	public ConfigurationSection getTaxSection() {
-		return getConfig().getConfigurationSection("tax");
+	public static boolean isTaxEnabled() {
+		return getConfig().getBoolean("tax.enabled", false);
 	}
-	public ConfigurationSection getUpkeepSection() {
-		return getTaxSection().getConfigurationSection("upkeep");
+	public static double getMaximumTax() {
+		return getConfig().getDouble("tax.maxTax", 10);
 	}
-	public ConfigurationSection getUpkeepFailSection() {
-		return getUpkeepSection().getConfigurationSection("upkeepFail");
+	public static double getMinimumTax() {
+		return getConfig().getDouble("tax.minTax", -10);
 	}
-	public boolean isTaxEnabled() {
-		return getTaxSection().getBoolean("enabled", false);
+	public static double getBaseUpkeep() {
+		return getConfig().getDouble("tax.upkeep.baseUpkeep", 0);
 	}
-	public double getMaximumTax() {
-		return getTaxSection().getDouble("maxTax", 10);
+	public static double getUpkeepPerChunk() {
+		return getConfig().getDouble("tax.upkeep.upkeepPerChunk", 0.1);
 	}
-	public double getMinimumTax() {
-		return getTaxSection().getDouble("minTax", -10);
+	public static boolean isDisbandOnUpkeepFail() {
+		return getConfig().getBoolean("tax.upkeep.upkeepFail.disband", false);
 	}
-	public double getBaseUpkeep() {
-		return getUpkeepSection().getDouble("baseUpkeep", 0);
+	public static boolean isUnclaimAllOnUpkeepFail() {
+		return getConfig().getBoolean("tax.upkeep.upkeepFail.unclaimAll", false);
 	}
-	public double getUpkeepPerChunk() {
-		return getUpkeepSection().getDouble("upkeepPerChunk", 0.1);
+	public static long getTaxPeriod() {
+		return getConfig().getLong("tax.taxPeriod", 86400) * 60000;
 	}
-	public boolean isDisbandOnUpkeepFail() {
-		return getUpkeepFailSection().getBoolean("disband", false);
+	public static long getInactiveTime() {
+		return getConfig().getLong("tax.inactiveTime", 259200) * 60000;
 	}
-	public boolean isUnclainAllOnUpkeepFail() {
-		return getUpkeepFailSection().getBoolean("upkeepFail", false);
+	public static long getGracePeriod() {
+		return getConfig().getLong("tax.gracePeriod", 604800) * 60000;
 	}
-	public long getTaxPeriod() {
-		return getTaxSection().getLong("taxPeriod", 86400) * 60000;
+	public static boolean isGraceMessage() {
+		return getConfig().getBoolean("tax.graceMessage", true);
 	}
-	public long getInactiveTime() {
-		return getTaxSection().getLong("inactiveTime", 259200) * 60000;
+	public static int getTaxPeriodsTillWarning() {
+		return getConfig().getInt("tax.taxPeriodsTillWarning", 7);
 	}
-	public long getGracePeriod() {
-		return getTaxSection().getLong("gracePeriod", 604800) * 60000;
+	public static int getUpkeepPeriodsTillWarning() {
+		return getConfig().getInt("tax.upkeepPeriodsTillWarning", 7);
 	}
-	public boolean isGraceMessage() {
-		return getTaxSection().getBoolean("graceMessage", true);
+	public static long getTaxFirstStarted() {
+		return getConfig().getLong("tax.taxFirstStarted", 0);
 	}
-	public int getTaxPeriodsTillWarning() {
-		return getTaxSection().getInt("taxPeriodsTillWarning", 7);
-	}
-	public int getUpkeepPeriodsTillWarning() {
-		return getTaxSection().getInt("upkeepPeriodsTillWarning", 7);
+	public static long getLastTax() {
+		return getConfig().getLong("tax.lastTax", 0);
 	}
 	
+	public static void setLastTax(long value) {
+		getConfig().set("tax.lastTax", value);
+	}
+	
+	public static void setTaxFirstStarted(long value) {
+		getConfig().set("tax.taxFirstStarted", value);
+	}
 }

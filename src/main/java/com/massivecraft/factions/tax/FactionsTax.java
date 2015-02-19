@@ -20,7 +20,7 @@ public class FactionsTax {
 	}
 	
 	public boolean isEnabled() {
-		return Conf.taxEnabled;
+		return TaxConfig.isTaxEnabled();
 	}
 	
 	public void enable() {
@@ -42,16 +42,15 @@ public class FactionsTax {
 	}
 	
 	public void checkGracePeriod() {
-		if (Conf.taxFirstStartedMill == 0)  { //Haven't started taxes before
-			Conf.taxFirstStartedMill = System.currentTimeMillis();
+		if (TaxConfig.getTaxFirstStarted() == 0)  { //Haven't started taxes before
+			TaxConfig.setTaxFirstStarted(System.currentTimeMillis());
 			setGracePeriod(true);
-		} else if (System.currentTimeMillis() - Conf.taxFirstStartedMill > Conf.taxFirstStartedGraceMill) {
+		} else if (System.currentTimeMillis() - TaxConfig.getTaxFirstStarted() > TaxConfig.getGracePeriod()) {
 			setGracePeriod(true);
 		} else {
 			setGracePeriod(false);
 		}
 	}
-	
 	
 	public static FactionsTax getInstance() {
 		return P.p.getTax();

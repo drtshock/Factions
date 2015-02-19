@@ -155,3 +155,7 @@ tax:
   taxPeriodsTillWarning: 7
   #How many tax periods should a faction be able to afford until it is warned
   upkeepPeriodsTillWarning: 7
+  
+  ##DO NOT EDIT
+  taxFirstStarted: 0
+  lastTax: 0

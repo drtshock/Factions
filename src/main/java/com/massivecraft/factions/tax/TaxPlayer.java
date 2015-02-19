@@ -27,7 +27,7 @@ public class TaxPlayer {
 	}
 	
 	public long getAffordableTime() {
-	    return getAffordablePeriods() * Conf.taxPeriodMill;
+	    return getAffordablePeriods() * TaxConfig.getTaxPeriod();
 	}
 	
 	public int getAffordablePeriods() {

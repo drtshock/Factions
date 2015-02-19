@@ -5,6 +5,7 @@ import java.util.Map;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.tax.FactionsTax;
+import com.massivecraft.factions.tax.TaxConfig;
 import com.massivecraft.factions.tax.format.FormatUtil;
 import com.massivecraft.factions.tax.format.TimeDiffUtil;
 import com.massivecraft.factions.tax.format.TimeUnit;
@@ -32,12 +33,12 @@ public class CmdTaxInfo extends FCommand {
 	}
 	
 	public static String describeOfflineTillInactive() {
-		Map<TimeUnit, Long> unitcounts = TimeDiffUtil.unitcounts(Conf.playerInactiveMill);
+		Map<TimeUnit, Long> unitcounts = TimeDiffUtil.unitcounts(TaxConfig.getInactiveTime());
 		return TimeDiffUtil.formatedVerboose(unitcounts);
 	}
 	
 	public static String describeTaxRange() {
-		return FormatUtil.parse("<i>Leader sets the faction tax. It can vary between %s and %s.", describeTax(Conf.minTax), describeTax(Conf.maxTax));
+		return FormatUtil.parse("<i>Leader sets the faction tax. It can vary between %s and %s.", describeTax(TaxConfig.getMinimumTax()), describeTax(TaxConfig.getMaximumTax()));
 	}
 	
 	public static String describeTax(double tax) {
@@ -51,9 +52,9 @@ public class CmdTaxInfo extends FCommand {
 	}
 	
 	public static String describePunishment() {
-		if (Conf.upkeepFailDisband) {
+		if (TaxConfig.isDisbandOnUpkeepFail()) {
 			return FormatUtil.parse("<h>it will be disbanded<i>.");
-		} else if (Conf.upkeepFailUnclaimall) {
+		} else if (TaxConfig.isUnclaimAllOnUpkeepFail()) {
 			return FormatUtil.parse("<h>all its land will be unclaimed<i>.");
 		} else {
 			return FormatUtil.parse("<i>nothing will happen.");
@@ -63,17 +64,17 @@ public class CmdTaxInfo extends FCommand {
 	public static String describeUpkeep() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("<i>Faction Upkeep is <h>");
-		boolean base = Conf.baseUpkeep != 0;
-		boolean perChunk = Conf.upkeepPerChunk != 0;
+		boolean base = TaxConfig.getBaseUpkeep() != 0;
+		boolean perChunk = TaxConfig.getUpkeepPerChunk() != 0;
 		
 		if (base) {
-			builder.append(FormatUtil.formatMoney(Conf.baseUpkeep));
+			builder.append(FormatUtil.formatMoney(TaxConfig.getBaseUpkeep()));
 		}
 		if (base && perChunk) {
 			builder.append(" <i>and<h> ");
 		}
 		if (perChunk) {
-			builder.append(FormatUtil.formatMoney(Conf.upkeepPerChunk));
+			builder.append(FormatUtil.formatMoney(TaxConfig.getUpkeepPerChunk()));
 			builder.append(" per chunk");
 		}
 		builder.append("<i>.");
@@ -84,7 +85,7 @@ public class CmdTaxInfo extends FCommand {
 		if (!FactionsTax.getInstance().isEnabled()) {
 			return TAXES_DISABLED;
 		}
-		return "Every " + TimeDiffUtil.formatedVerboose(TimeDiffUtil.unitcounts(Conf.taxPeriodMill)) + FormatUtil.parse("<i>.");
+		return "Every " + TimeDiffUtil.formatedVerboose(TimeDiffUtil.unitcounts(TaxConfig.getTaxPeriod())) + FormatUtil.parse("<i>.");
 	}
 	
 	public static String describeNextTaxation() {
@@ -94,9 +95,9 @@ public class CmdTaxInfo extends FCommand {
 		long timeTillNextTax = 0;
 		FactionsTax.getInstance().checkGracePeriod();
 		if (FactionsTax.getInstance().isGracePeriod()) {
-			timeTillNextTax = Conf.taxFirstStartedMill + Conf.taxFirstStartedGraceMill - System.currentTimeMillis();
+			timeTillNextTax = TaxConfig.getTaxFirstStarted() + (TaxConfig.getGracePeriod() - System.currentTimeMillis());
 		} else {
-			timeTillNextTax = Conf.taxPeriodMill + Conf.lastTaxMill - System.currentTimeMillis();
+			timeTillNextTax = TaxConfig.getTaxPeriod() + (TaxConfig.getLastTax() - System.currentTimeMillis());
 		}
 		Map<TimeUnit, Long> unitcounts = TimeDiffUtil.unitcounts(timeTillNextTax);
 		return TimeDiffUtil.formatedVerboose(unitcounts) + FormatUtil.parse("<i> from now.");

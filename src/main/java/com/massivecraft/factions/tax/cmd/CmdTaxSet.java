@@ -8,6 +8,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.tax.TaxConfig;
 import com.massivecraft.factions.tax.TaxFaction;
 
 public class CmdTaxSet extends FCommand {
@@ -42,7 +43,7 @@ public class CmdTaxSet extends FCommand {
 			tax = argAsDouble(1);
 		}
 		
-		if (tax < Conf.minTax) {
+		if (tax < TaxConfig.getMinimumTax()) {
 			msg("%s is less than minimum tax", tax);
 			return;
 		}

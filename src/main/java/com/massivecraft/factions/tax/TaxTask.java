@@ -113,10 +113,10 @@ public class TaxTask extends BukkitRunnable {
 	}
 	
 	public boolean isTaxTime() {
-		return (Conf.lastTaxMill + Conf.taxPeriodMill) <= System.currentTimeMillis();
+		return (TaxConfig.getLastTax() + TaxConfig.getLastTax()) <= System.currentTimeMillis();
 	}
 	
 	public void updateLastTax() {
-		Conf.lastTaxMill = System.currentTimeMillis();
+		TaxConfig.setLastTax(System.currentTimeMillis());
 	}
 }
