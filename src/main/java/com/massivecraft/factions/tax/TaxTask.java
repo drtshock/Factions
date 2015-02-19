@@ -45,7 +45,9 @@ public class TaxTask extends BukkitRunnable {
 			int numCharged = 0;
 			int numPunished = 0;
 			for (TaxPlayer taxPlayer : getPlayersToChargeTax()) {
-				if (taxPlayer.canAffordTax()) {
+				if (taxPlayer.isInactive()) {
+					debug(FormatUtil.parse("%s is inactive so wont be charged the usual %s", taxPlayer.getPlayer().getName(), FormatUtil.formatMoney(taxPlayer.getTax())));
+				} else if (taxPlayer.canAffordTax()) {
 					taxPlayer.charge(taxPlayer.getTax());
 					taxPlayer.msg(FormatUtil.parse("Your faction charged you %s in taxes.", FormatUtil.formatMoney(taxPlayer.getTax())));
 					numCharged++;

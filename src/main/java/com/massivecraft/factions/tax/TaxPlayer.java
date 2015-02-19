@@ -116,4 +116,9 @@ public class TaxPlayer {
 			msg(msg);
 		}
 	}
+	
+	public boolean isInactive() {
+		if (TaxConfig.getInactiveTime() < 0) return false;
+		return (System.currentTimeMillis() - getPlayer().getPlayer().getLastPlayed()) > TaxConfig.getInactiveTime();
+	}
 }
