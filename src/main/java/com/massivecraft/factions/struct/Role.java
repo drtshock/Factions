@@ -4,9 +4,10 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.zcore.util.TL;
 
 public enum Role {
-    ADMIN(2, TL.ROLE_ADMIN),
-    MODERATOR(1, TL.ROLE_MODERATOR),
-    NORMAL(0, TL.ROLE_NORMAL);
+    ADMIN(3, TL.ROLE_ADMIN),
+    MODERATOR(2, TL.ROLE_MODERATOR),
+    NORMAL(1, TL.ROLE_NORMAL),
+    RECRUIT(0, TL.ROLE_RECRUIT);
 
     public final int value;
     public final String nicename;
@@ -42,6 +43,9 @@ public enum Role {
 
         if (this == Role.MODERATOR) {
             return Conf.prefixMod;
+        }
+        if (this == Role.RECRUIT) {
+            return Conf.prefixRecruit;
         }
 
         return "";
