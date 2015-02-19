@@ -7,6 +7,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.tax.TaxFaction;
 import com.massivecraft.factions.tax.TaxRules;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
@@ -42,6 +43,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected HashMap<String, List<String>> announcements = new HashMap<String, List<String>>();
     protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<String, LazyLocation>();
     protected TaxRules taxRules;
+    protected transient TaxFaction taxFaction;
     
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
@@ -765,5 +767,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     @Override
     public TaxRules getTaxRules() {
     	return taxRules;
+    }
+    
+    @Override
+    public TaxFaction getTaxFaction() {
+    	if (taxFaction == null) taxFaction = new TaxFaction(this);
+    	return taxFaction;
     }
 }

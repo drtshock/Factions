@@ -12,7 +12,6 @@ import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FPlayerLeaveEvent.PlayerLeaveReason;
 import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.util.EasyCache;
 
 public class TaxFaction {
 	public TaxFaction(Faction faction) {
@@ -56,15 +55,8 @@ public class TaxFaction {
 		return Board.getInstance().getFactionCoordCount(getFaction());
 	}
 	
-	private static EasyCache<Faction, TaxFaction> factionCache = new EasyCache<Faction, TaxFaction>(new EasyCache.Loader<Faction, TaxFaction>() {
-
-		@Override
-		public TaxFaction load(Faction key) {
-			return new TaxFaction(key);
-		}
-	});
 	public static TaxFaction getTaxFaction(Faction faction) {
-		return factionCache.get(faction);
+		return faction.getTaxFaction();
 	}
 	
 	public TaxRules getTaxRules() {

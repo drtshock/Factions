@@ -14,7 +14,9 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.tax.TaxPlayer;
 import com.massivecraft.factions.util.RelationUtil;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -87,7 +89,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     // FIELD: chatSpy
     protected transient boolean spyingChat = false;
-
+    
+    protected transient TaxPlayer taxPlayer;
+    
     public Faction getFaction() {
         if (this.factionId == null) {
             this.factionId = "0";
@@ -825,5 +829,11 @@ public abstract class MemoryFPlayer implements FPlayer {
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+    
+    @Override
+    public TaxPlayer getTaxPlayer() {
+    	if (taxPlayer != null) taxPlayer = new TaxPlayer(this);
+    	return this.taxPlayer;
     }
 }

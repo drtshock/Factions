@@ -3,13 +3,11 @@ package com.massivecraft.factions.tax;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FPlayerLeaveEvent.PlayerLeaveReason;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.util.EasyCache;
 
 public class TaxPlayer {
 	public TaxPlayer(FPlayer player) {
@@ -34,16 +32,8 @@ public class TaxPlayer {
 		return (int) (getBalance() / getTax());
 	}
 	
-	private static EasyCache<FPlayer, TaxPlayer> playerCache = new EasyCache<FPlayer, TaxPlayer>(new EasyCache.Loader<FPlayer, TaxPlayer>() {
-
-		@Override
-		public TaxPlayer load(FPlayer key) {
-			return new TaxPlayer(key);
-		}
-		
-	});
 	public static TaxPlayer getTaxPlayer(FPlayer player) {
-		return playerCache.get(player);
+		return player.getTaxPlayer();
 	}
 	
 	public static TaxPlayer getTaxPlayer(OfflinePlayer player) {

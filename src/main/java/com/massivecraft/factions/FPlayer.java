@@ -5,6 +5,8 @@ import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.tax.TaxPlayer;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -226,4 +228,5 @@ public interface FPlayer extends EconomyParticipator {
 
     public void setId(String id);
     
+    public TaxPlayer getTaxPlayer();
 }
