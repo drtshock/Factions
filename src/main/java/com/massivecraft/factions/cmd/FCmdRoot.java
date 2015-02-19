@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.tax.cmd.CmdTax;
 
 import java.util.Collections;
 
@@ -61,7 +62,8 @@ public class FCmdRoot extends FCommand {
     public CmdSetFWarp cmdSetFWarp = new CmdSetFWarp();
     public CmdDelFWarp cmdDelFWarp = new CmdDelFWarp();
     public CmdModifyPower cmdModifyPower = new CmdModifyPower();
-
+    public CmdTax cmdTax = new CmdTax();
+    
     public FCmdRoot() {
         super();
         this.aliases.addAll(Conf.baseCommandAliases);
@@ -138,6 +140,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdSetFWarp);
         this.addSubCommand(this.cmdDelFWarp);
         this.addSubCommand(this.cmdModifyPower);
+        this.addSubCommand(this.cmdTax);
     }
 
     @Override

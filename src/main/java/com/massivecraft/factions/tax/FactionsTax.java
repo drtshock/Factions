@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.tax.format.TimeDiffUtil;
 import com.massivecraft.factions.tax.format.TimeUnit;
 
@@ -20,7 +21,7 @@ public class FactionsTax {
 	}
 	
 	public boolean isEnabled() {
-		return TaxConfig.isTaxEnabled();
+		return TaxConfig.isTaxEnabled() && Econ.shouldBeUsed();
 	}
 	
 	public void enable() {

@@ -3,6 +3,7 @@ package com.massivecraft.factions.tax.cmd;
 
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.FCommand;
+import com.massivecraft.factions.tax.FactionsTax;
 
 public class CmdTax extends FCommand {
 	public CmdTaxFaction taxFaction = new CmdTaxFaction();
@@ -27,6 +28,18 @@ public class CmdTax extends FCommand {
 		this.addSubCommand(taxPlayer);
 		this.addSubCommand(taxSet);
 	}
+	
+	@Override
+	public boolean isEnabled() {
+		if (!super.isEnabled()) return false;
+		if (!FactionsTax.getInstance().isEnabled()) {
+			msg("<b>Factions Tax Is Not Enabled");
+			return false;
+		}
+		return true;
+	}
+	
+	
 	@Override
 	public void perform() {
 		commandChain.add(this);
