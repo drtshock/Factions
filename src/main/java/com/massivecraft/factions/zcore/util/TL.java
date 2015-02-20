@@ -425,6 +425,7 @@ public enum TL {
     COMMAND_SETHOME_SETOTHER("<b>You have set the home for the %1$s<i> faction."),
     COMMAND_SETHOME_DESCRIPTION("Set the faction home"),
 
+    COMMAND_SHOW_HOME("Faction home: %1$d, %2$d, %3$d"),
     COMMAND_SHOW_NOFACTION_SELF("You are not in a faction"),
     COMMAND_SHOW_NOFACTION_OTHER("That's not a faction"),
     COMMAND_SHOW_TOSHOW("to show faction information"),
