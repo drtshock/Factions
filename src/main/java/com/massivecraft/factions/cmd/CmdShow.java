@@ -84,6 +84,10 @@ public class CmdShow extends FCommand {
 
         }
 
+        if(Conf.homeIsPublic && faction.getHome() !=null) {
+            msg(TL.COMMAND_SHOW_HOME, faction.getHome().getBlockX(), faction.getHome().getBlockY(), faction.getHome().getBlockZ());
+        }
+
         String allyList = p.txt.parse(TL.COMMAND_SHOW_ALLIES.toString());
         String enemyList = p.txt.parse(TL.COMMAND_SHOW_ENEMIES.toString());
         for (Faction otherFaction : Factions.getInstance().getAllFactions()) {

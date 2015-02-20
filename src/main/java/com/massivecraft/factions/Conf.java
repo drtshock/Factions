@@ -103,6 +103,7 @@ public class Conf {
     public static boolean handleExploitInteractionSpam = true;
     public static boolean handleExploitTNTWaterlog = false;
 
+    public static boolean homeIsPublic = false;
     public static boolean homesEnabled = true;
     public static boolean homesMustBeInClaimedTerritory = true;
     public static boolean homesTeleportToOnDeath = true;
