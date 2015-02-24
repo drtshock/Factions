@@ -441,8 +441,8 @@ public enum TL {
     COMMAND_SHOW_DEPRECIATED("(%1$s depreciated)"), //This is spelled correctly.
     COMMAND_SHOW_LANDVALUE("<a>Total land value: <i>%1$s %2$s"),
     COMMAND_SHOW_BANKCONTAINS("<a>Bank contains: <i>%1$s"),
-    COMMAND_SHOW_ALLIES("Allies: "),
-    COMMAND_SHOW_ENEMIES("Enemies: "),
+    COMMAND_SHOW_ALLIES("<a>Allies: "),
+    COMMAND_SHOW_ENEMIES("<a>Enemies: "),
     COMMAND_SHOW_MEMBERSONLINE("Members online: "),
     COMMAND_SHOW_MEMBERSOFFLINE("Members offline: "),
     COMMAND_SHOW_COMMANDDESCRIPTION("Show faction information"),
@@ -569,6 +569,7 @@ public enum TL {
     GENERIC_FACTIONTAG_TOOLONG("<i>The faction tag can't be longer than <h>%s<i> chars."),
     GENERIC_FACTIONTAG_ALPHANUMERIC("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed."),
     GENERIC_PLACEHOLDER("<This is a placeholder for a message you should not see>"),
+    GENERIC_VERB_USE("use"),
 
     /**
      * ASCII compass (for chat map)
@@ -625,7 +626,7 @@ public enum TL {
     PLAYER_USE_WILDERNESS("<b>You can't use <h>%s<b> in the wilderness."),
     PLAYER_USE_SAFEZONE("<b>You can't use <h>%s<b> in a safe zone."),
     PLAYER_USE_WARZONE("<b>You can't use <h>%s<b> in a war zone."),
-    PLAYER_USE_TERRITORY("<b>You can't use <h>%s<b> in the territory of <h>%s<b>."),
+    PLAYER_USE_TERRITORY("<b>You can't <h>%s %s<b> in the territory of <h>%s<b>."),
     PLAYER_USE_OWNED("<b>You can't use <h>%s<b> in this territory, it is owned by: %s<b>."),
     PLAYER_COMMAND_WARZONE("<b>You can't use the command '%s' in warzone."),
     PLAYER_COMMAND_NEUTRAL("<b>You can't use the command '%s' in neutral territory."),
