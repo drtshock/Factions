@@ -328,7 +328,7 @@ public class FactionsPlayerListener implements Listener {
         // Cancel if we are not in our own territory
         if (rel.confDenyUseage()) {
             if (!justCheck) {
-                me.msg(TL.PLAYER_USE_TERRITORY, "use", TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
+                me.msg(TL.PLAYER_USE_TERRITORY, TL.GENERIC_VERB_USE, TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
             }
 
             return false;
