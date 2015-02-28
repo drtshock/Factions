@@ -58,7 +58,6 @@ public class CmdShow extends FCommand {
         String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
 
         String raidable = faction.getLandRounded() > faction.getPowerRounded() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
-        msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost, raidable);
 
         List<FancyMessage> allies = new ArrayList<FancyMessage>();
         List<FancyMessage> enemies = new ArrayList<FancyMessage>();
@@ -151,7 +150,7 @@ public class CmdShow extends FCommand {
             return;
         }
         msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus, (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
-        msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
+        msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost, raidable);
         if (faction.isPermanent()) {
             msg(TL.COMMAND_SHOW_PERMANENT);
         }
