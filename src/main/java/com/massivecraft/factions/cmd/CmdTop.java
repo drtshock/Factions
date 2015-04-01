@@ -105,14 +105,7 @@ public class CmdTop extends FCommand {
                 @Override
                 public int compare(Faction f1, Faction f2) {
                     double f1Size = Econ.getBalance(f1.getAccountId());
-                    // Lets get the balance of /all/ the players in the Faction.
-                    for(FPlayer fp : f1.getFPlayers()) {
-                        f1Size = f1Size + Econ.getBalance(fp.getAccountId());
-                    }
                     double f2Size = Econ.getBalance(f2.getAccountId());
-                    for(FPlayer fp : f2.getFPlayers()) {
-                        f2Size = f2Size + Econ.getBalance(fp.getAccountId());
-                    }
                     if (f1Size < f2Size) {
                         return 1;
                     } else if (f1Size > f2Size) {
@@ -148,6 +141,11 @@ public class CmdTop extends FCommand {
         for (Faction faction : factionList.subList(start, end)) {
             // Get the relation color if player is executing this.
             String fac = sender instanceof Player ? faction.getRelationTo(fme).getColor() + faction.getTag() : faction.getTag();
+            String value = getValue(faction, criteria);
+            if (value == null) {
+                msg(TL.COMMAND_TOP_INVALID, criteria);
+                return;
+            }
             lines.add(TL.COMMAND_TOP_LINE.format(rank, fac, getValue(faction, criteria)));
             rank++;
         }
@@ -164,13 +162,11 @@ public class CmdTop extends FCommand {
             return String.valueOf(faction.getLandRounded());
         } else if (criteria.equalsIgnoreCase("power")) {
             return String.valueOf(faction.getPowerRounded());
-        } else { // Last one is balance, and it has 3 different things it could be.
-            double balance = Econ.getBalance(faction.getAccountId());
-            for(FPlayer fp : faction.getFPlayers()) {
-                balance = balance + Econ.getBalance(fp.getAccountId());
-            }
-            return String.valueOf(balance);
+        } else if (criteria.equalsIgnoreCase("money") || criteria.equalsIgnoreCase("balance") || criteria.equalsIgnoreCase("bal")) {
+            return String.valueOf(Econ.getBalance(faction.getAccountId()));
         }
+
+        return null;
     }
 
     @Override
