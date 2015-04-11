@@ -89,12 +89,8 @@ public class FactionsEntityListener implements Listener {
      * Who can I hurt? I can never hurt members or allies. I can always hurt enemies. I can hurt neutrals as long as
      * they are outside their own territory.
      */
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-
         if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent) event;
             if (!this.canDamagerHurtDamagee(sub, true)) {
@@ -106,12 +102,8 @@ public class FactionsEntityListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-
         Location loc = event.getLocation();
         Entity boomer = event.getEntity();
         Faction faction = Board.getInstance().getFactionAt(new FLocation(loc));
@@ -171,12 +163,8 @@ public class FactionsEntityListener implements Listener {
     }
 
     // mainly for flaming arrows; don't want allies or people in safe zones to be ignited even after damage event is cancelled
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityCombustByEntity(EntityCombustByEntityEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-
         EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE, 0);
         if (!this.canDamagerHurtDamagee(sub, false)) {
             event.setCancelled(true);
@@ -186,12 +174,8 @@ public class FactionsEntityListener implements Listener {
 
     private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<PotionEffectType>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER));
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPotionSplashEvent(PotionSplashEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-
         // see if the potion has a harmful effect
         boolean badjuju = false;
         for (PotionEffect effect : event.getPotion().getEffects()) {
@@ -283,7 +267,7 @@ public class FactionsEntityListener implements Listener {
             if (damager instanceof Player) {
                 if (notify) {
                     FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
-                    attacker.msg("<i>You can't hurt other players in " + (defLocFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
+                    attacker.msg(TL.PLAYER_CANTHURT, (defLocFaction.isSafeZone() ? TL.REGION_SAFEZONE.toString() : TL.REGION_PEACEFUL.toString()));
                 }
                 return false;
             }
@@ -316,7 +300,7 @@ public class FactionsEntityListener implements Listener {
         // so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
         if (locFaction.noPvPInTerritory()) {
             if (notify) {
-                attacker.msg("<i>You can't hurt other players while you are in " + (locFaction.isSafeZone() ? "a SafeZone." : "peaceful territory."));
+                attacker.msg(TL.PLAYER_CANTHURT, (locFaction.isSafeZone() ? TL.REGION_SAFEZONE.toString() : TL.REGION_PEACEFUL.toString()));
             }
             return false;
         }
@@ -411,9 +395,9 @@ public class FactionsEntityListener implements Listener {
         return true;
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        if (event.isCancelled() || event.getLocation() == null) {
+        if (event.getLocation() == null) {
             return;
         }
 
@@ -422,12 +406,8 @@ public class FactionsEntityListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-
         // if there is a target
         Entity target = event.getTarget();
         if (target == null) {
@@ -445,11 +425,8 @@ public class FactionsEntityListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPaintingBreak(HangingBreakEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         if (event.getCause() == RemoveCause.EXPLOSION) {
             Location loc = event.getEntity().getLocation();
             Faction faction = Board.getInstance().getFactionAt(new FLocation(loc));
@@ -484,23 +461,15 @@ public class FactionsEntityListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPaintingPlace(HangingPlaceEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-
         if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "place paintings", false)) {
             event.setCancelled(true);
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-
         Entity entity = event.getEntity();
 
         // for now, only interested in Enderman and Wither boss tomfoolery

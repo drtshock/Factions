@@ -64,6 +64,9 @@ public abstract class MemoryFPlayer implements FPlayer {
     // FIELD: chatMode
     protected ChatMode chatMode;
 
+    // FIELD: ignoreAllianceChat
+    protected boolean ignoreAllianceChat = false;
+
     protected String id;
     protected String name;
 
@@ -197,6 +200,14 @@ public abstract class MemoryFPlayer implements FPlayer {
             this.chatMode = ChatMode.PUBLIC;
         }
         return chatMode;
+    }
+
+    public void setIgnoreAllianceChat(boolean ignore) {
+        this.ignoreAllianceChat = ignore;
+    }
+
+    public boolean isIgnoreAllianceChat() {
+        return ignoreAllianceChat;
     }
 
     public void setSpyingChat(boolean chatSpying) {
@@ -570,7 +581,7 @@ public abstract class MemoryFPlayer implements FPlayer {
      * @return true if should show, otherwise false.
      */
     public boolean shouldShowScoreboard(Faction toShow) {
-        return !toShow.isWarZone() && !toShow.isNone() && !toShow.isSafeZone() && P.p.getConfig().contains("scoreboard.finfo") && P.p.getConfig().getBoolean("scoreboard.finfo-enabled", false) && P.p.cmdBase.cmdSB.showBoard(this);
+        return !toShow.isWarZone() && !toShow.isNone() && !toShow.isSafeZone() && P.p.getConfig().contains("scoreboard.finfo") && P.p.getConfig().getBoolean("scoreboard.finfo-enabled", false) && P.p.cmdBase.cmdSB.showBoard(this) && FScoreboard.get(this) != null;
     }
 
     // -------------------------------
@@ -658,7 +669,8 @@ public abstract class MemoryFPlayer implements FPlayer {
         Faction myFaction = getFaction();
         Faction currentFaction = Board.getInstance().getFactionAt(flocation);
         int ownedLand = forFaction.getLandRounded();
-        int buffer = P.p.getConfig().getInt("hcf.buffer-zone", 0);
+        int factionBuffer = P.p.getConfig().getInt("hcf.buffer-zone", 0);
+        int worldBuffer = P.p.getConfig().getInt("world-border.buffer", 0);
 
         if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(location)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
@@ -695,8 +707,14 @@ public abstract class MemoryFPlayer implements FPlayer {
             } else {
                 error = P.p.txt.parse(TL.CLAIM_FACTIONCONTIGUOUS.toString());
             }
-        } else if (buffer > 0 && Board.getInstance().hasFactionWithin(flocation, myFaction, buffer)) {
-            error = P.p.txt.parse(TL.CLAIM_TOOCLOSETOOTHERFACTION.format(buffer));
+        } else if (factionBuffer > 0 && Board.getInstance().hasFactionWithin(flocation, myFaction, factionBuffer)) {
+            error = P.p.txt.parse(TL.CLAIM_TOOCLOSETOOTHERFACTION.format(factionBuffer));
+        } else if (flocation.isOutsideWorldBorder(worldBuffer)) {
+            if(worldBuffer > 0) {
+                error = P.p.txt.parse(TL.CLAIM_OUTSIDEBORDERBUFFER.format(worldBuffer));                 
+            } else {
+                error = P.p.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString()); 
+            }
         } else if (currentFaction.isNormal()) {
             if (myFaction.isPeaceful()) {
                 error = P.p.txt.parse(TL.CLAIM_PEACEFUL.toString(), currentFaction.getTag(this));

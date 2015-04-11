@@ -79,7 +79,7 @@ public enum TL {
     COMMAND_BYPASS_DISABLELOG(" has DISABLED admin bypass mode."),
     COMMAND_BYPASS_DESCRIPTION("Enable admin bypass mode"),
 
-    COMMAND_CHAT_DISABLED("<b>The built in chat chat channels are disabled on this server."),
+    COMMAND_CHAT_DISABLED("<b>The built in chat channels are disabled on this server."),
     COMMAND_CHAT_INVALIDMODE("<b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'p'"),
     COMMAND_CHAT_DESCRIPTION("Change chat mode"),
 
@@ -469,6 +469,12 @@ public enum TL {
     COMMAND_TITLE_CHANGED("%1$s<i> changed a title: %2$s"),
     COMMAND_TITLE_DESCRIPTION("Set or remove a players title"),
 
+    COMMAND_TOGGLEALLIANCECHAT_DESCRIPTION("Toggles whether or not you will see alliance chat"),
+    COMMAND_TOGGLEALLIANCECHAT_IGNORE("Alliance chat is now ignored"),
+    COMMAND_TOGGLEALLIANCECHAT_UNIGNORE("Alliance chat is no longer ignored"),
+
+    COMMAND_TOGGLESB_DISABLED("You can't toggle scoreboards while they are disabled."),
+
     COMMAND_TOP_DESCRIPTION("Sort Factions to see the top of some criteria."),
     COMMAND_TOP_TOP("Top Factions by %s. Page %d/%d"),
     COMMAND_TOP_LINE("%d. &6%s: &c%s"), // Rank. Faction: Value
@@ -538,10 +544,13 @@ public enum TL {
     CLAIM_CLAIMEDLOG("%s claimed land at (%s) for the faction: %s"),
     CLAIM_OVERCLAIM_DISABLED("<i>Over claiming is disabled on this server."),
     CLAIM_TOOCLOSETOOTHERFACTION("<i>Your claim is too close to another Faction. Buffer required is %d"),
-
+    CLAIM_OUTSIDEWORLDBORDER("<i>Your claim is outside the border."),
+    CLAIM_OUTSIDEBORDERBUFFER("<i>Your claim is outside the border. %d chunks away world edge required."),
     /**
      * More generic, or less easily categorisable translations, which may apply to more than one class
      */
+    GENERIC_YOU("you"),
+    GENERIC_YOURFACTION("your faction"),
     GENERIC_NOPERMISSION("<b>You don't have permission to %1$s."),
     GENERIC_DOTHAT("do that"),  //Ugh nuke this from high orbit
     GENERIC_NOPLAYERMATCH("<b>No player match found for \"<p>%1$s<b>\"."),
@@ -605,8 +614,17 @@ public enum TL {
     ROLE_NORMAL("normal member"),
 
     /**
+     * Region types.
+     */
+    REGION_SAFEZONE("safezone"),
+    REGION_WARZONE("warzone"),
+    REGION_WILDERNESS("wilderness"),
+
+    REGION_PEACEFUL("peaceful territory"),
+    /**
      * In the player and entity listeners
      */
+    PLAYER_CANTHURT("<i>You may not harm other players in %s"),
     PLAYER_SAFEAUTO("<i>This land is now a safe zone."),
     PLAYER_WARAUTO("<i>This land is now a war zone."),
     PLAYER_OUCH("<b>Ouch, that is starting to hurt. You should give it a rest."),
