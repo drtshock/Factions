@@ -149,7 +149,7 @@ public class CmdShow extends FCommand {
             return;
         }
         msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus, (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
-        msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
+        msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost, raidable);
         if (faction.isPermanent()) {
             msg(TL.COMMAND_SHOW_PERMANENT);
         }
