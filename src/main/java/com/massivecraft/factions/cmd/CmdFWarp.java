@@ -5,6 +5,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.LazyLocation;
+import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
@@ -42,7 +43,7 @@ public class CmdFWarp extends FCommand {
                 if (!transact(fme)) {
                     return;
                 }
-                this.doWarmUp(TL.WARMUPS_NOTIFY_TELEPORT, warpName, new Runnable() {
+                this.doWarmUp(WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warpName, new Runnable() {
                     @Override
                     public void run() {
                         CmdFWarp.this.fme.getPlayer().teleport(CmdFWarp.this.myFaction.getWarp(warpName).getLocation());
