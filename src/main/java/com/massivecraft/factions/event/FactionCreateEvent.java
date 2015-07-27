@@ -2,8 +2,8 @@ package com.massivecraft.factions.event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
@@ -11,22 +11,20 @@ import com.massivecraft.factions.FPlayers;
 /**
  * Event called when a Faction is created.
  */
-public class FactionCreateEvent extends Event implements Cancellable {
+public class FactionCreateEvent extends PlayerEvent implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
 
     private String factionTag;
-    private Player sender;
     private boolean cancelled;
 
     public FactionCreateEvent(Player sender, String tag) {
+    	super(sender);
         this.factionTag = tag;
-        this.sender = sender;
-        this.cancelled = false;
     }
 
     public FPlayer getFPlayer() {
-        return FPlayers.getInstance().getByPlayer(sender);
+        return FPlayers.getInstance().getByPlayer(getPlayer());
     }
 
     public String getFactionTag() {
@@ -47,7 +45,7 @@ public class FactionCreateEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean c) {
-        this.cancelled = c;
+    public void setCancelled(boolean cancel) {
+        this.cancelled = cancel;
     }
 }
