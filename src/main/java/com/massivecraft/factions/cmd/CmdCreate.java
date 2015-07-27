@@ -1,15 +1,21 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.*;
+import java.util.ArrayList;
+
+import org.bukkit.Bukkit;
+
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
-
-import java.util.ArrayList;
 
 
 public class CmdCreate extends FCommand {

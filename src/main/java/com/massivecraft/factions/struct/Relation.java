@@ -1,8 +1,9 @@
 package com.massivecraft.factions.struct;
 
+import org.bukkit.ChatColor;
+
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.ChatColor;
 
 
 public enum Relation {

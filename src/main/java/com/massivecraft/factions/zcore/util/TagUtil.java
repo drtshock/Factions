@@ -1,18 +1,19 @@
 package com.massivecraft.factions.zcore.util;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.ChatColor;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.zcore.util.TagReplacer.TagType;
+
 import mkremins.fanciful.FancyMessage;
-import org.bukkit.ChatColor;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.massivecraft.factions.zcore.util.TagReplacer.TagType;
 
 public class TagUtil {
 

@@ -1,12 +1,19 @@
 package com.massivecraft.factions;
 
-import com.google.common.collect.ImmutableMap;
-import com.massivecraft.factions.integration.dynmap.DynmapStyle;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
-import java.util.*;
+import com.google.common.collect.ImmutableMap;
+import com.massivecraft.factions.integration.dynmap.DynmapStyle;
 
 public class Conf {
 

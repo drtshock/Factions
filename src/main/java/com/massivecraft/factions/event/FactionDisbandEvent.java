@@ -1,10 +1,11 @@
 package com.massivecraft.factions.event;
 
+import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 
 /**
  * Event called when a faction is disbanded.

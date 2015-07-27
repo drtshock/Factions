@@ -1,12 +1,13 @@
 package com.massivecraft.factions.cmd;
 
+import org.bukkit.ChatColor;
+
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.ChatColor;
 
 
 public class CmdMoneyWithdraw extends FCommand {

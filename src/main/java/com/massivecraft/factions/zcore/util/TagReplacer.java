@@ -1,15 +1,20 @@
 package com.massivecraft.factions.zcore.util;
 
-import com.massivecraft.factions.*;
-import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.struct.Relation;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.struct.Relation;
 
 /**
  * Link between config and in-game messages<br> Changes based on faction / player<br> Interfaces the config lists with
@@ -102,7 +107,7 @@ public enum TagReplacer {
             case TOTAL_ONLINE:
                 return String.valueOf(Bukkit.getOnlinePlayers().size());
             case FACTIONLESS:
-                return String.valueOf(Factions.getInstance().getNone().getFPlayersWhereOnline(true).size());
+                return String.valueOf(Factions.getInstance().getWilderness().getFPlayersWhereOnline(true).size());
             case MAX_ALLIES:
                 if (P.p.getConfig().getBoolean("max-relations.enabled", true)) {
                     return String.valueOf(P.p.getConfig().getInt("max-relations.ally", 10));

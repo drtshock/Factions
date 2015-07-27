@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.Collections;
+
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.zcore.util.TL;
-
-import java.util.Collections;
 
 public class FCmdRoot extends FCommand {
 

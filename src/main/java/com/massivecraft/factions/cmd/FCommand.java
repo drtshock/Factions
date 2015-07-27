@@ -1,16 +1,22 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.*;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.text.SimpleDateFormat;
-import java.util.List;
 
 
 public abstract class FCommand extends MCommand<P> {
