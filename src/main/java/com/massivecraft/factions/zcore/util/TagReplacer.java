@@ -102,7 +102,7 @@ public enum TagReplacer {
             case TOTAL_ONLINE:
                 return String.valueOf(Bukkit.getOnlinePlayers().size());
             case FACTIONLESS:
-                return String.valueOf(Factions.getInstance().getNone().getFPlayersWhereOnline(true).size());
+                return String.valueOf(Factions.getInstance().getWilderness().getFPlayersWhereOnline(true).size());
             case MAX_ALLIES:
                 if (P.p.getConfig().getBoolean("max-relations.enabled", true)) {
                     return String.valueOf(P.p.getConfig().getInt("max-relations.ally", 10));

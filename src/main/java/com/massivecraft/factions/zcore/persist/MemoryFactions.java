@@ -153,6 +153,7 @@ public abstract class MemoryFactions extends Factions {
     }
 
     @Override
+    @Deprecated
     public Faction getNone() {
         return factions.get("0");
     }
