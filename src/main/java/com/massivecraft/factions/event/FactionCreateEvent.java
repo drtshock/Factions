@@ -1,11 +1,12 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 
 /**
  * Event called when a Faction is created.

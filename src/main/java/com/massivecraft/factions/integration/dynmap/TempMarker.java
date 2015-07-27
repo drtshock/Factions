@@ -1,10 +1,11 @@
 package com.massivecraft.factions.integration.dynmap;
 
-import com.massivecraft.factions.Conf;
 import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
+
+import com.massivecraft.factions.Conf;
 
 public class TempMarker {
     // -------------------------------------------- //

@@ -1,7 +1,8 @@
 package com.massivecraft.factions.struct;
 
-import com.massivecraft.factions.P;
 import org.bukkit.command.CommandSender;
+
+import com.massivecraft.factions.P;
 
 public enum Permission {
     MANAGE_SAFE_ZONE("managesafezone"),

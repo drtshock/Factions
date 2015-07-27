@@ -1,10 +1,10 @@
 package com.massivecraft.factions.zcore.util;
 
-import org.bukkit.Effect;
-import org.bukkit.Location;
-
 import java.util.Collection;
 import java.util.Random;
+
+import org.bukkit.Effect;
+import org.bukkit.Location;
 
 // http://mc.kev009.com/Protocol
 // -----------------------------

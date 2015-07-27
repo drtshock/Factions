@@ -1,19 +1,37 @@
 package com.massivecraft.factions.integration.dynmap;
 
-import com.massivecraft.factions.*;
-import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.persist.MemoryBoard;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.dynmap.DynmapAPI;
-import org.dynmap.markers.*;
+import org.dynmap.markers.AreaMarker;
+import org.dynmap.markers.Marker;
+import org.dynmap.markers.MarkerAPI;
+import org.dynmap.markers.MarkerSet;
+import org.dynmap.markers.PlayerSet;
 import org.dynmap.utils.TileFlags;
 
-import java.util.*;
-import java.util.Map.Entry;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.persist.MemoryBoard;
 
 // This source code is a heavily modified version of mikeprimms plugin Dynmap-Factions.
 public class EngineDynmap {

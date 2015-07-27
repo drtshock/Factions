@@ -1,8 +1,9 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.Faction;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import com.massivecraft.factions.Faction;
 
 /**
  * Represents an event involving a Faction.

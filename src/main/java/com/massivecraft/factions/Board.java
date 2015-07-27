@@ -1,9 +1,9 @@
 package com.massivecraft.factions;
 
-import com.massivecraft.factions.zcore.persist.json.JSONBoard;
-
 import java.util.ArrayList;
 import java.util.Set;
+
+import com.massivecraft.factions.zcore.persist.json.JSONBoard;
 
 
 public abstract class Board {

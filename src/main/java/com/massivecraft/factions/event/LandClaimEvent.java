@@ -1,10 +1,11 @@
 package com.massivecraft.factions.event;
 
+import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
+
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 
 /**
  * Event called when an FPlayer claims land for a Faction.

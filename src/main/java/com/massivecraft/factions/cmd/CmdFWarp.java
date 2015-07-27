@@ -1,5 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.Map;
+
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
@@ -7,11 +12,8 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
-import mkremins.fanciful.FancyMessage;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
-import java.util.Map;
+import mkremins.fanciful.FancyMessage;
 
 public class CmdFWarp extends FCommand {
 

@@ -1,8 +1,8 @@
 package com.massivecraft.factions.listeners;
 
-import com.massivecraft.factions.*;
-import com.massivecraft.factions.struct.ChatMode;
-import com.massivecraft.factions.struct.Relation;
+import java.util.UnknownFormatConversionException;
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,8 +11,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.UnknownFormatConversionException;
-import java.util.logging.Level;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.struct.Relation;
 
 
 public class FactionsChatListener implements Listener {

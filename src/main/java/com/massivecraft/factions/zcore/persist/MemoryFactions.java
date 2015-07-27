@@ -1,16 +1,17 @@
 package com.massivecraft.factions.zcore.persist;
 
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.util.MiscUtil;
-import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.ChatColor;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.bukkit.ChatColor;
+
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.zcore.util.TL;
 
 public abstract class MemoryFactions extends Factions {
     public Map<String, Faction> factions = new ConcurrentHashMap<String, Faction>();

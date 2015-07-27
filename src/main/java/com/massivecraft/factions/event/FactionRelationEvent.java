@@ -1,9 +1,10 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.struct.Relation;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.struct.Relation;
 
 /**
  * Event called when a Faction relation is called.

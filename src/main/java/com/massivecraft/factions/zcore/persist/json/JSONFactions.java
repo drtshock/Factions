@@ -1,5 +1,18 @@
 package com.massivecraft.factions.zcore.persist.json;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.UUID;
+import java.util.logging.Level;
+
+import org.bukkit.Bukkit;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
@@ -12,13 +25,6 @@ import com.massivecraft.factions.zcore.persist.MemoryFaction;
 import com.massivecraft.factions.zcore.persist.MemoryFactions;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 import com.massivecraft.factions.zcore.util.UUIDFetcher;
-import org.bukkit.Bukkit;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.logging.Level;
 
 public class JSONFactions extends MemoryFactions {
     // Info on how to persist

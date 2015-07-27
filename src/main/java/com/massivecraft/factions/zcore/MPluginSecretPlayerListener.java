@@ -1,7 +1,5 @@
 package com.massivecraft.factions.zcore;
 
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,6 +7,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.listeners.FactionsPlayerListener;
 
 public class MPluginSecretPlayerListener implements Listener {
 

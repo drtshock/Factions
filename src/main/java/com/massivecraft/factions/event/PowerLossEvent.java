@@ -1,9 +1,10 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 
 /**
  * Event called when a player loses power.

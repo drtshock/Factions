@@ -16,10 +16,10 @@
  */
 package com.massivecraft.factions.zcore.util;
 
+import java.text.SimpleDateFormat;
+
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.text.SimpleDateFormat;
 
 /**
  * An enum for requesting strings from the language file. The contents of this enum file may be subject to frequent

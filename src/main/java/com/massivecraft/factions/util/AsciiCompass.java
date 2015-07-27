@@ -1,9 +1,10 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.zcore.util.TL;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class AsciiCompass {
 

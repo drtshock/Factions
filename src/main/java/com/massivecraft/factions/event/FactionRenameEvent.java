@@ -1,8 +1,9 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.FPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+
+import com.massivecraft.factions.FPlayer;
 
 public class FactionRenameEvent extends FactionPlayerEvent implements Cancellable {
 

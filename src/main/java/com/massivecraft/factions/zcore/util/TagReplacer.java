@@ -1,15 +1,20 @@
 package com.massivecraft.factions.zcore.util;
 
-import com.massivecraft.factions.*;
-import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.struct.Relation;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.struct.Relation;
 
 /**
  * Link between config and in-game messages<br> Changes based on faction / player<br> Interfaces the config lists with

@@ -1,13 +1,24 @@
 package com.massivecraft.factions.zcore.persist;
 
-import com.massivecraft.factions.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.LazyLocation;
-import org.bukkit.ChatColor;
-
-import java.util.*;
-import java.util.Map.Entry;
 
 
 public abstract class MemoryBoard extends Board {

@@ -1,10 +1,11 @@
 package com.massivecraft.factions;
 
-import com.massivecraft.factions.zcore.persist.json.JSONFPlayers;
+import java.util.Collection;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
+import com.massivecraft.factions.zcore.persist.json.JSONFPlayers;
 
 public abstract class FPlayers {
     protected static FPlayers instance = getFPlayersImpl();
