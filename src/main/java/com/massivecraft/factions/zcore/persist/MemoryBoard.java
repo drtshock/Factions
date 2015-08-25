@@ -11,8 +11,67 @@ import java.util.Map.Entry;
 
 
 public abstract class MemoryBoard extends Board {
-    public HashMap<FLocation, String> flocationIds = new HashMap<FLocation, String>();
+    
+   public class MemoryBoardMap extends HashMap<FLocation, String> {
+        HashMap<String, Collection<FLocation>> valueToKeyMap = new HashMap<String, Collection<FLocation>>();
+        @Override
+        public String put(FLocation key, String value) {
+            String previousValue = super.put(key, value);
+            
+            if (key != null && value != null) {
+                Collection<FLocation> keyCollection = valueToKeyMap.get(value);
+                if (keyCollection == null) {
+                    keyCollection = new HashSet<FLocation>();
+                    valueToKeyMap.put(value, keyCollection);
+                }
+                keyCollection.add(key);
+            }
+            if (previousValue != null) {
+                Collection<FLocation> keyCollection = valueToKeyMap.get(previousValue);
+                if (keyCollection != null) {
+                    keyCollection.remove(key);
+                    if (keyCollection.isEmpty()) {
+                        valueToKeyMap.remove(previousValue);
+                    }
+                }
+            }
+            
+            return previousValue;
+        };
 
+        @Override
+        public String remove(Object key) {
+            String result = super.remove(key);
+            if (result != null) {
+                Collection<FLocation> keyCollection = valueToKeyMap.get(result);
+                if (keyCollection != null) {
+                    keyCollection.remove(key);
+                    if (keyCollection.isEmpty()) {
+                        valueToKeyMap.remove(result);
+                    }
+                }
+            }
+            return result;
+        }
+        
+        @Override
+        public void clear() {
+            valueToKeyMap.clear();
+            super.clear();
+        }
+
+        public int getValueCount(String value) {
+            Collection<FLocation> keyCollection = valueToKeyMap.get(value);
+            return keyCollection != null ? keyCollection.size() : 0;
+        }
+        
+        public Collection<FLocation> getAllKeys(String value) {
+            return valueToKeyMap.get(value);
+        }
+    }
+    
+    public MemoryBoardMap flocationIds = new MemoryBoardMap();
+    
     //----------------------------------------------//
     // Get and Set
     //----------------------------------------------//
@@ -88,11 +147,10 @@ public abstract class MemoryBoard extends Board {
     }
 
     public void clean(String factionId) {
-        Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
-        while (iter.hasNext()) {
-            Entry<FLocation, String> entry = iter.next();
-            if (entry.getValue().equals(factionId)) {
-                iter.remove();
+        Collection<FLocation> keys = flocationIds.getAllKeys(factionId);
+        if (keys != null) {
+            for (FLocation key : keys) {
+                flocationIds.remove(key);
             }
         }
     }
@@ -166,13 +224,7 @@ public abstract class MemoryBoard extends Board {
     //----------------------------------------------//
 
     public int getFactionCoordCount(String factionId) {
-        int ret = 0;
-        for (String thatFactionId : flocationIds.values()) {
-            if (thatFactionId.equals(factionId)) {
-                ret += 1;
-            }
-        }
-        return ret;
+        return flocationIds.getValueCount(factionId);
     }
 
     public int getFactionCoordCount(Faction faction) {
