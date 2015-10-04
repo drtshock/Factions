@@ -380,12 +380,18 @@ public class FactionsEntityListener implements Listener {
 
         Relation relation = defendFaction.getRelationTo(attackFaction);
 
-        // You can not hurt neutral factions
-        if (Conf.disablePVPBetweenNeutralFactions && relation.isNeutral()) {
-            if (notify) {
-                attacker.msg(TL.PLAYER_PVP_NEUTRAL);
+        // You can or can't hurt neutral factions depending on Conf settings
+        /* If 'disablePVPBetweenNeutralFactions' is false, then you can hurt the
+         damagee in their territory, even when in a neutral relation */
+
+        if (relation.isNeutral()) {
+            if (Conf.disablePVPBetweenNeutralFactions) {
+                if (notify) {
+                    attacker.msg(TL.PLAYER_PVP_NEUTRAL);
+                }
+                return false;
             }
-            return false;
+            return true;
         }
 
         // Players without faction may be hurt anywhere
