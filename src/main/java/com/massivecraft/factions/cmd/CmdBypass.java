@@ -9,6 +9,7 @@ public class CmdBypass extends FCommand {
     public CmdBypass() {
         super();
         this.aliases.add("bypass");
+        this.aliases.add("adminmode");
 
         //this.requiredArgs.add("");
         this.optionalArgs.put("on/off", "flip");
