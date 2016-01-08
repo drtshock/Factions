@@ -14,6 +14,7 @@ public class CmdStatus extends FCommand {
         super();
         this.aliases.add("status");
         this.aliases.add("s");
+        this.aliases.add("roster");
 
         this.permission = Permission.STATUS.node;
 

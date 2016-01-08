@@ -11,6 +11,8 @@ public class CmdMoneyBalance extends FCommand {
         super();
         this.aliases.add("b");
         this.aliases.add("balance");
+        this.aliases.add("bal");
+        this.aliases.add("bank");
 
         //this.requiredArgs.add("");
         this.optionalArgs.put("faction", "yours");

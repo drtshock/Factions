@@ -11,6 +11,9 @@ public class CmdLogins extends FCommand {
         this.aliases.add("logins");
         this.aliases.add("logout");
         this.aliases.add("logouts");
+        this.aliases.add("monitorlogins");
+        this.aliases.add("showlogins");
+        this.aliases.add("togglelogins");
         this.senderMustBePlayer = true;
         this.senderMustBeMember = true;
         this.permission = Permission.MONITOR_LOGINS.node;
