@@ -55,6 +55,10 @@ public interface Faction extends EconomyParticipator {
 
     public boolean getPeacefulExplosionsEnabled();
 
+    public void setFriendlyFire(boolean friendlyFire);
+
+    public boolean getFriendlyFire();
+
     public boolean noExplosionsInTerritory();
 
     public boolean isPermanent();

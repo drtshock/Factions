@@ -68,6 +68,7 @@ public class FCmdRoot extends FCommand {
     public CmdClaimLine cmdClaimLine = new CmdClaimLine();
     public CmdTop cmdTop = new CmdTop();
     public CmdAHome cmdAHome = new CmdAHome();
+    public CmdFriendlyFire cmdFriendlyFire = new CmdFriendlyFire();
 
     public FCmdRoot() {
         super();
@@ -151,6 +152,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdClaimLine);
         this.addSubCommand(this.cmdTop);
         this.addSubCommand(this.cmdAHome);
+        this.addSubCommand(this.cmdFriendlyFire);
     }
 
     @Override
