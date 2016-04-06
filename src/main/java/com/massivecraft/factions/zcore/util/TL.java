@@ -176,8 +176,8 @@ public enum TL {
     COMMAND_DISBAND_HOLDINGS("<i>You have been given the disbanded faction's bank, totaling %1$s."),
     COMMAND_DISBAND_DESCRIPTION("Disband a faction"),
 
-    COMMAND_FRIENDLY_FIRE("Toggle friendly fire"),
-    COMMAND_FRIENDLY_FIRE_TOGGLED("%1$s<i> has %2$s<i> friendly fire"),
+    COMMAND_FRIENDLYFIRE("Toggle friendly fire"),
+    COMMAND_FRIENDLYFIRE_TOGGLED("%1$s<i> has %2$s<i> friendly fire"),
 
     COMMAND_FWARP_CLICKTOWARP("Click to warp!"),
     COMMAND_FWARP_COMMANDFORMAT("<i>/f warp <warpname>"),

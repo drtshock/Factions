@@ -10,6 +10,7 @@ public class CmdFriendlyFire extends FCommand {
     public CmdFriendlyFire(){
         aliases.add("friendlyfire");
         aliases.add("ff");
+        setHelpShort("toggle friendly fire");
 
         senderMustBeModerator = true;
         senderMustBePlayer = true;
@@ -20,11 +21,11 @@ public class CmdFriendlyFire extends FCommand {
 
         boolean friendlyFire = myFaction.getFriendlyFire();
         myFaction.setFriendlyFire(!friendlyFire);
-        myFaction.msg(TL.COMMAND_FRIENDLY_FIRE_TOGGLED, fme.describeTo(myFaction, true), (myFaction.getFriendlyFire() ? "en":"dis") + "abled");
+        myFaction.msg(TL.COMMAND_FRIENDLYFIRE_TOGGLED, fme.describeTo(myFaction, true), (myFaction.getFriendlyFire() ? "en":"dis") + "abled");
     }
 
     @Override
     public TL getUsageTranslation() {
-        return TL.COMMAND_FRIENDLY_FIRE;
+        return TL.COMMAND_FRIENDLYFIRE;
     }
 }
