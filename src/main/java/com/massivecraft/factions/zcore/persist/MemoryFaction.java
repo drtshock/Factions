@@ -25,6 +25,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected String id = null;
     protected boolean peacefulExplosionsEnabled;
     protected boolean permanent;
+    protected boolean friendlyFire;
     protected String tag;
     protected String description;
     protected boolean open;
@@ -137,6 +138,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void setPeacefulExplosionsEnabled(boolean val) {
         peacefulExplosionsEnabled = val;
+    }
+
+    public void setFriendlyFire(boolean friendlyFire){
+        this.friendlyFire = friendlyFire;
+    }
+
+    public boolean getFriendlyFire(){
+        return this.friendlyFire;
     }
 
     public boolean getPeacefulExplosionsEnabled() {

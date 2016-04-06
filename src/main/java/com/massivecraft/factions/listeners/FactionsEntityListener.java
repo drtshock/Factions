@@ -393,8 +393,8 @@ public class FactionsEntityListener implements Listener {
             return true;
         }
 
-        // You can never hurt faction members or allies
-        if (relation.isMember() || relation.isAlly()) {
+        // You can only hurt faction members when friendly fire is toggled, can never hurt allies
+        if ((relation.isMember() && !attackFaction.getFriendlyFire()) || relation.isAlly()) {
             if (notify) {
                 attacker.msg(TL.PLAYER_PVP_CANTHURT, defender.describeTo(attacker));
             }
