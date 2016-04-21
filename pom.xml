@@ -134,7 +134,7 @@
         </repository>
         <repository>
             <id>ess-repo</id>
-            <url>https://ci.drtshock.net/plugin/repository/everything/</url>
+            <url>https://ci.terrocidepvp.net/plugin/repository/everything/</url>
         </repository>
         <repository>
             <id>spigot-repo</id>
