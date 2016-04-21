@@ -134,7 +134,7 @@
         </repository>
         <repository>
             <id>ess-repo</id>
-            <url>http://158.69.90.191:8080/plugin/repository/everything/</url>
+            <url>http://ci.terrocidepvp.net/plugin/repository/everything/</url>
         </repository>
         <repository>
             <id>spigot-repo</id>
