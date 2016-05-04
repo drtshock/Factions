@@ -18,6 +18,7 @@ public class CmdConvert extends FCommand {
     public void perform() {
         if (!(this.sender instanceof ConsoleCommandSender)) {
             this.sender.sendMessage(TL.GENERIC_CONSOLEONLY.toString());
+            return;
         }
         Backend nb = Backend.valueOf(this.argAsString(0).toUpperCase());
         if (nb == Conf.backEnd) {

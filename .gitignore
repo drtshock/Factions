@@ -32,3 +32,9 @@
 *.ipr
 *.iws
 .idea/
+
+#Extras
+.gitignore
+src/main/java/net
+src/main/java/mkremins
+pom.xml

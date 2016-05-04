@@ -98,11 +98,13 @@
             <artifactId>EssentialsX</artifactId>
             <version>2.0.1-SNAPSHOT</version>
         </dependency>
+        <!--
         <dependency>
             <groupId>net.ess3</groupId>
             <artifactId>EssentialsXChat</artifactId>
             <version>2.0.1-SNAPSHOT</version>
         </dependency>
+        -->
         <dependency>
             <groupId>mkremins</groupId>
             <artifactId>fanciful</artifactId>
