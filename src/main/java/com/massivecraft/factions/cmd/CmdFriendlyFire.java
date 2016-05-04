@@ -20,8 +20,9 @@ public class CmdFriendlyFire extends FCommand {
     public void perform() {
 
         boolean friendlyFire = myFaction.getFriendlyFire();
+
+        myFaction.msg(TL.COMMAND_FRIENDLYFIRE_TOGGLED, fme.describeTo(myFaction, true), (friendlyFire ? "en":"dis") + "abled");
         myFaction.setFriendlyFire(!friendlyFire);
-        myFaction.msg(TL.COMMAND_FRIENDLYFIRE_TOGGLED, fme.describeTo(myFaction, true), (myFaction.getFriendlyFire() ? "en":"dis") + "abled");
     }
 
     @Override
