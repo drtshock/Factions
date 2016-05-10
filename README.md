@@ -17,20 +17,20 @@ I plan on adding many more things onto this fork, and with your help and suggest
 
 Want to contribute?
 -------------------
-If you would like to contribute make sure you follow the basic style guidelines. For example, do [u]not[/u] use allman-bracket styling
+If you would like to contribute make sure you follow the basic style guidelines. For example, do not use allman-bracket styling
 
-1TBS (Correct Style)
-`while (x == y) {
+**1TBS (Correct Style)**
+while (x == y) {
      something();
      somethingelse();
- }`
+ }
 
-Allman (Incorrect Style)
-`while (x == y)
+**Allman (Incorrect Style)**
+while (x == y)
  {
      something();
      somethingelse();
- }`
+ }
  
  Just look through the repository source and make sure to follow the correct style. If you are not using this style on your other
  projects, then don't worry. It's not hard to get used to!
