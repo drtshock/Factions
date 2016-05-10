@@ -1,52 +1,39 @@
-FactionsUUID
+FactionsX
 ====================
-<rant>
-I'd appreciate it if you could pay for the [resource](http://www.spigotmc.org/resources/factionsuuid.1035/) if your server makes money. If you only run your server for your kids or some friends and don't make any money, then I don't want to stop you from doing so by forcing you to buy a $15 plugin. If that's the case, then just send me a message and we can work something out.
+This plugin aims to be a maintained version of FactionsUUID. The original authors of that plugin are no longer active and getting a
+bug squashed is very difficult because they no longer have the time to maintain this project. Not only that, but I would also
+like to make this a unique fork of Factions with its own unique twists and features.
 
-The repo is open because of that and because I still hope to see people contributing upstream :)
-</rant>
+Why you should use it
+---------------------
+* New commands
+* New features
+* Active support
+* Very open to suggestions
 
-This plugin will allow the players on the server to create factions/guilds. The factions can claim territory that will be protected from non-members. Factions can forge alliances and declare themselves enemies with others. Land may be taken from other factions through war.
+Here is an example of the first major feature added into FactionsX
+`/f friendlyfire (Alias /f ff)` - Toggle friendly fire between your faction. Only moderators and up can use this command
+I plan on adding many more things onto this fork, and with your help and suggestions we can make a very nice fork of Factions.
 
-The goals of this plugin:
+Want to contribute?
+-------------------
+If you would like to contribute make sure you follow the basic style guidelines. For example, do [u]not[/u] use allman-bracket styling
 
- * The players should be able to take care of anti-griefing themselves.
- * Inspire politics and intrigues on your server.
- * Guilding and team spirit! :)
- * Auto convert old 1.6.9.x versions to save with UUIDs.
+1TBS (Correct Style)
+`while (x == y) {
+     something();
+     somethingelse();
+ }`
 
-Usage
----------
-<b>Read the full userguide here: [http://massivecraft.com/dev/factions](http://massivecraft.com/dev/factions)</b>
-
-The chat console command is:
-
- * `/f`
-
-This command has subcommands like:
-
-* `/f create MyFactionName`
-* `/f invite MyFriendsName`
-* `/f claim`
-* `/f map`
-* ... etc
-
-You may also read the documentation ingame as the plugin ships with an ingame help manual. Read the help pages like this:
-
-* `/f help 1`
-* `/f help 2`
-* `/f help 3`
-
-Note that you may optionally skip the slash and just write
-
-* `f`
-
-Installing
-----------
-1. Download the latest release: [http://ci.drtshock.net/job/FactionsUUID/](http://ci.drtshock.net/job/FactionsUUID/)<br>
-1. Put Factions.jar in the plugins folder.
-
-A default config file will be created on the first run.
+Allman (Incorrect Style)
+`while (x == y)
+ {
+     something();
+     somethingelse();
+ }`
+ 
+ Just look through the repository source and make sure to follow the correct style. If you are not using this style on your other
+ projects, then don't worry. It's not hard to get used to!
 
 License
 ----------
