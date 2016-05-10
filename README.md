@@ -21,15 +21,15 @@ If you would like to contribute make sure you follow the basic style guidelines.
 
 **1TBS (Correct Style)**
 while (x == y) {
-     something();
-     somethingelse();
- }
+    something();
+    somethingElse();
+}
 
 **Allman (Incorrect Style)**
 while (x == y)
  {
-     something();
-     somethingelse();
+    something();
+    somethingElse();
  }
  
  Just look through the repository source and make sure to follow the correct style. If you are not using this style on your other
