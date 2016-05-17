@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
 /**
@@ -11,6 +12,8 @@ public class CmdFriendlyFire extends FCommand {
         aliases.add("friendlyfire");
         aliases.add("ff");
         setHelpShort("toggle friendly fire");
+
+        this.permission = Permission.FRIENDLYFIRE.node;
 
         senderMustBeModerator = true;
         senderMustBePlayer = true;

@@ -77,7 +77,9 @@ public enum Permission {
     SEECHUNK("seechunk"),
     SETWARP("setwarp"),
     TOP("top"),
-    WARP("warp");
+    WARP("warp"),
+    FRIENDLYFIRE("friendlyfire"),
+    ;
 
     public final String node;
 
