@@ -43,6 +43,14 @@ public interface FPlayer extends EconomyParticipator {
 
     public Role getRole();
 
+    public boolean isFlying();
+
+    public void setFlying(boolean flying);
+
+    public boolean canFly();
+
+    public void setCanFly(boolean canFly);
+
     public void setRole(Role role);
 
     public double getPowerBoost();

@@ -52,6 +52,8 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected String name;
     protected boolean monitorJoins;
     protected boolean spyingChat = false;
+    protected boolean flying = false;
+    protected boolean canFly = false;
     protected boolean showScoreboard = true;
     protected WarmUpUtil.Warmup warmup;
     protected int warmupTask;
@@ -89,6 +91,22 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public boolean hasFaction() {
         return !factionId.equals("0");
+    }
+
+    public boolean isFlying() {
+        return this.flying;
+    }
+
+    public void setFlying(boolean flying) {
+        this.flying = flying;
+    }
+
+    public boolean canFly() {
+        return this.canFly;
+    }
+
+    public void setCanFly(boolean canFly) {
+        this.canFly = canFly;
     }
 
     public void setFaction(Faction faction) {

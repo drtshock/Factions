@@ -129,12 +129,27 @@ public class FactionsPlayerListener implements Listener {
         Player player = event.getPlayer();
         FPlayer me = FPlayers.getInstance().getByPlayer(player);
 
-        // clear visualization
         if (event.getFrom().getBlockX() != event.getTo().getBlockX() || event.getFrom().getBlockY() != event.getTo().getBlockY() || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
+            // clear visualization
             VisualizeUtil.clear(event.getPlayer());
             if (me.isWarmingUp()) {
                 me.clearWarmup();
                 me.msg(TL.WARMUPS_CANCELLED);
+            }
+
+            // fly checks
+            if (me.canFly()) {
+                me.setCanFly(false);
+                me.msg(TL.COMMAND_FLY_MOVEDONWARMUP);
+            }
+
+            if (me.isFlying()) {
+                if (!Board.getInstance().getFactionAt(new FLocation(event.getTo())).equals(me.getFaction())) {
+                    me.setFlying(false);
+                    me.getPlayer().setFlying(false);
+                    me.getPlayer().setAllowFlight(false);
+                    me.msg(TL.COMMAND_FLY_NOLONGERINLAND);
+                }
             }
         }
 

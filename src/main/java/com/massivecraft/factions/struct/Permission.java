@@ -79,6 +79,7 @@ public enum Permission {
     TOP("top"),
     WARP("warp"),
     FRIENDLYFIRE("friendlyfire"),
+    FLY("fly"),
     ;
 
     public final String node;

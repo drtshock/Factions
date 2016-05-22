@@ -230,6 +230,8 @@ public class Conf {
     public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
     public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
 
+    public static int warmupTimeForFly = 15;
+
     public static transient Set<EntityType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(EntityType.class);
     // Economy settings
     public static boolean econEnabled = false;

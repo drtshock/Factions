@@ -179,6 +179,13 @@ public enum TL {
     COMMAND_FRIENDLYFIRE("Toggle friendly fire"),
     COMMAND_FRIENDLYFIRE_TOGGLED("%1$s<i> has %2$s<i> friendly fire"),
 
+    COMMAND_FLY("Toggle fly mode"),
+    COMMAND_FLY_MOVEDONWARMUP("<i>Moved while on warmup, flight cancelled"),
+    COMMAND_FLY_NOLONGERINLAND("<i>You are no longer in your territory, flight disabled"),
+    COMMAND_FLY_TOGGLED("<i>You have %1$s<i> fly mode"),
+    COMMAND_FLY_ONLYINOWNLAND("<i>You can only use this command in your own land"),
+    COMMAND_FLY_WARMUP("<i>Enabling fly mode in %1$s<i> seconds, do not move"),
+
     COMMAND_FWARP_CLICKTOWARP("Click to warp!"),
     COMMAND_FWARP_COMMANDFORMAT("<i>/f warp <warpname>"),
     COMMAND_FWARP_WARPED("<i>Warped to <a>%1$s"),
