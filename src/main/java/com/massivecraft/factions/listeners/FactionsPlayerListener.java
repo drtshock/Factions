@@ -335,6 +335,11 @@ public class FactionsPlayerListener implements Listener {
             }
 
             return false;
+        } else if (location.getBlock().getType() == Material.CHEST) {
+            if (hasSign(location.getBlock())) {
+
+            }
+            return true;
         }
 
         Faction myFaction = me.getFaction();
@@ -359,6 +364,11 @@ public class FactionsPlayerListener implements Listener {
         }
 
         return true;
+    }
+
+    public static boolean hasSign(Block block) {
+        return
+                block.getLocation().clone().add(1, 0, 0).getBlock().getType() == Material.SIGN;
     }
 
     public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck) {
@@ -441,9 +451,9 @@ public class FactionsPlayerListener implements Listener {
 
         Location home = me.getFaction().getHome();
         if (Conf.homesEnabled &&
-                    Conf.homesTeleportToOnDeath &&
-                    home != null &&
-                    (Conf.homesRespawnFromNoPowerLossWorlds || !Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()))) {
+                Conf.homesTeleportToOnDeath &&
+                home != null &&
+                (Conf.homesRespawnFromNoPowerLossWorlds || !Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()))) {
             event.setRespawnLocation(home);
         }
     }
@@ -490,10 +500,10 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (me.hasFaction() &&
-                    !me.isAdminBypassing() &&
-                    !Conf.permanentFactionMemberDenyCommands.isEmpty() &&
-                    me.getFaction().isPermanent() &&
-                    isCommandInList(fullCmd, shortCmd, Conf.permanentFactionMemberDenyCommands.iterator())) {
+                !me.isAdminBypassing() &&
+                !Conf.permanentFactionMemberDenyCommands.isEmpty() &&
+                me.getFaction().isPermanent() &&
+                isCommandInList(fullCmd, shortCmd, Conf.permanentFactionMemberDenyCommands.iterator())) {
             me.msg(TL.PLAYER_COMMAND_PERMANENT, fullCmd);
             return true;
         }
