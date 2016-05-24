@@ -24,7 +24,7 @@ public class CmdFriendlyFire extends FCommand {
 
         boolean friendlyFire = myFaction.getFriendlyFire();
 
-        myFaction.msg(TL.COMMAND_FRIENDLYFIRE_TOGGLED, fme.describeTo(myFaction, true), (friendlyFire ? "en":"dis") + "abled");
+        myFaction.msg(TL.COMMAND_FRIENDLYFIRE_TOGGLED, fme.describeTo(myFaction, true), (!friendlyFire ? "en" : "dis") + "abled");
         myFaction.setFriendlyFire(!friendlyFire);
     }
 
