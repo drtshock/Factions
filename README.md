@@ -1,3 +1,5 @@
+This is my fork of FactionsUUID by drtshock for WTFactions!
+
 FactionsUUID
 ====================
 <rant>
