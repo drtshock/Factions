@@ -1,0 +1,561 @@
+# Lang file for FactionsUUID by drtshock
+# Use & for color codes.
+# Made with love <3
+
+
+
+root:
+  AUTHOR: Bonkozorus
+  RESPONSIBLE: Bonkozorus
+  LANGUAGE: French
+  ENCODING: UTF-8
+  LOCALE: fr_FR
+  REQUIRESUNICODE: 'true'
+  DEFAULT: 'true'
+  STATE: complete
+  LOCAL:
+    AUTHOR: Bonkozorus
+    RESPONSIBLE: Bonkozorus
+    LANGUAGE: French
+    REGION: FR
+    STATE: complet
+COMMAND:
+  ADMIN:
+    NOTMEMBER: '%s<i> n''est pas membre de votre faction.'
+    NOTADMIN: <b>Vous n'êtes pas le chef de la faction.
+    TARGETSELF: <b>La cible ne doit pas être vous même.
+    DEMOTES: <i>Vous avez rétrogradé %s<i> de la position de chef de la faction.
+    DEMOTED: <i>Vous avez été rétrogradé du poste de chef de faction par %s<i>.
+    PROMOTES: <i>Vous avez promu %s<i> a la position de chef de faction.
+    PROMOTED: '%s<i> donne à %s<i> la place de chef de faction de %s<i>.'
+  AUTOCLAIM:
+    ENABLED: <i>Vous revendiquez automatiquement les terres pour <h>%s<i>.
+    DISABLED: <i>Revendication des terres automatique désactivée.
+    REQUIREDRANK: <b>Vous devez être <h>%s<b> pour revendiquer des terres.
+    OTHERFACTION: <b>Vous ne pouvez pas revendiquer de terres pour <h>%s<b>.
+  AUTOHELP:
+    HELPFOR: Aide pour la commande "
+  BOOM:
+    PEACEFULONLY: <b>Cette commande est seulement utilisable par les factions pacifiques.
+    TOTOGGLE: pour activer les explosions
+    FORTOGGLE: pour activer les explosions
+    ENABLED: '%s<i> a provoqué %s dans le territoire de votre faction.'
+  BYPASS:
+    ENABLE: <i>Vous avez activé le mode administrateur. Vous pouvez construire où vous voulez.
+    ENABLELOG: ' a ACTIVÉ le mode administrateur.'
+    DISABLE: <i>Vous avez désactivé le mode administrateur.
+    DISABLELOG: ' a DÉSACTIVÉ le mode administrateur.'
+  CHAT:
+    DISABLED: <b>Les canaux de discussion sont désactivés sur ce serveur.
+    INVALIDMODE: <b>Mode de discussion inconnu. <i>S'il vous plaît entrez 'a','f' ou 'p'
+    MODE:
+      PUBLIC: <i>Canal de discussion public.
+      ALLIANCE: <i>Canal de discussion de l'alliance.
+      FACTION: <i>Canal de discussion de la faction.
+  CHATSPY:
+    ENABLE: <i>Vous avez activé la surveillance du chat.
+    ENABLELOG: ' a ACTIVÉ la surveillance du chat.'
+    DISABLE: <i>Vous avez désactivé la surveillance du chat.
+    DISABLELOG: ' a DÉSACTIVÉ la surveillance du chat.'
+  CLAIM:
+    INVALIDRADIUS: <b>Si vous spécifiez un rayon, il doit être au moins de 1.
+    DENIED: <b>Vous n'avez pas la permission pour revendiquer en rayon.
+  CONFIG:
+    NOEXIST: <b>Aucun paramètre "<h>%s<b>" existant.
+    SET:
+      'TRUE': '" activé.'
+      'FALSE': '" activé.'
+      ADDED: '"%s" défini: "%s" ajouté.'
+      REMOVED: '"%s" défini: "%s" supprimé.'
+    OPTIONSET: '" changé pour '
+    COLOURSET: '" changé pour "'
+    INTREQUIRED: 'Changement pour "%s" impossible: Un nombre entier est requis.'
+    LONGREQUIRED: 'Changement pour "%s" impossible: Un nombre entier plus long est
+      requis.'
+    DOUBLEREQUIRED: 'Changement pour "%s" impossible: Un chiffre est requis.'
+    FLOATREQUIRED: 'Changement pour "%s" impossible: Un chiffre est requis.'
+    INVALID:
+      COLOUR: 'Changement pour "%s" impossible: "%s" n''est pas une couleur valide.'
+      COLLECTION: '"%s" n''est pas un collecteur de données modifiable via cette commande.'
+      MATERIAL: 'Changement pour "%s" impossible: "%s" n''est pas un matériel valide.'
+      TYPESET: '"%s" n''est pas un type de données modifiable via cette commande.'
+    MATERIAL:
+      ADDED: '"%s" défini: "%s" ajouté.'
+      REMOVED: '"%s" set: "%s" supprimé.'
+    LOG: ' (Commande éxécutée par %s.)'
+    ERROR:
+      SETTING: Erreur lors du changement de "%s" vers "%s".
+      MATCHING: Configuration setting "%s" couldn't be matched, though it should be... please report this error.
+      TYPE: '''%s'' is of type ''%s'', which cannot be modified with this command.'
+  CREATE:
+    MUSTLEAVE: <b>Vous devez d'abord quitter votre faction actuelle.
+    INUSE: <b>Ce tag est déjà utilisé.
+    TOCREATE: pour créer une nouvelle faction
+    FORCREATE: pour créer une nouvelle faction
+    ERROR: <b>Une erreur interne vous a empeché de créer cette faction. Réessayez.
+    CREATED: '%s<i> a créé une nouvelle faction nommée %s'
+    YOUSHOULD: '<i>Vous devriez faire ça maintenant: %s'
+    CREATEDLOG: ' a créé une nouvelle faction: '
+  DEINVITE:
+    CANDEINVITE: 'Joueurs que vous pouvez révoquer: '
+    CLICKTODEINVITE: Cliquez pour révoquer %s
+    ALREADYMEMBER: '%s<i> est déjà membre de %s'
+    MIGHTWANT: '<i>Vous voudriez peut être: %s'
+    REVOKED: '%s<i> a révoqué votre invitation vers <h>%s<i>.'
+    REVOKES: '%s<i> a révoqué l''invitation de %s<i>.'
+  DELFWARP:
+    DELETED: <i>Point de téléportation supprimé <a>%s
+    INVALID: <i>Point de téléportation introuvable <a>%s
+    TODELETE: pour supprimer un point de téléportation
+    FORDELETE: pour supprimer un point de téléportation
+  DESCRIPTION:
+    CHANGES: 'Vous avez changé la description de <h>%s<i> pour:'
+    CHANGED: '<i>La faction %s<i> a changé sa description pour:'
+    TOCHANGE: pour changer sa description
+    FORCHANGE: pour changer sa description
+  DISBAND:
+    IMMUTABLE: <i>Vous ne pouvez pas dissoudre la nature, la zone de sûreté ou la zone de guerre.
+    MARKEDPERMANENT: <i>Cette faction est désignée comme permanente.
+    BROADCAST:
+      YOURS: <h>%s<i> a dissous votre faction.
+      NOTYOURS: <h>%s<i> a dissous la faction %s.
+    HOLDINGS: <i>La banque de la faction que vous avez dissous vous revient de droit, contenant %s.
+  FWARP:
+    CLICKTOWARP: Cliquez pour vous téléporter
+    COMMANDFORMAT: <i>/f warp <point de téléportation>
+    WARPED: <i>Téléportation vers <a>%s
+    INVALID: <i>Point de téléportation introuvable <a>%s
+    TOWARP: pour se téléporter
+    FORWARPING: pour se téléporter
+    WARPS: 'Points de téléportations: '
+  HELP:
+    '404': <b>Cette page est inexistante
+    NEXTCREATE: <i>Apprennez comment créer une faction sur la prochaine page.
+    HOME: '<i>N''oubliez pas de définir votre quartier général:'
+    BANK:
+      '1': <i>Votre faction à une banque vous permettant de payer certaines
+      '2': <i>choses, vous aurez besoin d'y déposer de l'argent.
+      '3': <i>Pour en apprendre plus, utilisez la commande de la monnaie.
+    PLAYERTITLES: <i>Les titres sont juste pour le fun.
+    OWNERSHIP:
+      '1': <i>Les terres revendiquées et appropriées sont mieux protégées
+      '2': <i>seul le propriétaire du serveur, les admins de faction et
+      '3': <i>certains modérateurs y ont accès.
+    RELATIONS:
+      '1': <i>Définissez la relation que vous VOULEZ avoir avec d'autres factions.
+      '2': <i>Votre relation par défaut sera neutre.
+      '3': <i>Si les DEUX factions choisissent d'être alliées, vous le serez.
+      '4': <i>Si UNE des deux factions choisit d'être ennemie, vous le serez.
+      '5': <i>Vous ne pouvez jamais faire mal à un allié / un membre de votre faction.
+      '6': <i>Vous ne pouvez pas frapper les neutres dans leur territoire.
+      '7': <i>Vous pouvez toujours frapper les ennemis et les sans faction.
+      '8': ''
+      '9': <i>Les dégats des ennemis sont réduits dans votre territoire.
+      '10': <i>En mourant vous perdez du pouvoir que vous récupérez au fil du temps.
+      '11': <i>Le pouvoir d'une faction est l'addition du pouvoir de tous ses membres.
+      '12': <i>Le pouvoir d'une faction définit combien de terres une faction peut posséder.
+      '13': <i>Vous pouvez voler les territoires d'une faction qui n'a plus de pouvoir.
+    PERMISSIONS:
+      '1': <i>Seuls les membres de la faction peuvent construire sur son
+      '2': '<i>territoire. L''utilisation des objets suivants est protégée:'
+      '3': <i>Porte, Coffre, Four, Dispenser, Delayer.
+      '4': ''
+      '5': <i>Soyez sûr de mettre des plaques de pression devant vos portes
+      '6': <i>ou vos invités ne pourront pas entrer. Vous pouvez aussi
+      '7': <i>utiliser pour créer des zones pour les membres, ou des pièges.
+      '8': <i>Comme les dispensers sont protégés, vous pouvez
+      '9': <i>créer des pièges sans avoir peur d'être volés.
+    ADMIN:
+      '1': <c>/f claim safezone <i>revendique la zone de sûreté
+      '2': <c>/f claim warzone <i>revendique la zone de guerre
+      '3': <c>/f autoclaim [safezone|warzone] <i>devinez
+    MOAR:
+      '1': 'Quelques commandes pour les administrateurs:'
+      '2': '<i>Quelques commandes pour les administrateurs:'
+      '3': '<i>Quelques commandes pour les administrateurs:'
+  HOME:
+    DISABLED: <b>Désolé, les quartiers généraux sont désactivés sur ce serveur.
+    TELEPORTDISABLED: <b>Désolé, vous ne pouvez pas vous téléporter à votre quartier général sur ce serveur.
+    NOHOME: '<b>Votre faction n''a pas de quartier général. '
+    INENEMY: <b>Vous ne pouvez pas vous téléporter à votre quartier général en étant sur un territoire ennemi.
+    WRONGWORLD: <b>Vous ne pouvez pas vous téléporter à votre quartier général en étant dans un autre monde.
+    ENEMYNEAR: <b>Vous ne pouvez pas vous téléporter à votre quartier général quand un ennemi est dans un rayon de %s blocs autour de vous.
+    TOTELEPORT: pour se téléporter à votre quartier général
+    FORTELEPORT: pour se téléporter à votre quartier général
+  INVITE:
+    TOINVITE: pour inviter quelqu'un
+    FORINVITE: pour inviter quelqu'un
+    CLICKTOJOIN: Cliquez ici pour rejoindre
+    INVITEDYOU: ' vous a invité à rejoindre '
+    INVITED: '%s<i> a invité %s<i> à votre faction.'
+    ALREADYMEMBER: '%s<i> est déjà membre de %s'
+  JOIN:
+    CANNOTFORCE: <b>Vous n'avez pas la permission de déplacer les joueurs dans une autre faction.
+    SYSTEMFACTION: <b>Les joueurs ne peuvent rejoindre que des factions normales. Ceci est une faction système.
+    ALREADYMEMBER: <b>%s %s déjà membre de %s
+    ATLIMIT: ' <b>!<white> La faction %s est à la limite de %d membres, %s ne peut
+      donc pas rejoindre .'
+    INOTHERFACTION: <b>%s doit d'abord quitter sa faction actuelle, %s.
+    NEGATIVEPOWER: <b>%s ne peut pas rejoindre une faction avec un niveau de pouvoir négatif.
+    REQUIRESINVITATION: <i>Cette faction nécéssite une invitation.
+    ATTEMPTEDJOIN: '%s<i> a essayé de rejoindre votre faction.'
+    TOJOIN: pour rejoindre une faction
+    FORJOIN: pour rejoindre une faction
+    SUCCESS: <i>%s a rejoint %s avec succès.
+    MOVED: <i>%s vous a déplacé dans la faction %s.
+    JOINED: <i>%s rejoint votre faction.
+    JOINEDLOG: '%s rejoins %s.'
+    MOVEDLOG: '%s a déplace le joueur %s dans la faction %s.'
+  KICK:
+    CANDIDATES: 'Joueurs que vous pouvez expulser: '
+    CLICKTOKICK: 'Cliquez pour expulser '
+    SELF: <b>Vous ne pouvez pas vous expulser vous même.
+    NONE: Ce joueur n'est dans aucune faction.
+    NOTMEMBER: '%s<b> est un membre de %s'
+    INSUFFICIENTRANK: <b>Votre rang est trop faible pour expulser ce joueur.
+    NEGATIVEPOWER: <b>Vous ne pouvez pas expulser ce joueur tant que son pouvoir n'est pas positif.
+    TOKICK: pour expulser quelqu'un de votre faction
+    FORKICK: pour expulser quelqu'un de votre faction
+    FACTION: '%s<i> a expulsé %s<i> de la faction! :O'
+    KICKS: <i>Vous expulsez %s<i> de la faction %s<i>!
+    KICKED: '%s<i> vous a expulsé de %s<i>! :O'
+  LIST:
+    FACTIONLIST: 'Liste des factions '
+    TOLIST: pour lister des factions
+    FORLIST: pour lister des factions
+    ONLINEFACTIONLESS: 'Sans faction en ligne(s): '
+  LOCK:
+    LOCKED: <i>Faction vérouillée
+    UNLOCKED: <i>Factions dévérouillée
+  LOGINS:
+    TOGGLE: '<i>Notifications de connexion/déconnexion: <a>%s'
+  MAP:
+    TOSHOW: pour montrer la carte
+    FORSHOW: pour montrer la carte
+    UPDATE:
+      ENABLED: <i>Mise à jour automatique de la carte <green>ENABLED.
+      DISABLED: <i>Mise à jour automatique de la carte <red>DISABLED.
+  MOD:
+    CANDIDATES: 'Joueurs que vous pouvez promouvoir: '
+    CLICKTOPROMOTE: 'Cliquez pour promouvoir '
+    NOTMEMBER: '%s<b> n''est pas un membre de votre faction.'
+    NOTADMIN: <b>Vous n'êtes pas le chef de faction.
+    SELF: <b>Le joueur ciblé ne doit pas être vous même.
+    TARGETISADMIN: <b>Le cible est chef de faction. Déstituez le d'abord.
+    REVOKES: <i>Vous avez destitué %s<i> du statut de modérateur.
+    REVOKED: '%s<i> n''est plus modérateur de votre faction.'
+    PROMOTES: '%s<i> a été promu modérateur de votre faction.'
+    PROMOTED: <i>Vous avez promu %s<i> modérateur.
+  MODIFYPOWER:
+    ADDED: '<i>Ajout de <a>%f <i>de pouvoir à <a>%s. <i>Nouveau total arrondi: <a>%d'
+  MONEY:
+    SHORT: les commandes économiques
+    LONG: <i>Les commandes économiques de faction.
+  MONEYBALANCE:
+    SHORT: montre l'argent de la faction
+  MONEYDEPOSIT:
+    SHORT: dépose de l'argent
+    DEPOSITED: '%s a déposé %s dans le compte de la faction: %s'
+  MONEYTRANSFERFF:
+    SHORT: transfert f -> f
+    TRANSFER: '%s a transféré %s de la faction "%s" vers la faction "%s"'
+  MONEYTRANSFERFP:
+    SHORT: transfert f -> j
+    TRANSFER: '%s a transféré %s de la faction "%s" vers le joueur "%s"'
+  MONEYTRANSFERPF:
+    SHORT: transfert p -> f
+    TRANSFER: '%s a transféré %s du joueur "%s" vers la faction "%s"'
+  MONEYWITHDRAW:
+    SHORT: withdraw money
+    WITHDRAW: '%s a retiré %s du compte en banque de la faction: %s'
+  OPEN:
+    TOOPEN: pour ouvrir ou fermer la faction
+    FOROPEN: pour ouvrir ou fermer la faction
+    OPEN: ouvrir
+    CLOSED: fermer
+    CHANGES: '%s<i> a changé l''état de la faction en <h>%s<i>.'
+    CHANGED: <i>La faction %s<i> est maintenant %s
+  OWNER:
+    DISABLED: <b>Désolé, mais les zones possédées sont désactivées sur ce serveur.
+    LIMIT: <b>Désolé, vous avez atteint la <h>limite de %d <b>zones possédées par faction.
+    WRONGFACTION: <b>Cette zone n'est pas revendiquée par votre faction, vous ne pouvez pas la posséder.
+    NOTCLAIMED: <b>Cette zone n'est revendiquée par aucune faction, impossible de la posséder.
+    NOTMEMBER: '%s<i> n''est pas un membre de cette faction.'
+    CLEARED: <i>Vous avez nettoyé la propriété de cette zone revendiquée.
+    REMOVED: <i>Vous avez nettoyé la propriété de cette zone revendiquée par %s<i>.
+    TOSET: pour définir la propriété d'une zone revendiquée
+    FORSET: pour définir la propriété d'une zone revendiquée
+    ADDED: <i>Vous avez ajouté %s<i> a la liste des propriétaires de cette zone revendiquée.
+  OWNERLIST:
+    DISABLED: <b>Désolé, mais les zones possédées sont désactivées sur ce serveur.
+    WRONGFACTION: <b>Cette zone n'est pas revendiquée par votre faction.
+    NOTCLAIMED: <i>Cette zone n'est pas revendiquée par une faction.
+    NONE: <i>Aucun propriétaire défini ici, toute la faction à accès.
+    OWNERS: '<i>Propriétaire(s) actuels de cette zone: %s'
+  POWER:
+    TOSHOW: pour montrer les informations du joueur
+    FORSHOW: pour montrer les informations du joueur
+    POWER: '%s<a> - Pouvoir / Pouvoir maximum: <i>%d / %d %s'
+    BONUS: ' (bonus: '
+    PENALTY: ' (pénalité: '
+  POWERBOOST:
+    HELP:
+      '1': <b>Vous devez spécifier "p" ou "player" pour cibler un joueur, "f" ou "faction" pour cibler une faction.
+      '2': <b>ex. /f powerboost p UnJoueur 0.5  -or-  /f powerboost f UneFaction -5
+    INVALIDNUM: <b>Vous devez spécifier une valeur numérique valide pour le bonus/malus de pouvoir.
+    PLAYER: Joueur "%s"
+    FACTION: Faction "%s"
+    BOOST: <i>%s a maintenant le bonus/malus de %d sur son niveau de pouvoir maximum/minimum.
+    BOOSTLOG: '%s a défini le bonus/malus de %s à %d.'
+  RELOAD:
+    TIME: <i>Rechargement de <h>conf.json <i>depuis le disque en <h>%dms<i>.
+  SAFEUNCLAIMALL:
+    SHORT: Ne plus revendiquer toute la zone de sûreté
+    UNCLAIMED: <i>Vous ne revendiquez plus TOUTE la zone de sûreté.
+    UNCLAIMEDLOG: '%s ne revendique plus la zone de sûreté.'
+  SAVEALL: <i>Factions sauvegardés sur le disque!
+  SETFWARP:
+    NOTCLAIMED: <i>Vous ne pouvez définir des points de téléportation que dans votre territoire revendiqué.
+    LIMIT: <i>Votre faction à déjà le nombre maximum de points de téléportation <a>(%d).
+    SET: <i>Défini le point de téléportation <a>%s <i>à votre emplacement.
+    TOSET: pour définir un point de téléportation
+    FORSET: pour définir un point de téléportation
+  SETHOME:
+    DISABLED: <b>Désolé, les quartiers généraux sont désactivés sur ce serveur.
+    NOTCLAIMED: <b>Désolé, votre quartier général ne peut être défini que dans un territoire revendiqué.
+    TOSET: pour définir votre quartier général
+    FORSET: pour définir votre quartier général
+    SET: '%s<i> a défini le quartier général de la faction. Vous pouvez maintenant
+      utiliser:'
+    SETOTHER: <b>Vous avez défini le quartier général pour la faction %s<i>.
+  SHOW:
+    NOFACTION:
+      SELF: Vous n'êtes pas dans une faction
+      OTHER: Ceci n'est pas une faction
+    TOSHOW: pour montrer les informations d'une faction
+    FORSHOW: pour montrer les informations d'une faction
+    DESCRIPTION: '<a>Description: <i>%s'
+    PEACEFUL: Cette faction est pacifique
+    PERMANENT: <a>Cette faction est permanente, même sans membre elle ne sera pas dissoute.
+    JOINING: '<a>Vous rejoignez: <i>%s '
+    INVITATION: invitation requise
+    UNINVITED: pas d'invitation requise
+    POWER: '<a>Terre / Pouvoir / Pouvoir maximum: <i> %d/%d/%d %s'
+    BONUS: ' (bonus: '
+    PENALTY: ' (penalité: '
+    DEPRECIATED: (%s déprécié)
+    LANDVALUE: '<a>Total de la valeur des terres: <i>%s%s'
+    BANKCONTAINS: '<a>Contenu de la banque: <i>%s'
+    ALLIES: 'Alliés: '
+    ENEMIES: 'Ennemis: '
+    MEMBERSONLINE: 'Membres en ligne: '
+    MEMBERSOFFLINE: 'Membres hors ligne: '
+  SHOWINVITES:
+    PENDING: 'Joueurs avec des invitations en attente: '
+    CLICKTOREVOKE: Cliquez pour révoquer l'invitation de %s
+  STATUS:
+    FORMAT: '%s Pouvoir: %s Vu la dernière fois: %s'
+    ONLINE: En ligne
+    AGOSUFFIX: ''
+  TAG:
+    TAKEN: <b>Ce tag est déjà pris
+    TOCHANGE: pour changer le tag de faction
+    FORCHANGE: pour changer le tag de faction
+    FACTION: '%s<i> a changé votre tag de faction pour %s'
+    CHANGED: <i>La faction %s<i> a changé de tag pour %s.
+  TITLE:
+    TOCHANGE: pour changer le titre d'un joueur
+    FORCHANGE: pour changer le titre d'un joueur
+    CHANGED: '%s<i> a changé le titre: %s'
+  UNCLAIM:
+    SAFEZONE:
+      SUCCESS: <i>La zone de sureté n'est plus revendiquée.
+      NOPERM: <b>Ceci est une zone de sûreté. Vous n'avez pas les permissions.
+    WARZONE:
+      SUCCESS: <i>La zone de guerre n'est plus revendiquée..
+      NOPERM: <b>Ceci est une zone de guerre. Vous n'avez pas les permissions.
+    UNCLAIMED: '%s<i> à arrêté de revendiquer cette zone.'
+    UNCLAIMS: <i>Vous ne revendiquez plus cette zone.
+    LOG: '%s ne revendique plus une zone en (%s) appartenant a la faction: %s'
+    WRONGFACTION: <b>Vous ne possédez pas cette terre.
+    TOUNCLAIM: pour ne plus revendiquer cette zone
+    FORUNCLAIM: pour ne plus revendiquer cette zone
+    FACTIONUNCLAIMED: '%s<i> ne revendique plus certaines zones.'
+  UNCLAIMALL:
+    TOUNCLAIM: pour ne plus revendiquez toutes les zones
+    FORUNCLAIM: pour ne plus revendiquer toutes les zones
+    UNCLAIMED: '%s<i> a arrêter de revendiquer tous les terrains de votre faction.'
+    LOG: '%s ne revendique plus aucune zone pour la faction: %s'
+  VERSION:
+    VERSION: <i>Vous utilisez la version %s
+  WARUNCLAIMALL:
+    SHORT: ne revendique plus toute la zone de guerre
+    SUCCESS: <i>Vous ne revendiquez plus TOUTE la zone de guerre.
+    LOG: '%s ne revendique plus toute la zone de guerre.'
+  RELATIONS:
+    ALLTHENOPE: <b>Non, vous ne pouvez pas.
+    MORENOPE: <b>Non, vous ne pouvez pas changer votre relation avec vous même :)
+    ALREADYINRELATIONSHIP: <b>Votre voeux de relation est déjà %s.
+    TOMARRY: pour changer de voeux de relation
+    FORMARRY: pour changer de voeux de relation
+    MUTUAL: <i>Votre faction est maintenant %s<i> envers %s
+    PEACEFUL: <i>Cela n'aura aucune effet tant que votre faction sera pacifique.
+    PEACEFULOTHER: <i>Cela n'aura aucune effet tant que leur faction sera pacifique.
+    PROPOSAL:
+      '1': '%s<i> veut être votre %s'
+      '2': <i>Tapez <c>/%s %s %s<i> pour accepter.
+      SENT: '%s<i> a été informé que vous vouliez être %s'
+command:
+  convert:
+    backend:
+      running: Cette base de donnée est déjà utilisée.
+      invalid: Base de données invalide
+  help:
+    invitations: '<i>Peut être voulez vous fermer votre faction et utiliser les invitations:'
+GENERIC:
+  SERVERADMIN: Un admin serveur
+  DISABLED: désactivé
+  ENABLED: activé
+  CONSOLEONLY: Cette commande ne peut pas être envoyée par un joueur.
+  ASKYOURLEADER: '<i> Demandez à votre chef de faction:'
+  YOUSHOULD: '<i>Vous devriez essayer:'
+  YOUMAYWANT: '<i>Vous vouliez peut être: '
+  TRANSLATION:
+    VERSION: 'Traduction: %s(%s,%s) État: %s'
+    CONTRIBUTORS: 'Contributeurs de la traduction: %s'
+    RESPONSIBLE: 'Responsable de la traduction: %s'
+  NOPERMISSION: <b>Vous n'avez pas permission de %1$s.
+  DOTHAT: do that
+  NOPLAYERMATCH: <b>Aucun joueur trouvé pour "<p>%1$s<b>".
+  NOPLAYERFOUND: <b>Aucun joueur trouvé pour "<p>%1$s<b>".
+  ARGS:
+    TOOFEW: '<b>Trop peu d''arguments. <i>Utilisez comme ceci:'
+    TOOMANY: '<b>Argument étrange "<p>%1$s<b>". <i>Utilisez comme ceci:'
+  OWNERS: 'Propriétaire(s): %1$s'
+  PUBLICLAND: Zone publique.
+  FACTIONLESS: sans faction
+  PLAYERONLY: <b>Ce commande ne peut être utilisée que par des joueurs en ligne.
+  FACTIONTAG:
+    TOOSHORT: <i>Le tag de faction ne peut pas être plus court que <h>%1$s<i> caractères.
+    TOOLONG: <i>Le tag de faction ne peut pas être plus long que <h>%s<i> caractères.
+    ALPHANUMERIC: <i>Le tag doit être alphanumérique. "<h>%s<i>" n'est pas autorisé.
+RELATION:
+  MEMBER: membre
+  ALLY: allié
+  NEUTRAL: neutre
+  ENEMY: ennemi
+NOPAGES: <i>Désolé, aucune page disponible.
+INVALIDPAGE: <i>Page invalide. Ce doit être entre 1 et %d
+title: '&cF&aactions &6&l>&r'
+wilderness: '&2Nature'
+wilderness-description: Calme et paisible
+warzone: '&cZone de guerre'
+warzone-description: Pas l'endroit le plus sûr où être.
+safezone: '&6Zone de sûreté'
+safezone-description: Libéré du PvP et des monstres.
+toggle-sb: Votre scoreboard est maintenant {value}
+default-prefix: '{relationcolor}[{faction}] &r'
+faction-login: '&e%s &9s''est connecté.'
+faction-logout: '&e%s &9s''est déconnecté..'
+LEAVE:
+  PASSADMIN: <b>Vous devez donner le rôle de chef de faction à quelqu'un d'abord.
+  NEGATIVEPOWER: <b>Vous ne pouvez quitter la faction tant que votre power est négatif.
+  TOLEAVE: pour quitter votre faction.
+  FORLEAVE: pour quitter votre faction.
+  LEFT: '%s<i> a quitté la faction %s<i>.'
+  DISBANDED: <i>%s<i> a été dissoute.
+  DISBANDEDLOG: La faction %s (%s) a été dissoute lors du départ de (%s).
+CLAIM:
+  PROTECTED: <b>Cette zone est maintenant protégée
+  DISABLED: <b>Désolé, ce monde n'est pas revendiquable.
+  CANTCLAIM: <b>Vous ne pouvez pas revendiquer de zones pour <h>%s<b>.
+  ALREADYOWN: '%s<i> vous possédez déjà cette terre.'
+  MUSTBE: <b>Vous devez être <h>%s<b> pour revendiquer cette terre.
+  MEMBERS: Les factions doivent avoir au moins <h>%s<b> membres pour revendiquer une zone.
+  SAFEZONE: <b>Vous ne pouvez pas revendiquer de Zone de sûreté.
+  WARZONE: <b>Vous ne pouvez pas revendiquer de Zone de guerre.
+  POWER: <b>Vous ne pouvez plus revendiquer de zone! Il vous faut plus de power
+  LIMIT: <b>Limite atteinte. Vous ne pouvez plus revendiquer de zones!
+  ALLY: <b>Vous ne pouvez pas revendiquer la zone de vos alliés.
+  CONTIGIOUS: <b>Vous ne pouvez revendiquer une zone que si elle est collée à votre territoire ou controlée par une autre faction!
+  FACTIONCONTIGUOUS: <b>Vous ne pouvez revendiquer une zone que si elle est collée à votre territoire principal!
+  PEACEFUL: '%s<i> possède ces terres. Votre faction est pacifique, vous ne pouvez
+    pas revendiquer ces terres.'
+  PEACEFULTARGET: '%s<i> possède ces terres, et est une faction pacifique. Vous ne
+    pouvez pas prendre leur terres.'
+  THISISSPARTA: '%s<i> possède ces terres et est assez puissant pour les conserver.'
+  BORDER: <b>Vous devez commencer à revendiquer des terres à la bordure du territoire.
+  TOCLAIM: pour revendiquer ces terres
+  FORCLAIM: pour revendiquer ces terres
+  CLAIMED: <h>%s<i> revendique des terres pour <h>%s<i> depuis <h>%s<i>.
+  CLAIMEDLOG: '%s revendique des terres en (%s) pour la faction: %s'
+FACTIONS:
+  ADMIN: donne vos droits de chef de faction
+  AUTOCLAIM: revendique automatiquement des terres
+  BYPASS: active le mode admin
+  CHAT: change le mode de chat
+  CHATSPY: active le mode de chat admin
+  CLAIM: revendique des terres où vous vous tennez
+  CONFIG: change le config.json
+  CREATE: crée une nouvelle faction
+  DEINVITE: supprime une invitation en attente
+  DISBAND: dissout une faction
+  HELP: affiche la page d'aide
+  HOME: vous téléporte a votre quartier général
+  INVITE: invite un joueur à votre faction
+  JOIN: rejoint une faction
+  KICK: expulse un joueur de la faction
+  LEAVE: quitte la faction
+  LIST: montre une liste des membres de la faction
+  LOCK: verrouille votre faction
+  MANAGESAFEZONE: revendique une zone comme zone de sûreté
+  MANAGEWARZONE: revendique une zone comme zone de guerre
+  MAP: montre la carte du territoire, active le l'actualisation automatique
+  MOD: promouvoir ou déstituer un modérateur
+  MONEY:
+    BALANCE: montre la banque de votre faction
+    DEPOSIT: dépose de l'argent dans votre banque de faction
+    WITHDRAW: retire de l'argent de votre faction
+    F2F: transfère de l'argent de faction à faction
+    F2P: transfère de l'argent de faction à joueur
+    P2F: transfère de l'argent de joueur à faction
+  NOBOOM: active les explosions (factions pacifiques seulement),
+  OPEN: active/désactive les invitations obligatoires
+  OWNER: défini un propriétaire a une zone revendiquée
+  OWNERLIST: liste des propriétaire(s), de cette zone revendiquée
+  SETPEACEFUL: désigne une faction comme pacifique
+  SETPERMANENT: désigne une faction comme permanente
+  SETPERMANENTPOWER: désigne un pouvoir permanent pour une faction
+  POWER: montre les infos du joueur
+  POWERBOOST: applique un bonus/malus de pouvoir
+  RELATION: défini la relation avec une autre faction
+  RELOAD: recharge la configuration
+  SAVE: sauvegarde les données de faction
+  SETHOME: défini le quartier général
+  SHOW: montre les infos de faction
+  TAG: change le tag de faction
+  TITLE: défini ou supprime le titre d'un joueur
+  VERSION: montre la version du plugin
+  UNCLAIM: arrête de revendiquer la zone où vous êtes
+  UNCLAIMALL: arrête de revendiquer toutes vos terres
+  SCOREBOARD: active/désactive les scoreboards
+  SHOWINVITES: montre vos invitations en attentes
+  SEECHUNK: montre le chunk dans lequel vous êtes
+  SETWARP: défini un point de téléportation pour votre faction
+  WARP: accède à un point de téléportation
+  MODIFYPOWER: modifie le pouvoir des joueurs
+  MONITORLOGINS: affiche les arrivées/départs de la faction
+COMPASS:
+  SHORT:
+    NORTH: N
+    EAST: E
+    SOUTH: S
+    WEST: W
+CHAT:
+  FACTION: chat de faction
+  ALLIANCE: chat d'alliance
+  PUBLIC: chat public
+WARMUPS:
+  NOTIFY:
+    TELEPORT: '&eVous vous téléporterez à &d%1$s &edans &d%2$d &esecondes.'
+
