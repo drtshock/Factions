@@ -282,7 +282,10 @@ public abstract class MCommand<T extends MPlugin> {
     public List<String> getToolTips(FPlayer player) {
         List<String> lines = new ArrayList<String>();
         for (String s : p.getConfig().getStringList("tooltips.show")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFPlayerTags(s, player)));
+            String line = ChatColor.translateAlternateColorCodes('&', replaceFPlayerTags(s, player));
+            if (line != null || !line.isEmpty()) {
+                lines.add(line);
+            }
         }
         return lines;
     }
@@ -290,7 +293,10 @@ public abstract class MCommand<T extends MPlugin> {
     public List<String> getToolTips(Faction faction) {
         List<String> lines = new ArrayList<String>();
         for (String s : p.getConfig().getStringList("tooltips.list")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFactionTags(s, faction)));
+            String line = ChatColor.translateAlternateColorCodes('&', replaceFactionTags(s, faction));
+            if (line != null || !line.isEmpty()) {
+                lines.add(line);
+            }
         }
         return lines;
     }
