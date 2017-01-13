@@ -18,6 +18,7 @@ public class CmdStuck extends FCommand {
         super();
 
         this.aliases.add("stuck");
+        this.aliases.add("unstuck");
         this.aliases.add("halp!"); // halp! c:
 
         this.permission = Permission.STUCK.node;

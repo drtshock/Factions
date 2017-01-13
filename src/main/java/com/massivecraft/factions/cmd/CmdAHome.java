@@ -11,6 +11,7 @@ public class CmdAHome extends FCommand {
     public CmdAHome() {
         super();
         this.aliases.add("ahome");
+        this.aliases.add("sendhome");
 
         this.requiredArgs.add("player name");
 

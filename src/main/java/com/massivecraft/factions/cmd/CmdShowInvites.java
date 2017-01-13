@@ -13,6 +13,8 @@ public class CmdShowInvites extends FCommand {
     public CmdShowInvites() {
         super();
         aliases.add("showinvites");
+        aliases.add("viewinvites");
+        aliases.add("invites");
         permission = Permission.SHOW_INVITES.node;
 
         senderMustBePlayer = true;
