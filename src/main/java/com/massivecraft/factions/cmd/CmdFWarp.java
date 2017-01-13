@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.LazyLocation;
@@ -46,13 +47,13 @@ public class CmdFWarp extends FCommand {
                 if (!transact(fme)) {
                     return;
                 }
-                final FPlayer fPlayer = fme;
                 final UUID uuid = fme.getPlayer().getUniqueId();
                 this.doWarmUp(WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warpName, new Runnable() {
                     @Override
                     public void run() {
                         Player player = Bukkit.getPlayer(uuid);
                         if (player != null) {
+                            FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
                             player.teleport(fPlayer.getFaction().getWarp(warpName).getLocation());
                             fPlayer.msg(TL.COMMAND_FWARP_WARPED, warpName);
                         }
