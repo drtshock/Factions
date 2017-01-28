@@ -35,7 +35,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected transient long lastPlayerLoggedOffTime;
     protected double money;
     protected double powerBoost;
-    protected Map<String, Relation> relationWish = new HashMap<String, Relation>();
+    protected Map<String, Relation> relationWish = new ConcurrentHashMap<String, Relation>();
     protected Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<FLocation, Set<String>>();
     protected transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
     protected Set<String> invites = new HashSet<String>();
