@@ -451,11 +451,19 @@ public class Conf {
     private static transient Conf i = new Conf();
 
     public static void load() {
-        P.p.persist.loadOrSaveDefault(i, Conf.class, "conf");
+        try{
+            P.p.persist.loadOrSaveDefault(i, Conf.class, "conf");
+        }catch (Exception ex){
+            // Error logging in the console
+        }
     }
 
     public static void save() {
-        P.p.persist.save(i);
+        try{
+            P.p.persist.save(i);
+        }catch (Exception ex){
+            // Error logging in the console
+        }
     }
 
     public enum Backend {
