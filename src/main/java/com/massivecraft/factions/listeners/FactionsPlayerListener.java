@@ -23,6 +23,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.util.NumberConversions;
@@ -437,8 +438,6 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (block.getState() instanceof InventoryHolder) return getAccess(com.massivecraft.factions.zcore.fperms.Action.CONTAINER, otherFaction, me);
-
-        if (getAccess(com.massivecraft.factions.zcore.fperms.Action.BUILD, otherFaction, me)) return true;
 
         // We only care about some material types.
         if (otherFaction.hasPlayersOnline()) {
