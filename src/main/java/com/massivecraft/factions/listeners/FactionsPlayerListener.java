@@ -437,7 +437,8 @@ public class FactionsPlayerListener implements Listener {
                 break;
         }
 
-        if (block.getState() instanceof InventoryHolder) return getAccess(com.massivecraft.factions.zcore.fperms.Action.CONTAINER, otherFaction, me);
+        if (block.getState() instanceof InventoryHolder)
+            return getAccess(com.massivecraft.factions.zcore.fperms.Action.CONTAINER, otherFaction, me);
 
         // We only care about some material types.
         if (otherFaction.hasPlayersOnline()) {
