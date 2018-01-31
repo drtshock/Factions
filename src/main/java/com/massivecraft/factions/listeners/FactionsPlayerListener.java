@@ -24,6 +24,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.util.NumberConversions;
 
 import java.util.HashMap;
@@ -290,7 +291,6 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
-
     public static boolean playerCanUseItemHere(Player player, Location location, Material material, boolean justCheck) {
         String name = player.getName();
         if (Conf.playersWhoBypassAllProtection.contains(name)) {
@@ -354,12 +354,7 @@ public class FactionsPlayerListener implements Listener {
         Faction myFaction = me.getFaction();
         Relation rel = myFaction.getRelationTo(otherFaction);
 
-
-        Access access = otherFaction.getAccess(me, com.massivecraft.factions.zcore.fperms.Action.ITEM);
-        if (access != null && access != Access.UNDEFINED) {
-            // TODO: Update this once new access values are added other than just allow / deny.
-            return access == Access.ALLOW;
-        }
+        if (getAccess(com.massivecraft.factions.zcore.fperms.Action.ITEM, otherFaction, me)) return true;
 
         // Cancel if we are not in our own territory
         if (rel.confDenyUseage()) {
@@ -422,11 +417,28 @@ public class FactionsPlayerListener implements Listener {
             }
         }
 
-        Access access = otherFaction.getAccess(me, com.massivecraft.factions.zcore.fperms.Action.BUILD);
-        if (access != null && access != Access.UNDEFINED) {
-            // TODO: Update this once new access values are added other than just allow / deny.
-            return access == Access.ALLOW;
+        switch (block.getType()) {
+            case STONE_BUTTON:
+            case WOOD_BUTTON:
+                return getAccess(com.massivecraft.factions.zcore.fperms.Action.BUTTON, otherFaction, me);
+            case LEVER:
+                return getAccess(com.massivecraft.factions.zcore.fperms.Action.LEVER, otherFaction, me);
+            case WOODEN_DOOR:
+            case WOOD_DOOR:
+            case TRAP_DOOR:
+            case DARK_OAK_DOOR:
+            case ACACIA_DOOR:
+            case JUNGLE_DOOR:
+            case BIRCH_DOOR:
+            case SPRUCE_DOOR:
+                return getAccess(com.massivecraft.factions.zcore.fperms.Action.DOOR, otherFaction, me);
+            default:
+                break;
         }
+
+        if (block.getState() instanceof InventoryHolder) return getAccess(com.massivecraft.factions.zcore.fperms.Action.CONTAINER, otherFaction, me);
+
+        if (getAccess(com.massivecraft.factions.zcore.fperms.Action.BUILD, otherFaction, me)) return true;
 
         // We only care about some material types.
         if (otherFaction.hasPlayersOnline()) {
@@ -458,6 +470,15 @@ public class FactionsPlayerListener implements Listener {
         }
 
         return true;
+    }
+
+    private static boolean getAccess(com.massivecraft.factions.zcore.fperms.Action action, Faction faction, FPlayer me) {
+        Access access = faction.getAccess(me, action);
+        if (access != null && access != Access.UNDEFINED) {
+            // TODO: Update this once new access values are added other than just allow / deny.
+            return access == Access.ALLOW;
+        }
+        return false;
     }
 
     @EventHandler(priority = EventPriority.HIGH)
