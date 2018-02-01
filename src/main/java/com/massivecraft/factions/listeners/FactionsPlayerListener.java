@@ -28,10 +28,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.util.NumberConversions;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 
 
@@ -438,7 +435,29 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (block.getState() instanceof InventoryHolder) {
-            return getAccess(com.massivecraft.factions.zcore.fperms.Action.CONTAINER, otherFaction, me);
+            if (P.p.getConfig().getBoolean("enable-container-blacklist", false)) {
+                List<String> containerBlacklist = P.p.getConfig().getStringList("container-perm-blacklist");
+
+                if (containerBlacklist == null) {
+                    return getAccess(com.massivecraft.factions.zcore.fperms.Action.CONTAINER, otherFaction, me);
+                }
+
+                List<Material> blacklistedMaterials = new ArrayList<>();
+                for (String container : containerBlacklist) {
+                    Material blackListedMaterial = Material.getMaterial(container);
+                    if (blackListedMaterial == null)
+                        continue;
+
+                    blacklistedMaterials.add(blackListedMaterial);
+                }
+
+                if (!blacklistedMaterials.contains(block.getType()))
+                    return getAccess(com.massivecraft.factions.zcore.fperms.Action.CONTAINER, otherFaction, me);
+                else if (blacklistedMaterials.contains(block.getType()))
+                    return true;
+            } else {
+                return getAccess(com.massivecraft.factions.zcore.fperms.Action.CONTAINER, otherFaction, me);
+            }
         }
 
         // We only care about some material types.
@@ -478,11 +497,13 @@ public class FactionsPlayerListener implements Listener {
         if (access != null && access != Access.UNDEFINED) {
             // TODO: Update this once new access values are added other than just allow / deny.
             if (access == Access.DENY) {
+                me.msg("Hi");
                 me.msg(TL.PLAYER_INSUFFICIENT_PERM, "use " + action.getName());
                 return false;
             }
             return true;
         }
+        me.msg(TL.PLAYER_INSUFFICIENT_PERM, "use " + action.getName());
         return false;
     }
 
