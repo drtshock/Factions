@@ -421,17 +421,9 @@ public class FactionsPlayerListener implements Listener {
         switch (block.getType()) {
             case STONE_BUTTON:
             case WOOD_BUTTON:
-                if (!getAccess(com.massivecraft.factions.zcore.fperms.Action.BUTTON, otherFaction, me)) {
-                    me.msg(TL.PLAYER_INSUFFICIENT_PERM, "use button");
-                    return false;
-                }
-                return true;
+                getAccess(com.massivecraft.factions.zcore.fperms.Action.BUTTON, otherFaction, me);
             case LEVER:
-                if (!getAccess(com.massivecraft.factions.zcore.fperms.Action.LEVER, otherFaction, me)) {
-                    me.msg(TL.PLAYER_INSUFFICIENT_PERM, "use lever");
-                    return false;
-                }
-                return true;
+                getAccess(com.massivecraft.factions.zcore.fperms.Action.LEVER, otherFaction, me);
             case WOODEN_DOOR:
             case WOOD_DOOR:
             case TRAP_DOOR:
@@ -440,21 +432,13 @@ public class FactionsPlayerListener implements Listener {
             case JUNGLE_DOOR:
             case BIRCH_DOOR:
             case SPRUCE_DOOR:
-                if (!getAccess(com.massivecraft.factions.zcore.fperms.Action.DOOR, otherFaction, me)) {
-                    me.msg(TL.PLAYER_INSUFFICIENT_PERM, "use door");
-                    return false;
-                }
-                return true;
+                getAccess(com.massivecraft.factions.zcore.fperms.Action.DOOR, otherFaction, me);
             default:
                 break;
         }
 
         if (block.getState() instanceof InventoryHolder) {
-            if (!getAccess(com.massivecraft.factions.zcore.fperms.Action.CONTAINER, otherFaction, me)) {
-                me.msg(TL.PLAYER_INSUFFICIENT_PERM, "use containers");
-                return false;
-            }
-            return true;
+            return getAccess(com.massivecraft.factions.zcore.fperms.Action.CONTAINER, otherFaction, me);
         }
 
         // We only care about some material types.
@@ -493,7 +477,11 @@ public class FactionsPlayerListener implements Listener {
         Access access = faction.getAccess(me, action);
         if (access != null && access != Access.UNDEFINED) {
             // TODO: Update this once new access values are added other than just allow / deny.
-            return access == Access.ALLOW;
+            if (access == Access.DENY) {
+                me.msg(TL.PLAYER_INSUFFICIENT_PERM, "use " + action.getName());
+                return false;
+            }
+            return true;
         }
         return false;
     }
