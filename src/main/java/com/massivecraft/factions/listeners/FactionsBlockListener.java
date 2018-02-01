@@ -187,6 +187,12 @@ public class FactionsBlockListener implements Listener {
             return true;
         }
 
+        if (action.equals("destroy") && Conf.enableUnprotectedBlocks) {
+            if (Conf.unprotectedBlocks.contains(location.getBlock().getType())) {
+                return true;
+            }
+        }
+
         FLocation loc = new FLocation(location);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
 
