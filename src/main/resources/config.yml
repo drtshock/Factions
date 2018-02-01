@@ -157,6 +157,13 @@ warmups:
   # Delay for /f warp
   f-warp: 0
 
+# Enable the list below
+enable-container-blacklist: false
+# List of containers that wont be affected by /f perm <relation> container
+container-perm-blacklist:
+ - DISPENSER
+
+
 ######################################################
 #################### HCF Features ####################
 ######################################################

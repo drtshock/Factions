@@ -694,6 +694,7 @@ public enum TL {
     PLAYER_USE_WARZONE("<b>You can't use <h>%s<b> in a war zone."),
     PLAYER_USE_TERRITORY("<b>You can't <h>%s<b> in the territory of <h>%s<b>."),
     PLAYER_USE_OWNED("<b>You can't use <h>%s<b> in this territory, it is owned by: %s<b>."),
+    PLAYER_INSUFFICIENT_PERM("<b>You are not allowed to <h>%s<b>."),
     PLAYER_COMMAND_WARZONE("<b>You can't use the command '%s' in warzone."),
     PLAYER_COMMAND_NEUTRAL("<b>You can't use the command '%s' in neutral territory."),
     PLAYER_COMMAND_ENEMY("<b>You can't use the command '%s' in enemy territory."),

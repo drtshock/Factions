@@ -325,6 +325,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
 
     public Access getAccess(FPlayer fPlayer, Action action) {
+        if (getFPlayerAdmin() != null && getFPlayerAdmin().equals(fPlayer)) {
+            return Access.ALLOW;
+        }
         Relation relation = fPlayer.getRelationTo(this);
         Map<Action, Access> accessMap = permissions.get(relation);
         if (accessMap != null && accessMap.containsKey(action)) {
