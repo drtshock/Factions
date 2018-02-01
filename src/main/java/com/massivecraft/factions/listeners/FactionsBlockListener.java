@@ -6,6 +6,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Action;
+import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -255,6 +256,9 @@ public class FactionsBlockListener implements Listener {
         Access access = otherFaction.getAccess(me, Action.fromString(action));
         if (access != null && access != Access.UNDEFINED) {
             // TODO: Update this once new access values are added other than just allow / deny.
+            if (access == Access.DENY) {
+                me.msg(TL.PLAYER_INSUFFICIENT_PERM, action);
+            }
             return access == Access.ALLOW;
         }
 
