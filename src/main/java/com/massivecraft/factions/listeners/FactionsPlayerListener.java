@@ -421,9 +421,9 @@ public class FactionsPlayerListener implements Listener {
         switch (block.getType()) {
             case STONE_BUTTON:
             case WOOD_BUTTON:
-                getAccess(com.massivecraft.factions.zcore.fperms.Action.BUTTON, otherFaction, me);
+                return getAccess(com.massivecraft.factions.zcore.fperms.Action.BUTTON, otherFaction, me);
             case LEVER:
-                getAccess(com.massivecraft.factions.zcore.fperms.Action.LEVER, otherFaction, me);
+                return getAccess(com.massivecraft.factions.zcore.fperms.Action.LEVER, otherFaction, me);
             case WOODEN_DOOR:
             case WOOD_DOOR:
             case TRAP_DOOR:
@@ -432,7 +432,7 @@ public class FactionsPlayerListener implements Listener {
             case JUNGLE_DOOR:
             case BIRCH_DOOR:
             case SPRUCE_DOOR:
-                getAccess(com.massivecraft.factions.zcore.fperms.Action.DOOR, otherFaction, me);
+                return getAccess(com.massivecraft.factions.zcore.fperms.Action.DOOR, otherFaction, me);
             default:
                 break;
         }
