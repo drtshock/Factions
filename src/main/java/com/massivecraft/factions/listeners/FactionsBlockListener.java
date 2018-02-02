@@ -187,7 +187,7 @@ public class FactionsBlockListener implements Listener {
             return true;
         }
 
-        if (action.equals("destroy") && Conf.enableUnprotectedBlocks) {
+        if (action.equalsIgnoreCase("destroy") && Conf.enableUnprotectedBlocks) {
             if (Conf.unprotectedBlocks.contains(location.getBlock().getType())) {
                 return true;
             }
