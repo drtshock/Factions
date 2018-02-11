@@ -121,6 +121,11 @@ public class FactionsEntityListener implements Listener {
                 me.clearWarmup();
                 me.msg(TL.WARMUPS_CANCELLED);
             }
+
+            // If player is flying disable it
+            if (me.isFFlying()) {
+                me.setFFlying(false);
+            }
         }
     }
 
