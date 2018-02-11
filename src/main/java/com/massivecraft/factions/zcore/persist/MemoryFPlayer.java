@@ -16,6 +16,8 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.*;
@@ -898,7 +900,17 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void setAutoFFlying(boolean autoFly) {
+        msg(TL.COMMAND_AUTOFLIGHT_CHANGE, autoFly ? "enabled" : "disabled");
         isAutoFFlying = autoFly;
+    }
+
+    public boolean canFlyAtLocation() {
+        return canFlyAtLocation(lastStoodAt);
+    }
+
+    public boolean canFlyAtLocation(FLocation location) {
+        Access access = Board.getInstance().getFactionAt(location).getAccess(this, PermissableAction.FLIGHT);
+        return access != null && access != Access.UNDEFINED && access == Access.ALLOW;
     }
 
     // -------------------------------------------- //
