@@ -36,11 +36,7 @@ public class CmdFly extends FCommand {
 
     private void setAutoFly(boolean toggle) {
         fme.setAutoFFlying(toggle);
-        if (toggle) {
-            // Enabled Fly
-        } else {
-            // Disabled Fly
-        }
+        fme.msg(TL.COMMAND_AUTOFLIGHT_CHANGE, toggle ? "enabled" : "disabled");
     }
 
     @Override

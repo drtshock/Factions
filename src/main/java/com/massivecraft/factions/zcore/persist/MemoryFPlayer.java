@@ -888,6 +888,8 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void setFFlying(boolean fly) {
         getPlayer().setFlying(fly);
         getPlayer().setAllowFlight(fly);
+
+        msg(TL.COMMAND_FLIGHT_CHANGE, fly ? "enabled" : "disabled");
         isFFlying = fly;
     }
 
