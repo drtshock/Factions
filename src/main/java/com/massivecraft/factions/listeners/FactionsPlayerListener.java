@@ -177,6 +177,19 @@ public class FactionsPlayerListener implements Listener {
         Faction factionTo = Board.getInstance().getFactionAt(to);
         boolean changedFaction = (factionFrom != factionTo);
 
+        if (Conf.enableFactionFlight && changedFaction && me.isAutoFFlying()) {
+            Access access = factionTo.getAccess(me, PermissableAction.FLIGHT);
+            if (access != null && access != Access.UNDEFINED) {
+                if (access == Access.ALLOW) {
+                    me.setFFlying(true);
+                } else {
+                    me.setFFlying(false);
+                }
+            } else {
+                me.setFFlying(false);
+            }
+        }
+
         if (me.isMapAutoUpdating()) {
             if (showTimes.containsKey(player.getUniqueId()) && (showTimes.get(player.getUniqueId()) > System.currentTimeMillis())) {
                 if (P.p.getConfig().getBoolean("findfactionsexploit.log", false)) {

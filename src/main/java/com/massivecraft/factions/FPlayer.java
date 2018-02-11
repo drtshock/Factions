@@ -261,6 +261,14 @@ public interface FPlayer extends EconomyParticipator {
 
     public void setId(String id);
 
+    public boolean isFFlying();
+
+    public void setFFlying(boolean fly);
+
+    public boolean isAutoFFlying();
+
+    public void setAutoFFlying(boolean autoFly);
+
     // -------------------------------
     // Warmups
     // -------------------------------

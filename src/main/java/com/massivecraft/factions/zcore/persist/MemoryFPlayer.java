@@ -61,6 +61,8 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected int kills, deaths;
     protected boolean willAutoLeave = true;
     protected int mapHeight = 8; // default to old value
+    protected boolean isFFlying = false;
+    protected boolean isAutoFFlying = false;
 
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
     protected transient boolean mapAutoUpdating;
@@ -877,6 +879,24 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public boolean isOffline() {
         return !isOnline();
+    }
+
+    public boolean isFFlying() {
+        return isFFlying;
+    }
+
+    public void setFFlying(boolean fly) {
+        getPlayer().setFlying(fly);
+        getPlayer().setAllowFlight(fly);
+        isFFlying = fly;
+    }
+
+    public boolean isAutoFFlying() {
+        return isAutoFFlying;
+    }
+
+    public void setAutoFFlying(boolean autoFly) {
+        isAutoFFlying = autoFly;
     }
 
     // -------------------------------------------- //
