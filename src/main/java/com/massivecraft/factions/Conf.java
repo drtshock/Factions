@@ -121,6 +121,7 @@ public class Conf {
     public static boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
 
     public static boolean disablePVPBetweenNeutralFactions = false;
+    public static boolean enablePVPBetweenNeutralFactionsInTerritory = false;
     public static boolean disablePVPForFactionlessPlayers = false;
     public static boolean enablePVPAgainstFactionlessInAttackersLand = false;
 
