@@ -10,11 +10,11 @@ import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
-import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.Action;
+import com.massivecraft.factions.zcore.fperms.Permissable;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -171,7 +171,7 @@ public class P extends MPlugin {
         Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {
         }.getType();
 
-        Type accessTypeAdatper = new TypeToken<Map<Relation, Map<Action, Access>>>() {
+        Type accessTypeAdatper = new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {
         }.getType();
 
         return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE).registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter()).registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter()).registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter()).registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);

@@ -17,6 +17,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 
@@ -58,6 +59,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean isAdminBypassing = false;
     protected int kills, deaths;
     protected boolean willAutoLeave = true;
+    protected int mapHeight = 8; // default to old value
 
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
     protected transient boolean mapAutoUpdating;
@@ -242,6 +244,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.showScoreboard = P.p.getConfig().getBoolean("scoreboard.default-enabled", false);
         this.kills = 0;
         this.deaths = 0;
+        this.mapHeight = Conf.mapHeight;
 
         if (!Conf.newPlayerStartingFactionID.equals("0") && Factions.getInstance().isValidFactionId(Conf.newPlayerStartingFactionID)) {
             this.factionId = Conf.newPlayerStartingFactionID;
@@ -268,6 +271,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.showScoreboard = P.p.getConfig().getBoolean("scoreboard.default-enabled", true);
         this.kills = other.kills;
         this.deaths = other.deaths;
+        this.mapHeight = Conf.mapHeight;
     }
 
     public void resetFactionData(boolean doSpoutUpdate) {
@@ -890,6 +894,34 @@ public abstract class MemoryFPlayer implements FPlayer {
         for (String msg : msgs) {
             this.sendMessage(msg);
         }
+    }
+
+    public void sendFancyMessage(FancyMessage message) {
+        Player player = getPlayer();
+        if (player == null || !player.isOnGround()) {
+            return;
+        }
+
+        message.send(player);
+    }
+
+    public void sendFancyMessage(List<FancyMessage> messages) {
+        Player player = getPlayer();
+        if (player == null || !player.isOnGround()) {
+            return;
+        }
+
+        for (FancyMessage msg : messages) {
+            msg.send(player);
+        }
+    }
+
+    public int getMapHeight() {
+        return this.mapHeight;
+    }
+
+    public void setMapHeight(int height) {
+        this.mapHeight = height > Conf.mapHeight * 2 ? Conf.mapHeight * 2 : height;
     }
 
     public String getNameAndTitle(FPlayer fplayer) {

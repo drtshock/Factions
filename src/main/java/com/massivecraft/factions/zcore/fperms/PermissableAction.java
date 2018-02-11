@@ -1,6 +1,6 @@
 package com.massivecraft.factions.zcore.fperms;
 
-public enum Action {
+public enum PermissableAction {
     BUILD("build"),
     DESTROY("destroy"),
     FROST_WALK("frostwalk"),
@@ -18,11 +18,13 @@ public enum Action {
     ACCESS("access"),
     DISBAND("disband"),
     PROMOTE("promote"),
-    PERMS("perms");
+    PERMS("perms"),
+    SETWARP("setwarp"),
+    WARP("warp"),;
 
     private String name;
 
-    Action(String name) {
+    PermissableAction(String name) {
         this.name = name;
     }
 
@@ -41,10 +43,10 @@ public enum Action {
      * @param check
      * @return
      */
-    public static Action fromString(String check) {
-        for (Action action : values()) {
-            if (action.name().equalsIgnoreCase(check)) {
-                return action;
+    public static PermissableAction fromString(String check) {
+        for (PermissableAction permissableAction : values()) {
+            if (permissableAction.name().equalsIgnoreCase(check)) {
+                return permissableAction;
             }
         }
 

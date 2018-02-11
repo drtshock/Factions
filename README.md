@@ -1,7 +1,7 @@
 FactionsUUID
 ====================
 
-[![Discord](https://imgur.com/MFRRBn4.png)](https://discord.gg/F7gexAQ)
+[![Discord](https://imgur.com/MFRRBn4.png)](https://discord.gg/FfAz3eE)
 
 This plugin will allow the players on the server to create factions/guilds. The factions can claim territory that will be protected from non-members. Factions can forge alliances and declare themselves enemies with others. Land may be taken from other factions through war.
 
@@ -27,7 +27,7 @@ FactionsUUID versioning: `U<major>.<minor>.<patch>-<tag>`
 
 Usage
 ---------
-<b>Read the full userguide here: [http://massivecraft.com/dev/factions](http://massivecraft.com/dev/factions)</b>
+<b>Read the full userguide here: [Factions Wiki](https://github.com/drtshock/Factions/wiki)</b>
 
 The chat console command is:
 

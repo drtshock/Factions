@@ -295,6 +295,10 @@ public enum TL {
     COMMAND_MAP_UPDATE_DISABLED("<i>Map auto update <red>DISABLED."),
     COMMAND_MAP_DESCRIPTION("Show the territory map, and set optional auto update"),
 
+    COMMAND_MAPHEIGHT_DESCRIPTION("&eUpdate the lines that /f map sends"),
+    COMMAND_MAPHEIGHT_SET("&eSet /f map lines to &a%1$d"),
+    COMMAND_MAPHEIGHT_CURRENT("&eCurrent mapheight: &a%1$d"),
+
     COMMAND_MOD_CANDIDATES("Players you can promote: "),
     COMMAND_MOD_CLICKTOPROMOTE("Click to promote "),
     COMMAND_MOD_NOTMEMBER("%1$s<b> is not a member in your faction."),
@@ -364,11 +368,12 @@ public enum TL {
     COMMAND_PEACEFUL_GRANT("granted peaceful status to"),
     COMMAND_PEACEFUL_REVOKE("removed peaceful status from"),
 
-    COMMAND_PERM_DESCRIPTION("Edit or list your Faction's permissions."),
+    COMMAND_PERM_DESCRIPTION("&6Edit or list your Faction's permissions."),
     COMMAND_PERM_INVALID_RELATION("Invalid relation defined. Try something like 'ally'"),
     COMMAND_PERM_INVALID_ACCESS("Invalid access defined. Try something like 'allow'"),
     COMMAND_PERM_INVALID_ACTION("Invalid action defined. Try something like 'build'"),
     COMMAND_PERM_SET("Set permission %1$s to %2$s for relation %3$s"),
+    COMMAND_PERM_TOP("RCT MEM OFF ALLY TRUCE NEUT ENEMY"),
 
     COMMAND_PERMANENT_DESCRIPTION("Toggles a faction's permanence"), //TODO: Real word?
     COMMAND_PERMANENT_GRANT("added permanent status to"),

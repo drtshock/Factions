@@ -11,7 +11,8 @@ import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.Action;
+import com.massivecraft.factions.zcore.fperms.Permissable;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -48,7 +49,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private long lastDeath;
     protected int maxVaults;
     protected Role defaultRole;
-    protected Map<Relation, Map<Action, Access>> permissions = new HashMap<>();
+    protected Map<Permissable, Map<PermissableAction, Access>> permissions = new HashMap<>();
 
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
@@ -324,38 +325,69 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // -------------------------------------------- //
 
 
-    public Access getAccess(FPlayer fPlayer, Action action) {
-        Relation relation = fPlayer.getRelationTo(this);
-        Map<Action, Access> accessMap = permissions.get(relation);
-        if (accessMap != null && accessMap.containsKey(action)) {
-            return accessMap.get(action);
+    public Access getAccess(Permissable permissable, PermissableAction permissableAction) {
+        if (permissable == null || permissableAction == null) {
+            return Access.UNDEFINED;
         }
 
-        return null;
+        Map<PermissableAction, Access> accessMap = permissions.get(permissable);
+        if (accessMap != null && accessMap.containsKey(permissableAction)) {
+            Access access = accessMap.get(permissableAction);
+            return access != null ? access : Access.UNDEFINED;
+        }
+
+        return Access.UNDEFINED;
     }
 
-    public void setPermission(Relation relation, Action action, Access access) {
-        Map<Action, Access> accessMap = permissions.get(relation);
+    /**
+     * Get the Access of a player. Will use player's Role if they are a faction member. Otherwise, uses their Relation.
+     *
+     * @param player
+     * @param permissableAction
+     * @return
+     */
+    public Access getAccess(FPlayer player, PermissableAction permissableAction) {
+        if (player == null || permissableAction == null) {
+            return Access.UNDEFINED;
+        }
+
+        Permissable perm;
+
+        if (player.getFaction() == this) {
+            perm = player.getRole();
+        } else {
+            perm = player.getFaction().getRelationTo(this);
+        }
+
+        Map<PermissableAction, Access> accessMap = permissions.get(perm);
+        if (accessMap != null && accessMap.containsKey(permissableAction)) {
+            return accessMap.get(permissableAction);
+        }
+
+        return Access.UNDEFINED;
+    }
+
+    public void setPermission(Permissable permissable, PermissableAction permissableAction, Access access) {
+        Map<PermissableAction, Access> accessMap = permissions.get(permissable);
         if (accessMap == null) {
             accessMap = new HashMap<>();
         }
 
-        accessMap.put(action, access);
+        accessMap.put(permissableAction, access);
     }
 
     public void resetPerms() {
         P.p.log(Level.WARNING, "Resetting permissions for Faction: " + tag);
+        permissions.clear();
+    }
 
-        // First populate a map with undefined as the permission for each action.
-        Map<Action, Access> freshMap = new HashMap<>();
-        for (Action action : Action.values()) {
-            freshMap.put(action, Access.UNDEFINED);
-        }
-
-        // Put the map in there for each relation.
-        for (Relation relation : Relation.values()) {
-            permissions.put(relation, freshMap);
-        }
+    /**
+     * Read only map of Permissions.
+     *
+     * @return
+     */
+    public Map<Permissable, Map<PermissableAction, Access>> getPermissions() {
+        return Collections.unmodifiableMap(permissions);
     }
 
     public Role getDefaultRole() {

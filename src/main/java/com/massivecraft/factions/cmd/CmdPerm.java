@@ -3,13 +3,12 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.Action;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class CmdPerm extends FCommand {
 
@@ -25,7 +24,7 @@ public class CmdPerm extends FCommand {
         this.optionalArgs.put("access", "access");
 
         this.permission = Permission.PERMISSIONS.node;
-        this.disableOnLock = false;
+        this.disableOnLock = true;
 
         senderMustBePlayer = true;
         senderMustBeMember = true;
@@ -35,8 +34,10 @@ public class CmdPerm extends FCommand {
 
     @Override
     public void perform() {
-        if (optionalArgs.size() == 0) {
-            // TODO: Open the GUI.
+        if (args.size() == 0) {
+            for (String s : getLines()) {
+                msg(s);
+            }
             return;
         }
 
@@ -47,7 +48,7 @@ public class CmdPerm extends FCommand {
         }
 
         Set<Relation> relations = new HashSet<>();
-        Set<Action> actions = new HashSet<>();
+        Set<PermissableAction> permissableActions = new HashSet<>();
 
         boolean allRelations = argAsString(0).equalsIgnoreCase("all");
         boolean allActions = argAsString(1).equalsIgnoreCase("all");
@@ -65,15 +66,15 @@ public class CmdPerm extends FCommand {
         }
 
         if (allActions) {
-            actions.addAll(Arrays.asList(Action.values()));
+            permissableActions.addAll(Arrays.asList(PermissableAction.values()));
         } else {
-            Action action = Action.fromString(argAsString(1));
-            if (action == null) {
+            PermissableAction permissableAction = PermissableAction.fromString(argAsString(1));
+            if (permissableAction == null) {
                 fme.msg(TL.COMMAND_PERM_INVALID_ACTION);
                 return;
             }
 
-            actions.add(action);
+            permissableActions.add(permissableAction);
         }
 
         Access access = Access.fromString(argAsString(2));
@@ -84,13 +85,42 @@ public class CmdPerm extends FCommand {
         }
 
         for (Relation relation : relations) {
-            for (Action action : actions) {
-                fme.getFaction().setPermission(relation, action, access);
+            for (PermissableAction permissableAction : permissableActions) {
+                fme.getFaction().setPermission(relation, permissableAction, access);
             }
         }
 
         fme.msg(TL.COMMAND_PERM_SET, argAsString(1), access.name(), argAsString(0));
         P.p.log(String.format(TL.COMMAND_PERM_SET.toString(), argAsString(1), access.name(), argAsString(0)) + " for faction " + fme.getTag());
+    }
+
+    private List<String> getLines() {
+        List<String> lines = new ArrayList<>();
+
+        lines.add(TL.COMMAND_PERM_TOP.toString());
+
+        for (PermissableAction action : PermissableAction.values()) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(action.getName()).append(" ");
+
+            // Roles except admin
+            for (Role role : Role.values()) {
+                if (role != Role.ADMIN) {
+                    sb.append(myFaction.getAccess(role, action).getName()).append(" ");
+                }
+            }
+
+            // Relations except Member
+            for (Relation relation : Relation.values()) {
+                if (relation != Relation.MEMBER) {
+                    sb.append(myFaction.getAccess(relation, action).getName()).append(" ");
+                }
+            }
+
+            lines.add(sb.toString().trim());
+        }
+
+        return lines;
     }
 
     @Override

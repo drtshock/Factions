@@ -6,6 +6,7 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -238,6 +239,14 @@ public interface FPlayer extends EconomyParticipator {
     public void sendMessage(String message);
 
     public void sendMessage(List<String> messages);
+
+    public void sendFancyMessage(FancyMessage message);
+
+    public void sendFancyMessage(List<FancyMessage> message);
+
+    public int getMapHeight();
+
+    public void setMapHeight(int height);
 
     public boolean isOnlineAndVisibleTo(Player me);
 
