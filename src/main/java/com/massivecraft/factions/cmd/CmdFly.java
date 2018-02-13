@@ -12,6 +12,7 @@ public class CmdFly extends FCommand {
 
     public CmdFly() {
         super();
+        this.aliases.add("fly");
 
         this.optionalArgs.put("on/off", "flip");
 
@@ -22,13 +23,13 @@ public class CmdFly extends FCommand {
 
     @Override
     public void perform() {
-        if (!P.p.getConfig().getBoolean("enable-faction-flight", false)) {
+        if (!P.p.getConfig().getBoolean("enable-faction-flight", false) || !P.p.getServer().getAllowFlight()) {
             fme.msg(TL.COMMAND_FLY_DISABLED);
             return;
         }
 
         // Called if auto flight is enabled
-        if (args.size() == 0 && !P.p.getConfig().getBoolean("use-auto-faction-flight", false)) {
+        if (args.size() == 0 && P.p.getConfig().getBoolean("use-auto-faction-flight", false)) {
             fme.setAutoFFlying(!fme.isAutoFFlying());
 
             if (fme.canFlyAtLocation()) {
@@ -38,7 +39,7 @@ public class CmdFly extends FCommand {
             }
 
             return;
-        } else if (args.size() == 1 && !P.p.getConfig().getBoolean("use-auto-faction-flight", false)) {
+        } else if (args.size() == 1 && P.p.getConfig().getBoolean("use-auto-faction-flight", false)) {
             fme.setAutoFFlying(argAsBool(0));
 
             if (fme.canFlyAtLocation()) {
@@ -52,7 +53,7 @@ public class CmdFly extends FCommand {
 
         // Called if auto flight is disabled
         if (args.size() == 0) {
-            if (!fme.canFlyAtLocation() && !fme.isFFlying()) {
+            if (fme.canFlyAtLocation() && !fme.isFFlying()) {
                 Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
                 fme.msg(TL.COMMAND_CANNOT_FLY_HERE, factionAtLocation.getTag(fme));
                 return;
@@ -60,7 +61,7 @@ public class CmdFly extends FCommand {
 
             fme.setFFlying(!fme.isFFlying());
         } else if (args.size() == 1) {
-            if (!fme.canFlyAtLocation() && argAsBool(0)) {
+            if (fme.canFlyAtLocation() && argAsBool(0)) {
                 Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
                 fme.msg(TL.COMMAND_CANNOT_FLY_HERE, factionAtLocation.getTag(fme));
                 return;
