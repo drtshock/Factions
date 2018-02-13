@@ -910,7 +910,12 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public boolean canFlyAtLocation(FLocation location) {
-        Access access = Board.getInstance().getFactionAt(location).getAccess(this, PermissableAction.FLIGHT);
+        Faction faction = Board.getInstance().getFactionAt(location);
+        if (faction.isWilderness() || faction.isSafeZone() || faction.isWarZone()) {
+            return false;
+        }
+
+        Access access = faction.getAccess(this, PermissableAction.FLIGHT);
         return access != null && access != Access.UNDEFINED && access == Access.ALLOW;
     }
 

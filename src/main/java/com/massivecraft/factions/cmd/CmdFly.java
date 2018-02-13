@@ -53,7 +53,7 @@ public class CmdFly extends FCommand {
 
         // Called if auto flight is disabled
         if (args.size() == 0) {
-            if (fme.canFlyAtLocation() && !fme.isFFlying()) {
+            if (!fme.canFlyAtLocation() && !fme.isFFlying()) {
                 Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
                 fme.msg(TL.COMMAND_CANNOT_FLY_HERE, factionAtLocation.getTag(fme));
                 return;
@@ -61,7 +61,7 @@ public class CmdFly extends FCommand {
 
             fme.setFFlying(!fme.isFFlying());
         } else if (args.size() == 1) {
-            if (fme.canFlyAtLocation() && argAsBool(0)) {
+            if (!fme.canFlyAtLocation() && argAsBool(0)) {
                 Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
                 fme.msg(TL.COMMAND_CANNOT_FLY_HERE, factionAtLocation.getTag(fme));
                 return;
