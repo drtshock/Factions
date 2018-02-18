@@ -30,7 +30,7 @@ public class CmdFly extends FCommand {
         if (args.size() == 0) {
             if (!fme.canFlyAtLocation() && !fme.isFFlying()) {
                 Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
-                fme.msg(TL.COMMAND_CANNOT_FLY_HERE, factionAtLocation.getTag(fme));
+                fme.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(fme));
                 return;
             }
 
@@ -38,7 +38,7 @@ public class CmdFly extends FCommand {
         } else if (args.size() == 1) {
             if (!fme.canFlyAtLocation() && argAsBool(0)) {
                 Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
-                fme.msg(TL.COMMAND_CANNOT_FLY_HERE, factionAtLocation.getTag(fme));
+                fme.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(fme));
                 return;
             }
 
