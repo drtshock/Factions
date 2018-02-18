@@ -904,7 +904,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (faction.isWilderness() || faction.isSafeZone() || faction.isWarZone()) {
             return false;
         }
-        if (getRole() == Role.ADMIN) {
+        if (faction == getFaction() && getRole() == Role.ADMIN) {
             return true;
         }
 
