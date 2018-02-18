@@ -48,7 +48,7 @@ public class CmdFly extends FCommand {
 
     private void toggleFlight(final boolean toggle) {
         if (!toggle) {
-            fme.setFFlying(false)
+            fme.setFFlying(false);
             return;
         }
         

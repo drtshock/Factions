@@ -19,6 +19,7 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -102,9 +103,11 @@ public class FactionsEntityListener implements Listener {
 
             if (damagee != null && damagee instanceof Player) {
                 cancelFStuckTeleport((Player) damagee);
+                cancelFFly((Player) damagee);
             }
             if (damager instanceof Player) {
                 cancelFStuckTeleport((Player) damager);
+                cancelFFly((Player) damager);
             }
         } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
             // Players can not take any damage in a Safe Zone
@@ -121,11 +124,17 @@ public class FactionsEntityListener implements Listener {
                 me.clearWarmup();
                 me.msg(TL.WARMUPS_CANCELLED);
             }
+        }
+    }
 
-            // If player is flying disable it
-            if (me.isFFlying()) {
-                me.setFFlying(false);
-            }
+    private void cancelFFly(Player player) {
+        if (player == null) {
+            return;
+        }
+
+        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+        if (fPlayer.isFFlying()) {
+            fPlayer.setFFlying(false);
         }
     }
 
