@@ -896,15 +896,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         isFFlying = fly;
     }
 
-    public boolean isAutoFFlying() {
-        return isAutoFFlying;
-    }
-
-    public void setAutoFFlying(boolean autoFly) {
-        msg(TL.COMMAND_AUTOFLIGHT_CHANGE, autoFly ? "enabled" : "disabled");
-        isAutoFFlying = autoFly;
-    }
-
     public boolean canFlyAtLocation() {
         return canFlyAtLocation(lastStoodAt);
     }

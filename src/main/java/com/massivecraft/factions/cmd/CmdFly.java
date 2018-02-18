@@ -28,30 +28,6 @@ public class CmdFly extends FCommand {
             return;
         }
 
-        // Called if auto flight is enabled
-        if (args.size() == 0 && P.p.getConfig().getBoolean("use-auto-faction-flight", false)) {
-            fme.setAutoFFlying(!fme.isAutoFFlying());
-
-            if (fme.canFlyAtLocation()) {
-                fme.setFFlying(fme.isAutoFFlying());
-            } else {
-                fme.setFFlying(false);
-            }
-
-            return;
-        } else if (args.size() == 1 && P.p.getConfig().getBoolean("use-auto-faction-flight", false)) {
-            fme.setAutoFFlying(argAsBool(0));
-
-            if (fme.canFlyAtLocation()) {
-                fme.setFFlying(fme.isAutoFFlying());
-            } else {
-                fme.setFFlying(false);
-            }
-
-            return;
-        }
-
-        // Called if auto flight is disabled
         if (args.size() == 0) {
             if (!fme.canFlyAtLocation() && !fme.isFFlying()) {
                 Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());

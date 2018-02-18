@@ -60,9 +60,7 @@ warp-cost:
 
 # Faction Fly
 # Enable Faction Fly:
-enable-faction-flight: false
-# If enabled choose which system:
-use-auto-faction-flight: true
+enable-faction-flight: true
 
 # Pistons
 # Should we disable pistons in Faction territory? This will prevent people from doing something like:

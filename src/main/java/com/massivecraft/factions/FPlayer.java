@@ -265,10 +265,6 @@ public interface FPlayer extends EconomyParticipator {
 
     public void setFFlying(boolean fly);
 
-    public boolean isAutoFFlying();
-
-    public void setAutoFFlying(boolean autoFly);
-
     public boolean canFlyAtLocation();
 
     public boolean canFlyAtLocation(FLocation location);
