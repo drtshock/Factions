@@ -164,6 +164,8 @@ warmups:
   f-home: 0
   # Delay for /f warp
   f-warp: 0
+  # Delay for /f fly
+  f-fly: 0
 
 ######################################################
 #################### HCF Features ####################

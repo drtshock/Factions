@@ -581,8 +581,8 @@ public enum TL {
 
     COMMAND_FLY_DISABLED("<b>Sorry, Faction flight is disabled on this server"),
     COMMAND_FLY_DESCRIPTION("Enter or leave Faction flight mode"),
-    COMMAND_FLIGHT_CHANGE("<i>Faction flight %1$s"),
-    COMMAND_AUTOFLIGHT_CHANGE("<i>Faction auto fly %1$s"),
+    COMMAND_FLIGHT_CHANGE("&eFaction flight &d%1$s&e."),
+    COMMAND_FLIGHT_WARMUP("&eFlight will enable in &d%2$d &eseconds."),
     COMMAND_CANNOT_FLY_HERE("<b>Cannot enable flight in territory of %1$s"),
 
     /**
