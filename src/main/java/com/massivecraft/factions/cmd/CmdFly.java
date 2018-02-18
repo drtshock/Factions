@@ -34,7 +34,7 @@ public class CmdFly extends FCommand {
                 return;
             }
 
-            enableFlight(!fme.isFFlying());
+            toggleFlight(!fme.isFFlying());
         } else if (args.size() == 1) {
             if (!fme.canFlyAtLocation() && argAsBool(0)) {
                 Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
@@ -42,15 +42,20 @@ public class CmdFly extends FCommand {
                 return;
             }
 
-            enableFlight(argAsBool(0));
+            toggleFlight(argAsBool(0));
         }
     }
 
-    private void enableFlight(final boolean toggle) {
+    private void toggleFlight(final boolean toggle) {
+        if (!toggle) {
+            fme.setFFlying(false)
+            return;
+        }
+        
         this.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", new Runnable() {
             @Override
             public void run() {
-                fme.setFFlying(toggle);
+                fme.setFFlying(true);
             }
         }, this.p.getConfig().getLong("warmups.f-fly", 0));
     }
