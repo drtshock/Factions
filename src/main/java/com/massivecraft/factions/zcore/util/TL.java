@@ -582,7 +582,6 @@ public enum TL {
     COMMAND_FLY_DISABLED("<b>Sorry, Faction flight is disabled on this server"),
     COMMAND_FLY_DESCRIPTION("Enter or leave Faction flight mode"),
     COMMAND_FLIGHT_CHANGE("&eFaction flight &d%1$s&e."),
-    COMMAND_FLIGHT_WARMUP("&eFlight will enable in &d%2$d &eseconds."),
     COMMAND_CANNOT_FLY_HERE("<b>Cannot enable flight in territory of %1$s"),
 
     /**
@@ -785,6 +784,7 @@ public enum TL {
     /**
      * Warmups
      */
+    WARMUPS_NOTIFY_FLIGHT("&eFlight will enable in &d%2$d &eseconds."),
     WARMUPS_NOTIFY_TELEPORT("&eYou will teleport to &d%1$s &ein &d%2$d &eseconds."),
     WARMUPS_ALREADY("&cYou are already warming up."),
     WARMUPS_CANCELLED("&cYou have cancelled your warmup.");

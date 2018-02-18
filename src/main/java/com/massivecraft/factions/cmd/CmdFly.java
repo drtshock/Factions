@@ -1,19 +1,11 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.WarmUpUtil;
-import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.util.SmokeUtil;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Location;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CmdFly extends FCommand {
 
@@ -55,7 +47,7 @@ public class CmdFly extends FCommand {
     }
 
     private void enableFlight(final boolean toggle) {
-        this.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.COMMAND_FLIGHT_WARMUP, "Fly", new Runnable() {
+        this.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", new Runnable() {
             @Override
             public void run() {
                 fme.setFFlying(toggle);
