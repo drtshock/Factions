@@ -23,7 +23,7 @@ public class CmdFly extends FCommand {
 
     @Override
     public void perform() {
-        if (!P.p.getConfig().getBoolean("enable-faction-flight", false) || !P.p.getServer().getAllowFlight()) {
+        if (!P.p.getConfig().getBoolean("enable-faction-flight", false)) {
             fme.msg(TL.COMMAND_FLY_DISABLED);
             return;
         }
