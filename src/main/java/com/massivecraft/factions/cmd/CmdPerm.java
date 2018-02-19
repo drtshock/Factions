@@ -7,6 +7,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.fperms.gui.PermissableRelationGUI;
 import com.massivecraft.factions.zcore.util.TL;
 
 import java.util.*;
@@ -36,9 +37,7 @@ public class CmdPerm extends FCommand {
     @Override
     public void perform() {
         if (args.size() == 0) {
-            for (String s : getLines()) {
-                msg(s);
-            }
+            me.openInventory(new PermissableRelationGUI(fme).getInventory());
             return;
         }
 
@@ -107,35 +106,6 @@ public class CmdPerm extends FCommand {
         }
 
         return null;
-    }
-
-    private List<String> getLines() {
-        List<String> lines = new ArrayList<>();
-
-        lines.add(TL.COMMAND_PERM_TOP.toString());
-
-        for (PermissableAction action : PermissableAction.values()) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(action.getName()).append(" ");
-
-            // Roles except admin
-            for (Role role : Role.values()) {
-                if (role != Role.ADMIN) {
-                    sb.append(myFaction.getAccess(role, action).getName()).append(" ");
-                }
-            }
-
-            // Relations except Member
-            for (Relation relation : Relation.values()) {
-                if (relation != Relation.MEMBER) {
-                    sb.append(myFaction.getAccess(relation, action).getName()).append(" ");
-                }
-            }
-
-            lines.add(sb.toString().trim());
-        }
-
-        return lines;
     }
 
     @Override

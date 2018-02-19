@@ -3,6 +3,7 @@ package com.massivecraft.factions.struct;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.ChatColor;
 
 public enum Role implements Permissable {
     ADMIN(3, TL.ROLE_ADMIN),
@@ -72,6 +73,10 @@ public enum Role implements Permissable {
 
     public TL getTranslation() {
         return translation;
+    }
+
+    public ChatColor getColor() {
+        return ChatColor.GREEN;
     }
 
     public String getPrefix() {
