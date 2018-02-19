@@ -1,9 +1,17 @@
 package com.massivecraft.factions.struct;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public enum Relation implements Permissable {
@@ -15,15 +23,12 @@ public enum Relation implements Permissable {
 
     public final int value;
     public final String nicename;
+    private final ConfigurationSection RELATION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
+
 
     Relation(final int value, final String nicename) {
         this.value = value;
         this.nicename = nicename;
-    }
-
-    @Override
-    public String toString() {
-        return this.nicename;
     }
 
     public static Relation fromString(String s) {
@@ -39,6 +44,11 @@ public enum Relation implements Permissable {
         } else {
             return NEUTRAL; // If they somehow mess things up, go back to default behavior.
         }
+    }
+
+    @Override
+    public String toString() {
+        return this.nicename;
     }
 
     public String getTranslation() {
@@ -183,5 +193,39 @@ public enum Relation implements Permissable {
         } else {
             return Conf.econCostNeutral;
         }
+    }
+
+    // Utility method to build items for F Perm GUI
+    @Override
+    public ItemStack buildItem(String displayName, List<String> displayLore) {
+        displayName = replacePlaceholers(displayName);
+        List<String> lore = new ArrayList<>();
+
+        Material material = Material.matchMaterial(RELATION_CONFIG.getString("materials." + toString()));
+        if (material == null) {
+            return null;
+        }
+
+        ItemStack item = new ItemStack(material);
+        ItemMeta itemMeta = item.getItemMeta();
+
+        for (String loreLine : displayLore) {
+            lore.add(replacePlaceholers(loreLine));
+        }
+
+        itemMeta.setDisplayName(displayName);
+        itemMeta.setLore(lore);
+        item.setItemMeta(itemMeta);
+
+        return item;
+    }
+
+    private String replacePlaceholers(String string) {
+        String permissableName = nicename.substring(0, 1).toUpperCase() + nicename.substring(1);
+
+        string = string.replace("{relation-color}", getColor().toString());
+        string = string.replace("{relation-name}", permissableName);
+
+        return string;
     }
 }
