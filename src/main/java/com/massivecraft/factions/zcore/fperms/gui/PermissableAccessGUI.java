@@ -61,6 +61,7 @@ public class PermissableAccessGUI implements InventoryHolder, PermissionGUI {
         if (!accessSlots.containsKey(slot)) {
             return;
         }
+
         fme.getPlayer().closeInventory();
         fme.getFaction().setPermission(permissable, permissableAction, accessSlots.get(slot));
         fme.msg(TL.COMMAND_PERM_SET, permissableAction.toString().toUpperCase(), accessSlots.get(slot).name(), permissable.toString().toUpperCase());

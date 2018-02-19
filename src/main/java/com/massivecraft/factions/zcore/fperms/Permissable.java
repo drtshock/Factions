@@ -1,9 +1,12 @@
 package com.massivecraft.factions.zcore.fperms;
 
 import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public interface Permissable {
 
-    public ChatColor getColor();
+    public ItemStack buildItem(String displayName, List<String> displayLore);
 
 }

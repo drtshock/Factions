@@ -33,19 +33,19 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
 
     private HashMap<Integer, Permissable> relationSlots = new HashMap<>();
 
-    private ConfigurationSection relationConfig = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
+    private final ConfigurationSection RELATION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
 
 
     public PermissableRelationGUI(FPlayer fme) {
         this.fme = fme;
 
         // Build basic Inventory info
-        guiSize = relationConfig.getInt("size", 27);
-        guiName = ChatColor.translateAlternateColorCodes('&', relationConfig.getString("name", "FactionPermissions"));
+        guiSize = RELATION_CONFIG.getInt("size", 27);
+        guiName = ChatColor.translateAlternateColorCodes('&', RELATION_CONFIG.getString("name", "FactionPermissions"));
         relationGUI = Bukkit.createInventory(this, guiSize, guiName);
 
-        for (String key : relationConfig.getConfigurationSection("slots").getKeys(false)) {
-            if (!relationConfig.isInt("slots." + key) || relationConfig.getInt("slots." + key) + 1 > guiSize) {
+        for (String key : RELATION_CONFIG.getConfigurationSection("slots").getKeys(false)) {
+            if (!RELATION_CONFIG.isInt("slots." + key) || RELATION_CONFIG.getInt("slots." + key) + 1 > guiSize) {
                 P.p.log(Level.WARNING, "Invalid slot of " + key.toUpperCase() + " in relation GUI skipping it");
                 continue;
             }
@@ -54,12 +54,12 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
                 continue;
             }
 
-            relationSlots.put(relationConfig.getInt("slots." + key), getPermissable(key));
+            relationSlots.put(RELATION_CONFIG.getInt("slots." + key), getPermissable(key));
         }
 
         // Get base item information
-        relationItemName = ChatColor.translateAlternateColorCodes('&', relationConfig.getString("item.name"));
-        for (String loreLine : relationConfig.getStringList("item.lore")) {
+        relationItemName = ChatColor.translateAlternateColorCodes('&', RELATION_CONFIG.getString("item.name"));
+        for (String loreLine : RELATION_CONFIG.getStringList("item.lore")) {
             relationItemLore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
         }
 
@@ -100,30 +100,15 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
         for (Map.Entry<Integer, Permissable> entry : relationSlots.entrySet()) {
             Permissable permissable = entry.getValue();
 
-            String name = replacePlaceholers(relationItemName, permissable);
-            List<String> lore = new ArrayList<>();
-            ItemStack item = new ItemStack(Material.matchMaterial(relationConfig.getString("materials." + permissable.toString())));
-            ItemMeta itemMeta = item.getItemMeta();
+            ItemStack item = permissable.buildItem(relationItemName, relationItemLore);
 
-            for (String loreLine : relationItemLore) {
-                lore.add(replacePlaceholers(loreLine, permissable));
+            if (item == null) {
+                P.p.log(Level.WARNING, "Invalid material for " + permissable.toString().toUpperCase() + " skipping it");
+                continue;
             }
 
-            itemMeta.setDisplayName(name);
-            itemMeta.setLore(lore);
-            item.setItemMeta(itemMeta);
-
-            relationGUI.setItem(entry.getKey(), item);
+            relationGUI.setItem(entry.getKey(), permissable.buildItem(relationItemName, relationItemLore));
         }
-    }
-
-    private String replacePlaceholers(String string, Permissable permissable) {
-        String permissableName = permissable.toString().substring(0, 1).toUpperCase() + permissable.toString().substring(1);
-
-        string = string.replace("{relation-color}", permissable.getColor().toString());
-        string = string.replace("{relation-name}", permissableName);
-
-        return string;
     }
 
 }

@@ -37,42 +37,42 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
 
     private int backButtonSlot;
 
-    private ConfigurationSection actionConfig = P.p.getConfig().getConfigurationSection("fperm-gui.action");
+    private final ConfigurationSection ACTION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.action");
 
     public PermissableActionGUI(FPlayer fme, Permissable permissable, ItemStack relationItem) {
         this.fme = fme;
         this.permissable = permissable;
 
         // Build basic Inventory info
-        guiSize = actionConfig.getInt("size", 27);
-        guiName = ChatColor.translateAlternateColorCodes('&', actionConfig.getString("name", "FactionPerms"));
+        guiSize = ACTION_CONFIG.getInt("size", 27);
+        guiName = ChatColor.translateAlternateColorCodes('&', ACTION_CONFIG.getString("name", "FactionPerms"));
         actionGUI = Bukkit.createInventory(this, guiSize, guiName);
 
         // Add Back Button and current relation information
-        actionGUI.setItem(actionConfig.getInt("slots.relation-info", 4), relationItem);
-        backButtonSlot = actionConfig.getInt("slots.back", 0);
+        actionGUI.setItem(ACTION_CONFIG.getInt("slots.relation-info", 4), relationItem);
+        backButtonSlot = ACTION_CONFIG.getInt("slots.back", 0);
 
-        actionItemName = ChatColor.translateAlternateColorCodes('&', actionConfig.getString("item.name", "{action-name}"));
-        actionItemLore = translateColors(actionConfig.getStringList("item.lore"));
+        actionItemName = ChatColor.translateAlternateColorCodes('&', ACTION_CONFIG.getString("item.name", "{action-name}"));
+        actionItemLore = translateColors(ACTION_CONFIG.getStringList("item.lore"));
 
         // Build actions into HashMap
-        for (String key : actionConfig.getConfigurationSection("slots").getKeys(false)) {
+        for (String key : ACTION_CONFIG.getConfigurationSection("slots").getKeys(false)) {
             if (key.equalsIgnoreCase("back") || key.equalsIgnoreCase("relation-info")) {
                 continue;
             }
 
-            if (!actionConfig.isInt("slots." + key) || actionConfig.getInt("slots." + key) + 1 > guiSize) {
+            if (!ACTION_CONFIG.isInt("slots." + key) || ACTION_CONFIG.getInt("slots." + key) + 1 > guiSize) {
                 P.p.log(Level.WARNING, "Invalid slot of " + key.toUpperCase() + " in action GUI skipping it");
                 continue;
             }
 
-            PermissableAction permissableAction = PermissableAction.fromString(key);
+            PermissableAction permissableAction = PermissableAction.fromString(key.toUpperCase());
             if (permissableAction == null) {
                 P.p.log(Level.WARNING, "Invalid permissable action " + key.toUpperCase() + " skipping it");
                 continue;
             }
 
-            actionSlots.put(actionConfig.getInt("slots." + key), permissableAction);
+            actionSlots.put(ACTION_CONFIG.getInt("slots." + key), permissableAction);
         }
 
         buildItems();
@@ -111,18 +111,12 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
         for (Map.Entry<Integer, PermissableAction> entry : actionSlots.entrySet()) {
             PermissableAction permissableAction = entry.getValue();
 
-            String name = replacePlaceholers(actionItemName, permissableAction);
-            List<String> lore = new ArrayList<>();
-            ItemStack item = new ItemStack(Material.matchMaterial(actionConfig.getString("materials." + permissableAction.name().toLowerCase(), "COBBLESTONE")));
-            ItemMeta itemMeta = item.getItemMeta();
+            ItemStack item = permissableAction.buildItem(fme, permissable, actionItemName, actionItemLore);
 
-            for (String loreLine : actionItemLore) {
-                lore.add(replacePlaceholers(loreLine, permissableAction));
+            if (item == null) {
+                P.p.log(Level.WARNING, "Invalid material for " + permissableAction.toString().toUpperCase() + " skipping it");
+                continue;
             }
-
-            itemMeta.setDisplayName(name);
-            itemMeta.setLore(lore);
-            item.setItemMeta(itemMeta);
 
             actionGUI.setItem(entry.getKey(), item);
         }
@@ -134,21 +128,6 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
             coloredList.add(ChatColor.translateAlternateColorCodes('&', loreLine));
         }
         return coloredList;
-    }
-
-    private String replacePlaceholers(String string, PermissableAction permissableAction) {
-        String actionName = permissableAction.getName().substring(0, 1).toUpperCase() + permissableAction.getName().substring(1);
-        string = string.replace("{action-name}", actionName);
-
-        Access access = fme.getFaction().getAccess(permissable, permissableAction);
-        if (access == null) {
-            access = Access.UNDEFINED;
-        }
-        String actionAccess = access.getName();
-        string = string.replace("{action-access}", actionAccess);
-        string = string.replace("{action-access-color}", access.getColor().toString());
-
-        return string;
     }
 
 }
