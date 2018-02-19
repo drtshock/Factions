@@ -335,6 +335,99 @@ help:
 
 ############################################################
 # +------------------------------------------------------+ #
+# |                  F Permission GUI                    | #
+# +------------------------------------------------------+ #
+############################################################
+
+fperm-gui:
+  relation:
+    name: '&a&lFaction&d&lRelations'
+    # Must be multiples of 9, or the GUI will not work
+    size: 27
+    slots:
+      recruit: 10
+      member: 11
+      moderator: 12
+      truce: 13
+      ally: 14
+      enemy: 15
+      neutral: 16
+    materials:
+      recruit: 'WOOD_SWORD'
+      member: 'STONE_SWORD'
+      moderator: 'IRON_SWORD'
+      truce: 'IRON_AXE'
+      ally: 'DIAMOND_SWORD'
+      enemy: 'DIAMOND_AXE'
+      neutral: 'STONE'
+    item:
+      name: '&8[{relation-color}{relation-name}&8]'
+      lore:
+      - '&8This is some'
+      - '&8Awesome lore'
+  action:
+    name: '&a&lFaction&d&lActions'
+    size: 27
+    slots:
+      # Uses same format as above to inform the player of clicked relation
+      relation-info: 4
+      # Back button slot
+      back: 0
+      # Start actions
+      build: 9
+      destroy: 10
+      frost_walk: 11
+      pain_build: 12
+      door: 13
+      button: 14
+      lever: 15
+      container: 16
+      invite: 17
+      kick: 18
+      item: 19
+      sethome: 20
+      withdraw: 21
+      territory: 22
+      access: 23
+      promote: 24
+      setwarp: 25
+      warp: 26
+    materials:
+      build: STONE
+      destroy: STONE
+      frost_walk: STONE
+      pain_build: STONE
+      door: STONE
+      button: STONE
+      lever: STONE
+      container: STONE
+      invite: STONE
+      kick: STONE
+      item: STONE
+      sethome: STONE
+      withdraw: STONE
+      territory: STONE
+      access: STONE
+      promote: STONE
+      setwarp: STONE
+      warp: STONE
+    item:
+      name: '&8[&7{action-name}&8]'
+      lore:
+      - '&8Current status:'
+      - '&8[{action-access-color}{action-access}&8]'
+  access:
+    name: '&a&lFaction&d&lAccess'
+    size: 27
+  back-button:
+    name: '&8&lBack'
+    material: ARROW
+    lore:
+    - '&7Back button'
+
+
+############################################################
+# +------------------------------------------------------+ #
 # |                Big List of variables                 | #
 # +------------------------------------------------------+ #
 ############################################################

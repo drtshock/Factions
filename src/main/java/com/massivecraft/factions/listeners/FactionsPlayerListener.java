@@ -12,6 +12,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.fperms.gui.PermissionGUI;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -24,6 +25,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.util.NumberConversions;
 
@@ -599,6 +601,14 @@ public class FactionsPlayerListener implements Listener {
             }
         }
         return false;
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerInteractGUI(InventoryClickEvent event) {
+        if (event.getClickedInventory().getHolder() instanceof PermissionGUI) {
+            event.setCancelled(true);
+            ((PermissionGUI) event.getClickedInventory().getHolder()).onClick(event.getRawSlot());
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
