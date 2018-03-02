@@ -32,7 +32,6 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
     private String guiName;
 
     private HashMap<Integer, Permissable> relationSlots = new HashMap<>();
-    private HashMap<Integer, ItemStack> dummyItems = new HashMap<>();
 
     private final ConfigurationSection RELATION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
 
@@ -124,7 +123,7 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
             List<Integer> dummySlots = RELATION_CONFIG.getIntegerList("dummy-items." + key);
             for (Integer slot : dummySlots) {
                 if (slot+1 > guiSize || slot < 0) {
-                    P.p.log(Level.WARNING, "Invalid slot for dummy item: " + key);
+                    P.p.log(Level.WARNING, "Invalid slot: " + slot + " for dummy item: " + key);
                     continue;
                 }
                 relationGUI.setItem(slot, dummyItem);

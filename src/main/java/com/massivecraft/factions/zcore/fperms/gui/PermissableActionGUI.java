@@ -175,7 +175,7 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
             List<Integer> dummySlots = ACTION_CONFIG.getIntegerList("dummy-items." + key);
             for (Integer slot : dummySlots) {
                 if (slot+1 > guiSize || slot < 0) {
-                    P.p.log(Level.WARNING, "Invalid slot for dummy item: " + key);
+                    P.p.log(Level.WARNING, "Invalid slot: " + slot + " for dummy item: " + key);
                     continue;
                 }
                 actionGUI.setItem(slot, dummyItem);

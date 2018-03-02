@@ -383,7 +383,6 @@ fperm-gui:
       - 24
       - 25
       - 26
-      - 27
     placeholder-item:
       name: '&8[{relation-color}{relation}&8]'
       lore:
