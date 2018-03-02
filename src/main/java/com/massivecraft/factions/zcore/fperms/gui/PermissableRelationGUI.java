@@ -1,5 +1,6 @@
 package com.massivecraft.factions.zcore.fperms.gui;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Relation;
@@ -7,6 +8,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.inventory.ClickType;
@@ -30,6 +32,7 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
     private String guiName;
 
     private HashMap<Integer, Permissable> relationSlots = new HashMap<>();
+    private HashMap<Integer, ItemStack> dummyItems = new HashMap<>();
 
     private final ConfigurationSection RELATION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
 
@@ -43,19 +46,22 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
         relationGUI = Bukkit.createInventory(this, guiSize, guiName);
 
         for (String key : RELATION_CONFIG.getConfigurationSection("slots").getKeys(false)) {
-            if (!RELATION_CONFIG.isInt("slots." + key) || RELATION_CONFIG.getInt("slots." + key) + 1 > guiSize) {
+            int slot = RELATION_CONFIG.getInt("slots." + key);
+            if (slot + 1 > guiSize && slot > 0) {
                 P.p.log(Level.WARNING, "Invalid slot of " + key.toUpperCase() + " in relation GUI skipping it");
                 continue;
             }
+
             if (getPermissable(key) == null) {
                 P.p.log(Level.WARNING, "Invalid permissable " + key.toUpperCase() + " skipping it");
                 continue;
             }
 
-            relationSlots.put(RELATION_CONFIG.getInt("slots." + key), getPermissable(key));
+            relationSlots.put(slot, getPermissable(key));
         }
 
         buildItems();
+        buildDummyItems();
     }
 
     @Override
@@ -98,6 +104,68 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
 
             relationGUI.setItem(entry.getKey(), item);
         }
+    }
+
+    private void buildDummyItems() {
+        for (String key : RELATION_CONFIG.getConfigurationSection("dummy-items").getKeys(false)) {
+            int dummyId;
+            try {
+                dummyId = Integer.parseInt(key);
+            } catch (NumberFormatException exception) {
+                P.p.log(Level.WARNING, "Invalid dummy item id: " + key.toUpperCase());
+                continue;
+            }
+
+            ItemStack dummyItem = buildDummyItem(dummyId);
+            if (dummyItem == null) {
+                continue;
+            }
+
+            List<Integer> dummySlots = RELATION_CONFIG.getIntegerList("dummy-items." + key);
+            for (Integer slot : dummySlots) {
+                if (slot+1 > guiSize || slot < 0) {
+                    P.p.log(Level.WARNING, "Invalid slot for dummy item: " + key);
+                    continue;
+                }
+                relationGUI.setItem(slot, dummyItem);
+            }
+        }
+    }
+
+    private ItemStack buildDummyItem(int id) {
+        final ConfigurationSection DUMMY_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.dummy-items." + id);
+
+        Material material = Material.matchMaterial(DUMMY_CONFIG.getString("material", ""));
+        if (material == null) {
+            P.p.log(Level.WARNING, "Invalid material for dummy item: " + id);
+            return null;
+        }
+
+        ItemStack itemStack = new ItemStack(material);
+
+        DyeColor color;
+        try {
+            color = DyeColor.valueOf(DUMMY_CONFIG.getString("color", ""));
+        } catch (Exception exception) {
+            color = null;
+        }
+        if (color != null) {
+            itemStack.setDurability(color.getWoolData());
+        }
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', DUMMY_CONFIG.getString("name", " ")));
+
+        List<String> lore = new ArrayList<>();
+        for (String loreLine : DUMMY_CONFIG.getStringList("lore")) {
+            lore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
+        }
+        itemMeta.setLore(lore);
+
+        itemStack.setItemMeta(itemMeta);
+
+        return itemStack;
     }
 
 }

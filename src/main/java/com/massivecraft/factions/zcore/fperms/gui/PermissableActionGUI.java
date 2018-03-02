@@ -8,6 +8,7 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Item;
@@ -55,9 +56,6 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
             }
 
             if (SpecialItem.isSpecial(key)) {
-                if (SpecialItem.fromString(key) == SpecialItem.ACTION) {
-                    continue;
-                }
                 specialSlots.put(slot, SpecialItem.fromString(key));
                 continue;
             }
@@ -73,6 +71,7 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
 
         buildItems();
         buildSpecialItems();
+        buildDummyItems();
     }
 
     @Override
@@ -138,7 +137,7 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
             case RELATION:
                 return permissable.buildItem();
             case BACK:
-                ConfigurationSection backButtonConfig = P.p.getConfig().getConfigurationSection("fperm-gui.back-button");
+                ConfigurationSection backButtonConfig = P.p.getConfig().getConfigurationSection("fperm-gui.back-item");
 
                 ItemStack backButton = new ItemStack(Material.matchMaterial(backButtonConfig.getString("material")));
                 ItemMeta backButtonMeta = backButton.getItemMeta();
@@ -156,6 +155,68 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
             default:
                 return null;
         }
+    }
+
+    private void buildDummyItems() {
+        for (String key : ACTION_CONFIG.getConfigurationSection("dummy-items").getKeys(false)) {
+            int dummyId;
+            try {
+                dummyId = Integer.parseInt(key);
+            } catch (NumberFormatException exception) {
+                P.p.log(Level.WARNING, "Invalid dummy item id: " + key.toUpperCase());
+                continue;
+            }
+
+            ItemStack dummyItem = buildDummyItem(dummyId);
+            if (dummyItem == null) {
+                continue;
+            }
+
+            List<Integer> dummySlots = ACTION_CONFIG.getIntegerList("dummy-items." + key);
+            for (Integer slot : dummySlots) {
+                if (slot+1 > guiSize || slot < 0) {
+                    P.p.log(Level.WARNING, "Invalid slot for dummy item: " + key);
+                    continue;
+                }
+                actionGUI.setItem(slot, dummyItem);
+            }
+        }
+    }
+
+    private ItemStack buildDummyItem(int id) {
+        final ConfigurationSection DUMMY_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.dummy-items." + id);
+
+        Material material = Material.matchMaterial(DUMMY_CONFIG.getString("material", ""));
+        if (material == null) {
+            P.p.log(Level.WARNING, "Invalid material for dummy item: " + id);
+            return null;
+        }
+
+        ItemStack itemStack = new ItemStack(material);
+
+        DyeColor color;
+        try {
+            color = DyeColor.valueOf(DUMMY_CONFIG.getString("color", ""));
+        } catch (Exception exception) {
+            color = null;
+        }
+        if (color != null) {
+            itemStack.setDurability(color.getWoolData());
+        }
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', DUMMY_CONFIG.getString("name", " ")));
+
+        List<String> lore = new ArrayList<>();
+        for (String loreLine : DUMMY_CONFIG.getStringList("lore")) {
+            lore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
+        }
+        itemMeta.setLore(lore);
+
+        itemStack.setItemMeta(itemMeta);
+
+        return itemStack;
     }
 
 }

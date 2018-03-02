@@ -9,8 +9,7 @@ public interface PermissionGUI {
 
     public enum SpecialItem {
         BACK,
-        RELATION,
-        ACTION;
+        RELATION;
 
         static boolean isSpecial(String string) {
             return fromString(string) != null;

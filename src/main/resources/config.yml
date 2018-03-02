@@ -344,6 +344,7 @@ fperm-gui:
     name: 'Factions Permissions'
     # Must be multiples of 9, or the GUI will not work
     size: 27
+
     slots:
       recruit: 10
       member: 11
@@ -359,7 +360,30 @@ fperm-gui:
       truce: IRON_AXE
       ally: DIAMOND_SWORD
       enemy: DIAMOND_AXE
-      neutral: STAINED_CLAY
+      neutral: STONE
+    dummy-items:
+      '0':
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 17
+      - 18
+      - 19
+      - 20
+      - 21
+      - 22
+      - 23
+      - 24
+      - 25
+      - 26
+      - 27
     placeholder-item:
       name: '&8[{relation-color}{relation}&8]'
       lore:
@@ -367,12 +391,12 @@ fperm-gui:
   action:
     name: 'Factions Permissions'
     size: 27
-    # If this field exists with its child colorable materials will be updated
+    # If this field exists colorable materials will be updated
     # https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html
     access:
       allow: LIME
       deny: RED
-      undefined: SILVER
+      undefined: CYAN
     slots:
       # Uses same format as above to inform the player of clicked relation
       relation: 4
@@ -417,6 +441,16 @@ fperm-gui:
       promote: STAINED_CLAY
       setwarp: STAINED_CLAY
       warp: STAINED_CLAY
+    dummy-items:
+      '0':
+      - 0
+      - 1
+      - 2
+      - 3
+      - 5
+      - 6
+      - 7
+      - 8
     placeholder-item:
       name: '&8[&7{action}&8]'
       lore:
@@ -426,12 +460,18 @@ fperm-gui:
       - '&8Left click to &lAllow'
       - '&8Right click to &lDeny'
       - '&8Middle click to &lUndefine'
-  back-button:
+  back-item:
     name: '&8&lBack'
     material: ARROW
     lore:
     - '&7Back button'
-
+  dummy-items:
+    '0':
+      material: STAINED_GLASS_PANE
+      color: BLACK
+      name: ' '
+      lore:
+      -
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -474,6 +514,12 @@ fperm-gui:
 #  - {faction-kills} : # of kills the faction has
 #  - {faction-deaths}: # of deaths the faction has
 #  - {faction-bancount} : # of bans the faction has
+# Faction Permissions GUI variables. Can only be used in GUI
+# - {relation}            : Shows relation name (Can be used in action and relation)
+# - {relation-color}      : Relation color
+# - {action}              : Shows action name (Can only be used in action)
+# - {action-access}       : Shows the action's access with current relation
+# - {action-access-color} : Access color
 # General variables. Can be used anywhere.
 # - {total-online}  : Total # of players on the server
 # - {max-warps}     : Max # of warps a faction can set
