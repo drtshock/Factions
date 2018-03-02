@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -63,7 +64,7 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
     }
 
     @Override
-    public void onClick(int slot) {
+    public void onClick(int slot, ClickType clickType) {
         if (!relationSlots.containsKey(slot)) {
             return;
         }

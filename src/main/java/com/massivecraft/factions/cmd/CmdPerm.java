@@ -7,6 +7,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.fperms.gui.PermissableActionGUI;
 import com.massivecraft.factions.zcore.fperms.gui.PermissableRelationGUI;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -38,6 +39,9 @@ public class CmdPerm extends FCommand {
     public void perform() {
         if (args.size() == 0) {
             me.openInventory(new PermissableRelationGUI(fme).getInventory());
+            return;
+        } else if (args.size() == 1 && getPermissable(argAsString(0)) != null) {
+            me.openInventory(new PermissableActionGUI(fme, getPermissable(argAsString(0))).getInventory());
             return;
         }
 

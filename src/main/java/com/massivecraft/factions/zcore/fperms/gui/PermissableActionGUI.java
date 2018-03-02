@@ -5,11 +5,14 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Item;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -78,16 +81,35 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
     }
 
     @Override
-    public void onClick(int slot) {
+    public void onClick(int slot, ClickType click) {
         if (specialSlots.containsKey(slot)) {
             if (specialSlots.get(slot) == SpecialItem.BACK) {
                 fme.getPlayer().openInventory(new PermissableRelationGUI(fme).getInventory());
             }
+            return;
         }
         if (!actionSlots.containsKey(slot)) {
             return;
         }
-        fme.getPlayer().openInventory(new PermissableAccessGUI(fme, permissable, actionSlots.get(slot)).getInventory());
+
+        PermissableAction action = actionSlots.get(slot);
+        Access access;
+        if (click == ClickType.LEFT) {
+            access = Access.ALLOW;
+            fme.getFaction().setPermission(permissable, action, access);
+        } else if (click == ClickType.RIGHT) {
+            access = Access.DENY;
+            fme.getFaction().setPermission(permissable, action, access);
+        } else if (click == ClickType.MIDDLE) {
+            access = Access.UNDEFINED;
+            fme.getFaction().setPermission(permissable, action, access);
+        } else {
+            return;
+        }
+
+        actionGUI.setItem(slot, action.buildItem(fme, permissable));
+        fme.msg(TL.COMMAND_PERM_SET, action.name(), access.name(), permissable.name());
+        P.p.log(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), permissable.name()) + " for faction " + fme.getTag());
     }
 
     private void buildItems() {

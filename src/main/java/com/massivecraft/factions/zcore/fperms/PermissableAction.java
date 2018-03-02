@@ -3,6 +3,7 @@ package com.massivecraft.factions.zcore.fperms;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -86,8 +87,21 @@ public enum PermissableAction {
             return null;
         }
 
+        Access access = fme.getFaction().getAccess(permissable, this);
+        if (access == null) {
+            access = Access.UNDEFINED;
+        }
+        DyeColor dyeColor = null;
+        try {
+            dyeColor = DyeColor.valueOf(ACTION_CONFIG.getString("access." + access.name().toLowerCase()));
+        } catch (Exception exception) {}
+
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
+
+        if (dyeColor != null) {
+            item.setDurability(dyeColor.getWoolData());
+        }
 
         for (String loreLine : ACTION_CONFIG.getStringList("placeholder-item.lore")) {
             lore.add(replacePlaceholers(loreLine, fme, permissable));

@@ -1,8 +1,11 @@
 package com.massivecraft.factions.zcore.fperms.gui;
 
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
+
 public interface PermissionGUI {
 
-    public void onClick(int slot);
+    public void onClick(int slot, ClickType action);
 
     public enum SpecialItem {
         BACK,

@@ -341,7 +341,7 @@ help:
 
 fperm-gui:
   relation:
-    name: '&4&lFaction&5&lRelations'
+    name: 'Factions Permissions'
     # Must be multiples of 9, or the GUI will not work
     size: 27
     slots:
@@ -359,14 +359,20 @@ fperm-gui:
       truce: IRON_AXE
       ally: DIAMOND_SWORD
       enemy: DIAMOND_AXE
-      neutral: STONE
+      neutral: STAINED_CLAY
     placeholder-item:
       name: '&8[{relation-color}{relation}&8]'
       lore:
-      - '&8dirtysocks'
+      -
   action:
-    name: '&4&lFaction&5&lActions'
+    name: 'Factions Permissions'
     size: 27
+    # If this field exists with its child colorable materials will be updated
+    # https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html
+    access:
+      allow: LIME
+      deny: RED
+      undefined: SILVER
     slots:
       # Uses same format as above to inform the player of clicked relation
       relation: 4
@@ -393,52 +399,33 @@ fperm-gui:
       setwarp: 25
       warp: 26
     materials:
-      build: STONE
-      destroy: STONE
-      frost-walk: STONE
-      pain-build: STONE
-      door: STONE
-      button: STONE
-      lever: STONE
-      container: STONE
-      invite: STONE
-      kick: STONE
-      item: STONE
-      sethome: STONE
-      withdraw: STONE
-      territory: STONE
-      access: STONE
-      promote: STONE
-      setwarp: STONE
-      warp: STONE
+      build: STAINED_CLAY
+      destroy: STAINED_CLAY
+      frost-walk: STAINED_CLAY
+      pain-build: STAINED_CLAY
+      door: STAINED_CLAY
+      button: STAINED_CLAY
+      lever: STAINED_CLAY
+      container: STAINED_CLAY
+      invite: STAINED_CLAY
+      kick: STAINED_CLAY
+      item: STAINED_CLAY
+      sethome: STAINED_CLAY
+      withdraw: STAINED_CLAY
+      territory: STAINED_CLAY
+      access: STAINED_CLAY
+      promote: STAINED_CLAY
+      setwarp: STAINED_CLAY
+      warp: STAINED_CLAY
     placeholder-item:
       name: '&8[&7{action}&8]'
       lore:
       - '&8Access:'
       - '&8[{action-access-color}{action-access}&8]'
-  access:
-    name: '&4&lFaction&5&lAccess'
-    size: 27
-    items:
-      relation: 8
-      action: 7
-      back: 0
-      allow:
-        slot: 12
-        material: WOOL
-        # Only use color of item is Colorable will not work otherwise
-        # Use this for guidance https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html
-        color: LIME
-      deny:
-        slot: 14
-        material: WOOL
-        color: RED
-      # Also has the ability to use UNDEFINED
-      # undefined:
-    placeholder-item:
-      name: "&8[{access-color}{access}&8]"
-      lore:
-
+      - ''
+      - '&8Left click to &lAllow'
+      - '&8Right click to &lDeny'
+      - '&8Middle click to &lUndefine'
   back-button:
     name: '&8&lBack'
     material: ARROW
