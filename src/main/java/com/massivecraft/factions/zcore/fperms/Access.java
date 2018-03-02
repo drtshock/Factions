@@ -1,5 +1,6 @@
 package com.massivecraft.factions.zcore.fperms;
 
+import com.massivecraft.factions.FPlayer;
 import org.bukkit.ChatColor;
 
 public enum Access {
@@ -42,6 +43,15 @@ public enum Access {
     @Override
     public String toString() {
         return name();
+    }
+
+    public String replacePlaceholders(String string, FPlayer fme, Permissable permissable, PermissableAction permissableAction) {
+        // Run other placeholders
+        string = permissableAction.replacePlaceholers(string, fme, permissable);
+        string = string.replace("{access}", name);
+        string = string.replace("{access-color}", color.toString());
+
+        return string;
     }
 
 }

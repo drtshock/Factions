@@ -58,8 +58,8 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
         }
 
         // Get base item information
-        relationItemName = ChatColor.translateAlternateColorCodes('&', RELATION_CONFIG.getString("item.name"));
-        for (String loreLine : RELATION_CONFIG.getStringList("item.lore")) {
+        relationItemName = ChatColor.translateAlternateColorCodes('&', RELATION_CONFIG.getString("placeholder-item.name"));
+        for (String loreLine : RELATION_CONFIG.getStringList("placeholder-item.lore")) {
             relationItemLore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
         }
 

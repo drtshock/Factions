@@ -353,31 +353,31 @@ fperm-gui:
       enemy: 15
       neutral: 16
     materials:
-      recruit: 'WOOD_SWORD'
-      member: 'STONE_SWORD'
-      moderator: 'IRON_SWORD'
-      truce: 'IRON_AXE'
-      ally: 'DIAMOND_SWORD'
-      enemy: 'DIAMOND_AXE'
-      neutral: 'STONE'
-    item:
-      name: '&8[{relation-color}{relation-name}&8]'
+      recruit: WOOD_SWORD
+      member: STONE_SWORD
+      moderator: IRON_SWORD
+      truce: IRON_AXE
+      ally: DIAMOND_SWORD
+      enemy: DIAMOND_AXE
+      neutral: STONE
+    placeholder-item:
+      name: '&8[{relation-color}{relation}&8]'
       lore:
-      - '&8This is some'
-      - '&8Awesome lore'
+      - '&8dirtysocks'
   action:
     name: '&a&lFaction&d&lActions'
     size: 27
     slots:
       # Uses same format as above to inform the player of clicked relation
-      relation-info: 4
+      relation: 4
       # Back button slot
       back: 0
+
       # Start actions
       build: 9
       destroy: 10
-      frost_walk: 11
-      pain_build: 12
+      frost-walk: 11
+      pain-build: 12
       door: 13
       button: 14
       lever: 15
@@ -395,8 +395,8 @@ fperm-gui:
     materials:
       build: STONE
       destroy: STONE
-      frost_walk: STONE
-      pain_build: STONE
+      frost-walk: STONE
+      pain-build: STONE
       door: STONE
       button: STONE
       lever: STONE
@@ -411,14 +411,34 @@ fperm-gui:
       promote: STONE
       setwarp: STONE
       warp: STONE
-    item:
-      name: '&8[&7{action-name}&8]'
+    placeholder-item:
+      name: '&8[&7{action}&8]'
       lore:
-      - '&8Current status:'
+      - '&8Access:'
       - '&8[{action-access-color}{action-access}&8]'
   access:
     name: '&a&lFaction&d&lAccess'
     size: 27
+    items:
+      relation: 8
+      action: 7
+      back: 0
+      allow:
+        slot: 12
+        material: WOOL
+        # Only use color of item is Colorable will not work otherwise
+        # Use this for guidance https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html
+        color: LIME
+      deny:
+        slot: 14
+        material: WOOL
+        color: RED
+      # Also has the ability to use UNDEFINED
+      # undefined:
+    placeholder-item:
+      name: "&8[{access-color}{access}&8]"
+      lore:
+
   back-button:
     name: '&8&lBack'
     material: ARROW

@@ -9,4 +9,6 @@ public interface Permissable {
 
     public ItemStack buildItem(String displayName, List<String> displayLore);
 
+    public String replacePlaceholders(String string);
+
 }
