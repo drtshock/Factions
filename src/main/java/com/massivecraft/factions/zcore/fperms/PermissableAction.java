@@ -76,10 +76,10 @@ public enum PermissableAction {
         displayName = replacePlaceholers(displayName, fme, permissable);
         List<String> lore = new ArrayList<>();
 
-        if (ACTION_CONFIG.getString("materials." + name().toLowerCase()) == null) {
+        if (ACTION_CONFIG.getString("materials." + name().toLowerCase().replace('_', '-')) == null) {
             return null;
         }
-        Material material = Material.matchMaterial(ACTION_CONFIG.getString("materials." + name().toLowerCase()));
+        Material material = Material.matchMaterial(ACTION_CONFIG.getString("materials." + name().toLowerCase().replace('_', '-')));
         if (material == null) {
             return null;
         }
@@ -98,9 +98,12 @@ public enum PermissableAction {
         return item;
     }
 
-    private String replacePlaceholers(String string, FPlayer fme, Permissable permissable) {
+    public String replacePlaceholers(String string, FPlayer fme, Permissable permissable) {
+        // Run Permissable placeholders
+        string = permissable.replacePlaceholders(string);
+
         String actionName = name.substring(0, 1).toUpperCase() + name.substring(1);
-        string = string.replace("{action-name}", actionName);
+        string = string.replace("{action}", actionName);
 
         Access access = fme.getFaction().getAccess(permissable, this);
         if (access == null) {

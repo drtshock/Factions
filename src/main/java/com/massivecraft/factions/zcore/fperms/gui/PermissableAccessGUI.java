@@ -6,16 +6,20 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Colorable;
+import org.bukkit.material.Wool;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
 
 public class PermissableAccessGUI implements InventoryHolder, PermissionGUI {
 
@@ -29,26 +33,45 @@ public class PermissableAccessGUI implements InventoryHolder, PermissionGUI {
     private int guiSize;
     private String guiName;
 
+    private String accessItemName;
+    private List<String> accessItemLore = new ArrayList<>();
+
     private HashMap<Integer, Access> accessSlots = new HashMap<>();
 
-    private ConfigurationSection accessConfig = P.p.getConfig().getConfigurationSection("fperm-gui.access");
+    private final ConfigurationSection ACCESS_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.access");
 
     public PermissableAccessGUI(FPlayer fme, Permissable permissable, PermissableAction permissableAction) {
         this.fme = fme;
         this.permissable = permissable;
         this.permissableAction = permissableAction;
 
-
         // Build basic Inventory
-        guiSize = accessConfig.getInt("size", 27);
-        guiName = ChatColor.translateAlternateColorCodes('&', accessConfig.getString("name", "FactionPerms"));
+        guiSize = ACCESS_CONFIG.getInt("size", 27);
+        guiName = ChatColor.translateAlternateColorCodes('&', ACCESS_CONFIG.getString("name", "FactionPerms"));
         accessGUI = Bukkit.createInventory(this, guiSize, guiName);
 
-        // Temporary GUI items
-        accessSlots.put(12, Access.ALLOW);
-        accessSlots.put(13, Access.UNDEFINED);
-        accessSlots.put(14, Access.DENY);
+        for (String key : ACCESS_CONFIG.getConfigurationSection("items").getKeys(false)) {
+            if (SpecialItem.isSpecial(key)) {
+                continue;
+            }
+
+            Access access = Access.fromString(key.toUpperCase());
+            if (access == null) {
+                P.p.log(Level.WARNING, "Invalid access: " + key.toUpperCase());
+                continue;
+            }
+
+            accessSlots.put(ACCESS_CONFIG.getInt("items." + key + ".slot"), access);
+        }
+
+        // Get base information
+        accessItemName = ChatColor.translateAlternateColorCodes('&', ACCESS_CONFIG.getString("placeholder-item.name"));
+        for (String loreLine : ACCESS_CONFIG.getStringList("placeholder-item.lore")) {
+            accessItemLore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
+        }
+
         buildItems();
+        buildSpecialItems();
     }
 
     @Override
@@ -69,13 +92,47 @@ public class PermissableAccessGUI implements InventoryHolder, PermissionGUI {
     }
 
     private void buildItems() {
-        // Temporary system in place
-        ItemStack allow = new ItemStack(Material.WOOL, 1, DyeColor.GREEN.getWoolData());
-        accessGUI.setItem(12, allow);
-        ItemStack undefined = new ItemStack(Material.WOOL, 1, DyeColor.GRAY.getWoolData());
-        accessGUI.setItem(13, undefined);
-        ItemStack deny = new ItemStack(Material.WOOL, 1, DyeColor.RED.getWoolData());
-        accessGUI.setItem(14, deny);
+        for (Map.Entry<Integer, Access> entry : accessSlots.entrySet()) {
+            Access access = entry.getValue();
+
+            ConfigurationSection accessConfig = ACCESS_CONFIG.getConfigurationSection("items." + access.name().toLowerCase());
+
+            Material accessMaterial = Material.matchMaterial(accessConfig.getString("material"));
+            if (accessMaterial == null) {
+                P.p.log(Level.WARNING, "Invalid material for: " + access.name());
+                continue;
+            }
+
+            ItemStack accessItem = new ItemStack(accessMaterial);
+
+            DyeColor accessDye;
+            try {
+                accessDye = DyeColor.valueOf(accessConfig.getString("color"));
+            } catch (Exception exception) {
+                accessDye = null;
+            }
+
+            ItemMeta itemMeta = accessItem.getItemMeta();
+            itemMeta.setDisplayName(access.replacePlaceholders(accessItemName, fme, permissable, permissableAction));
+
+            List<String> lore = new ArrayList<>();
+            for (String string : accessItemLore) {
+                lore.add(access.replacePlaceholders(string, fme, permissable, permissableAction));
+            }
+
+            itemMeta.setLore(lore);
+            accessItem.setItemMeta(itemMeta);
+
+            if (accessDye != null && accessMaterial == Material.WOOL) {
+                accessItem.setDurability((short) accessDye.getWoolData());
+            }
+
+            accessGUI.setItem(entry.getKey(), accessItem);
+        }
+    }
+
+    private void buildSpecialItems() {
+
     }
 
 }

@@ -198,7 +198,7 @@ public enum Relation implements Permissable {
     // Utility method to build items for F Perm GUI
     @Override
     public ItemStack buildItem(String displayName, List<String> displayLore) {
-        displayName = replacePlaceholers(displayName);
+        displayName = replacePlaceholders(displayName);
         List<String> lore = new ArrayList<>();
 
         Material material = Material.matchMaterial(RELATION_CONFIG.getString("materials." + toString()));
@@ -210,7 +210,7 @@ public enum Relation implements Permissable {
         ItemMeta itemMeta = item.getItemMeta();
 
         for (String loreLine : displayLore) {
-            lore.add(replacePlaceholers(loreLine));
+            lore.add(replacePlaceholders(loreLine));
         }
 
         itemMeta.setDisplayName(displayName);
@@ -220,11 +220,11 @@ public enum Relation implements Permissable {
         return item;
     }
 
-    private String replacePlaceholers(String string) {
+    public String replacePlaceholders(String string) {
         String permissableName = nicename.substring(0, 1).toUpperCase() + nicename.substring(1);
 
         string = string.replace("{relation-color}", getColor().toString());
-        string = string.replace("{relation-name}", permissableName);
+        string = string.replace("{relation}", permissableName);
 
         return string;
     }
