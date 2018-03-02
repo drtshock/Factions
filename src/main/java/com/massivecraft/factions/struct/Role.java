@@ -108,11 +108,13 @@ public enum Role implements Permissable {
 
     // Utility method to build items for F Perm GUI
     @Override
-    public ItemStack buildItem(String displayName, List<String> displayLore) {
-        displayName = replacePlaceholders(displayName);
+    public ItemStack buildItem() {
+        final ConfigurationSection RELATION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
+
+        String displayName = replacePlaceholders(RELATION_CONFIG.getString("placeholder-item.name", ""));
         List<String> lore = new ArrayList<>();
 
-        Material material = Material.matchMaterial(RELATION_CONFIG.getString("materials." + toString()));
+        Material material = Material.matchMaterial(RELATION_CONFIG.getString("materials." + name().toLowerCase()));
         if (material == null) {
             return null;
         }
@@ -120,7 +122,7 @@ public enum Role implements Permissable {
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
 
-        for (String loreLine : displayLore) {
+        for (String loreLine : RELATION_CONFIG.getStringList("placeholder-item.lore")) {
             lore.add(replacePlaceholders(loreLine));
         }
 
@@ -132,6 +134,8 @@ public enum Role implements Permissable {
     }
 
     public String replacePlaceholders(String string) {
+        string = ChatColor.translateAlternateColorCodes('&', string);
+
         String permissableName = nicename.substring(0, 1).toUpperCase() + nicename.substring(1);
 
         string = string.replace("{relation-color}", ChatColor.GREEN.toString());

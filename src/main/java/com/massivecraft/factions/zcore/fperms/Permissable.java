@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface Permissable {
 
-    public ItemStack buildItem(String displayName, List<String> displayLore);
+    public ItemStack buildItem();
 
     public String replacePlaceholders(String string);
 

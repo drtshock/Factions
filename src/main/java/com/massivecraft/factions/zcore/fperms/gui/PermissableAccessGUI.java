@@ -37,6 +37,7 @@ public class PermissableAccessGUI implements InventoryHolder, PermissionGUI {
     private List<String> accessItemLore = new ArrayList<>();
 
     private HashMap<Integer, Access> accessSlots = new HashMap<>();
+    private HashMap<Integer, SpecialItem> specialSlots = new HashMap<>();
 
     private final ConfigurationSection ACCESS_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.access");
 
@@ -51,7 +52,21 @@ public class PermissableAccessGUI implements InventoryHolder, PermissionGUI {
         accessGUI = Bukkit.createInventory(this, guiSize, guiName);
 
         for (String key : ACCESS_CONFIG.getConfigurationSection("items").getKeys(false)) {
+
             if (SpecialItem.isSpecial(key)) {
+                int specialSlot = ACCESS_CONFIG.getInt("items." + key);
+                if (specialSlot+1 > guiSize || specialSlot < 0) {
+                    P.p.log(Level.WARNING, "Invalid slot for: " + key.toUpperCase());
+                    continue;
+                }
+
+                specialSlots.put(specialSlot, SpecialItem.fromString(key));
+                continue;
+            }
+
+            int slot = ACCESS_CONFIG.getInt("items." + key + ".slot");
+            if (slot+1 > guiSize || slot < 0) {
+                P.p.log(Level.WARNING, "Invalid slot for: " + key.toUpperCase());
                 continue;
             }
 
@@ -81,6 +96,13 @@ public class PermissableAccessGUI implements InventoryHolder, PermissionGUI {
 
     @Override
     public void onClick(int slot) {
+        if (specialSlots.containsKey(slot)) {
+            if (specialSlots.get(slot) == SpecialItem.BACK) {
+                fme.getPlayer().openInventory(new PermissableActionGUI(fme, permissable).getInventory());
+            }
+            return;
+        }
+
         if (!accessSlots.containsKey(slot)) {
             return;
         }
@@ -95,44 +117,46 @@ public class PermissableAccessGUI implements InventoryHolder, PermissionGUI {
         for (Map.Entry<Integer, Access> entry : accessSlots.entrySet()) {
             Access access = entry.getValue();
 
-            ConfigurationSection accessConfig = ACCESS_CONFIG.getConfigurationSection("items." + access.name().toLowerCase());
-
-            Material accessMaterial = Material.matchMaterial(accessConfig.getString("material"));
-            if (accessMaterial == null) {
-                P.p.log(Level.WARNING, "Invalid material for: " + access.name());
+            ItemStack item = access.buildItem(fme, permissable, permissableAction);
+            if (item == null) {
                 continue;
             }
 
-            ItemStack accessItem = new ItemStack(accessMaterial);
-
-            DyeColor accessDye;
-            try {
-                accessDye = DyeColor.valueOf(accessConfig.getString("color"));
-            } catch (Exception exception) {
-                accessDye = null;
-            }
-
-            ItemMeta itemMeta = accessItem.getItemMeta();
-            itemMeta.setDisplayName(access.replacePlaceholders(accessItemName, fme, permissable, permissableAction));
-
-            List<String> lore = new ArrayList<>();
-            for (String string : accessItemLore) {
-                lore.add(access.replacePlaceholders(string, fme, permissable, permissableAction));
-            }
-
-            itemMeta.setLore(lore);
-            accessItem.setItemMeta(itemMeta);
-
-            if (accessDye != null && accessMaterial == Material.WOOL) {
-                accessItem.setDurability((short) accessDye.getWoolData());
-            }
-
-            accessGUI.setItem(entry.getKey(), accessItem);
+            accessGUI.setItem(entry.getKey(), item);
         }
     }
 
     private void buildSpecialItems() {
+        for (Map.Entry<Integer, SpecialItem> entry : specialSlots.entrySet()) {
+            accessGUI.setItem(entry.getKey(), getSpecialItem(entry.getValue()));
+        }
+    }
 
+    private ItemStack getSpecialItem(SpecialItem specialItem) {
+        switch (specialItem) {
+            case RELATION:
+                return permissable.buildItem();
+            case ACTION:
+                return permissableAction.buildItem(fme, permissable);
+            case BACK:
+                ConfigurationSection backButtonConfig = P.p.getConfig().getConfigurationSection("fperm-gui.back-button");
+
+                ItemStack backButton = new ItemStack(Material.matchMaterial(backButtonConfig.getString("material")));
+                ItemMeta backButtonMeta = backButton.getItemMeta();
+
+                backButtonMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', backButtonConfig.getString("name")));
+                List<String> lore = new ArrayList<>();
+                for (String loreLine : backButtonConfig.getStringList("lore")) {
+                    lore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
+                }
+                backButtonMeta.setLore(lore);
+
+                backButton.setItemMeta(backButtonMeta);
+
+                return backButton;
+            default:
+                return null;
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package com.massivecraft.factions.zcore.fperms;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -35,7 +36,6 @@ public enum PermissableAction {
     WARP("warp"),;
 
     private String name;
-    private final ConfigurationSection ACTION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.action");
 
     PermissableAction(String name) {
         this.name = name;
@@ -72,8 +72,10 @@ public enum PermissableAction {
     }
 
     // Utility method to build items for F Perm GUI
-    public ItemStack buildItem(FPlayer fme, Permissable permissable, String displayName, List<String> displayLore) {
-        displayName = replacePlaceholers(displayName, fme, permissable);
+    public ItemStack buildItem(FPlayer fme, Permissable permissable) {
+        final ConfigurationSection ACTION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.action");
+
+        String displayName = replacePlaceholers(ACTION_CONFIG.getString("placeholder-item.name"), fme, permissable);
         List<String> lore = new ArrayList<>();
 
         if (ACTION_CONFIG.getString("materials." + name().toLowerCase().replace('_', '-')) == null) {
@@ -87,7 +89,7 @@ public enum PermissableAction {
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
 
-        for (String loreLine : displayLore) {
+        for (String loreLine : ACTION_CONFIG.getStringList("placeholder-item.lore")) {
             lore.add(replacePlaceholers(loreLine, fme, permissable));
         }
 
