@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -30,16 +31,12 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
 
     private Permissable permissable;
 
-    private String actionItemName;
-    private List<String> actionItemLore = new ArrayList<>();
-
     private HashMap<Integer, PermissableAction> actionSlots = new HashMap<>();
-
-    private int backButtonSlot;
+    private HashMap<Integer, SpecialItem> specialSlots = new HashMap<>();
 
     private final ConfigurationSection ACTION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.action");
 
-    public PermissableActionGUI(FPlayer fme, Permissable permissable, ItemStack relationItem) {
+    public PermissableActionGUI(FPlayer fme, Permissable permissable) {
         this.fme = fme;
         this.permissable = permissable;
 
@@ -47,35 +44,32 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
         guiName = ChatColor.translateAlternateColorCodes('&', ACTION_CONFIG.getString("name", "FactionPerms"));
         actionGUI = Bukkit.createInventory(this, guiSize, guiName);
 
-        actionGUI.setItem(ACTION_CONFIG.getInt("slots.relation-info", 4), relationItem);
-        backButtonSlot = ACTION_CONFIG.getInt("slots.back", 0);
-
         for (String key : ACTION_CONFIG.getConfigurationSection("slots").getKeys(false)) {
-            if (key.equalsIgnoreCase("back") || key.equalsIgnoreCase("relation")) {
+            int slot = ACTION_CONFIG.getInt("slots." + key);
+            if (slot + 1 > guiSize || slot < 0) {
+                P.p.log(Level.WARNING, "Invalid slot for: " + key.toUpperCase());
                 continue;
             }
 
-            if (!ACTION_CONFIG.isInt("slots." + key) || ACTION_CONFIG.getInt("slots." + key) + 1 > guiSize) {
-                P.p.log(Level.WARNING, "Invalid slot of " + key.toUpperCase() + " in action GUI skipping it");
+            if (SpecialItem.isSpecial(key)) {
+                if (SpecialItem.fromString(key) == SpecialItem.ACTION) {
+                    continue;
+                }
+                specialSlots.put(slot, SpecialItem.fromString(key));
                 continue;
             }
 
             PermissableAction permissableAction = PermissableAction.fromString(key.toUpperCase().replace('-', '_'));
             if (permissableAction == null) {
-                P.p.log(Level.WARNING, "Invalid permissable action " + key.toUpperCase() + " skipping it");
+                P.p.log(Level.WARNING, "Invalid permissable action: " + key.toUpperCase());
                 continue;
             }
 
             actionSlots.put(ACTION_CONFIG.getInt("slots." + key), permissableAction);
         }
 
-        // Build base item information
-        actionItemName = ChatColor.translateAlternateColorCodes('&', ACTION_CONFIG.getString("placeholder-item.name", "{action-name}"));
-        for (String loreLine : ACTION_CONFIG.getStringList("placeholder-item.lore")) {
-            actionItemLore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
-        }
-
         buildItems();
+        buildSpecialItems();
     }
 
     @Override
@@ -85,8 +79,10 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
 
     @Override
     public void onClick(int slot) {
-        if (slot == backButtonSlot) {
-            fme.getPlayer().openInventory(new PermissableRelationGUI(fme).getInventory());
+        if (specialSlots.containsKey(slot)) {
+            if (specialSlots.get(slot) == SpecialItem.BACK) {
+                fme.getPlayer().openInventory(new PermissableRelationGUI(fme).getInventory());
+            }
         }
         if (!actionSlots.containsKey(slot)) {
             return;
@@ -95,34 +91,48 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
     }
 
     private void buildItems() {
-        // Build Back button
-        ConfigurationSection backButtonConfig = P.p.getConfig().getConfigurationSection("fperm-gui.back-button");
-
-        ItemStack backButton = new ItemStack(Material.matchMaterial(backButtonConfig.getString("material")));
-        ItemMeta backButtonMeta = backButton.getItemMeta();
-
-        backButtonMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', backButtonConfig.getString("name")));
-        List<String> lore = new ArrayList<>();
-        for (String loreLine : backButtonConfig.getStringList("lore")) {
-            lore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
-        }
-        backButtonMeta.setLore(lore);
-
-        backButton.setItemMeta(backButtonMeta);
-        actionGUI.setItem(backButtonSlot, backButton);
-        // Finish Back Button
-
         for (Map.Entry<Integer, PermissableAction> entry : actionSlots.entrySet()) {
             PermissableAction permissableAction = entry.getValue();
 
-            ItemStack item = permissableAction.buildItem(fme, permissable, actionItemName, actionItemLore);
+            ItemStack item = permissableAction.buildItem(fme, permissable);
 
             if (item == null) {
-                P.p.log(Level.WARNING, "Invalid material for " + permissableAction.toString().toUpperCase() + " skipping it");
+                P.p.log(Level.WARNING, "Invalid item for: " + permissableAction.toString().toUpperCase());
                 continue;
             }
 
             actionGUI.setItem(entry.getKey(), item);
+        }
+    }
+
+    private void buildSpecialItems() {
+        for (Map.Entry<Integer, SpecialItem> entry : specialSlots.entrySet()) {
+            actionGUI.setItem(entry.getKey(), getSpecialItem(entry.getValue()));
+        }
+    }
+
+    private ItemStack getSpecialItem(SpecialItem specialItem) {
+        switch (specialItem) {
+            case RELATION:
+                return permissable.buildItem();
+            case BACK:
+                ConfigurationSection backButtonConfig = P.p.getConfig().getConfigurationSection("fperm-gui.back-button");
+
+                ItemStack backButton = new ItemStack(Material.matchMaterial(backButtonConfig.getString("material")));
+                ItemMeta backButtonMeta = backButton.getItemMeta();
+
+                backButtonMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', backButtonConfig.getString("name")));
+                List<String> lore = new ArrayList<>();
+                for (String loreLine : backButtonConfig.getStringList("lore")) {
+                    lore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
+                }
+                backButtonMeta.setLore(lore);
+
+                backButton.setItemMeta(backButtonMeta);
+
+                return backButton;
+            default:
+                return null;
         }
     }
 

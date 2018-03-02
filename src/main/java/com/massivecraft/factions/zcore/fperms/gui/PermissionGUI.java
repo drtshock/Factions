@@ -10,12 +10,16 @@ public interface PermissionGUI {
         ACTION;
 
         static boolean isSpecial(String string) {
+            return fromString(string) != null;
+        }
+
+        static SpecialItem fromString(String string) {
             for (SpecialItem specialItem : SpecialItem.values()) {
-                if (specialItem.name().equalsIgnoreCase(string)) {
-                    return true;
+                if (string.equalsIgnoreCase(specialItem.name())) {
+                    return specialItem;
                 }
             }
-            return false;
+            return null;
         }
     }
 

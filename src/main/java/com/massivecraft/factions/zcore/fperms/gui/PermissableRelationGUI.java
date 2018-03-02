@@ -28,9 +28,6 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
     private int guiSize;
     private String guiName;
 
-    private String relationItemName;
-    private List<String> relationItemLore = new ArrayList<>();
-
     private HashMap<Integer, Permissable> relationSlots = new HashMap<>();
 
     private final ConfigurationSection RELATION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
@@ -57,13 +54,6 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
             relationSlots.put(RELATION_CONFIG.getInt("slots." + key), getPermissable(key));
         }
 
-        // Get base item information
-        relationItemName = ChatColor.translateAlternateColorCodes('&', RELATION_CONFIG.getString("placeholder-item.name"));
-        for (String loreLine : RELATION_CONFIG.getStringList("placeholder-item.lore")) {
-            relationItemLore.add(ChatColor.translateAlternateColorCodes('&', loreLine));
-        }
-
-        // Build items
         buildItems();
     }
 
@@ -78,9 +68,7 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
             return;
         }
 
-        // Pass this through the constructor for ease of use in Action GUI
-        ItemStack relationItem = relationGUI.getItem(slot);
-        fme.getPlayer().openInventory(new PermissableActionGUI(fme, relationSlots.get(slot), relationItem).getInventory());
+        fme.getPlayer().openInventory(new PermissableActionGUI(fme, relationSlots.get(slot)).getInventory());
     }
 
     private Permissable getPermissable(String name) {
@@ -100,14 +88,14 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
         for (Map.Entry<Integer, Permissable> entry : relationSlots.entrySet()) {
             Permissable permissable = entry.getValue();
 
-            ItemStack item = permissable.buildItem(relationItemName, relationItemLore);
+            ItemStack item = permissable.buildItem();
 
             if (item == null) {
                 P.p.log(Level.WARNING, "Invalid material for " + permissable.toString().toUpperCase() + " skipping it");
                 continue;
             }
 
-            relationGUI.setItem(entry.getKey(), permissable.buildItem(relationItemName, relationItemLore));
+            relationGUI.setItem(entry.getKey(), item);
         }
     }
 

@@ -341,7 +341,7 @@ help:
 
 fperm-gui:
   relation:
-    name: '&a&lFaction&d&lRelations'
+    name: '&4&lFaction&5&lRelations'
     # Must be multiples of 9, or the GUI will not work
     size: 27
     slots:
@@ -365,7 +365,7 @@ fperm-gui:
       lore:
       - '&8dirtysocks'
   action:
-    name: '&a&lFaction&d&lActions'
+    name: '&4&lFaction&5&lActions'
     size: 27
     slots:
       # Uses same format as above to inform the player of clicked relation
@@ -417,7 +417,7 @@ fperm-gui:
       - '&8Access:'
       - '&8[{action-access-color}{action-access}&8]'
   access:
-    name: '&a&lFaction&d&lAccess'
+    name: '&4&lFaction&5&lAccess'
     size: 27
     items:
       relation: 8
