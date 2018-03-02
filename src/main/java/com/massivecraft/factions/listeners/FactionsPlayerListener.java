@@ -26,6 +26,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.util.NumberConversions;
 
@@ -603,13 +604,24 @@ public class FactionsPlayerListener implements Listener {
         return false;
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerInteractGUI(InventoryClickEvent event) {
+        if (event.getClickedInventory() == null) {
+            return;
+        }
         if (event.getClickedInventory().getHolder() instanceof PermissionGUI) {
             event.setCancelled(true);
-            ((PermissionGUI) event.getClickedInventory().getHolder()).onClick(event.getRawSlot());
+            ((PermissionGUI) event.getClickedInventory().getHolder()).onClick(event.getRawSlot(), event.getClick());
         }
     }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerMoveGUI(InventoryDragEvent event) {
+        if (event.getInventory().getHolder() instanceof PermissionGUI) {
+            event.setCancelled(true);
+        }
+    }
+
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerKick(PlayerKickEvent event) {

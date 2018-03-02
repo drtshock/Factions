@@ -11,4 +11,6 @@ public interface Permissable {
 
     public String replacePlaceholders(String string);
 
+    public String name();
+
 }
