@@ -11,18 +11,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Item;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
@@ -31,12 +26,12 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
     private FPlayer fme;
 
     private int guiSize;
-    private String guiName;
 
     private Permissable permissable;
 
     private HashMap<Integer, PermissableAction> actionSlots = new HashMap<>();
     private HashMap<Integer, SpecialItem> specialSlots = new HashMap<>();
+    private ArrayList<Integer> usedDummySlots = new ArrayList<>();
 
     private final ConfigurationSection ACTION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.action");
 
@@ -44,8 +39,13 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
         this.fme = fme;
         this.permissable = permissable;
 
-        guiSize = ACTION_CONFIG.getInt("size", 27);
-        guiName = ChatColor.translateAlternateColorCodes('&', ACTION_CONFIG.getString("name", "FactionPerms"));
+        guiSize = ACTION_CONFIG.getInt("rows", 3);
+        if (guiSize > 5) {
+            guiSize = 5;
+            P.p.log(Level.INFO, "Action GUI size out of bounds, defaulting to 5");
+        }
+        guiSize *= 9;
+        String guiName = ChatColor.translateAlternateColorCodes('&', ACTION_CONFIG.getString("name", "FactionPerms"));
         actionGUI = Bukkit.createInventory(this, guiSize, guiName);
 
         for (String key : ACTION_CONFIG.getConfigurationSection("slots").getKeys(false)) {
@@ -69,9 +69,30 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
             actionSlots.put(ACTION_CONFIG.getInt("slots." + key), permissableAction);
         }
 
-        buildItems();
-        buildSpecialItems();
         buildDummyItems();
+
+        if (actionSlots.values().toArray().length != PermissableAction.values().length) {
+            // Missing actions add them forcefully to the GUI and log error
+            Set<PermissableAction> missingActions = new HashSet<>(Arrays.asList(PermissableAction.values()));
+            missingActions.removeAll(actionSlots.values());
+
+            for (PermissableAction action : missingActions) {
+                if (!usedDummySlots.isEmpty()) {
+                    int slot = usedDummySlots.get(0);
+                    actionSlots.put(slot, action);
+                } else {
+                    int slot = actionGUI.firstEmpty();
+                    if (slot != -1) {
+                        actionSlots.put(slot, action);
+                    }
+                }
+                P.p.log(Level.WARNING, "Missing action: " + action.name());
+            }
+
+        }
+        
+        buildSpecialItems();
+        buildItems();
     }
 
     @Override
@@ -178,6 +199,7 @@ public class PermissableActionGUI implements InventoryHolder, PermissionGUI {
                     P.p.log(Level.WARNING, "Invalid slot: " + slot + " for dummy item: " + key);
                     continue;
                 }
+                usedDummySlots.add(slot);
                 actionGUI.setItem(slot, dummyItem);
             }
         }

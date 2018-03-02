@@ -1,6 +1,5 @@
 package com.massivecraft.factions.zcore.fperms.gui;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Relation;
@@ -29,7 +28,6 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
     private FPlayer fme;
 
     private int guiSize;
-    private String guiName;
 
     private HashMap<Integer, Permissable> relationSlots = new HashMap<>();
 
@@ -40,8 +38,13 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
         this.fme = fme;
 
         // Build basic Inventory info
-        guiSize = RELATION_CONFIG.getInt("size", 27);
-        guiName = ChatColor.translateAlternateColorCodes('&', RELATION_CONFIG.getString("name", "FactionPermissions"));
+        guiSize = RELATION_CONFIG.getInt("rows", 3);
+        if (guiSize > 5) {
+            guiSize = 5;
+            P.p.log(Level.INFO, "Relation GUI size out of bounds, defaulting to 5");
+        }
+        guiSize *= 9;
+        String guiName = ChatColor.translateAlternateColorCodes('&', RELATION_CONFIG.getString("name", "FactionPermissions"));
         relationGUI = Bukkit.createInventory(this, guiSize, guiName);
 
         for (String key : RELATION_CONFIG.getConfigurationSection("slots").getKeys(false)) {
@@ -59,8 +62,8 @@ public class PermissableRelationGUI implements InventoryHolder, PermissionGUI {
             relationSlots.put(slot, getPermissable(key));
         }
 
-        buildItems();
         buildDummyItems();
+        buildItems();
     }
 
     @Override

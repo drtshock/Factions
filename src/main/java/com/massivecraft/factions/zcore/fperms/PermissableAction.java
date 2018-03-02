@@ -2,7 +2,6 @@ package com.massivecraft.factions.zcore.fperms;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
-import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -11,7 +10,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 public enum PermissableAction {
     BAN("ban"),
@@ -84,7 +82,7 @@ public enum PermissableAction {
         }
         Material material = Material.matchMaterial(ACTION_CONFIG.getString("materials." + name().toLowerCase().replace('_', '-')));
         if (material == null) {
-            return null;
+            material = Material.STAINED_CLAY;
         }
 
         Access access = fme.getFaction().getAccess(permissable, this);

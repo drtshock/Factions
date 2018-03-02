@@ -339,12 +339,33 @@ help:
 # +------------------------------------------------------+ #
 ############################################################
 
+# This is the Faction permissions GUI, it consists of 2 inventories
+#
+# 1st: The Relation GUI, here you choose which relation you want to set the permission of
+# 2nd: The Action GUI, here you define the permission of the clicked Action using click types,
+# depending on the click type it will set the permission differently:
+# Left Click: ALLOW
+# Middle Click: UNDEFINED
+# Right Click: DENY
+#
+#
+# The GUI configuration is based off of item placeholders these have specific placeholders that are
+# replaced, for example {relation} will be replaced with the relation that the GUI/Item is based on.
+# There is also 2 other types of GUI items
+#
+# 1st: Special items, these include Back button (Has its own item below), and Relation Item
+# indicating the current relation (Uses relation item placeholder)
+# 2nd: Dummy items, these items server no other purpose than to look good, they have their own
+# items defined in dummy items, and can later be assigned to specific slots in the GUI's
 fperm-gui:
   relation:
+    # GUI Name
     name: 'Factions Permissions'
-    # Must be multiples of 9, or the GUI will not work
-    size: 27
+    # Amount of inventory rows, No larger than 5
+    rows: 3
 
+    # These are the slots where the relations are going to be placed on the first GUI
+    # Note: Slots start at 0 and end at one less that GUI size
     slots:
       recruit: 10
       member: 11
@@ -353,6 +374,7 @@ fperm-gui:
       ally: 14
       enemy: 15
       neutral: 16
+    # Material to be displayed
     materials:
       recruit: WOOD_SWORD
       member: STONE_SWORD
@@ -361,6 +383,7 @@ fperm-gui:
       ally: DIAMOND_SWORD
       enemy: DIAMOND_AXE
       neutral: STONE
+    # Dummy items using the Items lower down
     dummy-items:
       '0':
       - 0
@@ -383,13 +406,16 @@ fperm-gui:
       - 24
       - 25
       - 26
+    # This is the item that all relation items are based off of
+    # Replacing {relation} with relation name eg: Moderator, Ally
+    # also replaces {relation-color} with relation color eg: Enemy;RED
     placeholder-item:
       name: '&8[{relation-color}{relation}&8]'
       lore:
       -
   action:
     name: 'Factions Permissions'
-    size: 27
+    rows: 4
     # If this field exists colorable materials will be updated
     # https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html
     access:
@@ -402,7 +428,7 @@ fperm-gui:
       # Back button slot
       back: 0
 
-      # Start actions
+      # Start action slots
       build: 9
       destroy: 10
       frost-walk: 11
@@ -421,6 +447,10 @@ fperm-gui:
       promote: 24
       setwarp: 25
       warp: 26
+      ban: 27
+      disband: 28
+      perms: 29
+    # Material to show, if the material is colorable eg: Wool, Stained Clay it will update with it's access color
     materials:
       build: STAINED_CLAY
       destroy: STAINED_CLAY
@@ -440,9 +470,12 @@ fperm-gui:
       promote: STAINED_CLAY
       setwarp: STAINED_CLAY
       warp: STAINED_CLAY
+      ban: STAINED_CLAY
+      disband: STAINED_CLAY
+      perms: STAINED_CLAY
+    # Same dummy items format as above
     dummy-items:
       '0':
-      - 0
       - 1
       - 2
       - 3
@@ -450,6 +483,16 @@ fperm-gui:
       - 6
       - 7
       - 8
+      - 29
+      - 30
+      - 31
+      - 32
+      - 33
+      - 34
+      - 35
+    # {action} Action name eg: Setwarp, Kick
+    # {action-access} Access name eg: Allow, Deny
+    # {action-access-color} Access color eg: Allow;GREEN
     placeholder-item:
       name: '&8[&7{action}&8]'
       lore:
@@ -459,14 +502,18 @@ fperm-gui:
       - '&8Left click to &lAllow'
       - '&8Right click to &lDeny'
       - '&8Middle click to &lUndefine'
+  # Back item will be take you to the previous GUI
   back-item:
     name: '&8&lBack'
     material: ARROW
     lore:
     - '&7Back button'
+  # Dummy Items
   dummy-items:
+    # Dummy Item id, used to set the slots above
     '0':
       material: STAINED_GLASS_PANE
+      # Color will only work on colorable materials
       color: BLACK
       name: ' '
       lore:
