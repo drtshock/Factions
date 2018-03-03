@@ -19,7 +19,6 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -133,7 +132,7 @@ public class FactionsEntityListener implements Listener {
         }
 
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-        if (fPlayer.isFFlying()) {
+        if (fPlayer.isFlying()) {
             fPlayer.setFFlying(false, true);
         }
     }

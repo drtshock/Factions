@@ -63,7 +63,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected int kills, deaths;
     protected boolean willAutoLeave = true;
     protected int mapHeight = 8; // default to old value
-    protected boolean isFFlying = false;
+    protected boolean isFlying = false;
 
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
     protected transient boolean mapAutoUpdating;
@@ -882,11 +882,11 @@ public abstract class MemoryFPlayer implements FPlayer {
         return !isOnline();
     }
 
-    public boolean isFFlying() {
-        return isFFlying;
+    public boolean isFlying() {
+        return isFlying;
     }
 
-    public void setFFlying(boolean fly) {
+    public void setFlying(boolean fly) {
         setFFlying(fly, false);
     }
 
@@ -899,7 +899,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         } else {
             msg(TL.COMMAND_FLY_DAMAGE);
         }
-        isFFlying = fly;
+        isFlying = fly;
     }
 
     public boolean canFlyAtLocation() {

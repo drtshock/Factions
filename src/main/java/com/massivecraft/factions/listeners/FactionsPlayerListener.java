@@ -178,8 +178,8 @@ public class FactionsPlayerListener implements Listener {
         boolean changedFaction = (factionFrom != factionTo);
 
         if (p.getConfig().getBoolean("enable-faction-flight", false) && changedFaction) {
-            if (!me.canFlyAtLocation() && me.isFFlying()) {
-                me.setFFlying(false);
+            if (!me.canFlyAtLocation() && me.isFlying()) {
+                me.setFlying(false);
             }
         }
 
