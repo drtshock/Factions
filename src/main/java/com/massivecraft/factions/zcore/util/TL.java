@@ -579,11 +579,11 @@ public enum TL {
     COMMAND_WARUNCLAIMALL_SUCCESS("<i>You unclaimed ALL war zone land."),
     COMMAND_WARUNCLAIMALL_LOG("%1$s unclaimed all war zones."),
 
-    COMMAND_FLY_DISABLED("<b>Sorry, Faction flight is disabled on this server"),
+    COMMAND_FLY_DISABLED("&cSorry, Faction flight is disabled on this server"),
     COMMAND_FLY_DESCRIPTION("Enter or leave Faction flight mode"),
-    COMMAND_FLY_CHANGE("&eFaction flight &d%1$s&e."),
-    COMMAND_FLY_DAMAGE("&eFaction flight &ddisabled&e due to entering combat."),
-    COMMAND_FLY_NO_ACCESS("<b>Cannot enable flight in territory of %1$s"),
+    COMMAND_FLY_CHANGE("&eFaction flight &d%1$s"),
+    COMMAND_FLY_DAMAGE("&eFaction flight &ddisabled&e due to entering combat"),
+    COMMAND_FLY_NO_ACCESS("&cCannot fly in territory of %1$s"),
 
     /**
      * Leaving - This is accessed through a command, and so it MAY need a COMMAND_* slug :s
