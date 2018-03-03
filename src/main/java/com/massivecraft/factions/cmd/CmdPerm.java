@@ -32,9 +32,9 @@ public class CmdPerm extends FCommand {
         this.disableOnLock = true;
 
         senderMustBePlayer = true;
-        senderMustBeMember = true;
+        senderMustBeMember = false;
         senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        senderMustBeAdmin = true;
     }
 
     @Override

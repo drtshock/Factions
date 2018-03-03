@@ -460,7 +460,6 @@ fperm-gui:
       warp: 26
       ban: 27
       disband: 28
-      perms: 29
     # Material to show, if the material is colorable eg: Wool, Stained Clay it will update with it's access color
     materials:
       build: STAINED_CLAY
@@ -483,7 +482,6 @@ fperm-gui:
       warp: STAINED_CLAY
       ban: STAINED_CLAY
       disband: STAINED_CLAY
-      perms: STAINED_CLAY
     # Same dummy items format as above
     dummy-items:
       '0':
