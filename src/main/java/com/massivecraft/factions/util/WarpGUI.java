@@ -43,7 +43,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
     @Override
     public void build() {
         if (section == null) {
-            P.p.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+            P.p.log(Level.WARNING, "Attempted to build f warp GUI but config section not present.");
             P.p.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
             return;
         }
@@ -64,12 +64,12 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         Set<String> factionWarps = fme.getFaction().getWarps().keySet();
         List<Integer> warpOpenSlots = section.getIntegerList("warp-slots");
 
+        buildDummyItems();
+
         if (maxWarps != warpOpenSlots.size()) {
             P.p.log(Level.SEVERE, "Invalid warp slots for GUI, Please use same value as max warps");
             return;
         }
-
-        buildDummyItems();
 
         int warpSlotIndex = 0;
         for (String warp : factionWarps) {
