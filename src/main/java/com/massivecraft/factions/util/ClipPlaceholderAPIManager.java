@@ -50,6 +50,8 @@ public class ClipPlaceholderAPIManager extends EZPlaceholderHook {
             // Then Faction stuff
             case "faction_name":
                 return faction.getTag();
+            case "faction_blankname":
+                return fPlayer.hasFaction() ? faction.getTag() : "";
             case "faction_power":
                 return String.valueOf(faction.getPowerRounded());
             case "faction_powermax":
