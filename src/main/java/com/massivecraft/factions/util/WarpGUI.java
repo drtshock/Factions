@@ -27,12 +27,9 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
     private Inventory warpGUI;
     private FPlayer fme;
 
-    int guiSize;
+    private int guiSize;
 
     private HashMap<Integer, String> warpSlots = new HashMap<>();
-    private int maxWarps;
-
-    private List<Integer> dummySlots = new ArrayList<>();
 
     private final ConfigurationSection section;
 
@@ -57,10 +54,10 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         }
 
         guiSize *= 9;
-        String guiName = ChatColor.translateAlternateColorCodes('&', section.getString("name", "FactionPermissions"));
+        String guiName = ChatColor.translateAlternateColorCodes('&', section.getString("name", "Faction Warps"));
         warpGUI = Bukkit.createInventory(this, guiSize, guiName);
 
-        maxWarps = P.p.getConfig().getInt("max-warps", 5);
+        int maxWarps = P.p.getConfig().getInt("max-warps", 5);
 
         Set<String> factionWarps = fme.getFaction().getWarps().keySet();
         List<Integer> warpOpenSlots = section.getIntegerList("warp-slots");
@@ -68,7 +65,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         buildDummyItems();
 
         if (maxWarps != warpOpenSlots.size()) {
-            P.p.log(Level.SEVERE, "Invalid warp slots for GUI, Please use same value as max warps");
+            P.p.log(Level.SEVERE, "Invalid warp slots for GUI, Please use same length as max warps");
             return;
         }
 
@@ -82,16 +79,19 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
     }
 
     @Override
+    public void open() {
+        fme.getPlayer().openInventory(warpGUI);
+    }
+
+    @Override
     public Inventory getInventory() {
         return warpGUI;
     }
 
-    private void buildItems() {
-        for (Map.Entry<Integer, String> entry : warpSlots.entrySet()) {
-            warpGUI.setItem(entry.getKey(), buildItem(entry.getValue()));
-        }
-    }
 
+    /*
+        Click action functions
+     */
     @Override
     public void onClick(int slot, ClickType action) {
         if (warpSlots.containsKey(slot)) {
@@ -140,21 +140,22 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         }
     }
 
+
+    /*
+        GUI Building functions
+     */
+    private void buildItems() {
+        for (Map.Entry<Integer, String> entry : warpSlots.entrySet()) {
+            warpGUI.setItem(entry.getKey(), buildItem(entry.getValue()));
+        }
+    }
+
     private ItemStack buildItem(String warp) {
         ConfigurationSection warpItemSection = section.getConfigurationSection("warp-item");
-        if (warpItemSection == null) {
-            P.p.log(Level.WARNING, "Attempted to build f warp GUI but config section not present.");
-            P.p.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
-            return new ItemStack(Material.AIR);
-        }
 
-        String displayName = replacePlaceholers(warpItemSection.getString("name"), warp, fme.getFaction());
-        List<String> lore = new ArrayList<>();
+        String displayName = replacePlaceholers(warpItemSection.getString("name", "&8[&5&l{warp}&8]"), warp, fme.getFaction());
 
-        if (warpItemSection.getString("material") == null) {
-            return null;
-        }
-        Material material = Material.matchMaterial(warpItemSection.getString("material"));
+        Material material = Material.matchMaterial(warpItemSection.getString("material", "STONE"));
         if (material == null) {
             material = Material.STONE;
         }
@@ -162,23 +163,19 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
 
+        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+
+        List<String> lore = new ArrayList<>();
         for (String loreLine : warpItemSection.getStringList("lore")) {
             lore.add(replacePlaceholers(loreLine, warp, fme.getFaction()));
         }
 
+        // Add values
         itemMeta.setDisplayName(displayName);
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
 
         return item;
-    }
-
-    private String replacePlaceholers(String string, String warp, Faction faction) {
-        string = ChatColor.translateAlternateColorCodes('&', string);
-        string = string.replace("{warp}", warp);
-        string = string.replace("{warp-protected}", faction.hasWarpPassword(warp) ? "Enabled" : "Disabled");
-        string = string.replace("{warp-cost}", !P.p.getConfig().getBoolean("warp-cost.enabled", false) ? "Disabled" : Integer.toString(P.p.getConfig().getInt("warp-cost.warp", 5)));
-        return string;
     }
 
     private void buildDummyItems() {
@@ -202,7 +199,6 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
                     P.p.log(Level.WARNING, "Invalid slot: " + slot + " for dummy item: " + key);
                     continue;
                 }
-                dummySlots.add(slot);
                 warpGUI.setItem(slot, dummyItem);
             }
         }
@@ -250,6 +246,14 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         itemStack.setItemMeta(itemMeta);
 
         return itemStack;
+    }
+
+    private String replacePlaceholers(String string, String warp, Faction faction) {
+        string = ChatColor.translateAlternateColorCodes('&', string);
+        string = string.replace("{warp}", warp);
+        string = string.replace("{warp-protected}", faction.hasWarpPassword(warp) ? "Enabled" : "Disabled");
+        string = string.replace("{warp-cost}", !P.p.getConfig().getBoolean("warp-cost.enabled", false) ? "Disabled" : Integer.toString(P.p.getConfig().getInt("warp-cost.warp", 5)));
+        return string;
     }
 
 }

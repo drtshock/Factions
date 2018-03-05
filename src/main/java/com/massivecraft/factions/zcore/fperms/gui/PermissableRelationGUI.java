@@ -56,7 +56,7 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
         }
 
         guiSize *= 9;
-        String guiName = ChatColor.translateAlternateColorCodes('&', section.getString("name", "FactionPermissions"));
+        String guiName = ChatColor.translateAlternateColorCodes('&', section.getString("name", "Faction Permissions"));
         relationGUI = Bukkit.createInventory(this, guiSize, guiName);
 
         for (String key : section.getConfigurationSection("slots").getKeys(false)) {
@@ -79,10 +79,19 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
     }
 
     @Override
+    public void open() {
+        fme.getPlayer().openInventory(relationGUI);
+    }
+
+    @Override
     public Inventory getInventory() {
         return relationGUI;
     }
 
+
+    /*
+        Click action functions
+     */
     @Override
     public void onClick(int slot, ClickType clickType) {
         if (!relationSlots.containsKey(slot)) {
@@ -91,23 +100,13 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 
         PermissableActionGUI actionGUI = new PermissableActionGUI(fme, relationSlots.get(slot));
         actionGUI.build();
-
-        fme.getPlayer().openInventory(actionGUI.getInventory());
+        actionGUI.open();
     }
 
-    private Permissable getPermissable(String name) {
-        try {
-            return Relation.valueOf(name.toUpperCase());
-        } catch (Exception e) {
-        }
-        try {
-            return Role.valueOf(name.toUpperCase());
-        } catch (Exception e) {
-        }
 
-        return null;
-    }
-
+    /*
+        GUI Building functions
+     */
     private void buildItems() {
         for (Map.Entry<Integer, Permissable> entry : relationSlots.entrySet()) {
             Permissable permissable = entry.getValue();
@@ -201,6 +200,20 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
         itemStack.setItemMeta(itemMeta);
 
         return itemStack;
+    }
+
+    // Util
+    private Permissable getPermissable(String name) {
+        try {
+            return Relation.valueOf(name.toUpperCase());
+        } catch (Exception e) {
+        }
+        try {
+            return Role.valueOf(name.toUpperCase());
+        } catch (Exception e) {
+        }
+
+        return null;
     }
 
 }

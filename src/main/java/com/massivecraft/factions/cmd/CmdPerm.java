@@ -46,14 +46,12 @@ public class CmdPerm extends FCommand {
         if (args.size() == 0) {
             PermissableRelationGUI gui = new PermissableRelationGUI(fme);
             gui.build();
-
-            me.openInventory(gui.getInventory());
+            gui.open();
             return;
         } else if (args.size() == 1 && getPermissable(argAsString(0)) != null) {
             PermissableActionGUI gui = new PermissableActionGUI(fme, getPermissable(argAsString(0)));
             gui.build();
-
-            me.openInventory(gui.getInventory());
+            gui.open();
             return;
         }
 

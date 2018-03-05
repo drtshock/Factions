@@ -8,4 +8,6 @@ public interface FactionGUI {
 
     public void build();
 
+    public void open();
+
 }

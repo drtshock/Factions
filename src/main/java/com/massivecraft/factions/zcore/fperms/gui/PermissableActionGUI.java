@@ -108,18 +108,26 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
     }
 
     @Override
+    public void open() {
+        fme.getPlayer().openInventory(actionGUI);
+    }
+
+    @Override
     public Inventory getInventory() {
         return actionGUI;
     }
 
+
+    /*
+        Clicking action functions
+     */
     @Override
     public void onClick(int slot, ClickType click) {
         if (specialSlots.containsKey(slot)) {
             if (specialSlots.get(slot) == SpecialItem.BACK) {
                 PermissableRelationGUI relationGUI = new PermissableRelationGUI(fme);
                 relationGUI.build();
-
-                fme.getPlayer().openInventory(relationGUI.getInventory());
+                relationGUI.open();
             }
             return;
         }
@@ -147,6 +155,10 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
         P.p.log(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), permissable.name()) + " for faction " + fme.getTag());
     }
 
+
+    /*
+        GUI Building functions
+     */
     private void buildItems() {
         for (Map.Entry<Integer, PermissableAction> entry : actionSlots.entrySet()) {
             PermissableAction permissableAction = entry.getValue();
@@ -282,6 +294,9 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
         return itemStack;
     }
 
+    /*
+        Special item enum
+     */
     public enum SpecialItem {
         BACK,
         RELATION;
