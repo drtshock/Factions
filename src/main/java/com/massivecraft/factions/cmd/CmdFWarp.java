@@ -35,6 +35,9 @@ public class CmdFWarp extends FCommand {
     @Override
     public void perform() {
         //TODO: check if in combat.
+        if (!Permission.WARP.has(me, true)) {
+            return;
+        }
 
         // Check for access first.
         Access access = myFaction.getAccess(fme, PermissableAction.WARP);
@@ -47,8 +50,7 @@ public class CmdFWarp extends FCommand {
         if (args.size() == 0) {
             WarpGUI warpGUI = new WarpGUI(fme);
             warpGUI.build();
-
-            me.openInventory(warpGUI.getInventory());
+            warpGUI.open();
         } else if (args.size() > 2) {
             fme.msg(TL.COMMAND_FWARP_COMMANDFORMAT);
         } else {
