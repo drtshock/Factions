@@ -3,6 +3,7 @@ package com.massivecraft.factions.listeners;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Role;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -30,7 +31,28 @@ public class FactionsChatListener implements Listener {
         String msg = event.getMessage();
         FPlayer me = FPlayers.getInstance().getByPlayer(talkingPlayer);
         ChatMode chat = me.getChatMode();
+        //Is it a MOD chat
+        if (chat == ChatMode.MOD) {
+            Bukkit.broadcastMessage("mod chat");
+            Faction myFaction = me.getFaction();
 
+            String message = String.format(Conf.modChatFormat, ChatColor.stripColor(me.getNameAndTag()), msg);
+
+            //Send to all mods
+            for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+                if (myFaction == fplayer.getFaction())
+                {
+                    if (fplayer.getRole().isAtLeast(Role.MODERATOR))
+                        fplayer.sendMessage(message);
+                } else if (fplayer.isSpyingChat() && me != fplayer) {
+                    fplayer.sendMessage("[MCspy]: " + message);
+                }
+            }
+
+            Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("Mod Chat: " + message));
+
+            event.setCancelled(true);
+        } else
         // Is it a faction chat message?
         if (chat == ChatMode.FACTION) {
             Faction myFaction = me.getFaction();
