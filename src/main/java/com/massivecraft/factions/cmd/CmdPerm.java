@@ -39,10 +39,6 @@ public class CmdPerm extends FCommand {
 
     @Override
     public void perform() {
-        if (!Permission.PERMISSIONS.has(me, true)) {
-            return;
-        }
-
         if (args.size() == 0) {
             PermissableRelationGUI gui = new PermissableRelationGUI(fme);
             gui.build();
