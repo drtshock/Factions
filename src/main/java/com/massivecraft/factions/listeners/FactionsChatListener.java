@@ -32,19 +32,6 @@ public class FactionsChatListener implements Listener {
         String msg = event.getMessage();
         FPlayer me = FPlayers.getInstance().getByPlayer(talkingPlayer);
         ChatMode chat = me.getChatMode();
-        // Is the player entering a password for a warp?
-        if (me.isEnteringPassword()) {
-            event.setCancelled(true);
-            me.sendMessage(ChatColor.DARK_GRAY + event.getMessage().replaceAll("(?s).", "*"));
-            if (me.getFaction().isWarpPassword(me.getEnteringWarp(), event.getMessage())) {
-                doWarmup(me.getEnteringWarp(), me);
-            } else {
-                // Invalid Password
-                me.msg(TL.COMMAND_FWARP_INVALID_PASSWORD);
-            }
-            me.setEnteringPassword(false, "");
-            return;
-        }
         //Is it a MOD chat
         if (chat == ChatMode.MOD) {
             Faction myFaction = me.getFaction();
@@ -187,19 +174,6 @@ public class FactionsChatListener implements Listener {
             // No relation color.
             event.setFormat(nonColoredMsgFormat);
         }
-    }
-
-    private void doWarmup(final String warp, final FPlayer fme) {
-        WarmUpUtil.process(fme, WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warp, new Runnable() {
-            @Override
-            public void run() {
-                Player player = Bukkit.getPlayer(fme.getPlayer().getUniqueId());
-                if (player != null) {
-                    player.teleport(fme.getFaction().getWarp(warp).getLocation());
-                    fme.msg(TL.COMMAND_FWARP_WARPED, warp);
-                }
-            }
-        }, P.p.getConfig().getLong("warmups.f-warp", 0));
     }
 
 }

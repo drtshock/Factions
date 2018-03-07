@@ -1,9 +1,6 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -11,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
@@ -22,7 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 import java.util.logging.Level;
 
-public class WarpGUI implements InventoryHolder, FactionGUI {
+public class WarpGUI implements InventoryHolder, FactionGUI, ConversationAbandonedListener {
 
     private Inventory warpGUI;
     private FPlayer fme;
@@ -104,17 +102,18 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
                     doWarmup(warp);
                 }
             } else {
-                fme.setEnteringPassword(true, warp);
-                fme.msg(TL.COMMAND_FWARP_PASSWORD_REQUIRED);
-                Bukkit.getScheduler().runTaskLater(P.p, new Runnable() {
-                    @Override
-                    public void run() {
-                        if (fme.isEnteringPassword()) {
-                            fme.msg(TL.COMMAND_FWARP_PASSWORD_TIMEOUT);
-                            fme.setEnteringPassword(false, "");
-                        }
-                    }
-                }, P.p.getConfig().getInt("fwarp-gui.password-timeout", 5)*20);
+                HashMap<Object, Object> sessionData = new HashMap<>();
+                sessionData.put("warp", warp);
+                ConversationFactory inputFactory = new ConversationFactory(P.p)
+                        .withEscapeSequence(":cancel")
+                        .withModality(false)
+                        .withLocalEcho(false)
+                        .withInitialSessionData(sessionData)
+                        .withFirstPrompt(new PasswordPrompt())
+                        .addConversationAbandonedListener(this)
+                        .withTimeout(section.getInt("password-timeout", 5));
+
+                inputFactory.buildConversation(fme.getPlayer()).begin();
             }
         }
     }
@@ -260,6 +259,42 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         itemStack.setItemMeta(itemMeta);
 
         return itemStack;
+    }
+
+    @Override
+    public void conversationAbandoned(ConversationAbandonedEvent abandonedEvent) {
+        if (abandonedEvent.getCanceller() instanceof ManuallyAbandonedConversationCanceller ||
+                abandonedEvent.getCanceller() instanceof InactivityConversationCanceller) {
+            fme.msg(TL.COMMAND_FWARP_PASSWORD_CANCEL);
+        }
+    }
+
+    private class PasswordPrompt extends StringPrompt {
+
+        @Override
+        public String getPromptText(ConversationContext context) {
+            return TL.COMMAND_FWARP_PASSWORD_REQUIRED.toString();
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+            String warp = (String) context.getSessionData("warp");
+
+            if (section.getBoolean("echo-password", true)) {
+                String echo = P.p.txt.parse(TL.COMMAND_FWARP_PASSWORD_ECHO.toString(), input.replaceAll(".", "*"));
+                fme.sendMessage(echo);
+            }
+
+            if (fme.getFaction().isWarpPassword(warp, input)) {
+                // Valid Password
+                doWarmup(warp);
+            } else {
+                // Invalid Password
+                fme.msg(TL.COMMAND_FWARP_INVALID_PASSWORD);
+            }
+            return END_OF_CONVERSATION;
+        }
+
     }
 
 }
