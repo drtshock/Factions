@@ -25,10 +25,7 @@ import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 
 /**
@@ -65,6 +62,8 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean willAutoLeave = true;
     protected int mapHeight = 8; // default to old value
     protected boolean isFlying = false;
+    protected boolean enteringPassword = false;
+    protected String enteringPasswordWarp = "";
 
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
     protected transient boolean mapAutoUpdating;
@@ -989,6 +988,19 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setTakeFallDamage(boolean fallDamage) {
         this.shouldTakeFallDamage = fallDamage;
+    }
+
+    public boolean isEnteringPassword() {
+        return enteringPassword;
+    }
+
+    public void setEnteringPassword(boolean toggle, String warp) {
+        enteringPassword = toggle;
+        enteringPasswordWarp = warp;
+    }
+
+    public String getEnteringWarp() {
+        return enteringPasswordWarp;
     }
 
     // -------------------------------------------- //

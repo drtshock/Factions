@@ -582,6 +582,7 @@ fperm-gui:
 fwarp-gui:
   name: "Faction Warps"
   rows: 3
+  password-timeout: 5
   warp-slots:
     - 11
     - 12

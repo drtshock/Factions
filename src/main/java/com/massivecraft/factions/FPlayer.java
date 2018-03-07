@@ -275,6 +275,12 @@ public interface FPlayer extends EconomyParticipator {
 
     public boolean canFlyAtLocation(FLocation location);
 
+    public boolean isEnteringPassword();
+
+    public void setEnteringPassword(boolean toggle, String warp);
+
+    public String getEnteringWarp();
+
     // -------------------------------
     // Warmups
     // -------------------------------
