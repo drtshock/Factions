@@ -64,6 +64,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean willAutoLeave = true;
     protected int mapHeight = 8; // default to old value
     protected boolean isFlying = false;
+    protected boolean autoFlying = false;
 
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
     protected transient boolean mapAutoUpdating;
@@ -888,10 +889,10 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void setFlying(boolean fly) {
-        setFFlying(fly, false);
+        setFlying(fly, false);
     }
 
-    public void setFFlying(boolean fly, boolean damage) {
+    public void setFlying(boolean fly, boolean damage) {
         Player player = getPlayer();
         if (player != null) {
             player.setAllowFlight(fly);
@@ -923,6 +924,14 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         isFlying = fly;
+    }
+
+    public boolean isAutoFlying() {
+        return autoFlying;
+    }
+
+    public void setAutoFlying(boolean autoFlying) {
+        this.autoFlying = autoFlying;
     }
 
     public boolean canFlyAtLocation() {

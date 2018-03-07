@@ -23,28 +23,55 @@ public class CmdFly extends FCommand {
     @Override
     public void perform() {
         // Disabled by default.
-        if (!P.p.getConfig().getBoolean("enable-faction-flight", false)) {
+        if (!P.p.getConfig().getBoolean("faction-flight.enable", false)) {
             fme.msg(TL.COMMAND_FLY_DISABLED);
             return;
         }
 
-        if (args.size() == 0) {
-            if (!fme.canFlyAtLocation() && !fme.isFlying()) {
-                Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(fme));
+        // Use normal faction flight is AutoFly is not used
+        if (!P.p.getConfig().getBoolean("faction-flight.auto-flight", false)) {
+            if (args.size() == 0) {
+                if (!fme.canFlyAtLocation() && !fme.isFlying()) {
+                    Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
+                    fme.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(fme));
+                    return;
+                }
+
+                toggleFlight(!fme.isFlying());
+                return;
+            } else if (args.size() == 1) {
+                if (!fme.canFlyAtLocation() && argAsBool(0)) {
+                    Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
+                    fme.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(fme));
+                    return;
+                }
+
+                toggleFlight(argAsBool(0));
                 return;
             }
+        } else {
+            // AutoFly is enabled lets do this!
+            if (args.size() == 0) {
+                fme.setAutoFlying(!fme.isAutoFlying());
+                fme.msg(TL.COMMAND_FLY_AUTO_CHANGE, fme.isAutoFlying() ? "enabled" : "disabled");
 
-            toggleFlight(!fme.isFlying());
-        } else if (args.size() == 1) {
-            if (!fme.canFlyAtLocation() && argAsBool(0)) {
-                Faction factionAtLocation = Board.getInstance().getFactionAt(fme.getLastStoodAt());
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(fme));
+                if (fme.canFlyAtLocation() && fme.isAutoFlying()) {
+                    toggleFlight(fme.isAutoFlying());
+                }
+                return;
+            } else if (args.size() == 1) {
+                boolean toggle = argAsBool(0);
+                fme.setAutoFlying(toggle);
+                fme.msg(TL.COMMAND_FLY_AUTO_CHANGE, toggle ? "Enabled" : "Disabled");
+
+                if (toggle && fme.canFlyAtLocation()) {
+                    toggleFlight(true);
+                }
                 return;
             }
-
-            toggleFlight(argAsBool(0));
         }
+
+        fme.msg(getUsageTranslation());
     }
 
     private void toggleFlight(final boolean toggle) {

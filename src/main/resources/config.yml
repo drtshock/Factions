@@ -60,7 +60,9 @@ warp-cost:
 
 # Faction Fly
 # Enable Faction Fly:
-enable-faction-flight: true
+faction-flight:
+  enable: true
+  auto-flight: false
 
 # If a player leaves fly (out of territory or took damage)
 # how long should they not take fall damage for?
