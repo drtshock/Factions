@@ -583,7 +583,7 @@ fwarp-gui:
   name: "Faction Warps"
   rows: 3
   password-timeout: 5
-  echo-password: true
+  password-lore: "Click to be prompted for a password"
   warp-slots:
     - 11
     - 12
@@ -617,10 +617,10 @@ fwarp-gui:
   warp-item:
     material: STONE
     name: "&8[&5&l{warp}&8]"
-    # {warp-protected} Warp protection by password, Enabled & Disabled
+    # {warp-protected} Will show the above message if warp is password protected
     # {warp-cost} Warp cost
     lore:
-     - "&8Password: &l{warp-protected}"
+     - "&8{warp-protected}"
      - "&8Cost: &l{warp-cost}"
   # Dummy Items
   dummy-items:

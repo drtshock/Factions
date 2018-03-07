@@ -105,7 +105,6 @@ public class WarpGUI implements InventoryHolder, FactionGUI, ConversationAbandon
                 HashMap<Object, Object> sessionData = new HashMap<>();
                 sessionData.put("warp", warp);
                 ConversationFactory inputFactory = new ConversationFactory(P.p)
-                        .withEscapeSequence(":cancel")
                         .withModality(false)
                         .withLocalEcho(false)
                         .withInitialSessionData(sessionData)
@@ -157,7 +156,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI, ConversationAbandon
             return new ItemStack(Material.AIR);
         }
 
-        String displayName = replacePlaceholers(warpItemSection.getString("name"), warp, fme.getFaction());
+        String displayName = replacePlaceholers(warpItemSection.getString("name"), warp);
         List<String> lore = new ArrayList<>();
 
         if (warpItemSection.getString("material") == null) {
@@ -172,7 +171,13 @@ public class WarpGUI implements InventoryHolder, FactionGUI, ConversationAbandon
         ItemMeta itemMeta = item.getItemMeta();
 
         for (String loreLine : warpItemSection.getStringList("lore")) {
-            lore.add(replacePlaceholers(loreLine, warp, fme.getFaction()));
+            if (loreLine.contains("{warp-protected}") && fme.getFaction().hasWarpPassword(warp)) {
+                lore.add(replacePlaceholers(loreLine, warp));
+                continue;
+            } else if (loreLine.contains("{warp-protected}")) {
+                continue;
+            }
+            lore.add(replacePlaceholers(loreLine, warp));
         }
 
         itemMeta.setDisplayName(displayName);
@@ -182,10 +187,10 @@ public class WarpGUI implements InventoryHolder, FactionGUI, ConversationAbandon
         return item;
     }
 
-    private String replacePlaceholers(String string, String warp, Faction faction) {
+    private String replacePlaceholers(String string, String warp) {
         string = ChatColor.translateAlternateColorCodes('&', string);
         string = string.replace("{warp}", warp);
-        string = string.replace("{warp-protected}", faction.hasWarpPassword(warp) ? "Enabled" : "Disabled");
+        string = ChatColor.translateAlternateColorCodes('&', string.replace("{warp-protected}", section.getString("password-lore", "Click to be prompted for a password")));
         string = string.replace("{warp-cost}", !P.p.getConfig().getBoolean("warp-cost.enabled", false) ? "Disabled" : Integer.toString(P.p.getConfig().getInt("warp-cost.warp", 5)));
         return string;
     }
@@ -279,18 +284,12 @@ public class WarpGUI implements InventoryHolder, FactionGUI, ConversationAbandon
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
             String warp = (String) context.getSessionData("warp");
-
-            if (section.getBoolean("echo-password", true)) {
-                String echo = P.p.txt.parse(TL.COMMAND_FWARP_PASSWORD_ECHO.toString(), input.replaceAll(".", "*"));
-                fme.sendMessage(echo);
-            }
-
             if (fme.getFaction().isWarpPassword(warp, input)) {
                 // Valid Password
                 doWarmup(warp);
             } else {
                 // Invalid Password
-                fme.msg(TL.COMMAND_FWARP_INVALID_PASSWORD);
+                fme.msg(TL.COMMAND_FWARP_PASSWORD_CANCEL);
             }
             return END_OF_CONVERSATION;
         }
