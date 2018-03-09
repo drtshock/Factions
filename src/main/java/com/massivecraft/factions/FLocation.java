@@ -1,5 +1,6 @@
 package com.massivecraft.factions;
 
+import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -165,6 +166,10 @@ public class FLocation implements Serializable {
         }
         Chunk chunk = loc.getChunk();
         return loc.getWorld().getName().equalsIgnoreCase(getWorldName()) && chunk.getX() == x && chunk.getZ() == z;
+    }
+
+    public boolean isInChunk(LazyLocation loc) {
+        return isInChunk(loc.getLocation());
     }
 
     /**

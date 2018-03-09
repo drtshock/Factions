@@ -9,6 +9,7 @@ import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Material;
 
 public class CmdSetFWarp extends FCommand {
 
@@ -19,8 +20,8 @@ public class CmdSetFWarp extends FCommand {
         this.aliases.add("sw");
 
         this.requiredArgs.add("warp name");
-        this.optionalArgs.put("password", "password");
-
+        this.optionalArgs.put("tag", "tag");
+        this.errorOnToManyArgs = false;
         this.senderMustBeMember = true;
         this.senderMustBeModerator = false;
         this.senderMustBePlayer = true;
@@ -54,14 +55,37 @@ public class CmdSetFWarp extends FCommand {
         }
 
         String warp = argAsString(0);
-        String password = argAsString(1);
+
+        String materialString = getArgTag("m");
+        String password = getArgTag("pw");
 
         LazyLocation loc = new LazyLocation(fme.getPlayer().getLocation());
         myFaction.setWarp(warp, loc);
         if (password != null) {
             myFaction.setWarpPassword(warp, password);
         }
+        if (materialString != null) {
+            Material material = Material.matchMaterial(materialString);
+            if (material != null) {
+                myFaction.setWarpMaterial(warp, material);
+            } else {
+                fme.msg(TL.COMMAND_SETFWARP_INVALID_MATERIAL, argAsString(2));
+            }
+        }
         fme.msg(TL.COMMAND_SETFWARP_SET, warp, password != null ? password : "");
+    }
+
+    private String getArgTag(String tag) {
+        // Skip first arg as it is warp name
+        for (int i = 1; i < args.size(); i++) {
+            String[] split = args.get(i).split(":");
+            if (split.length == 2) {
+                if (split[0].equalsIgnoreCase(tag)) {
+                    return split[1];
+                }
+            }
+        }
+        return null;
     }
 
     private boolean transact(FPlayer player) {

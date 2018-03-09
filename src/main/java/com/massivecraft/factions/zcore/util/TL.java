@@ -470,6 +470,7 @@ public enum TL {
     COMMAND_SETFWARP_NOTCLAIMED("<i>You can only set warps in your faction territory."),
     COMMAND_SETFWARP_LIMIT("<i>Your Faction already has the max amount of warps set <a>(%1$d)."),
     COMMAND_SETFWARP_SET("<i>Set warp <a>%1$s and password <c>'%2$s' <i>to your location."),
+    COMMAND_SETFWARP_INVALID_MATERIAL("&cInvalid material &e%1$s&c, using default"),
     COMMAND_SETFWARP_TOSET("to set warp"),
     COMMAND_SETFWARP_FORSET("for setting warp"),
     COMMAND_SETFWARP_DESCRIPTION("Set a faction warp"),

@@ -538,6 +538,7 @@ fperm-gui:
 fwarp-gui:
   name: "Faction Warps"
   rows: 3
+  material: STONE
   warp-slots:
     - 11
     - 12
@@ -569,7 +570,6 @@ fwarp-gui:
     - 25
     - 26
   warp-item:
-    material: STONE
     name: "&8[&5&l{warp}&8]"
     # {warp-protected} Warp protection by password, Enabled & Disabled
     # {warp-cost} Warp cost

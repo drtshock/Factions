@@ -3,6 +3,7 @@ package com.massivecraft.factions;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.struct.BanInfo;
+import com.massivecraft.factions.struct.FactionWarp;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.LazyLocation;
@@ -11,6 +12,7 @@ import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -19,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public interface Faction extends EconomyParticipator {
     public HashMap<String, List<String>> getAnnouncements();
 
-    public ConcurrentHashMap<String, LazyLocation> getWarps();
+    public ConcurrentHashMap<String, FactionWarp> getWarps();
 
     public LazyLocation getWarp(String name);
 
@@ -32,6 +34,10 @@ public interface Faction extends EconomyParticipator {
     public boolean isWarpPassword(String warp, String password);
 
     public void setWarpPassword(String warp, String password);
+
+    public void setWarpMaterial(String name, Material material);
+
+    public Material getWarpMaterial(String name);
 
     public boolean removeWarp(String name);
 

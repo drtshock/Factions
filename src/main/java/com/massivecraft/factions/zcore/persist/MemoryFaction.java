@@ -4,10 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.struct.BanInfo;
-import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.*;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
@@ -15,10 +12,7 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -45,8 +39,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected transient Set<FPlayer> fplayers = new HashSet<>();
     protected Set<String> invites = new HashSet<>();
     protected HashMap<String, List<String>> announcements = new HashMap<>();
-    protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<>();
-    protected ConcurrentHashMap<String, String> warpPasswords = new ConcurrentHashMap<>();
+    protected ConcurrentHashMap<String, FactionWarp> warps = new ConcurrentHashMap<>();
     private long lastDeath;
     protected int maxVaults;
     protected Role defaultRole;
@@ -81,16 +74,16 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
     }
 
-    public ConcurrentHashMap<String, LazyLocation> getWarps() {
+    public ConcurrentHashMap<String, FactionWarp> getWarps() {
         return this.warps;
     }
 
     public LazyLocation getWarp(String name) {
-        return this.warps.get(name);
+        return this.warps.get(name).getLocation();
     }
 
     public void setWarp(String name, LazyLocation loc) {
-        this.warps.put(name, loc);
+        this.warps.put(name, new FactionWarp(name, loc));
     }
 
     public boolean isWarp(String name) {
@@ -98,20 +91,27 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean removeWarp(String name) {
-        warpPasswords.remove(name); // remove password no matter what.
         return warps.remove(name) != null;
     }
 
     public boolean isWarpPassword(String warp, String password) {
-        return hasWarpPassword(warp) && warpPasswords.get(warp.toLowerCase()).equals(password);
+        return hasWarpPassword(warp) && warps.get(warp.toLowerCase()).getPassword().equals(password);
     }
 
     public boolean hasWarpPassword(String warp) {
-        return warpPasswords.containsKey(warp.toLowerCase());
+        return !warps.get(warp).getPassword().isEmpty();
     }
 
     public void setWarpPassword(String warp, String password) {
-        warpPasswords.put(warp.toLowerCase(), password);
+        warps.get(warp).setPassword(password);
+    }
+
+    public Material getWarpMaterial(String warp) {
+        return warps.get(warp).getMaterial();
+    }
+
+    public void setWarpMaterial(String warp, Material material) {
+        warps.get(warp).setMaterial(material);
     }
 
     public void clearWarps() {

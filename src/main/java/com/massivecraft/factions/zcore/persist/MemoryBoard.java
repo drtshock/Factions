@@ -3,10 +3,10 @@ package com.massivecraft.factions.zcore.persist;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.struct.FactionWarp;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
-import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
@@ -98,10 +98,10 @@ public abstract class MemoryBoard extends Board {
 
     public void removeAt(FLocation flocation) {
         Faction faction = getFactionAt(flocation);
-        Iterator<LazyLocation> it = faction.getWarps().values().iterator();
-        while (it.hasNext()) {
-            if (flocation.isInChunk(it.next().getLocation())) {
-                it.remove();
+        Iterator<Map.Entry<String, FactionWarp>> itr = faction.getWarps().entrySet().iterator();
+        while (itr.hasNext()) {
+            if (flocation.isInChunk(itr.next().getValue().getLocation())) {
+                itr.remove();
             }
         }
         clearOwnershipAt(flocation);

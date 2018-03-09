@@ -151,13 +151,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         String displayName = replacePlaceholers(warpItemSection.getString("name"), warp, fme.getFaction());
         List<String> lore = new ArrayList<>();
 
-        if (warpItemSection.getString("material") == null) {
-            return null;
-        }
-        Material material = Material.matchMaterial(warpItemSection.getString("material"));
-        if (material == null) {
-            material = Material.STONE;
-        }
+        Material material = fme.getFaction().getWarpMaterial(warp);
 
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
