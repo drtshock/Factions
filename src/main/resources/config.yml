@@ -242,7 +242,7 @@ hcf:
 ############################################################
 
 # You can use any variable here, including fancy messages. Color codes and or tags work fine.
-# Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
+# Lines that aren't defined won't be sent (home not set, faction not peaceful / permanent, dtr freeze)
 
 # SUPPORTS PLACEHOLDERS
 show:
@@ -272,7 +272,7 @@ show-exempt:
 # THIS IS FOR /f map tool tips.
 
 # You can use any variable here, including fancy messages. Color codes and or tags work fine.
-# Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
+# Lines that aren't defined won't be sent (home not set, faction not peaceful / permanent, dtr freeze)
 map:
   # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;p)
   - '{header}'
