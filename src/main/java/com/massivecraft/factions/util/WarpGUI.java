@@ -256,7 +256,8 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
     private String parse(String string) {
         string = ChatColor.translateAlternateColorCodes('&', string);
         string = TagUtil.parsePlain(fme, string);
-        return TagUtil.parsePlain(fme.getFaction(), string);
+        string = TagUtil.parsePlain(fme.getFaction(), string);
+        return TagUtil.parsePlaceholders(fme.getPlayer(), string);
     }
 
 }
