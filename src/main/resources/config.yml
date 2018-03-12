@@ -284,8 +284,8 @@ map:
   - '<a>Land value: <i>{land-value} {land-refund}'
   - '<a>Balance: <i>{balance}'
   - '<a>Allies(<i>{allies}<a>/<i>{max-allies}<a>): {allies-list} '
-  - '<a>Online: (<i>{online}<a>/<i>{members}<a>): {online-list}'
-  - '<a>Offline: (<i>{offline}<a>/<i>{members}<a>): {offline-list}'
+  - '<a>Online (<i>{online}<a>/<i>{members}<a>): {online-list}'
+  - '<a>Offline (<i>{offline}<a>/<i>{members}<a>): {offline-list}'
 
 ############################################################
 # +------------------------------------------------------+ #
