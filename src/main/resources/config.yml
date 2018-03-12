@@ -427,7 +427,7 @@ fperm-gui:
   action:
     name: 'Factions Permissions'
     rows: 4
-    # If this field exists colorable materials will be updated
+    # If this field exists colorable materials will be updated. Any items below that can be colored will also use the same IDs in the link provided.
     # https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html
     access:
       allow: LIME
