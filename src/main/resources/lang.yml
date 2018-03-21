@@ -247,7 +247,7 @@ COMMAND:
       cannot currently join.'
     INOTHERFACTION: '&c%1$s&7 must leave &c%2$s&7 current faction first.'
     NEGATIVEPOWER: '&c%1$s&7 cannot join a faction with a negative power level.'
-    REQUIRESINVITATION: '&7This faction requires invitation.'
+    REQUIRESINVITATION: '&7This faction requires an invitation.'
     ATTEMPTEDJOIN: '&c%1$s&7 tried to join your faction.'
     TOJOIN: 'to join a faction'
     FORJOIN: 'for joining a faction'
@@ -339,7 +339,7 @@ COMMAND:
     CLOSED: closed
     CHANGES: '%1$s&7 changed the faction to &c%2$s&7.'
     CHANGED: '&7The faction &c%1$s&7 is now &c%2$s&7.'
-    DESCRIPTION: Switch if invitation is required to join
+    DESCRIPTION: Switch if an invitation is required to join
   OWNER:
     DISABLED: '&cSorry, but owned areas are disabled on this server.'
     LIMIT: '&cSorry, but you have reached the server''s &climit of %1$d &cowned areas
@@ -482,8 +482,8 @@ COMMAND:
     PEACEFUL: 'This faction is Peaceful'
     PERMANENT: '&7This faction is permanent, remaining even with no members.'
     JOINING: '&7Joining: &7%1$s '
-    INVITATION: '&7Invitation is required.'
-    UNINVITED: '&7No invitation is needed.'
+    INVITATION: '&cInvitation is required.'
+    UNINVITED: '&cNo invitation is needed.'
     NOHOME: n/a
     POWER: '&7Land / Power / Maxpower: &7 %1$d/%2$d/%3$d %4$s.'
     BONUS: ' (bonus: '
