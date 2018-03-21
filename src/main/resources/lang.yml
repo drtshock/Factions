@@ -482,7 +482,7 @@ COMMAND:
     PEACEFUL: 'This faction is Peaceful'
     PERMANENT: '&7This faction is permanent, remaining even with no members.'
     JOINING: '&7Joining: &7%1$s '
-    INVITATION: '&cInvitation is required.'
+    INVITATION: '&cAn invitation is required.'
     UNINVITED: '&cNo invitation is needed.'
     NOHOME: n/a
     POWER: '&7Land / Power / Maxpower: &7 %1$d/%2$d/%3$d %4$s.'
