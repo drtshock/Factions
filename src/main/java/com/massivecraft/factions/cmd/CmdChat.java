@@ -35,7 +35,8 @@ public class CmdChat extends FCommand {
         String modeString = this.argAsString(0);
         ChatMode modeTarget = fme.getChatMode().getNext();
 
-        // Skip ModChat if is not atleast moderator
+        // If player is cycling through chat modes
+        // and he is not atleast a moderator get next one
         if (modeString == null && modeTarget == ChatMode.MOD) {
             if (!fme.getRole().isAtLeast(Role.MODERATOR)) {
                 modeTarget = modeTarget.getNext();
