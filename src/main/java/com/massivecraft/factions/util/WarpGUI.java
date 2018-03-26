@@ -285,8 +285,10 @@ public class WarpGUI implements InventoryHolder, FactionGUI, ConversationAbandon
         public Prompt acceptInput(ConversationContext context, String input) {
             String warp = (String) context.getSessionData("warp");
             if (fme.getFaction().isWarpPassword(warp, input)) {
-                // Valid Password
-                doWarmup(warp);
+                // Valid Password, make em pay
+                if (transact(fme)) {
+                    doWarmup(warp);
+                }
             } else {
                 // Invalid Password
                 fme.msg(TL.COMMAND_FWARP_PASSWORD_CANCEL);
