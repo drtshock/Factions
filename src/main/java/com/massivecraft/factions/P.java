@@ -140,6 +140,7 @@ public class P extends MPlugin {
         }
 
         new TitleAPI();
+
         setupPlaceholderAPI();
         postEnable();
         this.loadSuccessful = true;

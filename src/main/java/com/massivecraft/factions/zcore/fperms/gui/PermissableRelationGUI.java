@@ -2,6 +2,7 @@ package com.massivecraft.factions.zcore.fperms.gui;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.FactionGUI;
@@ -168,27 +169,32 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
             return new ItemStack(Material.AIR);
         }
 
-        Material material = Material.matchMaterial(dummySection.getString("material", ""));
-        if (material == null) {
-            P.p.log(Level.WARNING, "Invalid material for dummy item: " + id);
-            return null;
+
+        ItemStack item = Essentials.getItem(dummySection.getString("material")); //new ItemStack(material);
+
+        if (item == null) {
+            Material material = Material.matchMaterial(dummySection.getString("material", ""));
+            if (material == null) {
+                P.p.log(Level.WARNING, "Invalid material for dummy item: " + id);
+                return null;
+            }
+
+            item = new ItemStack(material);
         }
 
-        ItemStack itemStack = new ItemStack(material);
+        if (item.getType() != Material.AIR) {
 
-        DyeColor color;
-        try {
-            color = DyeColor.valueOf(dummySection.getString("color", ""));
-        } catch (Exception exception) {
-            color = null;
-        }
-        if (color != null) {
-            itemStack.setDurability(color.getWoolData());
-        }
+            DyeColor color;
+            try {
+                color = DyeColor.valueOf(dummySection.getString("color", ""));
+            } catch (Exception exception) {
+                color = null;
+            }
+            if (color != null) {
+                item.setDurability(color.getWoolData());
+            }
 
-        if (material != Material.AIR) {
-
-            ItemMeta itemMeta = itemStack.getItemMeta();
+            ItemMeta itemMeta = item.getItemMeta();
 
             itemMeta.setDisplayName(parse(dummySection.getString("name", " ")));
 
@@ -200,10 +206,10 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 
             itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 
-            itemStack.setItemMeta(itemMeta);
+            item.setItemMeta(itemMeta);
         }
 
-        return itemStack;
+        return item;
     }
 
     private String parse(String string) {

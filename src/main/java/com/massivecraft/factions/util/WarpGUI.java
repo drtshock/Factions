@@ -5,6 +5,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import org.bukkit.Bukkit;
@@ -155,21 +156,29 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         if (warpItemSection.getString("material") == null) {
             return null;
         }
-        Material material = Material.matchMaterial(warpItemSection.getString("material"));
-        if (material == null) {
-            material = Material.STONE;
+
+        ItemStack item = Essentials.getItem(warpItemSection.getString("material"));
+
+        if (item == null) {
+            Material material = Material.matchMaterial(warpItemSection.getString("material"));
+            if (material == null) {
+                material = Material.STONE;
+            }
+
+            item = new ItemStack(material);
         }
 
-        ItemStack item = new ItemStack(material);
-        ItemMeta itemMeta = item.getItemMeta();
+        if (item.getType() != Material.AIR) {
+            ItemMeta itemMeta = item.getItemMeta();
 
-        for (String loreLine : warpItemSection.getStringList("lore")) {
-            lore.add(replacePlaceholers(loreLine, warp, fme.getFaction()));
+            for (String loreLine : warpItemSection.getStringList("lore")) {
+                lore.add(replacePlaceholers(loreLine, warp, fme.getFaction()));
+            }
+
+            itemMeta.setDisplayName(displayName);
+            itemMeta.setLore(lore);
+            item.setItemMeta(itemMeta);
         }
-
-        itemMeta.setDisplayName(displayName);
-        itemMeta.setLore(lore);
-        item.setItemMeta(itemMeta);
 
         return item;
     }
@@ -218,26 +227,29 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
             return new ItemStack(Material.AIR);
         }
 
-        Material material = Material.matchMaterial(dummySection.getString("material", ""));
-        if (material == null) {
-            P.p.log(Level.WARNING, "Invalid material for dummy item: " + id);
-            return null;
+        ItemStack item = Essentials.getItem(dummySection.getString("material", ""));
+
+        if (item == null) {
+            Material material = Material.matchMaterial(dummySection.getString("material", ""));
+            if (material == null) {
+                P.p.log(Level.WARNING, "Invalid material for dummy item: " + id);
+                return null;
+            }
+
+            item = new ItemStack(material);
         }
 
-        ItemStack itemStack = new ItemStack(material);
-
-        DyeColor color;
+        DyeColor color = null;
         try {
             color = DyeColor.valueOf(dummySection.getString("color", ""));
-        } catch (Exception exception) {
-            color = null;
-        }
+        } catch (Exception ignore) {}
+
         if (color != null) {
-            itemStack.setDurability(color.getWoolData());
+            item.setDurability(color.getWoolData());
         }
 
-        if (material != Material.AIR) {
-            ItemMeta itemMeta = itemStack.getItemMeta();
+        if (item.getType() != Material.AIR) {
+            ItemMeta itemMeta = item.getItemMeta();
 
             itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 
@@ -249,10 +261,10 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
             }
             itemMeta.setLore(lore);
 
-            itemStack.setItemMeta(itemMeta);
+            item.setItemMeta(itemMeta);
         }
 
-        return itemStack;
+        return item;
     }
 
     private String parse(String string) {

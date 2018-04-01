@@ -3,6 +3,7 @@ package com.massivecraft.factions.struct;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
@@ -204,22 +205,29 @@ public enum Relation implements Permissable {
         String displayName = replacePlaceholders(RELATION_CONFIG.getString("placeholder-item.name", ""), fme);
         List<String> lore = new ArrayList<>();
 
-        Material material = Material.matchMaterial(RELATION_CONFIG.getString("materials." + name().toLowerCase()));
-        if (material == null) {
-            return null;
+        ItemStack item = Essentials.getItem(RELATION_CONFIG.getString("materials." + name().toLowerCase()));
+
+        if (item == null) {
+            Material material = Material.matchMaterial(RELATION_CONFIG.getString("materials." + name().toLowerCase()));
+            if (material == null) {
+                return null;
+            }
+
+            item = new ItemStack(material);
         }
 
-        ItemStack item = new ItemStack(material);
-        ItemMeta itemMeta = item.getItemMeta();
+        if (item.getType() != Material.AIR) {
+            ItemMeta itemMeta = item.getItemMeta();
 
-        for (String loreLine : RELATION_CONFIG.getStringList("placeholder-item.lore")) {
-            lore.add(replacePlaceholders(loreLine, fme));
+            for (String loreLine : RELATION_CONFIG.getStringList("placeholder-item.lore")) {
+                lore.add(replacePlaceholders(loreLine, fme));
+            }
+
+            itemMeta.setDisplayName(displayName);
+            itemMeta.setLore(lore);
+            itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            item.setItemMeta(itemMeta);
         }
-
-        itemMeta.setDisplayName(displayName);
-        itemMeta.setLore(lore);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        item.setItemMeta(itemMeta);
 
         return item;
     }

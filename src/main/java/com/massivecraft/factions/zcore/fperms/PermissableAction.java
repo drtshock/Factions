@@ -2,6 +2,7 @@ package com.massivecraft.factions.zcore.fperms;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -90,36 +91,45 @@ public enum PermissableAction {
         if (section.getString("materials." + name().toLowerCase().replace('_', '-')) == null) {
             return null;
         }
-        Material material = Material.matchMaterial(section.getString("materials." + name().toLowerCase().replace('_', '-')));
-        if (material == null) {
-            material = Material.STAINED_CLAY;
-        }
 
         Access access = fme.getFaction().getAccess(permissable, this);
         if (access == null) {
             access = Access.UNDEFINED;
         }
-        DyeColor dyeColor = null;
-        try {
-            dyeColor = DyeColor.valueOf(section.getString("access." + access.name().toLowerCase()));
-        } catch (Exception exception) {
+
+        ItemStack item = Essentials.getItem(section.getString("materials." + name()));
+
+        if (item == null) {
+            Material material = Material.matchMaterial(section.getString("materials." + name().toLowerCase().replace('_', '-')));
+            if (material == null) {
+                material = Material.STAINED_CLAY;
+            }
+
+            item = new ItemStack(material);
         }
 
-        ItemStack item = new ItemStack(material);
-        ItemMeta itemMeta = item.getItemMeta();
+        if (item.getType() != Material.AIR) {
 
-        if (dyeColor != null) {
-            item.setDurability(dyeColor.getWoolData());
+            DyeColor dyeColor = null;
+            try {
+                dyeColor = DyeColor.valueOf(section.getString("access." + access.name().toLowerCase()));
+            } catch (Exception ignore) {}
+
+            ItemMeta itemMeta = item.getItemMeta();
+
+            if (dyeColor != null) {
+                item.setDurability(dyeColor.getWoolData());
+            }
+
+            for (String loreLine : section.getStringList("placeholder-item.lore")) {
+                lore.add(replacePlaceholers(loreLine, fme, permissable));
+            }
+
+            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+            itemMeta.setDisplayName(displayName);
+            itemMeta.setLore(lore);
+            item.setItemMeta(itemMeta);
         }
-
-        for (String loreLine : section.getStringList("placeholder-item.lore")) {
-            lore.add(replacePlaceholers(loreLine, fme, permissable));
-        }
-
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
-        itemMeta.setDisplayName(displayName);
-        itemMeta.setLore(lore);
-        item.setItemMeta(itemMeta);
 
         return item;
     }

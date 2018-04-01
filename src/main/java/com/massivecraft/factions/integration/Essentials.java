@@ -8,7 +8,9 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.math.BigDecimal;
@@ -53,5 +55,17 @@ public class Essentials {
         }
 
         return amount > essentials.getSettings().getMaxMoney().doubleValue();
+    }
+
+    public static ItemStack getItem(String s) {
+        if (essentials == null) {
+            return null;
+        }
+
+        try {
+            return essentials.getItemDb().get(s, 1);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
