@@ -7,7 +7,6 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TagUtil;
-import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -143,9 +142,11 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
                 continue;
             }
 
-            ItemMeta meta = dummyItem.getItemMeta();
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
-            dummyItem.setItemMeta(meta);
+            if (dummyItem.getType() != Material.AIR) {
+                ItemMeta meta = dummyItem.getItemMeta();
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+                dummyItem.setItemMeta(meta);
+            }
 
             List<Integer> dummySlots = section.getIntegerList("dummy-items." + key);
             for (Integer slot : dummySlots) {
@@ -185,19 +186,22 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
             itemStack.setDurability(color.getWoolData());
         }
 
-        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (material != Material.AIR) {
 
-        itemMeta.setDisplayName(parse(dummySection.getString("name", " ")));
+            ItemMeta itemMeta = itemStack.getItemMeta();
 
-        List<String> lore = new ArrayList<>();
-        for (String loreLine : dummySection.getStringList("lore")) {
-            lore.add(parse(loreLine));
+            itemMeta.setDisplayName(parse(dummySection.getString("name", " ")));
+
+            List <String> lore = new ArrayList <>();
+            for (String loreLine : dummySection.getStringList("lore")) {
+                lore.add(parse(loreLine));
+            }
+            itemMeta.setLore(lore);
+
+            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+
+            itemStack.setItemMeta(itemMeta);
         }
-        itemMeta.setLore(lore);
-
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
-
-        itemStack.setItemMeta(itemMeta);
 
         return itemStack;
     }

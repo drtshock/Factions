@@ -236,19 +236,21 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
             itemStack.setDurability(color.getWoolData());
         }
 
-        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (material != Material.AIR) {
+            ItemMeta itemMeta = itemStack.getItemMeta();
 
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 
-        itemMeta.setDisplayName(parse(dummySection.getString("name", " ")));
+            itemMeta.setDisplayName(parse(dummySection.getString("name", " ")));
 
-        List<String> lore = new ArrayList<>();
-        for (String loreLine : dummySection.getStringList("lore")) {
-            lore.add(parse(loreLine));
+            List <String> lore = new ArrayList <>();
+            for (String loreLine : dummySection.getStringList("lore")) {
+                lore.add(parse(loreLine));
+            }
+            itemMeta.setLore(lore);
+
+            itemStack.setItemMeta(itemMeta);
         }
-        itemMeta.setLore(lore);
-
-        itemStack.setItemMeta(itemMeta);
 
         return itemStack;
     }
