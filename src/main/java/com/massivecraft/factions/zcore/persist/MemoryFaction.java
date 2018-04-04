@@ -14,6 +14,7 @@ import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.fupgrade.FUpgrade;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -52,6 +53,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected Role defaultRole;
     protected Map<Permissable, Map<PermissableAction, Access>> permissions = new HashMap<>();
     protected Set<BanInfo> bans = new HashSet<>();
+    protected HashMap<FUpgrade, Integer> upgrades = new HashMap<>();
 
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
@@ -449,6 +451,36 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.defaultRole = role;
     }
 
+    public boolean levelupUpgrade(FUpgrade upgrade, FPlayer fme) {
+        if (upgrade.getMaxLevel() <= upgrades.get(upgrade)) {
+            // Already maxed
+            fme.msg(TL.COMMAND_UPGRADE_LEVEL_MAX, upgrade.translation());
+            return false;
+        }
+
+        int newLevel = upgrades.get(upgrade)+1;
+        if (upgrade.payFor(newLevel, fme)) {
+            // Payment went well
+            upgrades.put(upgrade, newLevel);
+            fme.msg(TL.COMMAND_UPGRADE_LEVEL_UP, upgrade.translation(), newLevel);
+            return true;
+        } else {
+            // Payment didn't go through
+            fme.msg(TL.COMMAND_UPGRADE_LEVEL_UNABLE, upgrade.translation());
+            return false;
+        }
+    }
+
+    public void resetUpgrades() {
+        P.p.log(Level.WARNING, "Resetting upgrades for Faction: " + tag);
+
+        upgrades.clear();
+
+        for (FUpgrade upgrade : P.p.factionUpgrades.getUpgrades()) {
+            upgrades.put(upgrade, 1);
+        }
+    }
+
     // -------------------------------------------- //
     // Construct
     // -------------------------------------------- //
@@ -471,6 +503,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.defaultRole = Role.NORMAL;
 
         resetPerms(); // Reset on new Faction so it has default values.
+        resetUpgrades();
     }
 
     public MemoryFaction(MemoryFaction old) {
@@ -495,6 +528,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.defaultRole = Role.NORMAL;
 
         resetPerms(); // Reset on new Faction so it has default values.
+        resetUpgrades();
     }
 
     // -------------------------------------------- //

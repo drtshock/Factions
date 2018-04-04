@@ -85,6 +85,7 @@ public enum Permission {
     TITLE("title"),
     TITLE_COLOR("title.color"),
     TOGGLE_ALLIANCE_CHAT("togglealliancechat"),
+    UPGRADE("upgrade"),
     UNCLAIM("unclaim"),
     UNCLAIM_ALL("unclaimall"),
     VERSION("version"),

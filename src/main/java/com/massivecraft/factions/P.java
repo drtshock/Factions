@@ -23,6 +23,8 @@ import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.fupgrade.FUpgrade;
+import com.massivecraft.factions.zcore.fupgrade.FUpgradeRoot;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -71,6 +73,7 @@ public class P extends MPlugin {
 
     public SeeChunkUtil seeChunkUtil;
     public ParticleProvider particleProvider;
+    public FUpgradeRoot factionUpgrades;
 
     public P() {
         p = this;
@@ -102,6 +105,11 @@ public class P extends MPlugin {
         }
 
         hookedPlayervaults = setupPlayervaults();
+
+        // TODO: Check if upgrades is enabled
+        if (getConfig().getBoolean("upgrades.enable", false)) {
+            factionUpgrades = new FUpgradeRoot();
+        }
 
         FPlayers.getInstance().load();
         Factions.getInstance().load();
@@ -229,6 +237,9 @@ public class P extends MPlugin {
         Type materialType = new TypeToken<Material>(){
         }.getType();
 
+        Type upgradeTypeAdapter = new TypeToken<HashMap<FUpgrade, Integer>>() {
+        }.getType();
+
         return new GsonBuilder()
                 .setPrettyPrinting()
                 .disableHtmlEscaping()
@@ -239,6 +250,7 @@ public class P extends MPlugin {
                 .registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter())
                 .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
                 .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
+                .registerTypeAdapter(upgradeTypeAdapter, new UpgradeMapTypeAdapter())
                 .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
 
