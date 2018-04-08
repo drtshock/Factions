@@ -53,7 +53,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected Role defaultRole;
     protected Map<Permissable, Map<PermissableAction, Access>> permissions = new HashMap<>();
     protected Set<BanInfo> bans = new HashSet<>();
-    protected HashMap<FUpgrade, Integer> upgrades = new HashMap<>();
+    protected HashMap<Class<? extends FUpgrade>, Integer> upgrades = new HashMap<>();
 
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
@@ -451,17 +451,29 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.defaultRole = role;
     }
 
-    public boolean levelupUpgrade(FUpgrade upgrade, FPlayer fme) {
-        if (upgrade.getMaxLevel() <= upgrades.get(upgrade)) {
+    public int getUpgradeLevel(Class<? extends FUpgrade> upgradeClass) {
+        if (P.p.factionUpgrades == null) {
+            return -1;
+        }
+        return upgrades.get(upgradeClass);
+    }
+
+    public boolean levelUpUpgrade(Class<? extends FUpgrade> upgradeClass, FPlayer fme) {
+        if (P.p.factionUpgrades == null) {
+            return false;
+        }
+
+        FUpgrade upgrade = P.p.factionUpgrades.getUpgrade(upgradeClass);
+        if (upgrade.getMaxLevel() <= upgrades.get(upgradeClass)) {
             // Already maxed
             fme.msg(TL.COMMAND_UPGRADE_LEVEL_MAX, upgrade.translation());
             return false;
         }
 
-        int newLevel = upgrades.get(upgrade)+1;
+        int newLevel = upgrades.get(upgradeClass)+1;
         if (upgrade.payFor(newLevel, fme)) {
             // Payment went well
-            upgrades.put(upgrade, newLevel);
+            upgrades.put(upgradeClass, newLevel);
             fme.msg(TL.COMMAND_UPGRADE_LEVEL_UP, upgrade.translation(), newLevel);
             return true;
         } else {
@@ -472,12 +484,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void resetUpgrades() {
-        P.p.log(Level.WARNING, "Resetting upgrades for Faction: " + tag);
+        if (P.p.factionUpgrades != null) {
+            P.p.log(Level.WARNING, "Resetting upgrades for Faction: " + tag);
 
-        upgrades.clear();
+            upgrades.clear();
 
-        for (FUpgrade upgrade : P.p.factionUpgrades.getUpgrades()) {
-            upgrades.put(upgrade, 1);
+            for (FUpgrade upgrade : P.p.factionUpgrades.getUpgrades()) {
+                upgrades.put(upgrade.getClass(), 1);
+            }
         }
     }
 

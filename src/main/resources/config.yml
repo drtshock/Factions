@@ -646,10 +646,18 @@ fwarp-gui:
 ############################################################
 
 upgrades:
-  enable: false
+  enable: true
   options:
     crop:
       max-level: 3
+      attributes:
+        # Rate; Chance of a crop growing by 2 each time it grows
+        '1':
+          rate: 0
+        '2':
+          rate: 0.25
+        '3':
+          rate: 0.5
       cost:
         '2':
           PLAYER_MONEY: 1000

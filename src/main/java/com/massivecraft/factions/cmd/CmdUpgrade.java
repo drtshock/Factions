@@ -32,7 +32,7 @@ public class CmdUpgrade extends FCommand {
             }
 
             if (context.args.get(0).equals("levelup")) {
-                context.faction.levelupUpgrade(upgrade, context.fPlayer);
+                context.faction.levelUpUpgrade(upgrade.getClass(), context.fPlayer);
             }
         }
 

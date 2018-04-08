@@ -17,8 +17,17 @@ public class FUpgradeRoot {
         upgrades.add(factionUpgrade);
     }
 
-    public Set<FUpgrade> getUpgrades() {
+    public Set<? extends FUpgrade> getUpgrades() {
         return Collections.unmodifiableSet(upgrades);
+    }
+
+    public <T extends FUpgrade> T getUpgrade(Class<T> upgradeClass) {
+        for (FUpgrade upgrade : upgrades) {
+            if (upgradeClass.isInstance(upgrade)) {
+                return upgradeClass.cast(upgrade);
+            }
+        }
+        return null;
     }
 
     public FUpgrade fromString(String name) {

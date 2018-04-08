@@ -106,9 +106,9 @@ public class P extends MPlugin {
 
         hookedPlayervaults = setupPlayervaults();
 
-        // TODO: Check if upgrades is enabled
         if (getConfig().getBoolean("upgrades.enable", false)) {
             factionUpgrades = new FUpgradeRoot();
+            getServer().getPluginManager().registerEvents(new FactionsUpgradeListener(), this);
         }
 
         FPlayers.getInstance().load();
@@ -237,7 +237,7 @@ public class P extends MPlugin {
         Type materialType = new TypeToken<Material>(){
         }.getType();
 
-        Type upgradeTypeAdapter = new TypeToken<HashMap<FUpgrade, Integer>>() {
+        Type upgradeTypeAdapter = new TypeToken<HashMap<Class<? extends FUpgrade>, Integer>>() {
         }.getType();
 
         return new GsonBuilder()

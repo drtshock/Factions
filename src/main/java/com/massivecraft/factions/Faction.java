@@ -159,7 +159,9 @@ public interface Faction extends EconomyParticipator {
 
     public Map<Permissable, Map<PermissableAction, Access>> getPermissions();
 
-    boolean levelupUpgrade(FUpgrade upgrade, FPlayer fme);
+    int getUpgradeLevel(Class<? extends FUpgrade> upgradeClass);
+
+    boolean levelUpUpgrade(Class<? extends FUpgrade> upgradeClass, FPlayer fme);
 
     void resetUpgrades();
 
