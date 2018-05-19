@@ -107,8 +107,7 @@ public class P extends MPlugin {
         hookedPlayervaults = setupPlayervaults();
 
         if (getConfig().getBoolean("upgrades.enable", false)) {
-            factionUpgrades = new FUpgradeRoot();
-            getServer().getPluginManager().registerEvents(new FactionsUpgradeListener(), this);
+            factionUpgrades = new FUpgradeRoot(this);
         }
 
         FPlayers.getInstance().load();
@@ -250,7 +249,7 @@ public class P extends MPlugin {
                 .registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter())
                 .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
                 .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
-                .registerTypeAdapter(upgradeTypeAdapter, new UpgradeMapTypeAdapter())
+                //.registerTypeAdapter(upgradeTypeAdapter, new UpgradeMapTypeAdapter())
                 .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
 

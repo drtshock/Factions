@@ -3,18 +3,19 @@ package com.massivecraft.factions.zcore.fupgrade;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.Listener;
 
 import java.util.HashMap;
 
-public abstract class FUpgrade {
+public abstract class FUpgrade implements Listener {
 
-    int maxLevel;
-    ConfigurationSection configSection;
+    private int maxLevel;
+    protected ConfigurationSection configSection;
 
     private HashMap<Integer, FUpgradeCost> cost = new HashMap<>();
 
     // Upgrade information
-    public abstract String name();
+    public abstract String id();
 
     public abstract String translation();
 
@@ -25,10 +26,11 @@ public abstract class FUpgrade {
 
     FUpgrade() {
         registerSection();
+        maxLevel = configSection.getInt("max-level", 3);
     }
 
-    public void registerSection() {
-        configSection = P.p.getConfig().getConfigurationSection("upgrades.options." + name().toLowerCase());
+    private void registerSection() {
+        configSection = P.p.getConfig().getConfigurationSection("upgrades.options." + id().toLowerCase());
     }
 
     public boolean payFor(int level, FPlayer fme) {
