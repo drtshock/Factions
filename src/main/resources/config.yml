@@ -649,22 +649,13 @@ upgrades:
   enable: true
   options:
     crop:
+      enable: true
       max-level: 3
       attributes:
-        # Rate; Chance of a crop growing by 2 each time it grows
-        '1':
-          rate: 0
         '2':
-          rate: 0.25
+          rate: 2
         '3':
-          rate: 0.5
-      cost:
-        '2':
-          PLAYER_MONEY: 1000
-          PLAYER_EXP: 3
-        '3':
-          PLAYER_MONEY: 4000
-          PLAYER_EXP: 3
+          rate: 3
 
 ############################################################
 # +------------------------------------------------------+ #

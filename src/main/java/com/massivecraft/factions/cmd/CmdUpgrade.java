@@ -25,14 +25,14 @@ public class CmdUpgrade extends FCommand {
     @Override
     public void perform(CommandContext context) {
         if (context.args.size() == 2) {
-            FUpgrade upgrade = P.p.factionUpgrades.fromString(context.args.get(1));
+            FUpgrade upgrade = P.p.factionUpgrades.getUpgrade(context.args.get(1));
             if (upgrade == null) {
                 context.msg(TL.COMMAND_UPGRADE_INVALID, context.args.get(1));
                 return;
             }
 
             if (context.args.get(0).equals("levelup")) {
-                context.faction.levelUpUpgrade(upgrade.getClass(), context.fPlayer);
+                context.faction.levelUpUpgrade(upgrade.id(), context.fPlayer);
             }
         }
 

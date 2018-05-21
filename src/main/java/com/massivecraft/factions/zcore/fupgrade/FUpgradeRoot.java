@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore.fupgrade;
 
 import com.massivecraft.factions.P;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.annotation.ElementType;
@@ -20,7 +21,12 @@ public class FUpgradeRoot {
 
     public FUpgradeRoot(P p) {
         this.p = p;
-        register(p, new UpgradeCrop());
+        p.log("Loading Faction Upgrades");
+
+        // Load default upgrades
+        register(p, new UpgradeCrop(this));
+
+        p.log("Finished loading Faction Upgrades");
     }
 
     // Using this method to allow for more flexibility in the future
@@ -29,23 +35,18 @@ public class FUpgradeRoot {
         getServer().getPluginManager().registerEvents(factionUpgrade, plugin);
     }
 
-    public Set<? extends FUpgrade> getUpgrades() {
-        return Collections.unmodifiableSet(upgrades);
+    public void unregister(FUpgrade factionUpgrade) {
+        upgrades.remove(factionUpgrade);
+        HandlerList.unregisterAll(factionUpgrade);
     }
 
+    public Set<FUpgrade> getUpgrades() {
+        return Collections.unmodifiableSet(upgrades);
+    }
 
     public FUpgrade getUpgrade(String upgradeId) {
         for (FUpgrade upgrade : upgrades) {
             if (upgrade.id().equals(upgradeId)) {
-                return upgrade;
-            }
-        }
-        return null;
-    }
-
-    public FUpgrade fromString(String name) {
-        for (FUpgrade upgrade : upgrades) {
-            if (upgrade.id().equals(name)) {
                 return upgrade;
             }
         }

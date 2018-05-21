@@ -20,14 +20,14 @@ public class UpgradeCrop extends FUpgrade {
     public String id() {
         return "CROP";
     }
-
     @Override
     public String translation() {
         return TL.UPGRADE_CROP.toString();
     }
 
-    UpgradeCrop() {
-        super();
+
+    UpgradeCrop(FUpgradeRoot factionUpgrades) {
+        super(factionUpgrades);
         registerRates();
     }
 

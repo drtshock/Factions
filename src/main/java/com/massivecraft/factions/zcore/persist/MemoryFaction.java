@@ -471,7 +471,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
 
         int newLevel = upgrades.get(upgradeId)+1;
-        if (upgrade.payFor(newLevel, fme)) {
+        if (upgrade.pay(newLevel, fme)) {
             // Payment went well
             upgrades.put(upgradeId, newLevel);
             fme.msg(TL.COMMAND_UPGRADE_LEVEL_UP, upgrade.translation(), newLevel);
