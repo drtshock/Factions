@@ -90,9 +90,11 @@ public class FactionsEntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
+        boolean isSameFaction = false;
         if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent) event;
             if (!this.canDamagerHurtDamagee(sub, true)) {
+                isSameFaction = true;
                 event.setCancelled(true);
             }
             // event is not cancelled by factions
@@ -100,13 +102,15 @@ public class FactionsEntityListener implements Listener {
             Entity damagee = sub.getEntity();
             Entity damager = sub.getDamager();
 
-            if (damagee != null && damagee instanceof Player) {
-                cancelFStuckTeleport((Player) damagee);
-                cancelFFly((Player) damagee);
-            }
-            if (damager instanceof Player) {
-                cancelFStuckTeleport((Player) damager);
-                cancelFFly((Player) damager);
+            if (!isSameFaction) {
+                if (damagee != null && damagee instanceof Player) {
+                    cancelFStuckTeleport((Player) damagee);
+                    cancelFFly((Player) damagee);
+                }
+                if (damager instanceof Player) {
+                    cancelFStuckTeleport((Player) damager);
+                    cancelFFly((Player) damager);
+                }
             }
         } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
             // Players can not take any damage in a Safe Zone
