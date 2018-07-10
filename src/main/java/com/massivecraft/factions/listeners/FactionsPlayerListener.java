@@ -185,7 +185,7 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (me.isMapAutoUpdating()) {
-            if (showTimes.containsKey(player.getUniqueId()) && (showTimes.get(player.getUniqueId()) > System.currentTimeMillis())) {
+            if (showTimes.containsKey(player.getUniqueId()) && (showTimes.get(player.getUniqueId()) > System.currentTimeMillis()) && !me.isFlying()) {
                 if (P.p.getConfig().getBoolean("findfactionsexploit.log", false)) {
                     P.p.log(Level.WARNING, "%s tried to show a faction map too soon and triggered exploit blocker.", player.getName());
                 }

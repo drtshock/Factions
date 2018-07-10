@@ -1029,7 +1029,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void sendFancyMessage(List<FancyMessage> messages) {
         Player player = getPlayer();
-        if (player == null || !player.isOnGround()) {
+        if (player == null) {
             return;
         }
 
