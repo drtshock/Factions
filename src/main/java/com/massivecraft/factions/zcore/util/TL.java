@@ -620,6 +620,7 @@ public enum TL {
     COMMAND_WARUNCLAIMALL_LOG("%1$s unclaimed all war zones."),
 
     UPGRADE_CROP("Crop"),
+    UPGRADE_SPAWNER("Spawner"),
 
 
     /**
