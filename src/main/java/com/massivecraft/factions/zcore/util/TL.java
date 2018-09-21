@@ -607,6 +607,7 @@ public enum TL {
     COMMAND_UNCLAIMALL_DESCRIPTION("Unclaim all of your factions land"),
 
     COMMAND_UPGRADE_DESCRIPTION("&eAdd upgrades to your Faction Land"),
+    COMMAND_UPGRADE_LEVEL_CURRENT("&eLevel for &d%1$s &eis: &d%2$s"),
     COMMAND_UPGRADE_INVALID("&cInvalid faction upgrade &d%1$s"),
     COMMAND_UPGRADE_LEVEL_MAX("&eLevel for &d%1$s &eis already at max"),
     COMMAND_UPGRADE_LEVEL_UP("&eLeveled up &d%1$s&e to level: &d%2$s"),
@@ -621,6 +622,7 @@ public enum TL {
 
     UPGRADE_CROP("Crop"),
     UPGRADE_SPAWNER("Spawner"),
+    UPGRADE_EXP("Exp"),
 
 
     /**

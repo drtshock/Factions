@@ -648,14 +648,49 @@ fwarp-gui:
 upgrades:
   enable: true
   options:
+    exp:
+      enable: false
+      max-level: 3
+      attributes:
+        '1':
+          rate: 1
+        '2':
+          rate: 1.5
+          cost:
+            PLAYER_MONEY: 10000
+        '3':
+          rate: 2
+          cost:
+            PLAYER_MONEY: 30000
+    spawner:
+      enable: true
+      max-level: 3
+      attributes:
+        '1':
+          rate: 1
+        '2':
+          rate: 2
+          cost:
+            PLAYER_MONEY: 50000
+        '3':
+          rate: 3
+          cost:
+            PLAYER_MONEY: 100000
     crop:
       enable: true
       max-level: 3
       attributes:
+        '1':
+          rate: 1
         '2':
-          rate: 2
+          rate: 1.5
+          cost:
+            PLAYER_EXP: 10
+            PLAYER_MONEY: 20000
         '3':
-          rate: 3
+          rate: 2
+          cost:
+            PLAYER_MONEY: 40000
 
 ############################################################
 # +------------------------------------------------------+ #

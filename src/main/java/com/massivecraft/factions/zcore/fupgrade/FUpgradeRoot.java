@@ -2,6 +2,8 @@ package com.massivecraft.factions.zcore.fupgrade;
 
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.fupgrade.upgrades.UpgradeCrop;
+import com.massivecraft.factions.zcore.fupgrade.upgrades.UpgradeExp;
+import com.massivecraft.factions.zcore.fupgrade.upgrades.UpgradeSpawner;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,11 +24,13 @@ public class FUpgradeRoot {
 
         // Load default upgrades
         register(p, new UpgradeCrop(this));
+        register(p, new UpgradeSpawner(this));
+        register(p, new UpgradeExp(this));
 
         p.log("Finished loading Faction Upgrades");
     }
 
-    // Using this method to allow for more flexibility in the future
+    // Register the Upgrade into the Set and register the listener
     public void register(JavaPlugin plugin, FUpgrade factionUpgrade) {
         upgrades.add(factionUpgrade);
         getServer().getPluginManager().registerEvents(factionUpgrade, plugin);
@@ -43,7 +47,7 @@ public class FUpgradeRoot {
 
     public FUpgrade getUpgrade(String upgradeId) {
         for (FUpgrade upgrade : upgrades) {
-            if (upgrade.id().equals(upgradeId)) {
+            if (upgrade.id().equalsIgnoreCase(upgradeId)) {
                 return upgrade;
             }
         }

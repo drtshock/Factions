@@ -2,6 +2,7 @@ package com.massivecraft.factions.zcore.fupgrade;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import org.bukkit.entity.Player;
 
@@ -20,6 +21,8 @@ public class FUpgradeCost {
         // Check if they have enough to pay for everything
         for (Map.Entry<CostType, Double> entry : cost.entrySet()) {
             boolean transaction = entry.getKey().transact(entry.getValue(), fme, false);
+            P.p.log(entry.getKey() + ": " + transaction);
+
             if (!transaction) {
                 return false;
             }
@@ -48,10 +51,11 @@ public class FUpgradeCost {
                     } else if (!Econ.hasAtLeast(fme, amount, null)) {
                         return false;
                     }
-                    // If Transact = true lets modify the monies
+                    // If transact = true lets modify the monies
                     if (transact) {
                         Econ.modifyMoney(fme, -amount, null, null);
                     }
+                    return true;
                 case PLAYER_EXP:
                     Player player = fme.getPlayer();
                     if (player.getLevel() >= amount) {
@@ -66,16 +70,17 @@ public class FUpgradeCost {
                     // Check if Economy should be used if not return true
                     if (!Econ.shouldBeUsed() || !Conf.bankFactionPaysCosts) {
                         return true;
-                        // Check if the player has atleast the amount
+                        // Check if the faction has atleast the amount
                     } else if (!Econ.hasAtLeast(fme.getFaction(), amount, null)) {
                         return false;
                     }
-                    // If Transact = true lets modify the monies
+                    // If transact = true lets modify the monies
                     if (transact) {
                         Econ.modifyMoney(fme.getFaction(), -amount, null, null);
                     }
+                    return true;
                 default:
-                    return false;
+                    return true;
             }
         }
 

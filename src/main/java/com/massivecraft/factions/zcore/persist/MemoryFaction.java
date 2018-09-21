@@ -455,6 +455,16 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (P.p.factionUpgrades == null) {
             return -1;
         }
+        if (upgrades.get(upgradeId) == null) {
+            // The faction has no level data for this upgrade add it
+            if (P.p.factionUpgrades.getUpgrade(upgradeId) != null) {
+                upgrades.put(P.p.factionUpgrades.getUpgrade(upgradeId).id(), 1);
+                return 1;
+            // This upgrade doesn't exist
+            } else {
+                return -1;
+            }
+        }
         return upgrades.get(upgradeId);
     }
 
@@ -463,14 +473,20 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             return false;
         }
 
+        int level = getUpgradeLevel(upgradeId);
+        if (level == -1) {
+            fme.msg(TL.COMMAND_UPGRADE_INVALID, upgradeId);
+            return false;
+        }
+
         FUpgrade upgrade = P.p.factionUpgrades.getUpgrade(upgradeId);
-        if (upgrade.getMaxLevel() <= upgrades.get(upgradeId)) {
+        if (upgrade.getMaxLevel() <= level) {
             // Already maxed
             fme.msg(TL.COMMAND_UPGRADE_LEVEL_MAX, upgrade.translation());
             return false;
         }
 
-        int newLevel = upgrades.get(upgradeId)+1;
+        int newLevel = level + 1;
         if (upgrade.pay(newLevel, fme)) {
             // Payment went well
             upgrades.put(upgradeId, newLevel);

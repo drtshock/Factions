@@ -7,16 +7,21 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.fupgrade.FUpgrade;
 import com.massivecraft.factions.zcore.fupgrade.FUpgradeRoot;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.CropState;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockGrowEvent;
+import org.bukkit.material.Crops;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
 
 public class UpgradeCrop extends FUpgrade {
 
-    private HashMap<Integer, Double> rateMap = new HashMap<>();
+    private HashMap<Integer, Double> rateMap;
 
     @Override
     public String id() {
@@ -27,35 +32,57 @@ public class UpgradeCrop extends FUpgrade {
         return TL.UPGRADE_CROP.toString();
     }
 
-
-    public UpgradeCrop(FUpgradeRoot factionUpgrades) {
-        super(factionUpgrades);
-        registerRates();
+    public UpgradeCrop(FUpgradeRoot root) {
+        super(root);
     }
 
-    private void registerRates() {
-        ConfigurationSection attributeSection = configSection.getConfigurationSection("attributes");
-        for (String key : attributeSection.getKeys(false)) {
-            rateMap.put(Integer.parseInt(key), attributeSection.getDouble(key + ".rate"));
+    protected void registerAttributes() {
+        rateMap = new HashMap<>();
+        for (Map.Entry<Integer, ConfigurationSection> entry : levelConfigs.entrySet()) {
+            rateMap.put(entry.getKey(), entry.getValue().getDouble("rate", 1));
         }
-    }
-
-    private double getRate(Integer level) {
-        return rateMap.get(level);
     }
 
     @EventHandler
     public void onCropGrowth(BlockGrowEvent event) {
+        // Works by getting the rate remove one from it, the chance of it double growing
         FLocation factionLoc = new FLocation(event.getBlock().getLocation());
         Faction factionAt = Board.getInstance().getFactionAt(factionLoc);
         int level = factionAt.getUpgradeLevel(id());
 
-        int random = new Random().nextInt(100);
-        int rateChance = (int) getRate(level) * 100;
+        double random = new Random().nextDouble();
+        double rateChance = rateMap.get(level) - 1;
 
         if (rateChance >= random) {
-            // TODO: We have to double grow...
-            P.p.log("We have to double grow!");
+            if (event.getBlock().getType() == Material.CROPS) {
+                Crops now = (Crops) event.getNewState().getData();
+                CropState newState;
+                // Shift the stage by one
+                switch (now.getState()) {
+                    case SEEDED:
+                    case GERMINATED:
+                        newState = CropState.GERMINATED;
+                        break;
+                    case VERY_SMALL:
+                        newState = CropState.SMALL;
+                        break;
+                    case SMALL:
+                        newState = CropState.MEDIUM;
+                        break;
+                    case MEDIUM:
+                        newState = CropState.TALL;
+                        break;
+                    case TALL:
+                        newState = CropState.VERY_TALL;
+                        break;
+                    case VERY_TALL:
+                    default:
+                        newState = CropState.RIPE;
+                }
+
+                event.getNewState().setData(new Crops(newState));
+                event.getNewState().update();
+            }
         }
     }
 

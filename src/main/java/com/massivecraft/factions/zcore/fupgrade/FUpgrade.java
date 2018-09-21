@@ -26,8 +26,9 @@ public abstract class FUpgrade implements Listener {
     public FUpgrade(FUpgradeRoot factionUpgrades) {
         this.factionUpgrades = factionUpgrades;
         configSection = P.p.getConfig().getConfigurationSection("upgrades.options." + id().toLowerCase());
-        if (!configSection.getBoolean("enable")) {
+        if (configSection == null || !configSection.getBoolean("enable", false)) {
             disable(false);
+            return;
         }
         maxLevel = configSection.getInt("max-level", 3);
 
@@ -72,8 +73,11 @@ public abstract class FUpgrade implements Listener {
             }
             cost.put(attrs.getKey(), fUpgradeCost);
         }
-        P.p.log(cost);
+        // Everything is ready, let the upgrade handle the rest
+        registerAttributes();
     }
+
+    protected abstract void registerAttributes();
 
     public boolean pay(int level, FPlayer fme) {
         FUpgradeCost levelCost = cost.get(level);
@@ -87,13 +91,12 @@ public abstract class FUpgrade implements Listener {
         }
     }
 
-    private void disable(boolean log) {
+    public void disable(boolean log) {
         if (log) {
             P.p.log("Disabling Upgrade: " + id());
         }
         factionUpgrades.unregister(this);
     }
-
 
     public int getMaxLevel() {
         return maxLevel;

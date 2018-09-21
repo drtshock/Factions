@@ -12,9 +12,8 @@ public class CmdUpgrade extends FCommand {
         this.aliases.add("upgrade");
         this.aliases.add("upgrades");
 
-        this.optionalArgs.put("action", "gui");
-        this.optionalArgs.put("upgrade", "upgrade");
-
+        this.optionalArgs.put("upgrade", "gui");
+        this.optionalArgs.put("action", "info");
 
         this.requirements = new CommandRequirements.Builder(Permission.UPGRADE)
                 .memberOnly()
@@ -23,20 +22,25 @@ public class CmdUpgrade extends FCommand {
     }
 
     @Override
+
     public void perform(CommandContext context) {
-        if (context.args.size() == 2) {
-            FUpgrade upgrade = P.p.factionUpgrades.getUpgrade(context.args.get(1));
+        if (context.args.size() >= 1) {
+            FUpgrade upgrade = P.p.factionUpgrades.getUpgrade(context.args.get(0));
             if (upgrade == null) {
-                context.msg(TL.COMMAND_UPGRADE_INVALID, context.args.get(1));
+                context.fPlayer.msg(TL.COMMAND_UPGRADE_INVALID, context.args.get(0));
                 return;
             }
 
-            if (context.args.get(0).equals("levelup")) {
-                context.faction.levelUpUpgrade(upgrade.id(), context.fPlayer);
+            if (context.args.size() == 1) {
+                context.fPlayer.msg(TL.COMMAND_UPGRADE_LEVEL_CURRENT, upgrade.translation(), context.faction.getUpgradeLevel(upgrade.id()));
+            } else if (context.args.size() == 2) {
+                if (context.args.get(1).equals("levelup")) {
+                    context.faction.levelUpUpgrade(upgrade.id(), context.fPlayer);
+                }
             }
+        } else {
+            // TODO: Implement GUI
         }
-
-        // TODO: Implement GUI
     }
 
     @Override
