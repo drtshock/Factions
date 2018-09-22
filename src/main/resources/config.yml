@@ -77,11 +77,19 @@ f-fly:
   # Note: Will produce lag at higher numbers
   enemy-radius: 7
   # Frequency Check
-  # How frequent should we check if an enemy is nearby? In seconds (Supports decimals)
+  # Will also be used for Trails
   # Note: Use 0 to disable
-  radius-check: 1
+  radius-check: 0.2
   # Should we disable flight if the player has suffered generic damage
   disable-generic-damage: false
+  # Trails show below the players foot when flying, faction.fly.trails
+  trails:
+    # Name of the particle
+    name: CLOUD
+    # Speed of the particles
+    speed: 0.05
+    # Amount spawned
+    amount: 20
 
 # Faction Near
 f-near:

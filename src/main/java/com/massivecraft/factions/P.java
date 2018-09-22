@@ -155,7 +155,7 @@ public class P extends MPlugin {
             double delay = getConfig().getDouble("f-fly.radius-check", 1) * 20;
             // Only run FlightUtil if not 0
             if (delay != 0) {
-                new FlightDisableUtil().runTaskTimer(this, 0, (long) delay);
+                new FlightUtil().runTaskTimer(this, 0, (long) delay);
                 log(Level.INFO, "Enabling enemy radius check for f fly every %1s seconds", delay / 20);
             }
         }

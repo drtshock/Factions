@@ -1,7 +1,10 @@
 package com.massivecraft.factions.util;
 
+import com.darkblade12.particleeffect.ParticleEffect;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -9,20 +12,38 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class FlightDisableUtil extends BukkitRunnable {
+public class FlightUtil extends BukkitRunnable {
+
+    private ParticleEffect effect;
+    private int amount;
+    private float speed;
+
+    public FlightUtil() {
+        String effectName = P.p.getConfig().getString("f-fly.trails.name", "");
+        this.effect = ParticleEffect.fromName(effectName.toUpperCase());
+        this.amount = P.p.getConfig().getInt("f-fly.trails.amount", 20);
+        this.speed = (float) P.p.getConfig().getDouble("f-fly.trails.speed", 0.05);
+    }
 
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             FPlayer pilot = FPlayers.getInstance().getByPlayer(player);
-            if (pilot.isFlying() && !pilot.isAdminBypassing()) {
-                if (enemiesNearby(pilot, 5)) {
-                    pilot.msg(TL.COMMAND_FLY_ENEMY_DISABLE);
-                    pilot.setFlying(false);
-                    if (pilot.isAutoFlying()) {
-                        pilot.setAutoFlying(false);
+            if (pilot.isFlying()) {
+                if (effect != null && Permission.FLY_TRAILS.has(player)) {
+                    effect.display(0, 0, 0, speed, amount, player.getLocation(), new ArrayList<>(Bukkit.getOnlinePlayers()));
+                }
+
+                if (!pilot.isAdminBypassing()) {
+                    if (enemiesNearby(pilot, 5)) {
+                        pilot.msg(TL.COMMAND_FLY_ENEMY_DISABLE);
+                        pilot.setFlying(false);
+                        if (pilot.isAutoFlying()) {
+                            pilot.setAutoFlying(false);
+                        }
                     }
                 }
             }
