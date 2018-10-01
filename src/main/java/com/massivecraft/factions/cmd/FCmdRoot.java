@@ -2,13 +2,20 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 
-public class FCmdRoot extends FCommand {
+public class FCmdRoot extends FCommand implements TabCompleter {
 
     public CmdAdmin cmdAdmin = new CmdAdmin();
     public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
@@ -202,6 +209,23 @@ public class FCmdRoot extends FCommand {
     public void perform() {
         this.commandChain.add(this);
         this.cmdHelp.execute(this.sender, this.args, this.commandChain);
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (args.length == 1) {
+            List<String> subcommands = new ArrayList<>();
+            for (MCommand<?> subCommand : subCommands) {
+                for (String subAlias : subCommand.aliases) {
+                    if (subAlias.startsWith(args[0].toLowerCase())) {
+                        subcommands.add(subAlias);
+                    }
+                }
+            }
+            return subcommands;
+        }
+        // TODO: Actually handle inner tab completes
+        return new ArrayList<>();
     }
 
     @Override
