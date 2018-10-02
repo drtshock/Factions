@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
@@ -10,10 +11,13 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class CmdUnban extends FCommand {
 
@@ -72,14 +76,14 @@ public class CmdUnban extends FCommand {
 
     @Override
     public TabCompleteProvider onTabComplete(final Player player, String[] args) {
-        if (args.length == 0) {
+        if (args.length == 1) {
             return new TabCompleteProvider() {
                 @Override
                 public List<String> get() {
                     Faction faction = FPlayers.getInstance().getByPlayer(player).getFaction();
                     List<String> banned = new ArrayList<>();
                     for (BanInfo info : faction.getBannedPlayers()) {
-                        banned.add(info.getBanned());
+                        banned.add(Bukkit.getOfflinePlayer(UUID.fromString(info.getBanned())).getName());
                     }
                     return banned;
                 }

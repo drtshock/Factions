@@ -145,7 +145,7 @@ public class CmdKick extends FCommand implements FactionTabCompleter {
 
     @Override
     public TabCompleteProvider onTabComplete(Player player, String[] args) {
-        if (args.length == 0) {
+        if (args.length == 1) {
             return new ProviderFactionPlayers(FPlayers.getInstance().getByPlayer(player).getFaction());
         }
         return super.onTabComplete(player, args);

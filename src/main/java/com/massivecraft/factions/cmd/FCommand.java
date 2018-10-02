@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -115,7 +116,7 @@ public abstract class FCommand extends MCommand<P> implements FactionTabComplete
         return new TabCompleteProvider() {
             @Override
             public List<String> get() {
-                return new ArrayList<>();
+                return Collections.emptyList();
             }
         };
     }

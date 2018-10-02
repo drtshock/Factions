@@ -232,7 +232,13 @@ public class FCmdRoot extends FCommand implements TabCompleter {
             }
 
             TabCompleteProvider provider = subCommand.onTabComplete((Player) sender, Arrays.copyOfRange(args, 1, args.length));
-            return provider.get();
+            List<String> matches = new ArrayList<>();
+            for (String provided : provider.get()) {
+                if (provided.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
+                    matches.add(provided);
+                }
+            }
+            return matches;
         }
         return new ArrayList<>();
     }
