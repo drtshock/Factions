@@ -212,6 +212,9 @@ public enum TL {
     COMMAND_FLY_ENEMY_NEARBY("&cCannot enable fly, enemy nearby"),
     COMMAND_FLY_ENEMY_DISABLE("&cEnemy nearby, disabling fly"),
 
+    COMMAND_STEALTH_DESCRIPTION("Enter or leave stealth mode, prevents flight disabling for enemies"),
+    COMMAND_STEALTH_CHANGE("&eFaction stealth &d%1$s"),
+
     COMMAND_FWARP_CLICKTOWARP("Click to warp!"),
     COMMAND_FWARP_COMMANDFORMAT("&e/f warp <warpname> [password]"),
     COMMAND_FWARP_WARPED("&eWarped to &6%1$s"),

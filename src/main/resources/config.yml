@@ -82,6 +82,9 @@ f-fly:
   radius-check: 1
   # Should we disable flight if the player has suffered generic damage
   disable-generic-damage: false
+  # Should we enable /f stealth
+  # Makes it so that enemies nearby don't get kicked out of fly
+  stealth: false
 
 # Faction Near
 f-near:

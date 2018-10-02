@@ -2,6 +2,7 @@ package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -38,6 +39,9 @@ public class FlightDisableUtil extends BukkitRunnable {
                     continue;
                 }
                 if (playerNearby.getRelationTo(target) == Relation.ENEMY) {
+                    if (P.p.getConfig().getBoolean("f-fly.stealth", false) && playerNearby.isInStealth()) {
+                        return false;
+                    }
                     return true;
                 }
             }

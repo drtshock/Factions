@@ -23,6 +23,7 @@ public class FCmdRoot extends FCommand {
     public CmdDescription cmdDescription = new CmdDescription();
     public CmdDisband cmdDisband = new CmdDisband();
     public CmdFly cmdFly = new CmdFly();
+    public CmdStealth cmdStealth = new CmdStealth();
     public CmdHelp cmdHelp = new CmdHelp();
     public CmdHome cmdHome = new CmdHome();
     public CmdInvite cmdInvite = new CmdInvite();
@@ -195,7 +196,9 @@ public class FCmdRoot extends FCommand {
         } else {
             P.p.log(Level.WARNING, "Faction flight set to false in config.yml. Not enabling /f fly command.");
         }
-
+        if (P.p.getConfig().getBoolean("f-fly.stealth", false)) {
+            this.addSubCommand(this.cmdStealth);
+        }
     }
 
     @Override

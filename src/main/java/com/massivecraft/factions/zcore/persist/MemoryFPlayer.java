@@ -62,6 +62,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean willAutoLeave = true;
     protected int mapHeight = 8; // default to old value
     protected boolean isFlying = false;
+    protected boolean isStealthy = false;
     protected boolean isAutoFlying = false;
     protected boolean seeingChunk = false;
 
@@ -939,6 +940,14 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         isFlying = fly;
+    }
+
+    public boolean isInStealth() {
+        return isStealthy;
+    }
+
+    public void setStealth(boolean stealth) {
+        isStealthy = stealth;
     }
 
     public boolean isAutoFlying() {
