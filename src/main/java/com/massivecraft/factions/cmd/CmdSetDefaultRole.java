@@ -1,8 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.entity.Player;
 
 public class CmdSetDefaultRole extends FCommand {
 
@@ -36,6 +38,14 @@ public class CmdSetDefaultRole extends FCommand {
 
         myFaction.setDefaultRole(target);
         msg(TL.COMMAND_SETDEFAULTROLE_SUCCESS, target.nicename);
+    }
+
+    @Override
+    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+        if (args.length == 1) {
+            return TabCompleteProvider.ROLES;
+        }
+        return super.onTabComplete(player, args);
     }
 
     @Override

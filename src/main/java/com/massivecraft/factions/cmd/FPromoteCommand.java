@@ -1,11 +1,15 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
+import com.massivecraft.factions.cmd.tabcomplete.providers.ProviderFactionPlayers;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.entity.Player;
 
 public class FPromoteCommand extends FCommand {
 
@@ -73,6 +77,14 @@ public class FPromoteCommand extends FCommand {
         }
 
         fme.msg(TL.COMMAND_PROMOTE_SUCCESS, action, target.getName(), promotion.nicename);
+    }
+
+    @Override
+    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+        if (args.length == 1) {
+            return new ProviderFactionPlayers(FPlayers.getInstance().getByPlayer(player).getFaction());
+        }
+        return super.onTabComplete(player, args);
     }
 
     @Override

@@ -1,7 +1,10 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
+import com.massivecraft.factions.cmd.tabcomplete.providers.ProviderFactionWarps;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.util.WarpGUI;
@@ -82,6 +85,14 @@ public class CmdFWarp extends FCommand {
 
     private boolean transact(FPlayer player) {
         return !P.p.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(P.p.getConfig().getDouble("warp-cost.warp", 5), TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
+    }
+
+    @Override
+    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+        if (args.length == 1) {
+            return new ProviderFactionWarps(FPlayers.getInstance().getByPlayer(player).getFaction());
+        }
+        return super.onTabComplete(player, args);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -9,6 +10,7 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class CmdInvite extends FCommand {
 
@@ -78,6 +80,14 @@ public class CmdInvite extends FCommand {
 
         //you.msg("%s<i> invited you to %s", fme.describeTo(you, true), myFaction.describeTo(you));
         myFaction.msg(TL.COMMAND_INVITE_INVITED, fme.describeTo(myFaction, true), target.describeTo(myFaction));
+    }
+
+    @Override
+    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+        if (args.length == 1) {
+            return TabCompleteProvider.PLAYERS;
+        }
+        return super.onTabComplete(player, args);
     }
 
     @Override

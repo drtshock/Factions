@@ -1,10 +1,15 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CmdChat extends FCommand {
 
@@ -78,6 +83,23 @@ public class CmdChat extends FCommand {
         } else {
             msg(TL.COMMAND_CHAT_MODE_FACTION);
         }
+    }
+
+    @Override
+    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+        if (args.length == 1) {
+            return new TabCompleteProvider() {
+                @Override
+                public List<String> get() {
+                    List<String> modes = new ArrayList<>();
+                    for (ChatMode mode : ChatMode.values()) {
+                        modes.add(mode.name().toLowerCase());
+                    }
+                    return modes;
+                }
+            };
+        }
+        return super.onTabComplete(player, args);
     }
 
     @Override
