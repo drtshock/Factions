@@ -2,12 +2,14 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -223,9 +225,25 @@ public class FCmdRoot extends FCommand implements TabCompleter {
                 }
             }
             return subcommands;
+        } else if (args.length > 1) {
+            FCommand subCommand = getSubCommand(args[0]);
+            if (subCommand == null || !(sender instanceof Player)) {
+                return new ArrayList<>();
+            }
+
+            TabCompleteProvider provider = subCommand.onTabComplete((Player) sender, Arrays.copyOfRange(args, 1, args.length));
+            return provider.get();
         }
-        // TODO: Actually handle inner tab completes
         return new ArrayList<>();
+    }
+
+    private FCommand getSubCommand(String alias) {
+        for (MCommand<?> subCommand : this.subCommands) {
+            if (subCommand.aliases.contains(alias.toLowerCase())) {
+                return (FCommand) subCommand;
+            }
+        }
+        return null;
     }
 
     @Override
