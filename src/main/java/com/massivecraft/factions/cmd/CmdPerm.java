@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -10,6 +11,7 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.fperms.gui.PermissableActionGUI;
 import com.massivecraft.factions.zcore.fperms.gui.PermissableRelationGUI;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -115,6 +117,18 @@ public class CmdPerm extends FCommand {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+        if (args.length == 1) {
+            return TabCompleteProvider.PERMISSABLES;
+        } else if (args.length == 2) {
+            return TabCompleteProvider.ACTIONS;
+        } else if (args.length == 3) {
+            return TabCompleteProvider.ACCESS;
+        }
+        return super.onTabComplete(player, args);
     }
 
     @Override

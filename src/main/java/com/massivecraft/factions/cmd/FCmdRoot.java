@@ -2,13 +2,22 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
+import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 
-public class FCmdRoot extends FCommand {
+public class FCmdRoot extends FCommand implements TabCompleter {
 
     public CmdAdmin cmdAdmin = new CmdAdmin();
     public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
@@ -202,6 +211,45 @@ public class FCmdRoot extends FCommand {
     public void perform() {
         this.commandChain.add(this);
         this.cmdHelp.execute(this.sender, this.args, this.commandChain);
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (args.length == 1) {
+            List<String> subcommands = new ArrayList<>();
+            for (MCommand<?> subCommand : subCommands) {
+                for (String subAlias : subCommand.aliases) {
+                    if (subAlias.startsWith(args[0].toLowerCase())) {
+                        subcommands.add(subAlias);
+                    }
+                }
+            }
+            return subcommands;
+        } else if (args.length > 1) {
+            FCommand subCommand = getSubCommand(args[0]);
+            if (subCommand == null || !(sender instanceof Player)) {
+                return new ArrayList<>();
+            }
+
+            TabCompleteProvider provider = subCommand.onTabComplete((Player) sender, Arrays.copyOfRange(args, 1, args.length));
+            List<String> matches = new ArrayList<>();
+            for (String provided : provider.get()) {
+                if (provided.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
+                    matches.add(provided);
+                }
+            }
+            return matches;
+        }
+        return new ArrayList<>();
+    }
+
+    private FCommand getSubCommand(String alias) {
+        for (MCommand<?> subCommand : this.subCommands) {
+            if (subCommand.aliases.contains(alias.toLowerCase())) {
+                return (FCommand) subCommand;
+            }
+        }
+        return null;
     }
 
     @Override

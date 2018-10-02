@@ -2,9 +2,13 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
+import com.massivecraft.factions.cmd.tabcomplete.providers.ProviderFactionPlayers;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import org.bukkit.entity.Player;
 
 public class CmdTitle extends FCommand {
 
@@ -48,6 +52,14 @@ public class CmdTitle extends FCommand {
 
         // Inform
         myFaction.msg(TL.COMMAND_TITLE_CHANGED, fme.describeTo(myFaction, true), you.describeTo(myFaction, true));
+    }
+
+    @Override
+    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+        if (args.length == 1) {
+            return new ProviderFactionPlayers(FPlayers.getInstance().getByPlayer(player).getFaction());
+        }
+        return super.onTabComplete(player, args);
     }
 
     @Override

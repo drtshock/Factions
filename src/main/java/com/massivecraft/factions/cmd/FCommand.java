@@ -1,6 +1,8 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.tabcomplete.FactionTabCompleter;
+import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
@@ -10,10 +12,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
-public abstract class FCommand extends MCommand<P> {
+public abstract class FCommand extends MCommand<P> implements FactionTabCompleter {
 
     public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
 
@@ -105,6 +109,16 @@ public abstract class FCommand extends MCommand<P> {
         }
 
         return true;
+    }
+
+    @Override
+    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+        return new TabCompleteProvider() {
+            @Override
+            public List<String> get() {
+                return Collections.emptyList();
+            }
+        };
     }
 
     // -------------------------------------------- //

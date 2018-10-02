@@ -1,10 +1,15 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CmdJoin extends FCommand {
 
@@ -116,6 +121,26 @@ public class CmdJoin extends FCommand {
                 P.p.log(TL.COMMAND_JOIN_MOVEDLOG.toString(), fme.getName(), fplayer.getName(), faction.getTag());
             }
         }
+    }
+
+    @Override
+    public TabCompleteProvider onTabComplete(final Player player, String[] args) {
+        if (args.length == 1) {
+            return new TabCompleteProvider() {
+                @Override
+                public List<String> get() {
+                    FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+                    List<String> canJoin = new ArrayList<>();
+                    for (Faction faction : Factions.getInstance().getAllFactions()) {
+                        if (faction.getOpen() || faction.isInvited(fPlayer)) {
+                            canJoin.add(faction.getTag());
+                        }
+                    }
+                    return canJoin;
+                }
+            };
+        }
+        return super.onTabComplete(player, args);
     }
 
     @Override

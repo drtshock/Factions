@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
@@ -11,6 +12,7 @@ import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.logging.Level;
 
@@ -99,6 +101,14 @@ public class CmdBan extends FCommand {
         // Lets inform the people!
         target.msg(TL.COMMAND_BAN_BANNED, myFaction.getTag(target.getFaction()));
         myFaction.msg(TL.COMMAND_BAN_BANNED, fme.getName(), target.getName());
+    }
+
+    @Override
+    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+        if (args.length == 1) {
+            return TabCompleteProvider.PLAYERS;
+        }
+        return super.onTabComplete(player, args);
     }
 
     @Override
