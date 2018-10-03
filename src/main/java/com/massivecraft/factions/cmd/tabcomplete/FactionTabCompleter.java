@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd.tabcomplete;
 
-import org.bukkit.entity.Player;
+import com.massivecraft.factions.cmd.CommandContext;
 
 public interface FactionTabCompleter {
 
-    TabCompleteProvider onTabComplete(Player player, String[] args);
+    TabCompleteProvider onTabComplete(CommandContext context, String[] args);
 
 }

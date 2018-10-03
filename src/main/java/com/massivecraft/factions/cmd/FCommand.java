@@ -8,111 +8,68 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.util.TL;
+import org.apache.commons.lang.time.DurationFormatUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 
 public abstract class FCommand extends MCommand<P> implements FactionTabCompleter {
 
     public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
 
+    public CommandRequirements requirements;
+
+    // Legacy, To be moved to requirements SoonTM
     public boolean disableOnLock;
-
-    public FPlayer fme;
-    public Faction myFaction;
-    public boolean senderMustBeMember;
-    public boolean senderMustBeModerator;
-    public boolean senderMustBeAdmin;
-
     public boolean isMoneyCommand;
 
     public FCommand() {
         super(P.p);
 
+        requirements = new CommandRequirements.Builder(null).build();
+
         // Due to safety reasons it defaults to disable on lock.
         disableOnLock = true;
-
         // The money commands must be disabled if money should not be used.
         isMoneyCommand = false;
-
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
     }
+
+    public abstract void perform(CommandContext context);
 
     @Override
     public void execute(CommandSender sender, List<String> args, List<MCommand<?>> commandChain) {
-        if (sender instanceof Player) {
-            this.fme = FPlayers.getInstance().getByPlayer((Player) sender);
-            this.myFaction = this.fme.getFaction();
-        } else {
-            this.fme = null;
-            this.myFaction = null;
+        // Is there a matching sub command?
+        if (args.size() > 0) {
+            for (MCommand<?> subCommand : this.subCommands) {
+                if (subCommand.aliases.contains(args.get(0).toLowerCase())) {
+                    args.remove(0);
+                    commandChain.add(this);
+                    subCommand.execute(sender, args, commandChain);
+                    return;
+                }
+            }
         }
-        super.execute(sender, args, commandChain);
+
+        if (!validCall(sender, args)) {
+            return;
+        }
+
+        if (!this.isEnabled(sender)) {
+            return;
+        }
+
+        perform(new CommandContext(sender, args, aliases.get(0)));
     }
 
     @Override
-    public boolean isEnabled() {
-        if (p.getLocked() && this.disableOnLock) {
-            msg("<b>Factions was locked by an admin. Please try again later.");
-            return false;
-        }
-
-        if (this.isMoneyCommand && !Conf.econEnabled) {
-            msg("<b>Faction economy features are disabled on this server.");
-            return false;
-        }
-
-        if (this.isMoneyCommand && !Conf.bankEnabled) {
-            msg("<b>The faction bank system is disabled on this server.");
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean validSenderType(CommandSender sender, boolean informSenderIfNot) {
-        boolean superValid = super.validSenderType(sender, informSenderIfNot);
-        if (!superValid) {
-            return false;
-        }
-
-        if (!(this.senderMustBeMember || this.senderMustBeModerator || this.senderMustBeAdmin)) {
-            return true;
-        }
-
-        if (!(sender instanceof Player)) {
-            return false;
-        }
-
-        if (!fme.hasFaction()) {
-            sender.sendMessage(p.txt.parse("<b>You are not member of any faction."));
-            return false;
-        }
-
-        if (this.senderMustBeModerator && !fme.getRole().isAtLeast(Role.MODERATOR)) {
-            sender.sendMessage(p.txt.parse("<b>Only faction moderators can %s.", this.getHelpShort()));
-            return false;
-        }
-
-        // FactionsUUID - allow coleaders to execute things.
-        if (this.senderMustBeAdmin && !fme.getRole().isAtLeast(Role.COLEADER)) {
-            sender.sendMessage(p.txt.parse("<b>Only faction coleaders and admins can %s.", this.getHelpShort()));
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
         return new TabCompleteProvider() {
             @Override
             public List<String> get() {
@@ -121,6 +78,32 @@ public abstract class FCommand extends MCommand<P> implements FactionTabComplete
         };
     }
 
+    @Override
+    public boolean validCall(CommandSender sender, List<String> args) {
+        return requirements.computeRequirements(new CommandContext(sender, args, aliases.get(0)), true) && validArgs(args, sender);
+    }
+
+    @Override
+    public boolean isEnabled(CommandSender sender) {
+        if (p.getLocked() && this.disableOnLock) {
+            msg(sender, "<b>Factions was locked by an admin. Please try again later.");
+            return false;
+        }
+
+        if (this.isMoneyCommand && !Conf.econEnabled) {
+            msg(sender, "<b>Faction economy features are disabled on this server.");
+            return false;
+        }
+
+        if (this.isMoneyCommand && !Conf.bankEnabled) {
+            msg(sender, "<b>The faction bank system is disabled on this server.");
+            return false;
+        }
+
+        return true;
+    }
+
+    /*
     // -------------------------------------------- //
     // Assertions
     // -------------------------------------------- //
@@ -147,115 +130,6 @@ public abstract class FCommand extends MCommand<P> implements FactionTabComplete
             return false;
         }
         return true;
-    }
-
-    // -------------------------------------------- //
-    // Argument Readers
-    // -------------------------------------------- //
-
-    // FPLAYER ======================
-    public FPlayer strAsFPlayer(String name, FPlayer def, boolean msg) {
-        FPlayer ret = def;
-
-        if (name != null) {
-            for (FPlayer fplayer : FPlayers.getInstance().getAllFPlayers()) {
-                if (fplayer.getName().equalsIgnoreCase(name)) {
-                    ret = fplayer;
-                    break;
-                }
-            }
-        }
-
-        if (msg && ret == null) {
-            this.msg("<b>No player \"<p>%s<b>\" could be found.", name);
-        }
-
-        return ret;
-    }
-
-    public FPlayer argAsFPlayer(int idx, FPlayer def, boolean msg) {
-        return this.strAsFPlayer(this.argAsString(idx), def, msg);
-    }
-
-    public FPlayer argAsFPlayer(int idx, FPlayer def) {
-        return this.argAsFPlayer(idx, def, true);
-    }
-
-    public FPlayer argAsFPlayer(int idx) {
-        return this.argAsFPlayer(idx, null);
-    }
-
-    // BEST FPLAYER MATCH ======================
-    public FPlayer strAsBestFPlayerMatch(String name, FPlayer def, boolean msg) {
-        return strAsFPlayer(name, def, msg);
-    }
-
-    public FPlayer argAsBestFPlayerMatch(int idx, FPlayer def, boolean msg) {
-        return this.strAsBestFPlayerMatch(this.argAsString(idx), def, msg);
-    }
-
-    public FPlayer argAsBestFPlayerMatch(int idx, FPlayer def) {
-        return this.argAsBestFPlayerMatch(idx, def, true);
-    }
-
-    public FPlayer argAsBestFPlayerMatch(int idx) {
-        return this.argAsBestFPlayerMatch(idx, null);
-    }
-
-    // FACTION ======================
-    public Faction strAsFaction(String name, Faction def, boolean msg) {
-        Faction ret = def;
-
-        if (name != null) {
-            // First we try an exact match
-            Faction faction = Factions.getInstance().getByTag(name); // Checks for faction name match.
-
-            // Now lets try for warzone / safezone. Helpful for custom warzone / safezone names.
-            // Do this after we check for an exact match in case they rename the warzone / safezone
-            // and a player created faction took one of the names.
-            if (faction == null) {
-                if (name.equalsIgnoreCase("warzone")) {
-                    faction = Factions.getInstance().getWarZone();
-                } else if (name.equalsIgnoreCase("safezone")) {
-                    faction = Factions.getInstance().getSafeZone();
-                }
-            }
-
-            // Next we match faction tags
-            if (faction == null) {
-                faction = Factions.getInstance().getBestTagMatch(name);
-            }
-
-            // Next we match player names
-            if (faction == null) {
-                FPlayer fplayer = strAsFPlayer(name, null, false);
-                if (fplayer != null) {
-                    faction = fplayer.getFaction();
-                }
-            }
-
-            if (faction != null) {
-                ret = faction;
-            }
-        }
-
-        if (msg && ret == null) {
-            this.msg("<b>The faction or player \"<p>%s<b>\" could not be found.", name);
-        }
-
-        return ret;
-    }
-
-    public Faction argAsFaction(int idx, Faction def, boolean msg) {
-        return this.strAsFaction(this.argAsString(idx), def, msg);
-    }
-
-    public Faction argAsFaction(int idx, Faction def) {
-        return this.argAsFaction(idx, def, true);
-    }
-
-    public Faction argAsFaction(int idx) {
-        return this.argAsFaction(idx, null);
     }
 
     // -------------------------------------------- //
@@ -323,5 +197,70 @@ public abstract class FCommand extends MCommand<P> implements FactionTabComplete
 
     public void doWarmUp(FPlayer player, WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
         WarmUpUtil.process(player, warmup, translationKey, action, runnable, delay);
+    }*/
+
+
+    public List<String> getToolTips(FPlayer player) {
+        List<String> lines = new ArrayList<>();
+        for (String s : p.getConfig().getStringList("tooltips.show")) {
+            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFPlayerTags(s, player)));
+        }
+        return lines;
     }
+
+    public List<String> getToolTips(Faction faction) {
+        List<String> lines = new ArrayList<>();
+        for (String s : p.getConfig().getStringList("tooltips.list")) {
+            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFactionTags(s, faction)));
+        }
+        return lines;
+    }
+
+    public String replaceFPlayerTags(String s, FPlayer player) {
+        if (s.contains("{balance}")) {
+            String balance = Econ.isSetup() ? Econ.getFriendlyBalance(player) : "no balance";
+            s = s.replace("{balance}", balance);
+        }
+        if (s.contains("{lastSeen}")) {
+            String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - player.getLastLoginTime(), true, true) + " ago";
+            String lastSeen = player.isOnline() ? ChatColor.GREEN + "Online" : (System.currentTimeMillis() - player.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
+            s = s.replace("{lastSeen}", lastSeen);
+        }
+        if (s.contains("{power}")) {
+            String power = player.getPowerRounded() + "/" + player.getPowerMaxRounded();
+            s = s.replace("{power}", power);
+        }
+        if (s.contains("{group}")) {
+            String group = P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(player.getId())));
+            s = s.replace("{group}", group);
+        }
+        return s;
+    }
+
+    public String replaceFactionTags(String s, Faction faction) {
+        if (s.contains("{power}")) {
+            s = s.replace("{power}", String.valueOf(faction.getPowerRounded()));
+        }
+        if (s.contains("{maxPower}")) {
+            s = s.replace("{maxPower}", String.valueOf(faction.getPowerMaxRounded()));
+        }
+        if (s.contains("{leader}")) {
+            FPlayer fLeader = faction.getFPlayerAdmin();
+            String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
+            s = s.replace("{leader}", leader);
+        }
+        if (s.contains("{chunks}")) {
+            s = s.replace("{chunks}", String.valueOf(faction.getLandRounded()));
+        }
+        if (s.contains("{members}")) {
+            s = s.replace("{members}", String.valueOf(faction.getSize()));
+
+        }
+        if (s.contains("{online}")) {
+            s = s.replace("{online}", String.valueOf(faction.getOnlinePlayers().size()));
+        }
+        return s;
+    }
+
+
 }

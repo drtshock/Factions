@@ -100,14 +100,6 @@ public class FCmdRoot extends FCommand implements TabCompleter {
         this.aliases.removeAll(Collections.<String>singletonList(null));  // remove any nulls from extra commas
         this.allowNoSlashAccess = Conf.allowNoSlashCommand;
 
-        //this.requiredArgs.add("");
-        //this.optionalArgs.put("","")
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
-
         this.disableOnLock = false;
 
         this.setHelpShort("The faction base command");
@@ -208,9 +200,9 @@ public class FCmdRoot extends FCommand implements TabCompleter {
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         this.commandChain.add(this);
-        this.cmdHelp.execute(this.sender, this.args, this.commandChain);
+        this.cmdHelp.execute(context.sender, context.args, this.commandChain);
     }
 
     @Override
@@ -231,7 +223,7 @@ public class FCmdRoot extends FCommand implements TabCompleter {
                 return new ArrayList<>();
             }
 
-            TabCompleteProvider provider = subCommand.onTabComplete((Player) sender, Arrays.copyOfRange(args, 1, args.length));
+            TabCompleteProvider provider = subCommand.onTabComplete(new CommandContext(sender, Arrays.asList(args), alias), Arrays.copyOfRange(args, 1, args.length));
             List<String> matches = new ArrayList<>();
             for (String provided : provider.get()) {
                 if (provided.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
