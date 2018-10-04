@@ -215,7 +215,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor, TabCompleter 
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        this.execute(new CommandContext(sender, Arrays.asList(args), label), new ArrayList<FCommand>());
+        this.execute(new CommandContext(sender, new ArrayList<>(Arrays.asList(args)), label), new ArrayList<FCommand>());
         return true;
     }
 

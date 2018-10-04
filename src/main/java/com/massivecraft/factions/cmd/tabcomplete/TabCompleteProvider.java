@@ -42,7 +42,7 @@ public interface TabCompleteProvider {
         public List<String> get() {
             List<String> roles = new ArrayList<>();
             for (Role role : Role.values()) {
-                roles.add(role.nicename);
+                roles.add(role.name().toLowerCase());
             }
             return roles;
         }

@@ -31,7 +31,7 @@ public class CmdMoney extends MoneyCommand {
     @Override
     public void perform(CommandContext context) {
         this.commandChain.add(this);
-        P.p.cmdAutoHelp.execute(context.sender, context.args, this.commandChain);
+        P.p.cmdAutoHelp.execute(context, this.commandChain);
     }
 
     @Override

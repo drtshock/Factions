@@ -78,7 +78,7 @@ public class CmdBan extends FCommand {
         }
 
         // Lets inform the people!
-        target.msg(TL.COMMAND_BAN_BANNED, context.faction.getTag(target.getFaction()));
+        target.msg(TL.COMMAND_BAN_TARGET, context.faction.getTag(target.getFaction()));
         context.faction.msg(TL.COMMAND_BAN_BANNED, context.fPlayer.getName(), target.getName());
     }
 

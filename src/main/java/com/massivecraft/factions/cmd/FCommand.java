@@ -17,6 +17,7 @@ import java.util.*;
 
 public abstract class FCommand implements FactionTabCompleter {
 
+    public P p;
     public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
 
     // Command Aliases
@@ -31,11 +32,14 @@ public abstract class FCommand implements FactionTabCompleter {
 
     // Legacy, To be moved to requirements SoonTM
     public boolean disableOnLock;
+    // To be moved to context
     public List<FCommand> commandChain = new ArrayList<>(); // The command chain used to execute this command
 
     public boolean errorOnToManyArgs = true;
 
     public FCommand() {
+        p = P.p;
+
         requirements = new CommandRequirements.Builder(null).build();
 
         // Due to safety reasons it defaults to disable on lock.
