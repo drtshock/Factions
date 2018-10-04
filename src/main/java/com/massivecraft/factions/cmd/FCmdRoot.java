@@ -12,6 +12,12 @@ import com.massivecraft.factions.cmd.role.CmdDemote;
 import com.massivecraft.factions.cmd.role.CmdPromote;
 import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.zcore.util.TL;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import me.lucko.commodore.Commodore;
+import me.lucko.commodore.CommodoreProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,13 +25,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 
-public class FCmdRoot extends FCommand implements CommandExecutor, TabCompleter {
+public class FCmdRoot extends FCommand implements CommandExecutor {
+
+    public LiteralArgumentBuilder<?> brigadier = LiteralArgumentBuilder.literal("factions");
 
     public CmdAdmin cmdAdmin = new CmdAdmin();
     public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
@@ -205,6 +210,11 @@ public class FCmdRoot extends FCommand implements CommandExecutor, TabCompleter 
             P.p.log(Level.WARNING, "Faction flight set to false in config.yml. Not enabling /f fly command.");
         }
 
+        if (CommodoreProvider.isSupported()) {
+            Commodore commodore = CommodoreProvider.getCommodore(P.p);
+
+            commodore.register(p.getCommand(p.refCommand), brigadier.build());
+        }
     }
 
     @Override
@@ -219,7 +229,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor, TabCompleter 
         return true;
     }
 
-    @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             List<String> subcommands = new ArrayList<>();
@@ -256,6 +265,31 @@ public class FCmdRoot extends FCommand implements CommandExecutor, TabCompleter 
             }
         }
         return null;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void addSubCommand(FCommand subCommand) {
+        super.addSubCommand(subCommand);
+        if (CommodoreProvider.isSupported()) {
+            // Register brigadier to all command aliases
+            for (String alias : subCommand.aliases) {
+                LiteralArgumentBuilder literal = LiteralArgumentBuilder.literal(alias);
+                if (subCommand.requirements.brigadier != null) {
+                    // If the requirements explicitly provide a BrigadierProvider then use it
+                    brigadier.then(literal.then(subCommand.requirements.brigadier.get()));
+                } else {
+                    // Generate our own based own args
+                    for (String required : subCommand.requiredArgs) {
+                        literal.then(RequiredArgumentBuilder.argument(required, StringArgumentType.word()));
+                    }
+                    for (Map.Entry<String, String> optional : subCommand.optionalArgs.entrySet()) {
+                        literal.then(RequiredArgumentBuilder.argument(optional.getKey() + "|" + optional.getValue(), StringArgumentType.word()));
+                    }
+                    brigadier.then(literal);
+                }
+            }
+        }
     }
 
     @Override

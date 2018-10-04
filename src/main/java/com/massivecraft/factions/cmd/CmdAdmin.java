@@ -18,7 +18,7 @@ public class CmdAdmin extends FCommand {
         this.aliases.add("leader");
         this.aliases.add("setleader");
 
-        this.requiredArgs.add("player name");
+        this.requiredArgs.add("player");
         //this.optionalArgs.put("", "");
 
         this.requirements = new CommandRequirements.Builder(Permission.ADMIN)

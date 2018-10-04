@@ -17,7 +17,7 @@ public class CmdInvite extends FCommand {
         this.aliases.add("invite");
         this.aliases.add("inv");
 
-        this.requiredArgs.add("player name");
+        this.requiredArgs.add("player");
         //this.optionalArgs.put("", "");
 
         this.requirements = new CommandRequirements.Builder(Permission.INVITE)

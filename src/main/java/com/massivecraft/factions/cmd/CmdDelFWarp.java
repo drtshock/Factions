@@ -16,7 +16,7 @@ public class CmdDelFWarp extends FCommand {
         this.aliases.add("dw");
         this.aliases.add("deletewarp");
 
-        this.requiredArgs.add("warp name");
+        this.requiredArgs.add("warp");
 
         this.requirements = new CommandRequirements.Builder(Permission.SETWARP)
                 .memberOnly()

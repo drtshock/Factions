@@ -17,7 +17,7 @@ public class CmdSetFWarp extends FCommand {
         this.aliases.add("setwarp");
         this.aliases.add("sw");
 
-        this.requiredArgs.add("warp name");
+        this.requiredArgs.add("warp");
         this.optionalArgs.put("password", "password");
 
         this.requirements = new CommandRequirements.Builder(Permission.SETWARP)

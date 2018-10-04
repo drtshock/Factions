@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.cmd.tabcomplete.BrigadierProvider;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -24,12 +25,16 @@ public class CommandRequirements {
     // PermissableAction check if the player has allow for this before checking the role
     public PermissableAction action;
 
-    private CommandRequirements(Permission permission, boolean playerOnly, boolean memberOnly, Role role, PermissableAction action) {
+    // Commodore stuffs
+    public BrigadierProvider brigadier;
+
+    private CommandRequirements(Permission permission, boolean playerOnly, boolean memberOnly, Role role, PermissableAction action, BrigadierProvider brigadier) {
         this.permission = permission;
         this.playerOnly = playerOnly;
         this.memberOnly = memberOnly;
         this.role = role;
         this.action = action;
+        this.brigadier = brigadier;
     }
 
     public boolean computeRequirements(CommandContext context, boolean informIfNot) {
@@ -94,6 +99,8 @@ public class CommandRequirements {
         private Role role = Role.RECRUIT;
         private PermissableAction action;
 
+        private BrigadierProvider brigadier;
+
         public Builder(Permission permission) {
             this.permission = permission;
         }
@@ -119,8 +126,13 @@ public class CommandRequirements {
             return this;
         }
 
+        public Builder brigadier(BrigadierProvider brigadier) {
+            this.brigadier = brigadier;
+            return this;
+        }
+
         public CommandRequirements build() {
-            return new CommandRequirements(permission, playerOnly, memberOnly, role, action);
+            return new CommandRequirements(permission, playerOnly, memberOnly, role, action, brigadier);
         }
 
     }

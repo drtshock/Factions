@@ -22,7 +22,7 @@ public class CmdDeinvite extends FCommand {
         this.aliases.add("deinvite");
         this.aliases.add("deinv");
 
-        this.optionalArgs.put("player name", "name");
+        this.optionalArgs.put("player", "name");
         //this.optionalArgs.put("", "");
 
         this.requirements = new CommandRequirements.Builder(Permission.DEINVITE)

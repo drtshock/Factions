@@ -55,6 +55,11 @@
                             <pattern>net.amoebaman.util</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.net.amoebaman.util</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>me.lucko.commodore</pattern>
+                            <!-- vvv Replace with the package of your plugin vvv -->
+                            <shadedPattern>com.massivecraft.factions.shade.commodore</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -366,6 +371,12 @@
             <groupId>com.darkblade12</groupId>
             <artifactId>particleeffect</artifactId>
             <version>1.8.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>me.lucko</groupId>
+            <artifactId>commodore</artifactId>
+            <version>1.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

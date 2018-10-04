@@ -17,7 +17,7 @@ public class CmdJoin extends FCommand {
         super();
         this.aliases.add("join");
 
-        this.requiredArgs.add("faction name");
+        this.requiredArgs.add("faction");
         this.optionalArgs.put("player", "you");
 
         this.requirements = new CommandRequirements.Builder(Permission.JOIN)

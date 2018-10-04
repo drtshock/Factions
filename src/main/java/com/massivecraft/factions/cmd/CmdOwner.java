@@ -12,7 +12,7 @@ public class CmdOwner extends FCommand {
         super();
         this.aliases.add("owner");
 
-        this.optionalArgs.put("player name", "you");
+        this.optionalArgs.put("player", "you");
 
         this.requirements = new CommandRequirements.Builder(Permission.OWNER)
                 .playerOnly()

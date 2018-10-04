@@ -12,7 +12,7 @@ public class CmdAHome extends FCommand {
         super();
         this.aliases.add("ahome");
 
-        this.requiredArgs.add("player name");
+        this.requiredArgs.add("player");
 
         this.requirements = new CommandRequirements.Builder(Permission.AHOME)
                 .build();

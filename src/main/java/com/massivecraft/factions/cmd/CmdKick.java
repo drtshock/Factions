@@ -20,7 +20,7 @@ public class CmdKick extends FCommand implements FactionTabCompleter {
         super();
         this.aliases.add("kick");
 
-        this.optionalArgs.put("player name", "player name");
+        this.optionalArgs.put("player", "player");
 
         this.requirements = new CommandRequirements.Builder(Permission.KICK)
                 .memberOnly()

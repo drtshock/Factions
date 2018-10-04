@@ -14,7 +14,7 @@ public class CmdTitle extends FCommand {
     public CmdTitle() {
         this.aliases.add("title");
 
-        this.requiredArgs.add("player name");
+        this.requiredArgs.add("player");
         this.optionalArgs.put("title", "");
 
         this.requirements = new CommandRequirements.Builder(Permission.TITLE)
