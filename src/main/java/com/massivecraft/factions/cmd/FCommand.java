@@ -4,57 +4,69 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.tabcomplete.FactionTabCompleter;
 import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.WarmUpUtil;
-import com.massivecraft.factions.zcore.MCommand;
+import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
-public abstract class FCommand extends MCommand<P> implements FactionTabCompleter {
+public abstract class FCommand implements FactionTabCompleter {
 
     public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
 
+    // Command Aliases
+    public List<String> aliases;
+
+    // Information on the args
+    public List<String> requiredArgs;
+    public LinkedHashMap<String, String> optionalArgs;
+
+    // Requirements to execute this command
     public CommandRequirements requirements;
 
     // Legacy, To be moved to requirements SoonTM
     public boolean disableOnLock;
+    public List<FCommand> commandChain = new ArrayList<>(); // The command chain used to execute this command
+
+    public boolean errorOnToManyArgs = true;
 
     public FCommand() {
-        super(P.p);
-
         requirements = new CommandRequirements.Builder(null).build();
 
         // Due to safety reasons it defaults to disable on lock.
         disableOnLock = true;
+
+        this.subCommands = new ArrayList<>();
+        this.aliases = new ArrayList<>();
+
+        this.requiredArgs = new ArrayList<>();
+        this.optionalArgs = new LinkedHashMap<>();
+
+        this.helpShort = null;
+        this.helpLong = new ArrayList<>();
+        this.visibility = CommandVisibility.VISIBLE;
     }
 
     public abstract void perform(CommandContext context);
 
-    @Override
-    public void execute(CommandSender sender, List<String> args, List<MCommand<?>> commandChain) {
+    public void execute(CommandContext context, List<FCommand> commandChain) {
         // Is there a matching sub command?
-        if (args.size() > 0) {
-            for (MCommand<?> subCommand : this.subCommands) {
-                if (subCommand.aliases.contains(args.get(0).toLowerCase())) {
-                    args.remove(0);
+        if (context.args.size() > 0) {
+            for (FCommand subCommand : this.subCommands) {
+                if (subCommand.aliases.contains(context.args.get(0).toLowerCase())) {
+                    context.args.remove(0);
                     commandChain.add(this);
-                    subCommand.execute(sender, args, commandChain);
+                    subCommand.execute(context, commandChain);
                     return;
                 }
             }
         }
 
-        CommandContext context = new CommandContext(sender, args, aliases.get(0));
         if (!validCall(context)) {
             return;
         }
@@ -66,7 +78,6 @@ public abstract class FCommand extends MCommand<P> implements FactionTabComplete
         perform(context);
     }
 
-    @Override
     public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
         return new TabCompleteProvider() {
             @Override
@@ -76,27 +87,79 @@ public abstract class FCommand extends MCommand<P> implements FactionTabComplete
         };
     }
 
-    @Override
     public boolean validCall(CommandContext context) {
         return requirements.computeRequirements(context, true) && validArgs(context);
     }
 
-    @Override
     public boolean isEnabled(CommandContext context) {
-        if (p.getLocked() && this.disableOnLock) {
+        if (P.p.getLocked() && this.disableOnLock) {
             context.msg("<b>Factions was locked by an admin. Please try again later.");
             return false;
         }
         return true;
     }
 
-    // -------------------------------------------- //
-    // Commonly used logic
-    // -------------------------------------------- //
+    public boolean validArgs(CommandContext context) {
+        if (context.args.size() < this.requiredArgs.size()) {
+            if (context.sender != null) {
+                context.msg(TL.GENERIC_ARGS_TOOFEW);
+                context.sender.sendMessage(this.getUseageTemplate());
+            }
+            return false;
+        }
 
+        if (context.args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.errorOnToManyArgs) {
+            if (context.sender != null) {
+                // Get the to many string slice
+                List<String> theToMany = context.args.subList(this.requiredArgs.size() + this.optionalArgs.size(), context.args.size());
+                context.msg(TL.GENERIC_ARGS_TOOMANY, TextUtil.implode(theToMany, " "));
+                context.sender.sendMessage(this.getUseageTemplate());
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /*
+        Subcommands
+     */
+    public List<FCommand> subCommands;
+
+    public void addSubCommand(FCommand subCommand) {
+        subCommand.commandChain.addAll(this.commandChain);
+        subCommand.commandChain.add(this);
+        this.subCommands.add(subCommand);
+    }
+
+    /*
+        Help
+     */
+    public List<String> helpLong;
+    public CommandVisibility visibility;
+
+    private String helpShort;
+
+    public void setHelpShort(String val) {
+        this.helpShort = val;
+    }
+
+    public String getHelpShort() {
+        if (this.helpShort == null) {
+            return getUsageTranslation().toString();
+        }
+
+        return this.helpShort;
+    }
+
+    public abstract TL getUsageTranslation();
+
+
+    /*
+        Common Logic
+     */
     public List<String> getToolTips(FPlayer player) {
         List<String> lines = new ArrayList<>();
-        for (String s : p.getConfig().getStringList("tooltips.show")) {
+        for (String s : P.p.getConfig().getStringList("tooltips.show")) {
             lines.add(ChatColor.translateAlternateColorCodes('&', replaceFPlayerTags(s, player)));
         }
         return lines;
@@ -104,7 +167,7 @@ public abstract class FCommand extends MCommand<P> implements FactionTabComplete
 
     public List<String> getToolTips(Faction faction) {
         List<String> lines = new ArrayList<>();
-        for (String s : p.getConfig().getStringList("tooltips.list")) {
+        for (String s : P.p.getConfig().getStringList("tooltips.list")) {
             lines.add(ChatColor.translateAlternateColorCodes('&', replaceFactionTags(s, faction)));
         }
         return lines;
@@ -154,6 +217,58 @@ public abstract class FCommand extends MCommand<P> implements FactionTabComplete
             s = s.replace("{online}", String.valueOf(faction.getOnlinePlayers().size()));
         }
         return s;
+    }
+
+    /*
+        Help and Usage information
+     */
+    public String getUseageTemplate(List<FCommand> commandChain, boolean addShortHelp) {
+        StringBuilder ret = new StringBuilder();
+        ret.append(P.p.txt.parseTags("<c>"));
+        ret.append('/');
+
+        for (FCommand fc : commandChain) {
+            ret.append(TextUtil.implode(fc.aliases, ","));
+            ret.append(' ');
+        }
+
+        ret.append(TextUtil.implode(this.aliases, ","));
+
+        List<String> args = new ArrayList<>();
+
+        for (String requiredArg : this.requiredArgs) {
+            args.add("<" + requiredArg + ">");
+        }
+
+        for (Map.Entry<String, String> optionalArg : this.optionalArgs.entrySet()) {
+            String val = optionalArg.getValue();
+            if (val == null) {
+                val = "";
+            } else {
+                val = "=" + val;
+            }
+            args.add("[" + optionalArg.getKey() + val + "]");
+        }
+
+        if (args.size() > 0) {
+            ret.append(P.p.txt.parseTags("<p> "));
+            ret.append(TextUtil.implode(args, " "));
+        }
+
+        if (addShortHelp) {
+            ret.append(P.p.txt.parseTags(" <i>"));
+            ret.append(this.getHelpShort());
+        }
+
+        return ret.toString();
+    }
+
+    public String getUseageTemplate(boolean addShortHelp) {
+        return getUseageTemplate(this.commandChain, addShortHelp);
+    }
+
+    public String getUseageTemplate() {
+        return getUseageTemplate(false);
     }
 
 

@@ -120,7 +120,7 @@ public class P extends MPlugin {
         // Add Base Commands
         this.cmdBase = new FCmdRoot();
         this.cmdAutoHelp = new CmdAutoHelp();
-        this.getBaseCommands().add(cmdBase);
+        //this.getBaseCommands().add(cmdBase);
 
         Econ.setup();
         setupPermissions();
@@ -142,7 +142,7 @@ public class P extends MPlugin {
         getServer().getPluginManager().registerEvents(new FactionsBlockListener(this), this);
 
         // since some other plugins execute commands directly through this command interface, provide it
-        this.getCommand(this.refCommand).setExecutor(this);
+        this.getCommand(refCommand).setExecutor(cmdBase);
 
         if (Bukkit.getVersion().contains("1.8")) {
             particleProvider = new PacketParticleProvider();
@@ -277,7 +277,7 @@ public class P extends MPlugin {
     public boolean logPlayerCommands() {
         return Conf.logPlayerCommands;
     }
-
+/*
     @Override
     public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly) {
         return sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player) sender) || super.handleCommand(sender, commandString, testOnly);
@@ -299,7 +299,7 @@ public class P extends MPlugin {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         return cmdBase.onTabComplete(sender, command, alias, args);
     }
-
+*/
 
     // -------------------------------------------- //
     // Functions for other plugins to hook into
@@ -338,7 +338,7 @@ public class P extends MPlugin {
     // TODO: GET THIS BACK AND WORKING
 
     public boolean isFactionsCommand(String check) {
-        return !(check == null || check.isEmpty()) && this.handleCommand(null, check, true);
+        return !(check == null || check.isEmpty()); //&& this.handleCommand(null, check, true);
     }
 
     // Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat

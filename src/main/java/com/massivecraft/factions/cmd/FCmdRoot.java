@@ -11,10 +11,10 @@ import com.massivecraft.factions.cmd.relations.CmdRelationTruce;
 import com.massivecraft.factions.cmd.role.CmdDemote;
 import com.massivecraft.factions.cmd.role.CmdPromote;
 import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
-import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
-public class FCmdRoot extends FCommand implements TabCompleter {
+public class FCmdRoot extends FCommand implements CommandExecutor, TabCompleter {
 
     public CmdAdmin cmdAdmin = new CmdAdmin();
     public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
@@ -106,12 +106,12 @@ public class FCmdRoot extends FCommand implements TabCompleter {
         super();
         this.aliases.addAll(Conf.baseCommandAliases);
         this.aliases.removeAll(Collections.<String>singletonList(null));  // remove any nulls from extra commas
-        this.allowNoSlashAccess = Conf.allowNoSlashCommand;
+        //this.allowNoSlashAccess = Conf.allowNoSlashCommand;
 
         this.disableOnLock = false;
 
         this.setHelpShort("The faction base command");
-        this.helpLong.add(p.txt.parseTags("<i>This command contains all faction stuff."));
+        this.helpLong.add(P.p.txt.parseTags("<i>This command contains all faction stuff."));
 
         //this.subCommands.add(p.cmdHelp);
 
@@ -210,14 +210,20 @@ public class FCmdRoot extends FCommand implements TabCompleter {
     @Override
     public void perform(CommandContext context) {
         this.commandChain.add(this);
-        this.cmdHelp.execute(context.sender, context.args, this.commandChain);
+        this.cmdHelp.execute(context, this.commandChain);
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        this.execute(new CommandContext(sender, Arrays.asList(args), label), new ArrayList<FCommand>());
+        return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             List<String> subcommands = new ArrayList<>();
-            for (MCommand<?> subCommand : subCommands) {
+            for (FCommand subCommand : subCommands) {
                 for (String subAlias : subCommand.aliases) {
                     if (subAlias.startsWith(args[0].toLowerCase())) {
                         subcommands.add(subAlias);
@@ -244,9 +250,9 @@ public class FCmdRoot extends FCommand implements TabCompleter {
     }
 
     private FCommand getSubCommand(String alias) {
-        for (MCommand<?> subCommand : this.subCommands) {
+        for (FCommand subCommand : this.subCommands) {
             if (subCommand.aliases.contains(alias.toLowerCase())) {
-                return (FCommand) subCommand;
+                return subCommand;
             }
         }
         return null;
