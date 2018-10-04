@@ -3,6 +3,7 @@ package com.massivecraft.factions.zcore;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -98,29 +99,29 @@ public abstract class MCommand<T extends MPlugin> {
      * In this method we validate that all prerequisites to perform this command has been met.
      */
     // TODO: There should be a boolean for silence
-    public boolean validCall(CommandSender sender, List<String> args) {
-        return validArgs(args, sender);
+    public boolean validCall(CommandContext context) {
+        return validArgs(context);
     }
 
-    public boolean isEnabled(CommandSender sender) {
+    public boolean isEnabled(CommandContext context) {
         return true;
     }
 
-    public boolean validArgs(List<String> args, CommandSender sender) {
-        if (args.size() < this.requiredArgs.size()) {
-            if (sender != null) {
-                msg(sender, TL.GENERIC_ARGS_TOOFEW);
-                sender.sendMessage(this.getUseageTemplate());
+    public boolean validArgs(CommandContext context) {
+        if (context.args.size() < this.requiredArgs.size()) {
+            if (context.sender != null) {
+                context.msg(TL.GENERIC_ARGS_TOOFEW);
+                context.sender.sendMessage(this.getUseageTemplate());
             }
             return false;
         }
 
-        if (args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.errorOnToManyArgs) {
-            if (sender != null) {
+        if (context.args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.errorOnToManyArgs) {
+            if (context.sender != null) {
                 // Get the to many string slice
-                List<String> theToMany = args.subList(this.requiredArgs.size() + this.optionalArgs.size(), args.size());
-                msg(sender, TL.GENERIC_ARGS_TOOMANY, TextUtil.implode(theToMany, " "));
-                sender.sendMessage(this.getUseageTemplate());
+                List<String> theToMany = context.args.subList(this.requiredArgs.size() + this.optionalArgs.size(), context.args.size());
+                context.msg(TL.GENERIC_ARGS_TOOMANY, TextUtil.implode(theToMany, " "));
+                context.sender.sendMessage(this.getUseageTemplate());
             }
             return false;
         }
@@ -178,38 +179,6 @@ public abstract class MCommand<T extends MPlugin> {
 
     public String getUseageTemplate() {
         return getUseageTemplate(false);
-    }
-
-    // -------------------------------------------- //
-    // Message Sending Helpers
-    // -------------------------------------------- //
-
-    public void msg(CommandSender sender, String str, Object... args) {
-        sender.sendMessage(p.txt.parse(str, args));
-    }
-
-    public void msg(CommandSender sender, TL translation, Object... args) {
-        sender.sendMessage(p.txt.parse(translation.toString(), args));
-    }
-
-    public void sendMessage(CommandSender sender, String msg) {
-        sender.sendMessage(msg);
-    }
-
-    public void sendMessage(CommandSender sender, List<String> msgs) {
-        for (String msg : msgs) {
-            this.sendMessage(sender, msg);
-        }
-    }
-
-    public void sendFancyMessage(CommandSender sender, FancyMessage message) {
-        message.send(sender);
-    }
-
-    public void sendFancyMessage(CommandSender sender, List<FancyMessage> messages) {
-        for (FancyMessage m : messages) {
-            sendFancyMessage(sender, m);
-        }
     }
 
 }

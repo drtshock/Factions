@@ -6,6 +6,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.cmd.tabcomplete.providers.ProviderFactionPlayers;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.entity.Player;
@@ -18,48 +19,47 @@ public class CmdTitle extends FCommand {
         this.requiredArgs.add("player name");
         this.optionalArgs.put("title", "");
 
-        this.permission = Permission.TITLE.node;
-        this.disableOnLock = true;
+        this.requirements = new CommandRequirements.Builder(Permission.TITLE)
+                .memberOnly()
+                .withMinRole(Role.MODERATOR)
+                .build();
 
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = true;
-        senderMustBeAdmin = false;
+        this.disableOnLock = true;
     }
 
     @Override
-    public void perform() {
-        FPlayer you = this.argAsBestFPlayerMatch(0);
+    public void perform(CommandContext context) {
+        FPlayer you = context.argAsBestFPlayerMatch(0);
         if (you == null) {
             return;
         }
 
-        args.remove(0);
-        String title = TextUtil.implode(args, " ");
+        context.args.remove(0);
+        String title = TextUtil.implode(context.args, " ");
 
         title = title.replaceAll(",", "");
 
-        if (!canIAdministerYou(fme, you)) {
+        if (!context.canIAdministerYou(context.fPlayer, you)) {
             return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostTitle, TL.COMMAND_TITLE_TOCHANGE, TL.COMMAND_TITLE_FORCHANGE)) {
+        if (!context.payForCommand(Conf.econCostTitle, TL.COMMAND_TITLE_TOCHANGE, TL.COMMAND_TITLE_FORCHANGE)) {
             return;
         }
 
-        you.setTitle(sender, title);
+        you.setTitle(context.sender, title);
 
         // Inform
-        myFaction.msg(TL.COMMAND_TITLE_CHANGED, fme.describeTo(myFaction, true), you.describeTo(myFaction, true));
+        context.faction.msg(TL.COMMAND_TITLE_CHANGED,context.fPlayer.describeTo(context.faction, true), you.describeTo(context.faction, true));
     }
 
     @Override
-    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
         if (args.length == 1) {
-            return new ProviderFactionPlayers(FPlayers.getInstance().getByPlayer(player).getFaction());
+            return new ProviderFactionPlayers(context.faction);
         }
-        return super.onTabComplete(player, args);
+        return super.onTabComplete(context, args);
     }
 
     @Override

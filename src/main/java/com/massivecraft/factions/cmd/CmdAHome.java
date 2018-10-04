@@ -14,20 +14,17 @@ public class CmdAHome extends FCommand {
 
         this.requiredArgs.add("player name");
 
-        this.permission = Permission.AHOME.node;
-        this.disableOnLock = false;
+        this.requirements = new CommandRequirements.Builder(Permission.AHOME)
+                .build();
 
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.disableOnLock = false;
     }
 
     @Override
-    public void perform() {
-        FPlayer target = argAsBestFPlayerMatch(0);
+    public void perform(CommandContext context) {
+        FPlayer target = context.argAsBestFPlayerMatch(0);
         if (target == null) {
-            msg(TL.GENERIC_NOPLAYERMATCH, argAsString(0));
+            context.msg(TL.GENERIC_NOPLAYERMATCH, context.argAsString(0));
             return;
         }
 
@@ -35,13 +32,13 @@ public class CmdAHome extends FCommand {
             Faction faction = target.getFaction();
             if (faction.hasHome()) {
                 target.getPlayer().teleport(faction.getHome(), PlayerTeleportEvent.TeleportCause.PLUGIN);
-                msg(TL.COMMAND_AHOME_SUCCESS, target.getName());
+                context.msg(TL.COMMAND_AHOME_SUCCESS, target.getName());
                 target.msg(TL.COMMAND_AHOME_TARGET);
             } else {
-                msg(TL.COMMAND_AHOME_NOHOME, target.getName());
+                context.msg(TL.COMMAND_AHOME_NOHOME, target.getName());
             }
         } else {
-            msg(TL.COMMAND_AHOME_OFFLINE, target.getName());
+            context.msg(TL.COMMAND_AHOME_OFFLINE, target.getName());
         }
     }
 

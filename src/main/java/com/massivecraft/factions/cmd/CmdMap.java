@@ -16,48 +16,46 @@ public class CmdMap extends FCommand {
         //this.requiredArgs.add("");
         this.optionalArgs.put("on/off", "once");
 
-        this.permission = Permission.MAP.node;
-        this.disableOnLock = false;
+        this.requirements = new CommandRequirements.Builder(Permission.MAP)
+                .playerOnly()
+                .build();
 
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.disableOnLock = false;
     }
 
     @Override
-    public void perform() {
-        if (this.argIsSet(0)) {
-            if (this.argAsBool(0, !fme.isMapAutoUpdating())) {
+    public void perform(CommandContext context) {
+        if (context.argIsSet(0)) {
+            if (context.argAsBool(0, !context.fPlayer.isMapAutoUpdating())) {
                 // Turn on
 
                 // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-                if (!payForCommand(Conf.econCostMap, "to show the map", "for showing the map")) {
+                if (!context.payForCommand(Conf.econCostMap, "to show the map", "for showing the map")) {
                     return;
                 }
 
-                fme.setMapAutoUpdating(true);
-                msg(TL.COMMAND_MAP_UPDATE_ENABLED);
+                context.fPlayer.setMapAutoUpdating(true);
+                context.msg(TL.COMMAND_MAP_UPDATE_ENABLED);
 
                 // And show the map once
-                showMap();
+                showMap(context);
             } else {
                 // Turn off
-                fme.setMapAutoUpdating(false);
-                msg(TL.COMMAND_MAP_UPDATE_DISABLED);
+                context.fPlayer.setMapAutoUpdating(false);
+                context.msg(TL.COMMAND_MAP_UPDATE_DISABLED);
             }
         } else {
             // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-            if (!payForCommand(Conf.econCostMap, TL.COMMAND_MAP_TOSHOW, TL.COMMAND_MAP_FORSHOW)) {
+            if (!context.payForCommand(Conf.econCostMap, TL.COMMAND_MAP_TOSHOW, TL.COMMAND_MAP_FORSHOW)) {
                 return;
             }
 
-            showMap();
+            showMap(context);
         }
     }
 
-    public void showMap() {
-        sendFancyMessage(Board.getInstance().getMap(fme, new FLocation(fme), fme.getPlayer().getLocation().getYaw()));
+    public void showMap(CommandContext context) {
+        context.sendFancyMessage(Board.getInstance().getMap(context.fPlayer, new FLocation(context.fPlayer),context.fPlayer.getPlayer().getLocation().getYaw()));
     }
 
     @Override

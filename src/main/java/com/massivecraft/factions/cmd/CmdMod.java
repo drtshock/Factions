@@ -25,49 +25,48 @@ public class CmdMod extends FCommand {
         this.optionalArgs.put("player name", "name");
         //this.optionalArgs.put("", "");
 
-        this.permission = Permission.MOD.node;
-        this.disableOnLock = true;
+        this.requirements = new CommandRequirements.Builder(Permission.MOD)
+                .memberOnly()
+                .withMinRole(Role.COLEADER)
+                .build();
 
-        senderMustBePlayer = false;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = true;
+        this.disableOnLock = true;
     }
 
     @Override
-    public void perform() {
-        FPlayer you = this.argAsBestFPlayerMatch(0);
+    public void perform(CommandContext context) {
+        FPlayer you = context.argAsBestFPlayerMatch(0);
         if (you == null) {
             FancyMessage msg = new FancyMessage(TL.COMMAND_MOD_CANDIDATES.toString()).color(ChatColor.GOLD);
-            for (FPlayer player : myFaction.getFPlayersWhereRole(Role.NORMAL)) {
+            for (FPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
                 String s = player.getName();
                 msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_MOD_CLICKTOPROMOTE.toString() + s).command("/" + Conf.baseCommandAliases.get(0) + " mod " + s);
             }
 
-            sendFancyMessage(msg);
+            context.sendFancyMessage(msg);
             return;
         }
 
-        boolean permAny = Permission.MOD_ANY.has(sender, false);
+        boolean permAny = Permission.MOD_ANY.has(context.sender, false);
         Faction targetFaction = you.getFaction();
 
-        if (targetFaction != myFaction && !permAny) {
-            msg(TL.COMMAND_MOD_NOTMEMBER, you.describeTo(fme, true));
+        if (targetFaction != context.faction && !permAny) {
+            context.msg(TL.COMMAND_MOD_NOTMEMBER, you.describeTo(context.fPlayer, true));
             return;
         }
 
-        if (fme != null && fme.getRole() != Role.ADMIN && !permAny) {
-            msg(TL.COMMAND_MOD_NOTADMIN);
+        if (context.fPlayer != null && context.fPlayer.getRole() != Role.ADMIN && !permAny) {
+            context.msg(TL.COMMAND_MOD_NOTADMIN);
             return;
         }
 
-        if (you == fme && !permAny) {
-            msg(TL.COMMAND_MOD_SELF);
+        if (you ==context.fPlayer && !permAny) {
+            context.msg(TL.COMMAND_MOD_SELF);
             return;
         }
 
         if (you.getRole() == Role.ADMIN) {
-            msg(TL.COMMAND_MOD_TARGETISADMIN);
+            context.msg(TL.COMMAND_MOD_TARGETISADMIN);
             return;
         }
 
@@ -75,21 +74,21 @@ public class CmdMod extends FCommand {
             // Revoke
             you.setRole(Role.NORMAL);
             targetFaction.msg(TL.COMMAND_MOD_REVOKED, you.describeTo(targetFaction, true));
-            msg(TL.COMMAND_MOD_REVOKES, you.describeTo(fme, true));
+            context.msg(TL.COMMAND_MOD_REVOKES, you.describeTo(context.fPlayer, true));
         } else {
             // Give
             you.setRole(Role.MODERATOR);
             targetFaction.msg(TL.COMMAND_MOD_PROMOTED, you.describeTo(targetFaction, true));
-            msg(TL.COMMAND_MOD_PROMOTES, you.describeTo(fme, true));
+            context.msg(TL.COMMAND_MOD_PROMOTES, you.describeTo(context.fPlayer, true));
         }
     }
 
     @Override
-    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
         if (args.length == 1) {
-            return new ProviderFactionPlayers(FPlayers.getInstance().getByPlayer(player).getFaction());
+            return new ProviderFactionPlayers(context.faction);
         }
-        return super.onTabComplete(player, args);
+        return super.onTabComplete(context, args);
     }
 
     @Override

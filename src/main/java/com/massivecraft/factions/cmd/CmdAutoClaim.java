@@ -14,38 +14,36 @@ public class CmdAutoClaim extends FCommand {
         //this.requiredArgs.add("");
         this.optionalArgs.put("faction", "your");
 
-        this.permission = Permission.AUTOCLAIM.node;
-        this.disableOnLock = true;
+        this.requirements = new CommandRequirements.Builder(Permission.AUTOCLAIM)
+                .playerOnly()
+                .build();
 
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.disableOnLock = true;
     }
 
     @Override
-    public void perform() {
-        Faction forFaction = this.argAsFaction(0, myFaction);
-        if (forFaction == null || forFaction == fme.getAutoClaimFor()) {
-            fme.setAutoClaimFor(null);
-            msg(TL.COMMAND_AUTOCLAIM_DISABLED);
+    public void perform(CommandContext context) {
+        Faction forFaction = context.argAsFaction(0, context.faction);
+        if (forFaction == null || forFaction == context.fPlayer.getAutoClaimFor()) {
+            context.fPlayer.setAutoClaimFor(null);
+            context.msg(TL.COMMAND_AUTOCLAIM_DISABLED);
             return;
         }
 
-        if (!fme.canClaimForFaction(forFaction)) {
-            if (myFaction == forFaction) {
-                msg(TL.COMMAND_AUTOCLAIM_REQUIREDRANK, Role.MODERATOR.getTranslation());
+        if (!context.fPlayer.canClaimForFaction(forFaction)) {
+            if (context.faction == forFaction) {
+                context.msg(TL.COMMAND_AUTOCLAIM_REQUIREDRANK, Role.MODERATOR.getTranslation());
             } else {
-                msg(TL.COMMAND_AUTOCLAIM_OTHERFACTION, forFaction.describeTo(fme));
+                context.msg(TL.COMMAND_AUTOCLAIM_OTHERFACTION, forFaction.describeTo(context.fPlayer));
             }
 
             return;
         }
 
-        fme.setAutoClaimFor(forFaction);
+        context.fPlayer.setAutoClaimFor(forFaction);
 
-        msg(TL.COMMAND_AUTOCLAIM_ENABLED, forFaction.describeTo(fme));
-        fme.attemptClaim(forFaction, me.getLocation(), true);
+        context.msg(TL.COMMAND_AUTOCLAIM_ENABLED, forFaction.describeTo(context.fPlayer));
+        context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), true);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.cmd.tabcomplete.providers.ProviderFactionWarps;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.entity.Player;
 
@@ -21,37 +22,39 @@ public class CmdDelFWarp extends FCommand {
         this.aliases.add("delwarp");
         this.aliases.add("dw");
         this.aliases.add("deletewarp");
+
         this.requiredArgs.add("warp name");
-        this.senderMustBeMember = true;
-        this.senderMustBeModerator = true;
-        this.senderMustBePlayer = true;
-        this.permission = Permission.SETWARP.node;
+
+        this.requirements = new CommandRequirements.Builder(Permission.SETWARP)
+                .memberOnly()
+                .withMinRole(Role.MODERATOR)
+                .build();
     }
 
     @Override
-    public void perform() {
-        String warp = argAsString(0);
-        if (myFaction.isWarp(warp)) {
-            if (!transact(fme)) {
+    public void perform(CommandContext context) {
+        String warp = context.argAsString(0);
+        if (context.faction.isWarp(warp)) {
+            if (!transact(context.fPlayer, context)) {
                 return;
             }
-            myFaction.removeWarp(warp);
-            fme.msg(TL.COMMAND_DELFWARP_DELETED, warp);
+            context.faction.removeWarp(warp);
+            context.msg(TL.COMMAND_DELFWARP_DELETED, warp);
         } else {
-            fme.msg(TL.COMMAND_DELFWARP_INVALID, warp);
+            context.msg(TL.COMMAND_DELFWARP_INVALID, warp);
         }
     }
 
-    private boolean transact(FPlayer player) {
-        return !P.p.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(P.p.getConfig().getDouble("warp-cost.delwarp", 5), TL.COMMAND_DELFWARP_TODELETE.toString(), TL.COMMAND_DELFWARP_FORDELETE.toString());
+    private boolean transact(FPlayer player, CommandContext context) {
+        return !P.p.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || context.payForCommand(P.p.getConfig().getDouble("warp-cost.delwarp", 5), TL.COMMAND_DELFWARP_TODELETE.toString(), TL.COMMAND_DELFWARP_FORDELETE.toString());
     }
 
     @Override
-    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
         if (args.length == 1) {
-            return new ProviderFactionWarps(FPlayers.getInstance().getByPlayer(player).getFaction());
+            return new ProviderFactionWarps(context.faction);
         }
-        return super.onTabComplete(player, args);
+        return super.onTabComplete(context, args);
     }
 
     @Override

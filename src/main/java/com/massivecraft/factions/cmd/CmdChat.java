@@ -21,29 +21,27 @@ public class CmdChat extends FCommand {
         //this.requiredArgs.add("");
         this.optionalArgs.put("mode", "next");
 
-        this.permission = Permission.CHAT.node;
-        this.disableOnLock = false;
+        this.requirements = new CommandRequirements.Builder(Permission.CHAT)
+                .memberOnly()
+                .build();
 
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.disableOnLock = false;
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         if (!Conf.factionOnlyChat) {
-            msg(TL.COMMAND_CHAT_DISABLED.toString());
+            context.msg(TL.COMMAND_CHAT_DISABLED.toString());
             return;
         }
 
-        String modeString = this.argAsString(0);
-        ChatMode modeTarget = fme.getChatMode().getNext();
+        String modeString = context.argAsString(0);
+        ChatMode modeTarget = context.fPlayer.getChatMode().getNext();
 
         // If player is cycling through chat modes
         // and he is not atleast a moderator get next one
         if (modeString == null && modeTarget == ChatMode.MOD) {
-            if (!fme.getRole().isAtLeast(Role.MODERATOR)) {
+            if (!context.fPlayer.getRole().isAtLeast(Role.MODERATOR)) {
                 modeTarget = modeTarget.getNext();
             }
         }
@@ -52,8 +50,8 @@ public class CmdChat extends FCommand {
             modeString = modeString.toLowerCase();
             if (modeString.startsWith("m")) {
                 modeTarget = ChatMode.MOD;
-                if (!fme.getRole().isAtLeast(Role.MODERATOR)) {
-                    fme.msg(TL.COMMAND_CHAT_INSUFFICIENTRANK);
+                if (!context.fPlayer.getRole().isAtLeast(Role.MODERATOR)) {
+                    context.msg(TL.COMMAND_CHAT_INSUFFICIENTRANK);
                     return;
                 }
             } else if (modeString.startsWith("p")) {
@@ -65,28 +63,28 @@ public class CmdChat extends FCommand {
             } else if (modeString.startsWith("t")) {
                 modeTarget = ChatMode.TRUCE;
             } else {
-                msg(TL.COMMAND_CHAT_INVALIDMODE);
+                context.msg(TL.COMMAND_CHAT_INVALIDMODE);
                 return;
             }
         }
 
-        fme.setChatMode(modeTarget);
+        context.fPlayer.setChatMode(modeTarget);
 
-        if (fme.getChatMode() == ChatMode.MOD) {
-            msg(TL.COMMAND_CHAT_MODE_MOD);
-        } else if (fme.getChatMode() == ChatMode.PUBLIC) {
-            msg(TL.COMMAND_CHAT_MODE_PUBLIC);
-        } else if (fme.getChatMode() == ChatMode.ALLIANCE) {
-            msg(TL.COMMAND_CHAT_MODE_ALLIANCE);
-        } else if (fme.getChatMode() == ChatMode.TRUCE) {
-            msg(TL.COMMAND_CHAT_MODE_TRUCE);
+        if (context.fPlayer.getChatMode() == ChatMode.MOD) {
+            context.msg(TL.COMMAND_CHAT_MODE_MOD);
+        } else if (context.fPlayer.getChatMode() == ChatMode.PUBLIC) {
+            context.msg(TL.COMMAND_CHAT_MODE_PUBLIC);
+        } else if (context.fPlayer.getChatMode() == ChatMode.ALLIANCE) {
+            context.msg(TL.COMMAND_CHAT_MODE_ALLIANCE);
+        } else if (context.fPlayer.getChatMode() == ChatMode.TRUCE) {
+            context.msg(TL.COMMAND_CHAT_MODE_TRUCE);
         } else {
-            msg(TL.COMMAND_CHAT_MODE_FACTION);
+            context.msg(TL.COMMAND_CHAT_MODE_FACTION);
         }
     }
 
     @Override
-    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
         if (args.length == 1) {
             return new TabCompleteProvider() {
                 @Override
@@ -99,7 +97,7 @@ public class CmdChat extends FCommand {
                 }
             };
         }
-        return super.onTabComplete(player, args);
+        return super.onTabComplete(context, args);
     }
 
     @Override

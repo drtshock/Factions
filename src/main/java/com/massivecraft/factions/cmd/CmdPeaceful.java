@@ -15,18 +15,14 @@ public class CmdPeaceful extends FCommand {
         this.requiredArgs.add("faction tag");
         //this.optionalArgs.put("", "");
 
-        this.permission = Permission.SET_PEACEFUL.node;
-        this.disableOnLock = true;
+        this.requirements = new CommandRequirements.Builder(Permission.SET_PEACEFUL).build();
 
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.disableOnLock = true;
     }
 
     @Override
-    public void perform() {
-        Faction faction = this.argAsFaction(0);
+    public void perform(CommandContext context) {
+        Faction faction = context.argAsFaction(0);
         if (faction == null) {
             return;
         }
@@ -42,7 +38,7 @@ public class CmdPeaceful extends FCommand {
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-            String blame = (fme == null ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true));
+            String blame = (context.fPlayer == null ? TL.GENERIC_SERVERADMIN.toString() :context.fPlayer.describeTo(fplayer, true));
             if (fplayer.getFaction() == faction) {
                 fplayer.msg(TL.COMMAND_PEACEFUL_YOURS, blame, change);
             } else {

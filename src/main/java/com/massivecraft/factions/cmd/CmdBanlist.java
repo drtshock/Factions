@@ -23,34 +23,32 @@ public class CmdBanlist extends FCommand {
 
         this.optionalArgs.put("faction", "faction");
 
-        this.permission = Permission.BAN.node;
-        this.disableOnLock = true;
+        this.requirements = new CommandRequirements.Builder(Permission.BAN)
+                .playerOnly()
+                .build();
 
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.disableOnLock = true;
     }
 
     @Override
-    public void perform() {
-        Faction target = myFaction;
-        if (!args.isEmpty()) {
-            target = argAsFaction(0);
-        }
-
-        if (target == Factions.getInstance().getWilderness()) {
-            sender.sendMessage(TL.COMMAND_BANLIST_NOFACTION.toString());
-            return;
+    public void perform(CommandContext context) {
+        Faction target = context.faction;
+        if (!context.args.isEmpty()) {
+            target = context.argAsFaction(0);
         }
 
         if (target == null) {
-            sender.sendMessage(TL.COMMAND_BANLIST_INVALID.format(argAsString(0)));
+            context.msg(TL.COMMAND_BANLIST_INVALID.format(context.argAsString(0)));
+            return;
+        }
+
+        if (!target.isNormal()) {
+            context.msg(TL.COMMAND_BANLIST_NOFACTION);
             return;
         }
 
         List<String> lines = new ArrayList<>();
-        lines.add(TL.COMMAND_BANLIST_HEADER.format(target.getBannedPlayers().size(), target.getTag(myFaction)));
+        lines.add(TL.COMMAND_BANLIST_HEADER.format(target.getBannedPlayers().size(), target.getTag(context.faction)));
         int i = 1;
 
         for (BanInfo info : target.getBannedPlayers()) {
@@ -63,16 +61,16 @@ public class CmdBanlist extends FCommand {
         }
 
         for (String s : lines) {
-            fme.sendMessage(s);
+            context.fPlayer.sendMessage(s);
         }
     }
 
     @Override
-    public TabCompleteProvider onTabComplete(Player player, String[] args) {
+    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
         if (args.length == 1) {
             return TabCompleteProvider.FACTIONS;
         }
-        return super.onTabComplete(player, args);
+        return super.onTabComplete(context, args);
     }
 
     @Override

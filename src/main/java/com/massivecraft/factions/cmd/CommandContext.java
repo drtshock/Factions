@@ -1,10 +1,11 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.*;
+import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,6 +39,38 @@ public class CommandContext {
         }
     }
 
+    // -------------------------------------------- //
+    // Message Sending Helpers
+    // -------------------------------------------- //
+
+    public void msg(String str, Object... args) {
+        sender.sendMessage(P.p.txt.parse(str, args));
+    }
+
+    public void msg(TL translation, Object... args) {
+        sender.sendMessage(P.p.txt.parse(translation.toString(), args));
+    }
+
+    public void sendMessage(String msg) {
+        sender.sendMessage(msg);
+    }
+
+    public void sendMessage(List<String> msgs) {
+        for (String msg : msgs) {
+            this.sendMessage(msg);
+        }
+    }
+
+    public void sendFancyMessage(FancyMessage message) {
+        message.send(sender);
+    }
+
+    public void sendFancyMessage(List<FancyMessage> messages) {
+        for (FancyMessage m : messages) {
+            sendFancyMessage(m);
+        }
+    }
+
     // TODO: Clean this UP
     // -------------------------------------------- //
     // Argument Readers
@@ -45,19 +78,19 @@ public class CommandContext {
 
     // Is set? ======================
     public boolean argIsSet(int idx) {
-        return this.args.size() >= idx + 1;
+        return args.size() >= idx + 1;
     }
 
     // STRING ======================
     public String argAsString(int idx, String def) {
-        if (this.args.size() < idx + 1) {
+        if (args.size() < idx + 1) {
             return def;
         }
-        return this.args.get(idx);
+        return args.get(idx);
     }
 
     public String argAsString(int idx) {
-        return this.argAsString(idx, null);
+        return argAsString(idx, null);
     }
 
     // INT ======================
@@ -73,11 +106,11 @@ public class CommandContext {
     }
 
     public Integer argAsInt(int idx, Integer def) {
-        return strAsInt(this.argAsString(idx), def);
+        return strAsInt(argAsString(idx), def);
     }
 
     public Integer argAsInt(int idx) {
-        return this.argAsInt(idx, null);
+        return argAsInt(idx, null);
     }
 
     // Double ======================
@@ -93,11 +126,11 @@ public class CommandContext {
     }
 
     public Double argAsDouble(int idx, Double def) {
-        return strAsDouble(this.argAsString(idx), def);
+        return strAsDouble(argAsString(idx), def);
     }
 
     public Double argAsDouble(int idx) {
-        return this.argAsDouble(idx, null);
+        return argAsDouble(idx, null);
     }
 
     // TODO: Go through the str conversion for the other arg-readers as well.
@@ -108,7 +141,7 @@ public class CommandContext {
     }
 
     public Boolean argAsBool(int idx, boolean def) {
-        String str = this.argAsString(idx);
+        String str = argAsString(idx);
         if (str == null) {
             return def;
         }
@@ -117,7 +150,7 @@ public class CommandContext {
     }
 
     public Boolean argAsBool(int idx) {
-        return this.argAsBool(idx, false);
+        return argAsBool(idx, false);
     }
 
     // PLAYER ======================
@@ -139,15 +172,15 @@ public class CommandContext {
     }
 
     public Player argAsPlayer(int idx, Player def, boolean msg) {
-        return this.strAsPlayer(this.argAsString(idx), def, msg);
+        return this.strAsPlayer(argAsString(idx), def, msg);
     }
 
     public Player argAsPlayer(int idx, Player def) {
-        return this.argAsPlayer(idx, def, true);
+        return argAsPlayer(idx, def, true);
     }
 
     public Player argAsPlayer(int idx) {
-        return this.argAsPlayer(idx, null);
+        return argAsPlayer(idx, null);
     }
 
     // BEST PLAYER MATCH ======================
@@ -169,15 +202,15 @@ public class CommandContext {
     }
 
     public Player argAsBestPlayerMatch(int idx, Player def, boolean msg) {
-        return this.strAsBestPlayerMatch(this.argAsString(idx), def, msg);
+        return this.strAsBestPlayerMatch(argAsString(idx), def, msg);
     }
 
     public Player argAsBestPlayerMatch(int idx, Player def) {
-        return this.argAsBestPlayerMatch(idx, def, true);
+        return argAsBestPlayerMatch(idx, def, true);
     }
 
     public Player argAsBestPlayerMatch(int idx) {
-        return this.argAsPlayer(idx, null);
+        return argAsPlayer(idx, null);
     }
 
 
@@ -206,15 +239,15 @@ public class CommandContext {
     }
 
     public FPlayer argAsFPlayer(int idx, FPlayer def, boolean msg) {
-        return this.strAsFPlayer(this.argAsString(idx), def, msg);
+        return this.strAsFPlayer(argAsString(idx), def, msg);
     }
 
     public FPlayer argAsFPlayer(int idx, FPlayer def) {
-        return this.argAsFPlayer(idx, def, true);
+        return argAsFPlayer(idx, def, true);
     }
 
     public FPlayer argAsFPlayer(int idx) {
-        return this.argAsFPlayer(idx, null);
+        return argAsFPlayer(idx, null);
     }
 
     // BEST FPLAYER MATCH ======================
@@ -223,15 +256,15 @@ public class CommandContext {
     }
 
     public FPlayer argAsBestFPlayerMatch(int idx, FPlayer def, boolean msg) {
-        return this.strAsBestFPlayerMatch(this.argAsString(idx), def, msg);
+        return this.strAsBestFPlayerMatch(argAsString(idx), def, msg);
     }
 
     public FPlayer argAsBestFPlayerMatch(int idx, FPlayer def) {
-        return this.argAsBestFPlayerMatch(idx, def, true);
+        return argAsBestFPlayerMatch(idx, def, true);
     }
 
     public FPlayer argAsBestFPlayerMatch(int idx) {
-        return this.argAsBestFPlayerMatch(idx, null);
+        return argAsBestFPlayerMatch(idx, null);
     }
 
     // FACTION ======================
@@ -279,15 +312,110 @@ public class CommandContext {
     }
 
     public Faction argAsFaction(int idx, Faction def, boolean msg) {
-        return this.strAsFaction(this.argAsString(idx), def, msg);
+        return this.strAsFaction(argAsString(idx), def, msg);
     }
 
     public Faction argAsFaction(int idx, Faction def) {
-        return this.argAsFaction(idx, def, true);
+        return argAsFaction(idx, def, true);
     }
 
     public Faction argAsFaction(int idx) {
-        return this.argAsFaction(idx, null);
+        return argAsFaction(idx, null);
     }
+
+    /*
+        Assertions
+     */
+
+    public boolean assertHasFaction() {
+        if (player == null) {
+            return true;
+        }
+
+        if (!fPlayer.hasFaction()) {
+            sendMessage("You are not member of any faction.");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean assertMinRole(Role role) {
+        if (player == null) {
+            return true;
+        }
+
+        if (fPlayer.getRole().value < role.value) {
+            msg("<b>You <h>must be " + role);
+            return false;
+        }
+        return true;
+    }
+
+    /*
+        Common Methods
+    */
+    public boolean canIAdministerYou(FPlayer i, FPlayer you) {
+        if (!i.getFaction().equals(you.getFaction())) {
+            i.sendMessage(P.p.txt.parse("%s <b>is not in the same faction as you.", you.describeTo(i, true)));
+            return false;
+        }
+
+        if (i.getRole().value > you.getRole().value || i.getRole().equals(Role.ADMIN)) {
+            return true;
+        }
+
+        if (you.getRole().equals(Role.ADMIN)) {
+            i.sendMessage(P.p.txt.parse("<b>Only the faction admin can do that."));
+        } else if (i.getRole().equals(Role.MODERATOR)) {
+            if (i == you) {
+                return true; //Moderators can control themselves
+            } else {
+                i.sendMessage(P.p.txt.parse("<b>Moderators can't control each other..."));
+            }
+        } else {
+            i.sendMessage(P.p.txt.parse("<b>You must be a faction moderator to do that."));
+        }
+
+        return false;
+    }
+
+    // if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
+    public boolean payForCommand(double cost, String toDoThis, String forDoingThis) {
+        if (!Econ.shouldBeUsed() || this.fPlayer == null || cost == 0.0 || fPlayer.isAdminBypassing()) {
+            return true;
+        }
+
+        if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fPlayer.hasFaction()) {
+            return Econ.modifyMoney(faction, -cost, toDoThis, forDoingThis);
+        } else {
+            return Econ.modifyMoney(fPlayer, -cost, toDoThis, forDoingThis);
+        }
+    }
+
+    public boolean payForCommand(double cost, TL toDoThis, TL forDoingThis) {
+        return payForCommand(cost, toDoThis.toString(), forDoingThis.toString());
+    }
+
+    // like above, but just make sure they can pay; returns true unless person can't afford the cost
+    public boolean canAffordCommand(double cost, String toDoThis) {
+        if (!Econ.shouldBeUsed() || fPlayer == null || cost == 0.0 || fPlayer.isAdminBypassing()) {
+            return true;
+        }
+
+        if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fPlayer.hasFaction()) {
+            return Econ.hasAtLeast(faction, cost, toDoThis);
+        } else {
+            return Econ.hasAtLeast(fPlayer, cost, toDoThis);
+        }
+    }
+
+    public void doWarmUp(WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
+        this.doWarmUp(fPlayer, warmup, translationKey, action, runnable, delay);
+    }
+
+    public void doWarmUp(FPlayer player, WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
+        WarmUpUtil.process(player, warmup, translationKey, action, runnable, delay);
+    }
+
 
 }

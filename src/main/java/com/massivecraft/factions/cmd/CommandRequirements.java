@@ -35,9 +35,8 @@ public class CommandRequirements {
     }
 
     public boolean computeRequirements(CommandContext context, boolean informIfNot) {
-        // Did not modify CommandRequirements return false and log
+        // Did not modify CommandRequirements return true
         if (permission == null) {
-            P.p.log(Level.WARNING, "CommandRequirements not implemented: " + context.alias);
             return true;
         }
 

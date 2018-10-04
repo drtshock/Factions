@@ -6,6 +6,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
@@ -26,58 +27,56 @@ public class CmdDeinvite extends FCommand {
         this.optionalArgs.put("player name", "name");
         //this.optionalArgs.put("", "");
 
-        this.permission = Permission.DEINVITE.node;
-        this.disableOnLock = true;
+        this.requirements = new CommandRequirements.Builder(Permission.DEINVITE)
+                .memberOnly()
+                .withMinRole(Role.MODERATOR)
+                .build();
 
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = true;
-        senderMustBeAdmin = false;
+        this.disableOnLock = true;
     }
 
     @Override
-    public void perform() {
-        FPlayer you = this.argAsBestFPlayerMatch(0);
+    public void perform(CommandContext context) {
+        FPlayer you = context.argAsBestFPlayerMatch(0);
         if (you == null) {
             FancyMessage msg = new FancyMessage(TL.COMMAND_DEINVITE_CANDEINVITE.toString()).color(ChatColor.GOLD);
-            for (String id : myFaction.getInvites()) {
+            for (String id : context.faction.getInvites()) {
                 FPlayer fp = FPlayers.getInstance().getById(id);
                 String name = fp != null ? fp.getName() : id;
                 msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_DEINVITE_CLICKTODEINVITE.format(name)).command("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name);
             }
-            sendFancyMessage(msg);
+            context.sendFancyMessage(msg);
             return;
         }
 
-        if (you.getFaction() == myFaction) {
-            msg(TL.COMMAND_DEINVITE_ALREADYMEMBER, you.getName(), myFaction.getTag());
-            msg(TL.COMMAND_DEINVITE_MIGHTWANT, p.cmdBase.cmdKick.getUseageTemplate(false));
+        if (you.getFaction() == context.faction) {
+            context.msg(TL.COMMAND_DEINVITE_ALREADYMEMBER, you.getName(), context.faction.getTag());
+            context.msg(TL.COMMAND_DEINVITE_MIGHTWANT, p.cmdBase.cmdKick.getUseageTemplate(false));
             return;
         }
 
-        myFaction.deinvite(you);
+        context.faction.deinvite(you);
 
-        you.msg(TL.COMMAND_DEINVITE_REVOKED, fme.describeTo(you), myFaction.describeTo(you));
+        you.msg(TL.COMMAND_DEINVITE_REVOKED, context.fPlayer.describeTo(you), context.faction.describeTo(you));
 
-        myFaction.msg(TL.COMMAND_DEINVITE_REVOKES, fme.describeTo(myFaction), you.describeTo(myFaction));
+        context.faction.msg(TL.COMMAND_DEINVITE_REVOKES, context.fPlayer.describeTo(context.faction), you.describeTo(context.faction));
     }
 
     @Override
-    public TabCompleteProvider onTabComplete(final Player player, String[] args) {
+    public TabCompleteProvider onTabComplete(final CommandContext context, String[] args) {
         if (args.length == 1) {
             return new TabCompleteProvider() {
                 @Override
                 public List<String> get() {
-                    Faction faction = FPlayers.getInstance().getByPlayer(player).getFaction();
                     List<String> invited = new ArrayList<>();
-                    for (String uuid : faction.getInvites()) {
+                    for (String uuid : context.faction.getInvites()) {
                         invited.add(Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName());
                     }
                     return invited;
                 }
             };
         }
-        return super.onTabComplete(player, args);
+        return super.onTabComplete(context, args);
     }
 
     @Override

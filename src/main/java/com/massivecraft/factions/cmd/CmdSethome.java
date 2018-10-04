@@ -15,69 +15,43 @@ public class CmdSethome extends FCommand {
     public CmdSethome() {
         this.aliases.add("sethome");
 
-        //this.requiredArgs.add("");
-        this.optionalArgs.put("faction tag", "mine");
+        this.requirements = new CommandRequirements.Builder(Permission.SETHOME)
+                .memberOnly()
+                .withAction(PermissableAction.SETHOME)
+                .withMinRole(Role.MODERATOR)
+                .build();
 
-        this.permission = Permission.SETHOME.node;
         this.disableOnLock = true;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         if (!Conf.homesEnabled) {
-            fme.msg(TL.COMMAND_SETHOME_DISABLED);
+            context.msg(TL.COMMAND_SETHOME_DISABLED);
             return;
-        }
-
-        Faction faction = this.argAsFaction(0, myFaction);
-        if (faction == null) {
-            return;
-        }
-
-        Access access = faction.getAccess(fme, PermissableAction.SETHOME);
-        if (access == Access.DENY) {
-            fme.msg(TL.GENERIC_NOPERMISSION, "sethome");
-            return;
-        }
-
-        // If player does not have allow run extra permission checks
-        if (access != Access.ALLOW) {
-            if (faction == myFaction) {
-                if (!assertMinRole(Role.MODERATOR)) {
-                    return;
-                }
-            } else {
-                if (!Permission.SETHOME_ANY.has(sender, true)) {
-                    return;
-                }
-            }
         }
 
         // Can the player set the faction home HERE?
-        if (!Permission.BYPASS.has(me) &&
+        if (!Permission.BYPASS.has(context.player) &&
                 Conf.homesMustBeInClaimedTerritory &&
-                Board.getInstance().getFactionAt(new FLocation(me)) != faction) {
-            fme.msg(TL.COMMAND_SETHOME_NOTCLAIMED);
+                Board.getInstance().getFactionAt(new FLocation(context.player)) != context.faction) {
+            context.msg(TL.COMMAND_SETHOME_NOTCLAIMED);
             return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostSethome, TL.COMMAND_SETHOME_TOSET, TL.COMMAND_SETHOME_FORSET)) {
+        if (!context.payForCommand(Conf.econCostSethome, TL.COMMAND_SETHOME_TOSET, TL.COMMAND_SETHOME_FORSET)) {
             return;
         }
 
-        faction.setHome(me.getLocation());
+        context.faction.setHome(context.player.getLocation());
 
-        faction.msg(TL.COMMAND_SETHOME_SET, fme.describeTo(myFaction, true));
-        faction.sendMessage(p.cmdBase.cmdHome.getUseageTemplate());
-        if (faction != myFaction) {
-            fme.msg(TL.COMMAND_SETHOME_SETOTHER, faction.getTag(fme));
-        }
+        context.faction.msg(TL.COMMAND_SETHOME_SET,context.fPlayer.describeTo(context.faction, true));
+        context.faction.sendMessage(p.cmdBase.cmdHome.getUseageTemplate());
+        /*
+        if (faction != context.faction) {
+            context.msg(TL.COMMAND_SETHOME_SETOTHER, faction.getTag(context.fPlayer));
+        }*/
     }
 
     @Override

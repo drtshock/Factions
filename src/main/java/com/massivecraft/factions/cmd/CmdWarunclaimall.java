@@ -18,18 +18,14 @@ public class CmdWarunclaimall extends FCommand {
         //this.requiredArgs.add("");
         this.optionalArgs.put("world", "all");
 
-        this.permission = Permission.MANAGE_WAR_ZONE.node;
-        this.disableOnLock = true;
+        this.requirements = new CommandRequirements.Builder(Permission.MANAGE_WAR_ZONE).build();
 
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.disableOnLock = true;
     }
 
     @Override
-    public void perform() {
-        String worldName = argAsString(0);
+    public void perform(CommandContext context) {
+        String worldName = context.argAsString(0);
         World world = null;
 
         if (worldName != null) {
@@ -45,7 +41,7 @@ public class CmdWarunclaimall extends FCommand {
         }
 
         if (Conf.logLandUnclaims) {
-            P.p.log(TL.COMMAND_WARUNCLAIMALL_LOG.format(fme.getName()));
+            P.p.log(TL.COMMAND_WARUNCLAIMALL_LOG.format(context.fPlayer.getName()));
         }
     }
 

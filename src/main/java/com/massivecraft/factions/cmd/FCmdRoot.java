@@ -2,6 +2,13 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.cmd.money.CmdMoney;
+import com.massivecraft.factions.cmd.relations.CmdRelationAlly;
+import com.massivecraft.factions.cmd.relations.CmdRelationEnemy;
+import com.massivecraft.factions.cmd.relations.CmdRelationNeutral;
+import com.massivecraft.factions.cmd.relations.CmdRelationTruce;
+import com.massivecraft.factions.cmd.role.CmdDemote;
+import com.massivecraft.factions.cmd.role.CmdPromote;
 import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.util.TL;

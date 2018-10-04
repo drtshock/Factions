@@ -18,43 +18,41 @@ public class CmdClaim extends FCommand {
         this.optionalArgs.put("radius", "1");
         this.optionalArgs.put("faction", "your");
 
-        this.permission = Permission.CLAIM.node;
-        this.disableOnLock = true;
+        this.requirements = new CommandRequirements.Builder(Permission.CLAIM)
+                .playerOnly()
+                .build();
 
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.disableOnLock = true;
     }
 
     @Override
-    public void perform() {
+    public void perform(final CommandContext context) {
         // Read and validate input
-        int radius = this.argAsInt(0, 1); // Default to 1
-        final Faction forFaction = this.argAsFaction(1, myFaction); // Default to own
+        int radius = context.argAsInt(0, 1); // Default to 1
+        final Faction forFaction = context.argAsFaction(1, context.faction); // Default to own
 
         if (radius < 1) {
-            msg(TL.COMMAND_CLAIM_INVALIDRADIUS);
+            context.msg(TL.COMMAND_CLAIM_INVALIDRADIUS);
             return;
         }
 
         if (radius < 2) {
             // single chunk
-            fme.attemptClaim(forFaction, me.getLocation(), true);
+            context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), true);
         } else {
             // radius claim
-            if (!Permission.CLAIM_RADIUS.has(sender, false)) {
-                msg(TL.COMMAND_CLAIM_DENIED);
+            if (!Permission.CLAIM_RADIUS.has(context.sender, false)) {
+                context.msg(TL.COMMAND_CLAIM_DENIED);
                 return;
             }
 
-            new SpiralTask(new FLocation(me), radius) {
+            new SpiralTask(new FLocation(context.player), radius) {
                 private int failCount = 0;
                 private final int limit = Conf.radiusClaimFailureLimit - 1;
 
                 @Override
                 public boolean work() {
-                    boolean success = fme.attemptClaim(forFaction, this.currentLocation(), true);
+                    boolean success = context.fPlayer.attemptClaim(forFaction, this.currentLocation(), true);
                     if (success) {
                         failCount = 0;
                     } else if (failCount++ >= limit) {

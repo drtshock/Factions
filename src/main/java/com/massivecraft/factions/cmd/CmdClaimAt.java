@@ -14,21 +14,19 @@ public class CmdClaimAt extends FCommand {
         this.requiredArgs.add("x");
         this.requiredArgs.add("z");
 
-        this.permission = Permission.CLAIMAT.node;
-        this.disableOnLock = true;
+        this.requirements = new CommandRequirements.Builder(Permission.CLAIMAT)
+                .memberOnly()
+                .build();
 
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.disableOnLock = true;
     }
 
     @Override
-    public void perform() {
-        int x = argAsInt(1);
-        int z = argAsInt(2);
-        FLocation location = new FLocation(argAsString(0), x, z);
-        fme.attemptClaim(myFaction, location, true);
+    public void perform(CommandContext context) {
+        int x = context.argAsInt(1);
+        int z = context.argAsInt(2);
+        FLocation location = new FLocation(context.argAsString(0), x, z);
+        context.fPlayer.attemptClaim(context.faction, location, true);
     }
 
     @Override

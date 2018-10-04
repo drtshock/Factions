@@ -57,15 +57,16 @@ public abstract class FCommand extends MCommand<P> implements FactionTabComplete
             }
         }
 
-        if (!validCall(sender, args)) {
+        CommandContext context = new CommandContext(sender, args, aliases.get(0));
+        if (!validCall(context)) {
             return;
         }
 
-        if (!this.isEnabled(sender)) {
+        if (!this.isEnabled(context)) {
             return;
         }
 
-        perform(new CommandContext(sender, args, aliases.get(0)));
+        perform(context);
     }
 
     @Override
@@ -79,126 +80,33 @@ public abstract class FCommand extends MCommand<P> implements FactionTabComplete
     }
 
     @Override
-    public boolean validCall(CommandSender sender, List<String> args) {
-        return requirements.computeRequirements(new CommandContext(sender, args, aliases.get(0)), true) && validArgs(args, sender);
+    public boolean validCall(CommandContext context) {
+        return requirements.computeRequirements(context, true) && validArgs(context);
     }
 
     @Override
-    public boolean isEnabled(CommandSender sender) {
+    public boolean isEnabled(CommandContext context) {
         if (p.getLocked() && this.disableOnLock) {
-            msg(sender, "<b>Factions was locked by an admin. Please try again later.");
+            context.msg("<b>Factions was locked by an admin. Please try again later.");
             return false;
         }
 
         if (this.isMoneyCommand && !Conf.econEnabled) {
-            msg(sender, "<b>Faction economy features are disabled on this server.");
+            context.msg("<b>Faction economy features are disabled on this server.");
             return false;
         }
 
         if (this.isMoneyCommand && !Conf.bankEnabled) {
-            msg(sender, "<b>The faction bank system is disabled on this server.");
+            context.msg("<b>The faction bank system is disabled on this server.");
             return false;
         }
 
-        return true;
-    }
-
-    /*
-    // -------------------------------------------- //
-    // Assertions
-    // -------------------------------------------- //
-
-    public boolean assertHasFaction() {
-        if (me == null) {
-            return true;
-        }
-
-        if (!fme.hasFaction()) {
-            sendMessage("You are not member of any faction.");
-            return false;
-        }
-        return true;
-    }
-
-    public boolean assertMinRole(Role role) {
-        if (me == null) {
-            return true;
-        }
-
-        if (fme.getRole().value < role.value) {
-            msg("<b>You <h>must be " + role + "<b> to " + this.getHelpShort() + ".");
-            return false;
-        }
         return true;
     }
 
     // -------------------------------------------- //
     // Commonly used logic
     // -------------------------------------------- //
-
-    public boolean canIAdministerYou(FPlayer i, FPlayer you) {
-        if (!i.getFaction().equals(you.getFaction())) {
-            i.sendMessage(p.txt.parse("%s <b>is not in the same faction as you.", you.describeTo(i, true)));
-            return false;
-        }
-
-        if (i.getRole().value > you.getRole().value || i.getRole().equals(Role.ADMIN)) {
-            return true;
-        }
-
-        if (you.getRole().equals(Role.ADMIN)) {
-            i.sendMessage(p.txt.parse("<b>Only the faction admin can do that."));
-        } else if (i.getRole().equals(Role.MODERATOR)) {
-            if (i == you) {
-                return true; //Moderators can control themselves
-            } else {
-                i.sendMessage(p.txt.parse("<b>Moderators can't control each other..."));
-            }
-        } else {
-            i.sendMessage(p.txt.parse("<b>You must be a faction moderator to do that."));
-        }
-
-        return false;
-    }
-
-    // if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
-    public boolean payForCommand(double cost, String toDoThis, String forDoingThis) {
-        if (!Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) {
-            return true;
-        }
-
-        if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction()) {
-            return Econ.modifyMoney(myFaction, -cost, toDoThis, forDoingThis);
-        } else {
-            return Econ.modifyMoney(fme, -cost, toDoThis, forDoingThis);
-        }
-    }
-
-    public boolean payForCommand(double cost, TL toDoThis, TL forDoingThis) {
-        return payForCommand(cost, toDoThis.toString(), forDoingThis.toString());
-    }
-
-    // like above, but just make sure they can pay; returns true unless person can't afford the cost
-    public boolean canAffordCommand(double cost, String toDoThis) {
-        if (!Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) {
-            return true;
-        }
-
-        if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction()) {
-            return Econ.hasAtLeast(myFaction, cost, toDoThis);
-        } else {
-            return Econ.hasAtLeast(fme, cost, toDoThis);
-        }
-    }
-
-    public void doWarmUp(WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
-        this.doWarmUp(this.fme, warmup, translationKey, action, runnable, delay);
-    }
-
-    public void doWarmUp(FPlayer player, WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
-        WarmUpUtil.process(player, warmup, translationKey, action, runnable, delay);
-    }*/
-
 
     public List<String> getToolTips(FPlayer player) {
         List<String> lines = new ArrayList<>();

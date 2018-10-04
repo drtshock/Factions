@@ -9,21 +9,16 @@ public class CmdLeave extends FCommand {
         super();
         this.aliases.add("leave");
 
-        //this.requiredArgs.add("");
-        //this.optionalArgs.put("", "");
+        this.requirements = new CommandRequirements.Builder(Permission.LEAVE)
+                .memberOnly()
+                .build();
 
-        this.permission = Permission.LEAVE.node;
         this.disableOnLock = true;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
     }
 
     @Override
-    public void perform() {
-        fme.leave(true);
+    public void perform(CommandContext context) {
+       context.fPlayer.leave(true);
     }
 
     @Override
