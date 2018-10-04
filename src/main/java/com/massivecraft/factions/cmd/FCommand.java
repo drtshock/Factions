@@ -28,7 +28,6 @@ public abstract class FCommand extends MCommand<P> implements FactionTabComplete
 
     // Legacy, To be moved to requirements SoonTM
     public boolean disableOnLock;
-    public boolean isMoneyCommand;
 
     public FCommand() {
         super(P.p);
@@ -37,8 +36,6 @@ public abstract class FCommand extends MCommand<P> implements FactionTabComplete
 
         // Due to safety reasons it defaults to disable on lock.
         disableOnLock = true;
-        // The money commands must be disabled if money should not be used.
-        isMoneyCommand = false;
     }
 
     public abstract void perform(CommandContext context);
@@ -90,17 +87,6 @@ public abstract class FCommand extends MCommand<P> implements FactionTabComplete
             context.msg("<b>Factions was locked by an admin. Please try again later.");
             return false;
         }
-
-        if (this.isMoneyCommand && !Conf.econEnabled) {
-            context.msg("<b>Faction economy features are disabled on this server.");
-            return false;
-        }
-
-        if (this.isMoneyCommand && !Conf.bankEnabled) {
-            context.msg("<b>The faction bank system is disabled on this server.");
-            return false;
-        }
-
         return true;
     }
 

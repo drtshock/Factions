@@ -13,7 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 
-public class CmdMoneyTransferFf extends FCommand {
+public class CmdMoneyTransferFf extends MoneyCommand {
 
     public CmdMoneyTransferFf() {
         this.aliases.add("ff");

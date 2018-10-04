@@ -14,7 +14,7 @@ import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 
 
-public class CmdMoneyWithdraw extends FCommand {
+public class CmdMoneyWithdraw extends MoneyCommand {
 
     public CmdMoneyWithdraw() {
         this.aliases.add("w");

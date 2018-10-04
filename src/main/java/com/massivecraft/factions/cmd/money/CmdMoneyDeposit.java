@@ -12,7 +12,7 @@ import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 
 
-public class CmdMoneyDeposit extends FCommand {
+public class CmdMoneyDeposit extends MoneyCommand {
 
     public CmdMoneyDeposit() {
         super();

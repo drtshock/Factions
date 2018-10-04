@@ -5,7 +5,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.zcore.util.TL;
 
-public class CmdMoney extends FCommand {
+public class CmdMoney extends MoneyCommand {
 
     public CmdMoneyBalance cmdMoneyBalance = new CmdMoneyBalance();
     public CmdMoneyDeposit cmdMoneyDeposit = new CmdMoneyDeposit();
@@ -17,8 +17,6 @@ public class CmdMoney extends FCommand {
     public CmdMoney() {
         super();
         this.aliases.add("money");
-
-        this.isMoneyCommand = true;
 
         this.helpLong.add(p.txt.parseTags(TL.COMMAND_MONEY_LONG.toString()));
 

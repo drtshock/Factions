@@ -12,7 +12,7 @@ import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 
 
-public class CmdMoneyTransferFp extends FCommand {
+public class CmdMoneyTransferFp extends MoneyCommand {
 
     public CmdMoneyTransferFp() {
         this.aliases.add("fp");

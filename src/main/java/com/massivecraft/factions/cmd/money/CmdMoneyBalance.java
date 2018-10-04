@@ -8,7 +8,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
-public class CmdMoneyBalance extends FCommand {
+public class CmdMoneyBalance extends MoneyCommand {
 
     public CmdMoneyBalance() {
         super();
