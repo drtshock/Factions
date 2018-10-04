@@ -1,4 +1,4 @@
-package com.massivecraft.factions.cmd;
+package com.massivecraft.factions.cmd.claim;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;

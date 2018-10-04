@@ -1,6 +1,9 @@
-package com.massivecraft.factions.cmd;
+package com.massivecraft.factions.cmd.claim;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.CommandContext;
+import com.massivecraft.factions.cmd.CommandRequirements;
+import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.event.LandUnclaimEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
