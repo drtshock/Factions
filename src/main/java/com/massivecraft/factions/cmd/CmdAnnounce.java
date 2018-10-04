@@ -20,7 +20,7 @@ public class CmdAnnounce extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.ANNOUNCE)
                 .memberOnly()
-                .withMinRole(Role.MODERATOR)
+                .withRole(Role.MODERATOR)
                 .build();
 
         this.disableOnLock = false;

@@ -11,7 +11,6 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.fperms.gui.PermissableActionGUI;
 import com.massivecraft.factions.zcore.fperms.gui.PermissableRelationGUI;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -32,7 +31,7 @@ public class CmdPerm extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.PERMISSIONS)
                 .memberOnly()
-                .withMinRole(Role.ADMIN)
+                .withRole(Role.ADMIN)
                 .build();
 
         this.disableOnLock = true;

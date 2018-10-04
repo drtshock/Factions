@@ -3,10 +3,8 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -18,7 +16,7 @@ public class CmdSethome extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.SETHOME)
                 .memberOnly()
                 .withAction(PermissableAction.SETHOME)
-                .withMinRole(Role.MODERATOR)
+                .withRole(Role.MODERATOR)
                 .build();
 
         this.disableOnLock = true;

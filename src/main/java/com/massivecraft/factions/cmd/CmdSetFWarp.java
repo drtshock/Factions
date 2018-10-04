@@ -6,7 +6,6 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.LazyLocation;
-import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -24,7 +23,7 @@ public class CmdSetFWarp extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.SETWARP)
                 .memberOnly()
                 .withAction(PermissableAction.SETWARP)
-                .withMinRole(Role.MODERATOR)
+                .withRole(Role.MODERATOR)
                 .build();
     }
 

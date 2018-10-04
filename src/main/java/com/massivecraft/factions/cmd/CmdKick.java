@@ -13,7 +13,6 @@ import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 public class CmdKick extends FCommand implements FactionTabCompleter {
 
@@ -25,7 +24,7 @@ public class CmdKick extends FCommand implements FactionTabCompleter {
 
         this.requirements = new CommandRequirements.Builder(Permission.KICK)
                 .memberOnly()
-                .withMinRole(Role.MODERATOR)
+                .withRole(Role.MODERATOR)
                 .withAction(PermissableAction.KICK)
                 .build();
 

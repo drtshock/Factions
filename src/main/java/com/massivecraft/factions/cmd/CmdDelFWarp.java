@@ -1,19 +1,12 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.cmd.tabcomplete.providers.ProviderFactionWarps;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class CmdDelFWarp extends FCommand {
 
@@ -27,7 +20,7 @@ public class CmdDelFWarp extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.SETWARP)
                 .memberOnly()
-                .withMinRole(Role.MODERATOR)
+                .withRole(Role.MODERATOR)
                 .build();
     }
 

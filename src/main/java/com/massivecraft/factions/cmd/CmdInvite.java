@@ -5,12 +5,10 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 public class CmdInvite extends FCommand {
 
@@ -24,7 +22,7 @@ public class CmdInvite extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.INVITE)
                 .memberOnly()
-                .withMinRole(Role.MODERATOR)
+                .withRole(Role.MODERATOR)
                 .withAction(PermissableAction.INVITE)
                 .build();
 

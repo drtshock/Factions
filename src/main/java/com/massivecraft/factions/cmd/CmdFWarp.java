@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.cmd.tabcomplete.providers.ProviderFactionWarps;
@@ -9,7 +8,6 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.util.WarpGUI;
-import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -29,7 +27,7 @@ public class CmdFWarp extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.WARP)
                 .memberOnly()
                 .withAction(PermissableAction.WARP)
-                .withMinRole(Role.NORMAL)
+                .withRole(Role.NORMAL)
                 .build();
     }
 

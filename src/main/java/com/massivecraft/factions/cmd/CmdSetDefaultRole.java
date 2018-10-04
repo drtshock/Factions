@@ -4,7 +4,6 @@ import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.entity.Player;
 
 public class CmdSetDefaultRole extends FCommand {
 
@@ -19,7 +18,7 @@ public class CmdSetDefaultRole extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.DEFAULTRANK)
                 .memberOnly()
-                .withMinRole(Role.ADMIN)
+                .withRole(Role.ADMIN)
                 .build();
     }
 

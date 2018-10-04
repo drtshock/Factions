@@ -21,7 +21,7 @@ public class CmdDescription extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.DESCRIPTION)
                 .memberOnly()
-                .withMinRole(Role.MODERATOR)
+                .withRole(Role.MODERATOR)
                 .build();
 
         this.disableOnLock = true;

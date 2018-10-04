@@ -21,7 +21,7 @@ public class CmdTag extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.TAG)
                 .memberOnly()
-                .withMinRole(Role.MODERATOR)
+                .withRole(Role.MODERATOR)
                 .build();
 
         this.disableOnLock = true;

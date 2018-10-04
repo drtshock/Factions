@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.cmd.tabcomplete.providers.ProviderFactionPlayers;
@@ -11,7 +10,6 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 public class CmdMod extends FCommand {
 
@@ -27,7 +25,7 @@ public class CmdMod extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.MOD)
                 .memberOnly()
-                .withMinRole(Role.COLEADER)
+                .withRole(Role.COLEADER)
                 .build();
 
         this.disableOnLock = true;

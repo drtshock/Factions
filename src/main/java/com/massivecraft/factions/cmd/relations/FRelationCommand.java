@@ -26,7 +26,7 @@ public abstract class FRelationCommand extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.RELATION)
                 .memberOnly()
-                .withMinRole(Role.MODERATOR)
+                .withRole(Role.MODERATOR)
                 .build();
 
         this.disableOnLock = true;

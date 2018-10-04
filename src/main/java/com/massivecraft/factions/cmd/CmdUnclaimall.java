@@ -18,7 +18,7 @@ public class CmdUnclaimall extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.UNCLAIM_ALL)
                 .memberOnly()
-                .withMinRole(Role.MODERATOR)
+                .withRole(Role.MODERATOR)
                 .build();
 
         this.disableOnLock = true;

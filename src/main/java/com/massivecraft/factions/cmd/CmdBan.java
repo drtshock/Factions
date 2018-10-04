@@ -7,11 +7,9 @@ import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.logging.Level;
 
@@ -26,7 +24,7 @@ public class CmdBan extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.BAN)
                 .memberOnly()
                 .withAction(PermissableAction.BAN)
-                .withMinRole(Role.MODERATOR)
+                .withRole(Role.MODERATOR)
                 .build();
 
         this.disableOnLock = true;

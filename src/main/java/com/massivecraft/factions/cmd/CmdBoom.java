@@ -18,7 +18,7 @@ public class CmdBoom extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.NO_BOOM)
                 .memberOnly()
-                .withMinRole(Role.MODERATOR)
+                .withRole(Role.MODERATOR)
                 .build();
 
         this.disableOnLock = true;

@@ -22,7 +22,7 @@ public class CmdColeader extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.COLEADER)
                 .memberOnly()
-                .withMinRole(Role.ADMIN)
+                .withRole(Role.ADMIN)
                 .build();
 
         this.disableOnLock = true;
