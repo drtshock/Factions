@@ -3,12 +3,9 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,14 +60,6 @@ public class CmdBanlist extends FCommand {
         for (String s : lines) {
             context.fPlayer.sendMessage(s);
         }
-    }
-
-    @Override
-    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
-        if (args.length == 1) {
-            return TabCompleteProvider.FACTIONS;
-        }
-        return super.onTabComplete(context, args);
     }
 
     @Override

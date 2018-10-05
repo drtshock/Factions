@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -72,14 +71,6 @@ public class CmdInvite extends FCommand {
 
         //you.msg("%s<i> invited you to %s",context.fPlayer.describeTo(you, true), context.faction.describeTo(you));
         context.faction.msg(TL.COMMAND_INVITE_INVITED, context.fPlayer.describeTo(context.faction, true), target.describeTo(context.faction));
-    }
-
-    @Override
-    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
-        if (args.length == 1) {
-            return TabCompleteProvider.PLAYERS;
-        }
-        return super.onTabComplete(context, args);
     }
 
     @Override

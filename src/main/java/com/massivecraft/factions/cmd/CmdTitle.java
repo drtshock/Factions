@@ -2,8 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
-import com.massivecraft.factions.cmd.tabcomplete.providers.ProviderFactionPlayers;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
@@ -50,14 +48,6 @@ public class CmdTitle extends FCommand {
 
         // Inform
         context.faction.msg(TL.COMMAND_TITLE_CHANGED,context.fPlayer.describeTo(context.faction, true), you.describeTo(context.faction, true));
-    }
-
-    @Override
-    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
-        if (args.length == 1) {
-            return new ProviderFactionPlayers(context.faction);
-        }
-        return super.onTabComplete(context, args);
     }
 
     @Override

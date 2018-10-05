@@ -1,8 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.cmd.tabcomplete.FactionTabCompleter;
-import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.util.TL;
@@ -15,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-public abstract class FCommand implements FactionTabCompleter {
+public abstract class FCommand {
 
     public P p;
     public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
@@ -80,15 +78,6 @@ public abstract class FCommand implements FactionTabCompleter {
         }
 
         perform(context);
-    }
-
-    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
-        return new TabCompleteProvider() {
-            @Override
-            public List<String> get() {
-                return Collections.emptyList();
-            }
-        };
     }
 
     public boolean validCall(CommandContext context) {

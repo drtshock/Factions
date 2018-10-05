@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -46,23 +45,6 @@ public class CmdUnban extends FCommand {
 
         context.faction.msg(TL.COMMAND_UNBAN_UNBANNED,context.fPlayer.getName(), target.getName());
         target.msg(TL.COMMAND_UNBAN_TARGET, context.faction.getTag(target));
-    }
-
-    @Override
-    public TabCompleteProvider onTabComplete(final CommandContext context, String[] args) {
-        if (args.length == 1) {
-            return new TabCompleteProvider() {
-                @Override
-                public List<String> get() {
-                    List<String> banned = new ArrayList<>();
-                    for (BanInfo info : context.faction.getBannedPlayers()) {
-                        banned.add(Bukkit.getOfflinePlayer(UUID.fromString(info.getBanned())).getName());
-                    }
-                    return banned;
-                }
-            };
-        }
-        return super.onTabComplete(context, args);
     }
 
     @Override

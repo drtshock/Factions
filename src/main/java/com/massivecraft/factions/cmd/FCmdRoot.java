@@ -10,10 +10,8 @@ import com.massivecraft.factions.cmd.relations.CmdRelationNeutral;
 import com.massivecraft.factions.cmd.relations.CmdRelationTruce;
 import com.massivecraft.factions.cmd.role.CmdDemote;
 import com.massivecraft.factions.cmd.role.CmdPromote;
-import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.zcore.util.TL;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import me.lucko.commodore.Commodore;
@@ -22,15 +20,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.logging.Level;
 
 public class FCmdRoot extends FCommand implements CommandExecutor {
 
-    public LiteralArgumentBuilder<?> brigadier = LiteralArgumentBuilder.literal("factions");
+    public LiteralArgumentBuilder<Object> brigadier = LiteralArgumentBuilder.literal("factions");
 
     public CmdAdmin cmdAdmin = new CmdAdmin();
     public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
@@ -111,7 +107,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         super();
         this.aliases.addAll(Conf.baseCommandAliases);
         this.aliases.removeAll(Collections.<String>singletonList(null));  // remove any nulls from extra commas
-        //this.allowNoSlashAccess = Conf.allowNoSlashCommand;
 
         this.disableOnLock = false;
 
@@ -229,55 +224,16 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         return true;
     }
 
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (args.length == 1) {
-            List<String> subcommands = new ArrayList<>();
-            for (FCommand subCommand : subCommands) {
-                for (String subAlias : subCommand.aliases) {
-                    if (subAlias.startsWith(args[0].toLowerCase())) {
-                        subcommands.add(subAlias);
-                    }
-                }
-            }
-            return subcommands;
-        } else if (args.length > 1) {
-            FCommand subCommand = getSubCommand(args[0]);
-            if (subCommand == null || !(sender instanceof Player)) {
-                return new ArrayList<>();
-            }
-
-            TabCompleteProvider provider = subCommand.onTabComplete(new CommandContext(sender, Arrays.asList(args), alias), Arrays.copyOfRange(args, 1, args.length));
-            List<String> matches = new ArrayList<>();
-            for (String provided : provider.get()) {
-                if (provided.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
-                    matches.add(provided);
-                }
-            }
-            return matches;
-        }
-        return new ArrayList<>();
-    }
-
-    private FCommand getSubCommand(String alias) {
-        for (FCommand subCommand : this.subCommands) {
-            if (subCommand.aliases.contains(alias.toLowerCase())) {
-                return subCommand;
-            }
-        }
-        return null;
-    }
-
     @Override
-    @SuppressWarnings("unchecked")
     public void addSubCommand(FCommand subCommand) {
         super.addSubCommand(subCommand);
         if (CommodoreProvider.isSupported()) {
             // Register brigadier to all command aliases
             for (String alias : subCommand.aliases) {
-                LiteralArgumentBuilder literal = LiteralArgumentBuilder.literal(alias);
+                LiteralArgumentBuilder<Object> literal = LiteralArgumentBuilder.literal(alias);
                 if (subCommand.requirements.brigadier != null) {
                     // If the requirements explicitly provide a BrigadierProvider then use it
-                    brigadier.then(literal.then(subCommand.requirements.brigadier.get()));
+                    brigadier.then(subCommand.requirements.brigadier.get(literal));
                 } else {
                     // Generate our own based own args
                     for (String required : subCommand.requiredArgs) {

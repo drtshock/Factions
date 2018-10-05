@@ -1,12 +1,12 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.cmd.tabcomplete.BrigadierProvider;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import org.bukkit.ChatColor;
 
@@ -22,9 +22,9 @@ public class CmdSetMaxVaults extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.SETMAXVAULTS)
                 .brigadier(new BrigadierProvider() {
                     @Override
-                    public ArgumentBuilder get() {
-                        return RequiredArgumentBuilder.argument("faction", StringArgumentType.word())
-                                .then(RequiredArgumentBuilder.argument("number", IntegerArgumentType.integer(0, 99)));
+                    public ArgumentBuilder<Object, ?> get(ArgumentBuilder<Object, ?> parent) {
+                        return parent.then(RequiredArgumentBuilder.argument("faction", StringArgumentType.word())
+                                .then(RequiredArgumentBuilder.argument("number", IntegerArgumentType.integer(0, 99))));
                     }
                 })
                 .build();

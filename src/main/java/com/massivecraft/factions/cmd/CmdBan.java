@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
@@ -80,14 +79,6 @@ public class CmdBan extends FCommand {
         // Lets inform the people!
         target.msg(TL.COMMAND_BAN_TARGET, context.faction.getTag(target.getFaction()));
         context.faction.msg(TL.COMMAND_BAN_BANNED, context.fPlayer.getName(), target.getName());
-    }
-
-    @Override
-    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
-        if (args.length == 1) {
-            return TabCompleteProvider.PLAYERS;
-        }
-        return super.onTabComplete(context, args);
     }
 
     @Override

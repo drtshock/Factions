@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
@@ -37,14 +36,6 @@ public class CmdSetDefaultRole extends FCommand {
 
         context.faction.setDefaultRole(target);
         context.msg(TL.COMMAND_SETDEFAULTROLE_SUCCESS, target.nicename);
-    }
-
-    @Override
-    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
-        if (args.length == 1) {
-            return TabCompleteProvider.ROLES;
-        }
-        return super.onTabComplete(context, args);
     }
 
     @Override

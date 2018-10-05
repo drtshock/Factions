@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -115,18 +114,6 @@ public class CmdPerm extends FCommand {
         } else {
             return null;
         }
-    }
-
-    @Override
-    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
-        if (args.length == 1) {
-            return TabCompleteProvider.PERMISSABLES;
-        } else if (args.length == 2) {
-            return TabCompleteProvider.ACTIONS;
-        } else if (args.length == 3) {
-            return TabCompleteProvider.ACCESS;
-        }
-        return super.onTabComplete(context, args);
     }
 
     @Override

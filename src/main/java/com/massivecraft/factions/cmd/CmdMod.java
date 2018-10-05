@@ -3,8 +3,6 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
-import com.massivecraft.factions.cmd.tabcomplete.providers.ProviderFactionPlayers;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
@@ -79,14 +77,6 @@ public class CmdMod extends FCommand {
             targetFaction.msg(TL.COMMAND_MOD_PROMOTED, you.describeTo(targetFaction, true));
             context.msg(TL.COMMAND_MOD_PROMOTES, you.describeTo(context.fPlayer, true));
         }
-    }
-
-    @Override
-    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
-        if (args.length == 1) {
-            return new ProviderFactionPlayers(context.faction);
-        }
-        return super.onTabComplete(context, args);
     }
 
     @Override

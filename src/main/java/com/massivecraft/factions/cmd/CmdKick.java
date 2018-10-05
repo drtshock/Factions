@@ -1,9 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.cmd.tabcomplete.FactionTabCompleter;
-import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
-import com.massivecraft.factions.cmd.tabcomplete.providers.ProviderFactionPlayers;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -14,7 +11,7 @@ import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-public class CmdKick extends FCommand implements FactionTabCompleter {
+public class CmdKick extends FCommand {
 
     public CmdKick() {
         super();
@@ -139,14 +136,6 @@ public class CmdKick extends FCommand implements FactionTabCompleter {
 
         toKickFaction.deinvite(toKick);
         toKick.resetFactionData();
-    }
-
-    @Override
-    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
-        if (args.length == 1) {
-            return new ProviderFactionPlayers(context.faction);
-        }
-        return super.onTabComplete(context, args);
     }
 
     @Override

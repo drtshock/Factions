@@ -1,15 +1,12 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.cmd.tabcomplete.TabCompleteProvider;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 public class CmdChat extends FCommand {
 
@@ -23,6 +20,16 @@ public class CmdChat extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.CHAT)
                 .memberOnly()
+                .brigadier(new BrigadierProvider() {
+                    @Override
+                    public ArgumentBuilder get(ArgumentBuilder<Object, ?> parent) {
+                        return parent.then(LiteralArgumentBuilder.literal("public"))
+                                .then(LiteralArgumentBuilder.literal("mod"))
+                                .then(LiteralArgumentBuilder.literal("alliance"))
+                                .then(LiteralArgumentBuilder.literal("faction"))
+                                .then(LiteralArgumentBuilder.literal("truce"));
+                    }
+                })
                 .build();
 
         this.disableOnLock = false;
@@ -81,23 +88,6 @@ public class CmdChat extends FCommand {
         } else {
             context.msg(TL.COMMAND_CHAT_MODE_FACTION);
         }
-    }
-
-    @Override
-    public TabCompleteProvider onTabComplete(CommandContext context, String[] args) {
-        if (args.length == 1) {
-            return new TabCompleteProvider() {
-                @Override
-                public List<String> get() {
-                    List<String> modes = new ArrayList<>();
-                    for (ChatMode mode : ChatMode.values()) {
-                        modes.add(mode.name().toLowerCase());
-                    }
-                    return modes;
-                }
-            };
-        }
-        return super.onTabComplete(context, args);
     }
 
     @Override
