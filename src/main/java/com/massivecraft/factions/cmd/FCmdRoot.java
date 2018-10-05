@@ -113,8 +113,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.setHelpShort("The faction base command");
         this.helpLong.add(P.p.txt.parseTags("<i>This command contains all faction stuff."));
 
-        //this.subCommands.add(p.cmdHelp);
-
         this.addSubCommand(this.cmdAdmin);
         this.addSubCommand(this.cmdAutoClaim);
         this.addSubCommand(this.cmdBoom);

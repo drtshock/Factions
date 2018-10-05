@@ -256,59 +256,6 @@ public abstract class MPlugin extends JavaPlugin {
         return true;
     }
 
-    /*
-    public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly) {
-        return handleCommand(sender, commandString, testOnly, false);
-    }
-
-    public boolean handleCommand(final CommandSender sender, String commandString, boolean testOnly, boolean async) {
-        boolean noSlash = true;
-        if (commandString.startsWith("/")) {
-            noSlash = false;
-            commandString = commandString.substring(1);
-        }
-
-        for (final MCommand<?> command : this.getBaseCommands()) {
-            if (noSlash && !command.allowNoSlashAccess) {
-                continue;
-            }
-
-            for (String alias : command.aliases) {
-                // disallow double-space after alias, so specific commands can be prevented (preventing "f home" won't prevent "f  home")
-                if (commandString.startsWith(alias + "  ")) {
-                    return false;
-                }
-
-                if (commandString.startsWith(alias + " ") || commandString.equals(alias)) {
-                    final List<String> args = new ArrayList<>(Arrays.asList(commandString.split("\\s+")));
-                    args.remove(0);
-
-                    if (testOnly) {
-                        return true;
-                    }
-
-                    if (async) {
-                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
-                            @Override
-                            public void run() {
-                                command.execute(sender, args);
-                            }
-                        });
-                    } else {
-                        command.execute(sender, args);
-                    }
-
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean handleCommand(CommandSender sender, String commandString) {
-        return this.handleCommand(sender, commandString, false);
-    }*/
-
     // -------------------------------------------- //
     // HOOKS
     // -------------------------------------------- //

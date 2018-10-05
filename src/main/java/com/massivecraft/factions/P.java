@@ -277,29 +277,6 @@ public class P extends MPlugin {
     public boolean logPlayerCommands() {
         return Conf.logPlayerCommands;
     }
-/*
-    @Override
-    public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly) {
-        return sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player) sender) || super.handleCommand(sender, commandString, testOnly);
-    }
-
-    // TODO: Move this to FCmdRoot
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
-        if (split.length == 0) {
-            return handleCommand(sender, "/f help", false);
-        }
-
-        // otherwise, needs to be handled; presumably another plugin directly ran the command
-        String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
-        return handleCommand(sender, cmd + " " + TextUtil.implode(Arrays.asList(split), " "), false);
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return cmdBase.onTabComplete(sender, command, alias, args);
-    }
-*/
 
     // -------------------------------------------- //
     // Functions for other plugins to hook into
