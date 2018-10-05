@@ -12,6 +12,7 @@ import com.massivecraft.factions.cmd.role.CmdDemote;
 import com.massivecraft.factions.cmd.role.CmdPromote;
 import com.massivecraft.factions.zcore.util.TL;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import me.lucko.commodore.Commodore;
@@ -233,18 +234,36 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
                     // If the requirements explicitly provide a BrigadierProvider then use it
                     brigadier.then(subCommand.requirements.brigadier.get(literal));
                 } else {
-                    // Generate our own based on args
+                    // Generate our own based on args - quite ugly
+                    List<ArgumentBuilder<Object, ?>> stack = new ArrayList<>();
                     for (String required : subCommand.requiredArgs) {
-                        literal.then(RequiredArgumentBuilder.argument(required, StringArgumentType.word()));
+                        stack.add(RequiredArgumentBuilder.argument(required, StringArgumentType.word()));
                     }
-                    for (Map.Entry<String, String> optional : subCommand.optionalArgs.entrySet()) {
-                        if (optional.getKey().equalsIgnoreCase(optional.getValue())) {
-                            literal.then(RequiredArgumentBuilder.argument(optional.getKey(), StringArgumentType.word()));
-                            continue;
+                    for (Map.Entry<String, String> optionalEntry : subCommand.optionalArgs.entrySet()) {
+                        ArgumentBuilder<Object, ?> optional;
+                        if (optionalEntry.getKey().equalsIgnoreCase(optionalEntry.getValue())) {
+                            optional = RequiredArgumentBuilder.argument(optionalEntry.getKey(), StringArgumentType.word());
+                        } else {
+                            optional = RequiredArgumentBuilder.argument(optionalEntry.getKey() + "|" + optionalEntry.getValue(), StringArgumentType.word());
                         }
-                        literal.then(RequiredArgumentBuilder.argument(optional.getKey() + "|" + optional.getValue(), StringArgumentType.word()));
+
+                        stack.add(optional);
                     }
-                    brigadier.then(literal);
+
+                    ArgumentBuilder<Object, ?> previous = null;
+                    for (int i = stack.size() - 1; i >= 0; i--) {
+                        if (previous == null) {
+                            previous = stack.get(i);
+                        } else {
+                            previous = stack.get(i).then(previous);
+                        }
+                    }
+
+                    if (previous == null) {
+                        brigadier.then(literal);
+                    } else {
+                        brigadier.then(literal.then(previous));
+                    }
                 }
             }
         }
