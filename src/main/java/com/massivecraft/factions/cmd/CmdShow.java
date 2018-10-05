@@ -36,9 +36,7 @@ public class CmdShow extends FCommand {
         // this.requiredArgs.add("");
         this.optionalArgs.put("faction tag", "yours");
 
-        this.requirements = new CommandRequirements.Builder(Permission.SHOW).build();
-
-        this.disableOnLock = false;
+        this.requirements = new CommandRequirements.Builder(Permission.SHOW).noDisableOnLock().build();
     }
 
     @Override

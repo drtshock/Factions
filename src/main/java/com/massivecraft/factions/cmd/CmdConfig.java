@@ -25,11 +25,8 @@ public class CmdConfig extends FCommand {
 
         this.requiredArgs.add("setting");
         this.requiredArgs.add("value");
-        this.errorOnToManyArgs = false;
 
-        this.requirements = new CommandRequirements.Builder(Permission.CONFIG).build();
-
-        this.disableOnLock = true;
+        this.requirements = new CommandRequirements.Builder(Permission.CONFIG).noErrorOnManyArgs().build();
     }
 
     @Override

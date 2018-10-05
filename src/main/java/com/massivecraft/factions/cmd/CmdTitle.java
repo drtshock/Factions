@@ -19,8 +19,6 @@ public class CmdTitle extends FCommand {
                 .memberOnly()
                 .withRole(Role.MODERATOR)
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

@@ -17,8 +17,6 @@ public class CmdOwner extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.OWNER)
                 .playerOnly()
                 .build();
-
-        this.disableOnLock = true;
     }
 
     // TODO: Fix colors!

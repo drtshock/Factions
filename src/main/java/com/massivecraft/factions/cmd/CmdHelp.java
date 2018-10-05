@@ -21,9 +21,7 @@ public class CmdHelp extends FCommand {
         //this.requiredArgs.add("");
         this.optionalArgs.put("page", "1");
 
-        this.requirements = new CommandRequirements.Builder(Permission.HELP).build();
-
-        this.disableOnLock = false;
+        this.requirements = new CommandRequirements.Builder(Permission.HELP).noDisableOnLock().build();
     }
 
     @Override

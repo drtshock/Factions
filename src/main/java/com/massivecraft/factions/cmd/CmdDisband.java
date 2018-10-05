@@ -21,8 +21,6 @@ public class CmdDisband extends FCommand {
         this.optionalArgs.put("faction tag", "yours");
 
         this.requirements = new CommandRequirements.Builder(Permission.DISBAND).build();
-
-        this.disableOnLock = true;
     }
 
     @Override

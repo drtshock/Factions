@@ -21,9 +21,8 @@ public class CmdVault extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.VAULT)
                 .memberOnly()
+                .noDisableOnLock()
                 .build();
-
-        this.disableOnLock = false;
     }
 
     @Override

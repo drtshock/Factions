@@ -11,9 +11,7 @@ public class CmdReload extends FCommand {
         super();
         this.aliases.add("reload");
 
-        this.requirements = new CommandRequirements.Builder(Permission.RELOAD).build();
-
-        this.disableOnLock = false;
+        this.requirements = new CommandRequirements.Builder(Permission.RELOAD).noDisableOnLock().build();
     }
 
     @Override

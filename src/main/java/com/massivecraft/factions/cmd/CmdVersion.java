@@ -11,9 +11,7 @@ public class CmdVersion extends FCommand {
         this.aliases.add("version");
         this.aliases.add("ver");
 
-        this.requirements = new CommandRequirements.Builder(Permission.VERSION).build();
-
-        this.disableOnLock = false;
+        this.requirements = new CommandRequirements.Builder(Permission.VERSION).noDisableOnLock().build();
     }
 
     @Override

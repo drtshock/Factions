@@ -14,9 +14,8 @@ public class CmdChatSpy extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.CHATSPY)
                 .playerOnly()
+                .noDisableOnLock()
                 .build();
-
-        this.disableOnLock = false;
     }
 
     @Override

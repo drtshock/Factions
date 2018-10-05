@@ -20,8 +20,6 @@ public class CmdAutoClaim extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.AUTOCLAIM)
                 .playerOnly()
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

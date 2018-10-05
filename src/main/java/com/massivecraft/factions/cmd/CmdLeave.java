@@ -12,8 +12,6 @@ public class CmdLeave extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.LEAVE)
                 .memberOnly()
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

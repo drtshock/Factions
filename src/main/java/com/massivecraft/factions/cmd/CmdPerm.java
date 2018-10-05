@@ -32,8 +32,6 @@ public class CmdPerm extends FCommand {
                 .memberOnly()
                 .withRole(Role.ADMIN)
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

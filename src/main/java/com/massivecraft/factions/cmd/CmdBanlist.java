@@ -23,8 +23,6 @@ public class CmdBanlist extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.BAN)
                 .playerOnly()
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

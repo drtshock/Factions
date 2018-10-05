@@ -14,8 +14,6 @@ public class CmdPermanentPower extends FCommand {
         this.requiredArgs.add("power");
 
         this.requirements = new CommandRequirements.Builder(Permission.SET_PERMANENTPOWER).build();
-
-        this.disableOnLock = true;
     }
 
     @Override

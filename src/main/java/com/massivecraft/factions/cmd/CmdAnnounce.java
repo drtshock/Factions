@@ -19,11 +19,12 @@ public class CmdAnnounce extends FCommand {
         this.aliases.add("announce");
 
         this.requiredArgs.add("message");
-        this.errorOnToManyArgs = false;
 
         this.requirements = new CommandRequirements.Builder(Permission.ANNOUNCE)
                 .memberOnly()
                 .withRole(Role.MODERATOR)
+                .noErrorOnManyArgs()
+                .noDisableOnLock()
                 .brigadier(new BrigadierProvider() {
                     @Override
                     public ArgumentBuilder<Object, ?> get(ArgumentBuilder<Object, ?> parent) {
@@ -31,8 +32,6 @@ public class CmdAnnounce extends FCommand {
                     }
                 })
                 .build();
-
-        this.disableOnLock = false;
     }
 
     @Override

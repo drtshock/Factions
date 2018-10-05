@@ -25,8 +25,6 @@ public class CmdMod extends FCommand {
                 .memberOnly()
                 .withRole(Role.COLEADER)
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

@@ -62,7 +62,6 @@
                         </relocation>
                         <relocation>
                             <pattern>me.lucko.commodore</pattern>
-                            <!-- vvv Replace with the package of your plugin vvv -->
                             <shadedPattern>com.massivecraft.factions.shade.commodore</shadedPattern>
                         </relocation>
                     </relocations>

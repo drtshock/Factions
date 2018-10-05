@@ -22,8 +22,6 @@ public class FPromoteCommand extends FCommand {
                 .memberOnly()
                 .withAction(PermissableAction.PROMOTE)
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

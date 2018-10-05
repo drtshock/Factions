@@ -27,21 +27,14 @@ public abstract class FCommand {
 
     // Requirements to execute this command
     public CommandRequirements requirements;
-
-    // Legacy, To be moved to requirements SoonTM
-    public boolean disableOnLock;
+    
     // To be moved to context
     public List<FCommand> commandChain = new ArrayList<>(); // The command chain used to execute this command
-
-    public boolean errorOnToManyArgs = true;
 
     public FCommand() {
         p = P.p;
 
         requirements = new CommandRequirements.Builder(null).build();
-
-        // Due to safety reasons it defaults to disable on lock.
-        disableOnLock = true;
 
         this.subCommands = new ArrayList<>();
         this.aliases = new ArrayList<>();
@@ -85,7 +78,7 @@ public abstract class FCommand {
     }
 
     public boolean isEnabled(CommandContext context) {
-        if (P.p.getLocked() && this.disableOnLock) {
+        if (P.p.getLocked() && requirements.disableOnLock) {
             context.msg("<b>Factions was locked by an admin. Please try again later.");
             return false;
         }
@@ -101,7 +94,7 @@ public abstract class FCommand {
             return false;
         }
 
-        if (context.args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.errorOnToManyArgs) {
+        if (context.args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.requirements.errorOnManyArgs) {
             if (context.sender != null) {
                 // Get the to many string slice
                 List<String> theToMany = context.args.subList(this.requiredArgs.size() + this.optionalArgs.size(), context.args.size());

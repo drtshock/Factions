@@ -25,8 +25,6 @@ public class CmdUnban extends FCommand {
                 .withAction(PermissableAction.BAN)
                 .withRole(Role.MODERATOR)
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

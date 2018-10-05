@@ -20,6 +20,7 @@ public class CmdSetMaxVaults extends FCommand {
         this.requiredArgs.add("number");
 
         this.requirements = new CommandRequirements.Builder(Permission.SETMAXVAULTS)
+                .noDisableOnLock()
                 .brigadier(new BrigadierProvider() {
                     @Override
                     public ArgumentBuilder<Object, ?> get(ArgumentBuilder<Object, ?> parent) {
@@ -28,8 +29,6 @@ public class CmdSetMaxVaults extends FCommand {
                     }
                 })
                 .build();
-
-        this.disableOnLock = false;
     }
 
     @Override

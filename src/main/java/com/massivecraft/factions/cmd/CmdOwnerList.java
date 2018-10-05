@@ -15,9 +15,8 @@ public class CmdOwnerList extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.OWNERLIST)
                 .playerOnly()
+                .noDisableOnLock()
                 .build();
-
-        this.disableOnLock = false;
     }
 
     @Override

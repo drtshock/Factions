@@ -14,9 +14,7 @@ public class CmdPower extends FCommand {
 
         this.optionalArgs.put("player", "you");
 
-        this.requirements = new CommandRequirements.Builder(Permission.POWER).build();
-
-        this.disableOnLock = false;
+        this.requirements = new CommandRequirements.Builder(Permission.POWER).noDisableOnLock().build();
     }
 
     @Override

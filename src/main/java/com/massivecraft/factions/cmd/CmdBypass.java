@@ -15,9 +15,8 @@ public class CmdBypass extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.BYPASS)
                 .playerOnly()
+                .noDisableOnLock()
                 .build();
-
-        this.disableOnLock = false;
     }
 
     @Override

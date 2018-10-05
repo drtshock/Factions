@@ -19,12 +19,8 @@ public class CmdAdmin extends FCommand {
         this.aliases.add("setleader");
 
         this.requiredArgs.add("player");
-        //this.optionalArgs.put("", "");
 
-        this.requirements = new CommandRequirements.Builder(Permission.ADMIN)
-                .build();
-
-        this.disableOnLock = true;
+        this.requirements = new CommandRequirements.Builder(Permission.ADMIN).build();
     }
 
     @Override

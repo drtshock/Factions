@@ -17,9 +17,8 @@ public class CmdOpen extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.OPEN)
                 .playerOnly()
+                .noDisableOnLock()
                 .build();
-
-        this.disableOnLock = false;
     }
 
     @Override

@@ -14,9 +14,8 @@ public class CmdToggleAllianceChat extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.TOGGLE_ALLIANCE_CHAT)
                 .memberOnly()
+                .noDisableOnLock()
                 .build();
-
-        this.disableOnLock = false;
     }
 
     @Override

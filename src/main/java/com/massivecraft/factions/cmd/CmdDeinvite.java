@@ -23,8 +23,6 @@ public class CmdDeinvite extends FCommand {
                 .memberOnly()
                 .withRole(Role.MODERATOR)
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

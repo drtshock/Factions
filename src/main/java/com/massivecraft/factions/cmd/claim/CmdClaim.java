@@ -24,8 +24,6 @@ public class CmdClaim extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.CLAIM)
                 .playerOnly()
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

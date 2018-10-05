@@ -16,15 +16,12 @@ public class CmdDescription extends FCommand {
         this.aliases.add("description");
 
         this.requiredArgs.add("desc");
-        this.errorOnToManyArgs = false;
-        //this.optionalArgs
 
         this.requirements = new CommandRequirements.Builder(Permission.DESCRIPTION)
                 .memberOnly()
                 .withRole(Role.MODERATOR)
+                .noErrorOnManyArgs()
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

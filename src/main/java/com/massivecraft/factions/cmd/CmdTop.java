@@ -22,9 +22,7 @@ public class CmdTop extends FCommand {
         this.requiredArgs.add("criteria");
         this.optionalArgs.put("page", "1");
 
-        this.requirements = new CommandRequirements.Builder(Permission.TOP).build();
-
-        this.disableOnLock = false;
+        this.requirements = new CommandRequirements.Builder(Permission.TOP).noDisableOnLock().build();
     }
 
     @Override

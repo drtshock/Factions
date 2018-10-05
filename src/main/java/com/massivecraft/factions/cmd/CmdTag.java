@@ -23,8 +23,6 @@ public class CmdTag extends FCommand {
                 .memberOnly()
                 .withRole(Role.MODERATOR)
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

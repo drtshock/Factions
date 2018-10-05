@@ -13,15 +13,12 @@ public class CmdBoom extends FCommand {
         this.aliases.add("explosions");
         this.aliases.add("toggleexplosions");
 
-        //this.requiredArgs.add("");
         this.optionalArgs.put("on/off", "flip");
 
         this.requirements = new CommandRequirements.Builder(Permission.NO_BOOM)
                 .memberOnly()
                 .withRole(Role.MODERATOR)
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

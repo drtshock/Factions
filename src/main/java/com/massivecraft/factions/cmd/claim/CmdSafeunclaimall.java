@@ -21,8 +21,6 @@ public class CmdSafeunclaimall extends FCommand {
         this.optionalArgs.put("world", "all");
 
         this.requirements = new CommandRequirements.Builder(Permission.MANAGE_SAFE_ZONE).build();
-
-        this.disableOnLock = true;
     }
 
     @Override

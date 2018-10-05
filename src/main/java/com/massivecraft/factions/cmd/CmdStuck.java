@@ -21,8 +21,6 @@ public class CmdStuck extends FCommand {
         this.aliases.add("halp!"); // halp! c:
 
         this.requirements = new CommandRequirements.Builder(Permission.STUCK).build();
-
-        this.disableOnLock = true;
     }
 
     @Override

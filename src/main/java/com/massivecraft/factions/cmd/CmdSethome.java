@@ -18,8 +18,6 @@ public class CmdSethome extends FCommand {
                 .withAction(PermissableAction.SETHOME)
                 .withRole(Role.MODERATOR)
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

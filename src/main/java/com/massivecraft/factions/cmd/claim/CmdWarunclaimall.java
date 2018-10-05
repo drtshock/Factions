@@ -22,8 +22,6 @@ public class CmdWarunclaimall extends FCommand {
         this.optionalArgs.put("world", "all");
 
         this.requirements = new CommandRequirements.Builder(Permission.MANAGE_WAR_ZONE).build();
-
-        this.disableOnLock = true;
     }
 
     @Override

@@ -17,8 +17,6 @@ public class CmdPermanent extends FCommand {
         this.requiredArgs.add("faction tag");
 
         this.requirements = new CommandRequirements.Builder(Permission.SET_PERMANENT).build();
-
-        this.disableOnLock = true;
     }
 
     @Override

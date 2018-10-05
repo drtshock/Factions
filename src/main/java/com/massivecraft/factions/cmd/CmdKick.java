@@ -23,9 +23,8 @@ public class CmdKick extends FCommand {
                 .memberOnly()
                 .withRole(Role.MODERATOR)
                 .withAction(PermissableAction.KICK)
+                .noDisableOnLock()
                 .build();
-
-        this.disableOnLock = false;
     }
 
     @Override

@@ -17,8 +17,6 @@ public class CmdPowerBoost extends FCommand {
         this.requiredArgs.add("# or reset");
 
         this.requirements = new CommandRequirements.Builder(Permission.POWERBOOST).build();
-
-        this.disableOnLock = true;
     }
 
     @Override

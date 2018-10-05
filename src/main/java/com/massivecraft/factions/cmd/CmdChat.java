@@ -20,6 +20,7 @@ public class CmdChat extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.CHAT)
                 .memberOnly()
+                .noDisableOnLock()
                 .brigadier(new BrigadierProvider() {
                     @Override
                     public ArgumentBuilder get(ArgumentBuilder<Object, ?> parent) {
@@ -31,8 +32,6 @@ public class CmdChat extends FCommand {
                     }
                 })
                 .build();
-
-        this.disableOnLock = false;
     }
 
     @Override

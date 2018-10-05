@@ -24,9 +24,8 @@ public class CmdHome extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.HOME)
                 .memberOnly()
+                .noDisableOnLock()
                 .build();
-
-        this.disableOnLock = false;
     }
 
     @Override

@@ -19,13 +19,10 @@ public class CmdCreate extends FCommand {
         this.aliases.add("create");
 
         this.requiredArgs.add("faction tag");
-        //this.optionalArgs.put("", "");
 
         this.requirements = new CommandRequirements.Builder(Permission.CREATE)
                 .playerOnly()
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

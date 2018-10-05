@@ -20,8 +20,6 @@ public class CmdClaimAt extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.CLAIMAT)
                 .memberOnly()
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

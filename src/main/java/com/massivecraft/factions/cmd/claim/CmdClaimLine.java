@@ -28,8 +28,6 @@ public class CmdClaimLine extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.CLAIM_LINE)
                 .playerOnly()
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

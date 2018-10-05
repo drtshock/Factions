@@ -24,8 +24,6 @@ public class CmdInvite extends FCommand {
                 .withRole(Role.MODERATOR)
                 .withAction(PermissableAction.INVITE)
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

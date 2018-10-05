@@ -109,8 +109,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.aliases.addAll(Conf.baseCommandAliases);
         this.aliases.removeAll(Collections.<String>singletonList(null));  // remove any nulls from extra commas
 
-        this.disableOnLock = false;
-
         this.setHelpShort("The faction base command");
         this.helpLong.add(P.p.txt.parseTags("<i>This command contains all faction stuff."));
 

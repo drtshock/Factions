@@ -21,8 +21,6 @@ public class CmdJoin extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.JOIN)
                 .playerOnly()
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

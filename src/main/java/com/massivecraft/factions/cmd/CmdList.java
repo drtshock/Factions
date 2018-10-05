@@ -25,12 +25,9 @@ public class CmdList extends FCommand {
         defaults[1] = "<i>Factionless<i> {factionless} online";
         defaults[2] = "<a>{faction} <i>{online} / {members} online, <a>Land / Power / Maxpower: <i>{chunks}/{power}/{maxPower}";
 
-        //this.requiredArgs.add("");
         this.optionalArgs.put("page", "1");
 
         this.requirements = new CommandRequirements.Builder(Permission.LIST).build();
-
-        this.disableOnLock = false;
     }
 
     @Override

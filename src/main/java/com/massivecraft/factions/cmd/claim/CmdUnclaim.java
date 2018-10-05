@@ -24,8 +24,6 @@ public class CmdUnclaim extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.UNCLAIM)
                 .playerOnly()
                 .build();
-
-        this.disableOnLock = true;
     }
 
     @Override

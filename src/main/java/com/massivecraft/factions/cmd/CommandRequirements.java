@@ -27,6 +27,10 @@ public class CommandRequirements {
     // Commodore stuffs
     public BrigadierProvider brigadier;
 
+    // Edge case handling
+    public boolean errorOnManyArgs;
+    public boolean disableOnLock;
+
     private CommandRequirements(Permission permission, boolean playerOnly, boolean memberOnly, Role role, PermissableAction action, BrigadierProvider brigadier) {
         this.permission = permission;
         this.playerOnly = playerOnly;
@@ -100,6 +104,9 @@ public class CommandRequirements {
 
         private BrigadierProvider brigadier;
 
+        private boolean errorOnManyArgs = true;
+        private boolean disableOnLock = true;
+
         public Builder(Permission permission) {
             this.permission = permission;
         }
@@ -131,7 +138,20 @@ public class CommandRequirements {
         }
 
         public CommandRequirements build() {
-            return new CommandRequirements(permission, playerOnly, memberOnly, role, action, brigadier);
+            CommandRequirements requirements = new CommandRequirements(permission, playerOnly, memberOnly, role, action, brigadier);
+            requirements.errorOnManyArgs = errorOnManyArgs;
+            requirements.disableOnLock = disableOnLock;
+            return requirements;
+        }
+
+        public Builder noErrorOnManyArgs() {
+            errorOnManyArgs = false;
+            return this;
+        }
+
+        public Builder noDisableOnLock() {
+            disableOnLock = false;
+            return this;
         }
 
     }
