@@ -41,7 +41,7 @@ public class CmdTrail extends FCommand {
                         fme.msg(TL.COMMAND_FLYTRAILS_PARTICLE_PERMS, particleEffect.getName());
                     }
                 } else {
-                    fme.msg(TL.COMMAND_FLYTRAILS_PARTICLE_INVALID);
+                    fme.msg(getUsageTranslation());
                 }
             } else {
                 boolean state = argAsBool(0);
