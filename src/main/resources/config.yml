@@ -83,9 +83,9 @@ f-fly:
   # Should we disable flight if the player has suffered generic damage
   disable-generic-damage: false
   # Trails show below the players foot when flying, faction.fly.trails
+  # Players can enable them with /f trail on/off
+  # Players can also set which effect to show /f trail effect <particle> only if they have faction.fly.trails.<particle>
   trails:
-    # Name of the particle
-    name: CLOUD
     # Speed of the particles
     speed: 0.05
     # Amount spawned

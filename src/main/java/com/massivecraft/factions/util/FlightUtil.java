@@ -1,6 +1,5 @@
 package com.massivecraft.factions.util;
 
-import com.darkblade12.particleeffect.ParticleEffect;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.P;
@@ -16,14 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlightUtil extends BukkitRunnable {
-
-    private ParticleEffect effect;
     private int amount;
     private float speed;
 
     public FlightUtil() {
-        String effectName = P.p.getConfig().getString("f-fly.trails.name", "");
-        this.effect = ParticleEffect.fromName(effectName.toUpperCase());
         this.amount = P.p.getConfig().getInt("f-fly.trails.amount", 20);
         this.speed = (float) P.p.getConfig().getDouble("f-fly.trails.speed", 0.05);
     }
@@ -33,8 +28,8 @@ public class FlightUtil extends BukkitRunnable {
         for (Player player : Bukkit.getOnlinePlayers()) {
             FPlayer pilot = FPlayers.getInstance().getByPlayer(player);
             if (pilot.isFlying()) {
-                if (effect != null && Permission.FLY_TRAILS.has(player)) {
-                    effect.display(0, 0, 0, speed, amount, player.getLocation(), new ArrayList<>(Bukkit.getOnlinePlayers()));
+                if (pilot.getFlyTrailsEffect() != null && Permission.FLY_TRAILS.has(player) && pilot.getFlyTrailsState()) {
+                    pilot.getFlyTrailsEffect().display(0, 0, 0, speed, amount, player.getLocation(), new ArrayList<>(Bukkit.getOnlinePlayers()));
                 }
 
                 if (!pilot.isAdminBypassing()) {
