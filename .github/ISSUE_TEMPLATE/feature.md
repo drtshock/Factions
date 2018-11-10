@@ -6,7 +6,6 @@ about: Have an idea you want to see added? Post it here!
 <!-- FactionsUUID Feature Request Template
 Please post ideas that are relevant and can be for the majority, not just yourself
 -->
-
 ### Idea
 *Tell us what you want!*
 
