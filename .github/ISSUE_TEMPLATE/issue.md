@@ -26,7 +26,6 @@ Discord server: https://discord.gg/F7gexAQ
 5.  Include a description and any other details that may be helpful under
     "Details:".
 -->
-
 ### FactionsUUID Version
 *Run `/f version` and give us your output.* 
 
