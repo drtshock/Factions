@@ -26,10 +26,15 @@ Discord server: https://discord.gg/F7gexAQ
 5.  Include a description and any other details that may be helpful under
     "Details:".
 -->
-FactionsUUID version (run `/f version`): 
 
-Server software (run `/version`): 
+### FactionsUUID Version
+*Run `/f version` and give us your output.* 
 
-Server (`logs/latest.log`):
+### Server Version
+*Run `/version` and give us your output.*
+ 
+### Logs
+*Give use your logs by going to `logs/latest.log`.*
 
-Details:
+### Details
+*Please explain the problem.*
