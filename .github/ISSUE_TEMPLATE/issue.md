@@ -20,7 +20,7 @@ Discord server: https://discord.gg/F7gexAQ
     
 3.  If you are reporting an issue with lag, please include a timings report.
 
-4.  If you are reporting an issue with messages or in-game behaviour, please
+4.  If you are reporting an issue with messages or in-game behavior, please
     include screenshots detailing the problem.
     
 5.  Include a description and any other details that may be helpful under
