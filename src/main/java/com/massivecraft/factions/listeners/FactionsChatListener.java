@@ -149,9 +149,9 @@ public class FactionsChatListener implements Listener {
 
         // Relation Colored?
         if (Conf.chatTagRelationColored) {
-            // We must choke the standard message and send out individual messages to all players
-            // Why? Because the relations will differ.
-            event.setCancelled(true);
+            // Messages are sent to players individually
+            // This still leaves a chance for other plugins to pick it up
+            event.getRecipients().clear();
 
             for (Player listeningPlayer : event.getRecipients()) {
                 FPlayer you = FPlayers.getInstance().getByPlayer(listeningPlayer);
@@ -170,10 +170,9 @@ public class FactionsChatListener implements Listener {
             // Write to the log... We will write the non colored message.
             String nonColoredMsg = ChatColor.stripColor(String.format(nonColoredMsgFormat, talkingPlayer.getDisplayName(), msg));
             Bukkit.getLogger().log(Level.INFO, nonColoredMsg);
-        } else {
-            // No relation color.
-            event.setFormat(nonColoredMsgFormat);
         }
+        // Message with no relation color.
+        event.setFormat(nonColoredMsgFormat);
     }
 
 }
