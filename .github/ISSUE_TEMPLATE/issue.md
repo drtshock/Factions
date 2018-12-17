@@ -7,7 +7,9 @@ about: Having a problem? Use this template!
 Don't put anything inside this block, as it won't be included in the issue.
 
 If you have a question about Factions, it may be more useful to join our
-Discord server: https://discord.gg/F7gexAQ
+Discord server: https://discord.gg/F7gexAQ. Check the wiki, https://github.com/drtshock/Factions/Wiki,
+as well to make sure this has a fix. Also check to see if this issue has
+already been reported.
 
 1.  Fill out the template, running the commands either in the console or 
     as a player. Don't simply put "latest" or we will ignore it.
