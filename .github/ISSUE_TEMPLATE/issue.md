@@ -3,7 +3,6 @@ name: Issue
 about: Having a problem? Use this template!
 
 ---
-
 <!-- FactionsUUID Issue Template
 Don't put anything inside this block, as it won't be included in the issue.
 
@@ -29,11 +28,14 @@ Discord server: https://discord.gg/F7gexAQ
 ### FactionsUUID Version
 *Run `/f version` and give us your output.* 
 
+
 ### Server Version
 *Run `/version` and give us your output.*
- 
+
+
 ### Logs
 *Give use your logs by going to `logs/latest.log`.*
+
 
 ### Details
 *Please explain the problem.*
