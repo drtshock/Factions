@@ -20,9 +20,9 @@ public class CmdSetMaxVaults extends FCommand {
         this.requiredArgs.add("number");
 
         this.requirements = new CommandRequirements.Builder(Permission.SETMAXVAULTS)
-            .noDisableOnLock()
-            .brigadier(MaxVaultBrigadier.class)
-            .build();
+                .noDisableOnLock()
+                .brigadier(MaxVaultBrigadier.class)
+                .build();
     }
 
     @Override
