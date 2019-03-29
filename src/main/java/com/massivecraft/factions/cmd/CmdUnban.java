@@ -1,16 +1,10 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class CmdUnban extends FCommand {
 

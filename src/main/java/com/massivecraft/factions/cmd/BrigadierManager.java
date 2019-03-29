@@ -1,12 +1,12 @@
 package com.massivecraft.factions.cmd;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.massivecraft.factions.P;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.CommandNode;
@@ -15,10 +15,10 @@ import me.lucko.commodore.Commodore;
 import me.lucko.commodore.CommodoreProvider;
 
 public class BrigadierManager {
-    
+
     public Commodore commodore;
     public LiteralArgumentBuilder<Object> brigadier = LiteralArgumentBuilder.literal("factions");
-    
+
     public BrigadierManager() {
         commodore = CommodoreProvider.getCommodore(P.p);
     }
@@ -33,7 +33,7 @@ public class BrigadierManager {
         }
         commodore.register(fLiteral.build());
     }
-    
+
     public void addSubCommand(FCommand subCommand) {
         // Register brigadier to all command aliases
         for (String alias : subCommand.aliases) {
@@ -41,7 +41,14 @@ public class BrigadierManager {
 
             if (subCommand.requirements.brigadier != null) {
                 // If the requirements explicitly provide a BrigadierProvider then use it
-                brigadier.then(subCommand.requirements.brigadier.get(literal));
+                Class<? extends BrigadierProvider> brigadierProvider = subCommand.requirements.brigadier;
+
+                try {
+                    Constructor<? extends BrigadierProvider> constructor = brigadierProvider.getDeclaredConstructor(subCommand.getClass());
+                    brigadier.then(constructor.newInstance(subCommand).get(literal));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
                 // Generate our own based on args - quite ugly
 

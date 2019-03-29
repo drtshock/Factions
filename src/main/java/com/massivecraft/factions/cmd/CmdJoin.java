@@ -6,9 +6,6 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CmdJoin extends FCommand {
 
     public CmdJoin() {
