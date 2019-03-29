@@ -5,8 +5,6 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
-import com.mojang.brigadier.builder.ArgumentBuilder;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 public class CmdChat extends FCommand {
 
@@ -15,22 +13,11 @@ public class CmdChat extends FCommand {
         this.aliases.add("c");
         this.aliases.add("chat");
 
-        //this.requiredArgs.add("");
         this.optionalArgs.put("mode", "next");
 
         this.requirements = new CommandRequirements.Builder(Permission.CHAT)
                 .memberOnly()
                 .noDisableOnLock()
-                .brigadier(new BrigadierProvider() {
-                    @Override
-                    public ArgumentBuilder get(ArgumentBuilder<Object, ?> parent) {
-                        return parent.then(LiteralArgumentBuilder.literal("public"))
-                                .then(LiteralArgumentBuilder.literal("mod"))
-                                .then(LiteralArgumentBuilder.literal("alliance"))
-                                .then(LiteralArgumentBuilder.literal("faction"))
-                                .then(LiteralArgumentBuilder.literal("truce"));
-                    }
-                })
                 .build();
     }
 

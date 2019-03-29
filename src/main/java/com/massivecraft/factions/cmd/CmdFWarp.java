@@ -19,7 +19,7 @@ public class CmdFWarp extends FCommand {
         super();
         this.aliases.add("warp");
         this.aliases.add("warps");
-        this.optionalArgs.put("warpnacontext.player", "warpname");
+        this.optionalArgs.put("warp", "warp");
         this.optionalArgs.put("password", "password");
 
         this.requirements = new CommandRequirements.Builder(Permission.WARP)

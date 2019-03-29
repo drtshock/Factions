@@ -99,7 +99,7 @@ public class CommandRequirements {
         private boolean playerOnly = false;
         private boolean memberOnly = false;
 
-        private Role role = Role.RECRUIT;
+        private Role role = null;
         private PermissableAction action;
 
         private BrigadierProvider brigadier;

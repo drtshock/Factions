@@ -12,7 +12,6 @@ public class CmdOpen extends FCommand {
         super();
         this.aliases.add("open");
 
-        //this.requiredArgs.add("");
         this.optionalArgs.put("yes/no", "flip");
 
         this.requirements = new CommandRequirements.Builder(Permission.OPEN)

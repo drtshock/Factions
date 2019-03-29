@@ -18,8 +18,7 @@ public class CmdMod extends FCommand {
         this.aliases.add("officer");
         this.aliases.add("setofficer");
 
-        this.optionalArgs.put("player", "name");
-        //this.optionalArgs.put("", "");
+        this.optionalArgs.put("player", "player");
 
         this.requirements = new CommandRequirements.Builder(Permission.MOD)
                 .memberOnly()

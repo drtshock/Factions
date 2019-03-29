@@ -16,7 +16,6 @@ public class CmdLock extends FCommand {
         super();
         this.aliases.add("lock");
 
-        //this.requiredArgs.add("");
         this.optionalArgs.put("on/off", "flip");
 
         this.requirements = new CommandRequirements.Builder(Permission.LOCK).noDisableOnLock().build();

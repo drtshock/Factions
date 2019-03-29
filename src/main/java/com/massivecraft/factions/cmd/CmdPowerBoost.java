@@ -12,9 +12,9 @@ public class CmdPowerBoost extends FCommand {
         super();
         this.aliases.add("powerboost");
 
-        this.requiredArgs.add("p|f|player|faction");
+        this.requiredArgs.add("p/f/player/faction");
         this.requiredArgs.add("name");
-        this.requiredArgs.add("# or reset");
+        this.requiredArgs.add("#/reset");
 
         this.requirements = new CommandRequirements.Builder(Permission.POWERBOOST).build();
     }

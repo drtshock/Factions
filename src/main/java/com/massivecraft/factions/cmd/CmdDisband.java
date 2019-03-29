@@ -17,8 +17,7 @@ public class CmdDisband extends FCommand {
         super();
         this.aliases.add("disband");
 
-        //this.requiredArgs.add("");
-        this.optionalArgs.put("faction tag", "yours");
+        this.optionalArgs.put("faction", "yours");
 
         this.requirements = new CommandRequirements.Builder(Permission.DISBAND).build();
     }

@@ -11,11 +11,6 @@ import com.massivecraft.factions.cmd.relations.CmdRelationTruce;
 import com.massivecraft.factions.cmd.role.CmdDemote;
 import com.massivecraft.factions.cmd.role.CmdPromote;
 import com.massivecraft.factions.zcore.util.TL;
-import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.ArgumentBuilder;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import me.lucko.commodore.Commodore;
 import me.lucko.commodore.CommodoreProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -27,7 +22,7 @@ import java.util.logging.Level;
 
 public class FCmdRoot extends FCommand implements CommandExecutor {
 
-    public LiteralArgumentBuilder<Object> brigadier = LiteralArgumentBuilder.literal("factions");
+    public BrigadierManager brigadierManager;
 
     public CmdAdmin cmdAdmin = new CmdAdmin();
     public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
@@ -106,6 +101,10 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
     public FCmdRoot() {
         super();
+        if (CommodoreProvider.isSupported()) {
+            brigadierManager = new BrigadierManager();
+        }
+
         this.aliases.addAll(Conf.baseCommandAliases);
         this.aliases.removeAll(Collections.<String>singletonList(null));  // remove any nulls from extra commas
 
@@ -203,9 +202,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         }
 
         if (CommodoreProvider.isSupported()) {
-            Commodore commodore = CommodoreProvider.getCommodore(P.p);
-
-            commodore.register(p.getCommand(p.refCommand), brigadier.build());
+            brigadierManager.build();
         }
     }
 
@@ -225,45 +222,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public void addSubCommand(FCommand subCommand) {
         super.addSubCommand(subCommand);
         if (CommodoreProvider.isSupported()) {
-            // Register brigadier to all command aliases
-            for (String alias : subCommand.aliases) {
-                LiteralArgumentBuilder<Object> literal = LiteralArgumentBuilder.literal(alias);
-                if (subCommand.requirements.brigadier != null) {
-                    // If the requirements explicitly provide a BrigadierProvider then use it
-                    brigadier.then(subCommand.requirements.brigadier.get(literal));
-                } else {
-                    // Generate our own based on args - quite ugly
-                    List<ArgumentBuilder<Object, ?>> stack = new ArrayList<>();
-                    for (String required : subCommand.requiredArgs) {
-                        stack.add(RequiredArgumentBuilder.argument(required, StringArgumentType.word()));
-                    }
-                    for (Map.Entry<String, String> optionalEntry : subCommand.optionalArgs.entrySet()) {
-                        ArgumentBuilder<Object, ?> optional;
-                        if (optionalEntry.getKey().equalsIgnoreCase(optionalEntry.getValue())) {
-                            optional = RequiredArgumentBuilder.argument(optionalEntry.getKey(), StringArgumentType.word());
-                        } else {
-                            optional = RequiredArgumentBuilder.argument(optionalEntry.getKey() + "|" + optionalEntry.getValue(), StringArgumentType.word());
-                        }
-
-                        stack.add(optional);
-                    }
-
-                    ArgumentBuilder<Object, ?> previous = null;
-                    for (int i = stack.size() - 1; i >= 0; i--) {
-                        if (previous == null) {
-                            previous = stack.get(i);
-                        } else {
-                            previous = stack.get(i).then(previous);
-                        }
-                    }
-
-                    if (previous == null) {
-                        brigadier.then(literal);
-                    } else {
-                        brigadier.then(literal.then(previous));
-                    }
-                }
-            }
+            brigadierManager.addSubCommand(subCommand);
         }
     }
 

@@ -10,7 +10,6 @@ public class CmdBypass extends FCommand {
         super();
         this.aliases.add("bypass");
 
-        //this.requiredArgs.add("");
         this.optionalArgs.put("on/off", "flip");
 
         this.requirements = new CommandRequirements.Builder(Permission.BYPASS)

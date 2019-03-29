@@ -13,7 +13,7 @@ public class CmdTitle extends FCommand {
         this.aliases.add("title");
 
         this.requiredArgs.add("player");
-        this.optionalArgs.put("title", "");
+        this.optionalArgs.put("title", "title");
 
         this.requirements = new CommandRequirements.Builder(Permission.TITLE)
                 .memberOnly()

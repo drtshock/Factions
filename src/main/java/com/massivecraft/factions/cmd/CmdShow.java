@@ -33,7 +33,6 @@ public class CmdShow extends FCommand {
         defaults.add("<a>Online: (<i>{online}<a>/<i>{members}<a>): {online-list}");
         defaults.add("<a>Offline: (<i>{offline}<a>/<i>{members}<a>): {offline-list}");
 
-        // this.requiredArgs.add("");
         this.optionalArgs.put("faction tag", "yours");
 
         this.requirements = new CommandRequirements.Builder(Permission.SHOW).noDisableOnLock().build();

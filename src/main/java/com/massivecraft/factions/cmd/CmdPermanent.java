@@ -14,7 +14,7 @@ public class CmdPermanent extends FCommand {
         super();
         this.aliases.add("permanent");
 
-        this.requiredArgs.add("faction tag");
+        this.requiredArgs.add("faction");
 
         this.requirements = new CommandRequirements.Builder(Permission.SET_PERMANENT).build();
     }
