@@ -65,7 +65,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean isFlying = false;
     protected boolean isAutoFlying = false;
     protected boolean flyTrailsState = false;
-    protected ParticleEffect flyTrailsEffect = null;
+    protected String flyTrailsEffect = null;
 
     protected boolean seeingChunk = false;
 
@@ -1025,13 +1025,13 @@ public abstract class MemoryFPlayer implements FPlayer {
         msg(TL.COMMAND_FLYTRAILS_CHANGE, state ? "enabled" : "disabled");
     }
 
-    public ParticleEffect getFlyTrailsEffect() {
+    public String getFlyTrailsEffect() {
         return flyTrailsEffect;
     }
 
-    public void setFlyTrailsEffect(ParticleEffect effect) {
+    public void setFlyTrailsEffect(String effect) {
         flyTrailsEffect = effect;
-        msg(TL.COMMAND_FLYTRAILS_PARTICLE_CHANGE, effect.getName());
+        msg(TL.COMMAND_FLYTRAILS_PARTICLE_CHANGE, effect);
     }
 
     // -------------------------------------------- //

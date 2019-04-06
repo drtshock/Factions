@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlightUtil extends BukkitRunnable {
+
     private int amount;
     private float speed;
 
@@ -29,7 +30,8 @@ public class FlightUtil extends BukkitRunnable {
             FPlayer pilot = FPlayers.getInstance().getByPlayer(player);
             if (pilot.isFlying()) {
                 if (pilot.getFlyTrailsEffect() != null && Permission.FLY_TRAILS.has(player) && pilot.getFlyTrailsState()) {
-                    pilot.getFlyTrailsEffect().display(0, 0, 0, speed, amount, player.getLocation(), new ArrayList<>(Bukkit.getOnlinePlayers()));
+                    Object effect = P.p.particleProvider.effectFromString(pilot.getFlyTrailsEffect());
+                    P.p.particleProvider.spawn(effect, player.getLocation(), amount, speed, 0, 0, 0);
                 }
 
                 if (!pilot.isAdminBypassing()) {

@@ -289,9 +289,9 @@ public interface FPlayer extends EconomyParticipator {
 
     public void setFlyTrailsState(boolean state);
 
-    public ParticleEffect getFlyTrailsEffect();
+    public String getFlyTrailsEffect();
 
-    public void setFlyTrailsEffect(ParticleEffect effect);
+    public void setFlyTrailsEffect(String effect);
 
     // -------------------------------
     // Warmups
