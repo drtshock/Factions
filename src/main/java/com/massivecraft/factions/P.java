@@ -152,12 +152,7 @@ public class P extends MPlugin {
         log(Level.INFO, "Using %1s as a particle provider", particleProvider.name());
 
         if (getConfig().getBoolean("f-fly.enable", false)) {
-            double delay = getConfig().getDouble("f-fly.radius-check", 1) * 20;
-            // Only run FlightUtil if not 0
-            if (delay != 0) {
-                new FlightUtil().runTaskTimer(this, 0, (long) delay);
-                log(Level.INFO, "Enabling enemy radius check for f fly every %1s seconds", delay / 20);
-            }
+            FlightUtil.start();
         }
         if (P.p.getConfig().getBoolean("see-chunk.particles", true)) {
             double delay = Math.floor(getConfig().getDouble("f-fly.radius-check", 0.75) * 20);
