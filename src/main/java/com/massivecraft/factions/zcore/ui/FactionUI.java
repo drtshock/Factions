@@ -3,8 +3,7 @@ package com.massivecraft.factions.zcore.ui;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.ui.items.ItemUI;
-import com.massivecraft.factions.zcore.ui.items.StageableUI;
-import com.massivecraft.factions.zcore.ui.items.StagedItemUI;
+import com.massivecraft.factions.zcore.ui.items.DynamicItems;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
@@ -41,7 +40,7 @@ public abstract class FactionUI<T> implements InventoryHolder {
     // Convert a Type to a config String
     protected abstract String convert(T type);
 
-    // Parse all the values in this String, will be injected into the ItemUI and return it
+    // Parse all the placeholder values in this String, will be injected into the ItemUI and return it
     protected abstract String parse(String toParse, T type);
 
     protected abstract void onClick(T action, ClickType clickType);
@@ -71,7 +70,7 @@ public abstract class FactionUI<T> implements InventoryHolder {
         String guiName = parseDefault(config.getString("name", "FactionUI"));
         inventory = Bukkit.createInventory(this, size, guiName);
 
-        // Generates a map that relates | Integer (Slot) -> T
+        // Generates a map that relates | int slot -> T type
         // Does not handle any actual UI
         for (String key : config.getConfigurationSection("slots").getKeys(false)) {
             int slot = config.getInt("slots." + key);
@@ -118,11 +117,10 @@ public abstract class FactionUI<T> implements InventoryHolder {
             if (item == null) {
                 continue;
             }
-            if (this instanceof StageableUI && item instanceof StagedItemUI) {
-                StageableUI ui = (StageableUI) this;
-                String stage = ui.onStage(type);
-                // Merge the stage into the base
-                item = ((StagedItemUI) item).get(stage);
+            if (this instanceof Dynamic && item instanceof DynamicItems) {
+                String state = getState(type);
+                // Merge the state item into the base
+                item = ((DynamicItems) item).get(state);
             }
             item = parse(item, type);
 
@@ -170,6 +168,10 @@ public abstract class FactionUI<T> implements InventoryHolder {
         }
     }
 
+    public String getState(T type) {
+        return null;
+    }
+
     // Will parse default faction stuff, ie: Faction Name, Power, Colors etc
     protected ItemUI parse(ItemUI itemUI, T type) {
         itemUI.setName(parseDefault(itemUI.getName()));
@@ -208,5 +210,7 @@ public abstract class FactionUI<T> implements InventoryHolder {
     public void open() {
         user.getPlayer().openInventory(getInventory());
     }
+
+    public interface Dynamic {}
 
 }

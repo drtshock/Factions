@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore.ui.items;
 
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.util.material.FactionMaterial;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,6 +13,12 @@ import org.bukkit.material.Colorable;
 import java.util.List;
 import java.util.logging.Level;
 
+/**
+ *  This class implements an easy way to map
+ *  config values like: materials, lore, name, color
+ *  to a respective ItemStack, also has utility methods
+ *  to merge, clone, etc
+ */
 public class ItemUI {
 
     private String name;
@@ -45,7 +52,10 @@ public class ItemUI {
             meta.setLore(lore);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 
-            if (color != null && (itemStack.getData() instanceof Colorable || material == Material.STAINED_GLASS_PANE || material == Material.STAINED_GLASS || material == Material.STAINED_CLAY)) {
+            if (color != null && (itemStack.getData() instanceof Colorable ||
+                    material == FactionMaterial.from("STAINED_GLASS_PANE").get() ||
+                    material == FactionMaterial.from("STAINED_GLASS").get() ||
+                    material == FactionMaterial.from("STAINED_CLAY").get())) {
                 // ItemStack.setData() does not work :(
                 itemStack.setDurability(color.getWoolData());
             }
@@ -80,11 +90,7 @@ public class ItemUI {
         }
 
         if (section.isString("stage")) {
-            StagedItemUI.StageType stageType = StagedItemUI.StageType.fromString(section.getString("stage"));
-            if (stageType != null) {
-                P.p.log(stageType);
-                return new StagedItemUI(builder, stageType, section.getConfigurationSection("stages"));
-            }
+            return new DynamicItems(builder, section.getConfigurationSection("stages"));
         }
 
         return builder.build();

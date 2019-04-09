@@ -2,7 +2,7 @@ package com.massivecraft.factions.zcore.ui;
 
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.ui.items.ItemUI;
-import com.massivecraft.factions.zcore.ui.items.StagedItemUI;
+import com.massivecraft.factions.zcore.ui.items.DynamicItems;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
@@ -72,8 +72,8 @@ public class FactionUIHandler {
             return null;
         } else {
             ItemUI itemUI = global.get(id);
-            if (itemUI instanceof StagedItemUI) {
-                return new StagedItemUI(itemUI);
+            if (itemUI instanceof DynamicItems) {
+                return new DynamicItems(itemUI);
             }
             return new ItemUI(itemUI);
         }

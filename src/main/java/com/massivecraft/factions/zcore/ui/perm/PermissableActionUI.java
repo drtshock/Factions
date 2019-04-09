@@ -6,11 +6,10 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.ui.FactionUI;
-import com.massivecraft.factions.zcore.ui.items.StageableUI;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.event.inventory.ClickType;
 
-public class PermissableActionUI extends FactionUI<PermissableAction> implements StageableUI<PermissableAction> {
+public class PermissableActionUI extends FactionUI<PermissableAction> implements FactionUI.Dynamic {
 
     private Permissable permissable;
 
@@ -69,11 +68,11 @@ public class PermissableActionUI extends FactionUI<PermissableAction> implements
     }
 
     @Override
-    public String onStage(PermissableAction action) {
+    public String getState(PermissableAction action) {
         return user.getFaction().getAccess(permissable, action).name().toLowerCase();
     }
 
-    // For dummy items the only parseDefault is called, but we want to provide the relation placeholders, so: Override
+    // For dummy items only parseDefault is called, but we want to provide the relation placeholders, so: Override
     @Override
     protected String parseDefault(String string) {
         String parsed = super.parseDefault(string);

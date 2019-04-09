@@ -6,7 +6,6 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.ui.FactionUI;
-import com.massivecraft.factions.zcore.ui.items.StageableUI;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.conversations.*;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class WarpUI extends FactionUI<Integer> implements StageableUI<Integer> {
+public class WarpUI extends FactionUI<Integer> implements FactionUI.Dynamic {
 
     private List<String> warps;
     private int maxWarps;
@@ -86,7 +85,7 @@ public class WarpUI extends FactionUI<Integer> implements StageableUI<Integer> {
     }
 
     @Override
-    public String onStage(Integer index) {
+    public String getState(Integer index) {
         if (warps.size() > index) {
             if (user.getFaction().hasWarpPassword(warps.get(index))) {
                 return "password";
