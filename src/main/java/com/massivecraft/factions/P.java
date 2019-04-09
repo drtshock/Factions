@@ -23,6 +23,7 @@ import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.ui.FactionUIHandler;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -71,6 +72,7 @@ public class P extends MPlugin {
 
     public SeeChunkUtil seeChunkUtil;
     public ParticleProvider particleProvider;
+    public FactionUIHandler factionUIHandler;
 
     public P() {
         p = this;
@@ -167,6 +169,13 @@ public class P extends MPlugin {
                 log(Level.INFO, "Enabling enemy radius check for f fly every %1s seconds", delay / 20);
             }
         }
+
+        if (P.p.getConfig().getBoolean("see-chunk.particles", true)) {
+            double delay = Math.floor(getConfig().getDouble("f-fly.radius-check", 0.75) * 20);
+            seeChunkUtil = new SeeChunkUtil();
+            seeChunkUtil.runTaskTimer(this, 0, (long) delay);
+        }
+        factionUIHandler = new FactionUIHandler(this);
 
         new TitleAPI();
         setupPlaceholderAPI();
