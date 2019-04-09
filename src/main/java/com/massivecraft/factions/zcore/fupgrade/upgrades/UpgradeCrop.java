@@ -4,6 +4,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.util.material.FactionMaterial;
 import com.massivecraft.factions.zcore.fupgrade.FUpgrade;
 import com.massivecraft.factions.zcore.fupgrade.FUpgradeRoot;
 import com.massivecraft.factions.zcore.util.TL;
@@ -54,7 +55,7 @@ public class UpgradeCrop extends FUpgrade {
         double rateChance = rateMap.get(level) - 1;
 
         if (rateChance >= random) {
-            if (event.getBlock().getType() == Material.CROPS) {
+            if (event.getBlock().getType() == FactionMaterial.from("CROPS").get()) {
                 Crops now = (Crops) event.getNewState().getData();
                 CropState newState;
                 // Shift the stage by one
