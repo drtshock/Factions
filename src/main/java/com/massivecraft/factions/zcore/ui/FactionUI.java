@@ -2,8 +2,8 @@ package com.massivecraft.factions.zcore.ui;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.zcore.ui.items.DynamicItem;
 import com.massivecraft.factions.zcore.ui.items.ItemUI;
-import com.massivecraft.factions.zcore.ui.items.DynamicItems;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
@@ -109,18 +109,18 @@ public abstract class FactionUI<T> implements InventoryHolder {
                 if (base == null) {
                     continue;
                 }
-                item = P.p.factionUIHandler.mergeBase(base, items.getConfigurationSection(convert(type)));
+                item = FactionUIHandler.instance().mergeBase(base, items.getConfigurationSection(convert(type)));
             } else {
-                item = P.p.factionUIHandler.getBaseItem(base);
+                item = FactionUIHandler.instance().getBaseItem(base);
             }
             // Something went wrong in the merging or getting phase (probably does not exist)
             if (item == null) {
                 continue;
             }
-            if (this instanceof Dynamic && item instanceof DynamicItems) {
+            if (this instanceof Dynamic && item instanceof DynamicItem) {
                 String state = getState(type);
                 // Merge the state item into the base
-                item = ((DynamicItems) item).get(state);
+                item = ((DynamicItem) item).get(state);
             }
             item = parse(item, type);
 
@@ -153,9 +153,9 @@ public abstract class FactionUI<T> implements InventoryHolder {
                 if (base == null) {
                     continue;
                 }
-                item = P.p.factionUIHandler.mergeDummyBase(base, dummies.getConfigurationSection(key));
+                item = FactionUIHandler.instance().mergeDummyBase(base, dummies.getConfigurationSection(key));
             } else {
-                item = P.p.factionUIHandler.getDummyItem(base);
+                item = FactionUIHandler.instance().getDummyItem(base);
             }
             // Something went wrong in the merging or getting phase (probably does not exist)
             if (item == null) {

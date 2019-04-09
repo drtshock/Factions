@@ -90,7 +90,7 @@ public class ItemUI {
         }
 
         if (section.isString("stage")) {
-            return new DynamicItems(builder, section.getConfigurationSection("stages"));
+            return new DynamicItem(builder, section.getConfigurationSection("stages"));
         }
 
         return builder.build();

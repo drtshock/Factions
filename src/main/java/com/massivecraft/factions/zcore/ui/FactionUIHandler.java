@@ -1,28 +1,35 @@
 package com.massivecraft.factions.zcore.ui;
 
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.zcore.ui.items.DynamicItem;
 import com.massivecraft.factions.zcore.ui.items.ItemUI;
-import com.massivecraft.factions.zcore.ui.items.DynamicItems;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
 
+/**
+ *  Loads and caches config values as ItemUI
+ *  instances, and then provides them to UI menus
+ */
 public class FactionUIHandler {
 
-    private P p;
+    private static FactionUIHandler uiHandler;
 
     private HashMap<String, ItemUI> global = new HashMap<>();
     private HashMap<String, ItemUI> dummies = new HashMap<>();
 
-    // Is in charge of loading in the global items and dummy items into a memory map
-    public FactionUIHandler(P p) {
-        this.p = p;
-        build();
+    public static void start() {
+        uiHandler = new FactionUIHandler();
+        uiHandler.build();
+    }
+
+    public static FactionUIHandler instance() {
+        return uiHandler;
     }
 
     public void build() {
         // Globals
-        ConfigurationSection globalSection = p.getConfig().getConfigurationSection("ui.global");
+        ConfigurationSection globalSection = P.p.getConfig().getConfigurationSection("ui.global");
         if (globalSection != null) {
             for (String key : globalSection.getKeys(false)) {
                 ConfigurationSection section = globalSection.getConfigurationSection(key);
@@ -33,7 +40,8 @@ public class FactionUIHandler {
             }
         }
 
-        ConfigurationSection dummiesSection = p.getConfig().getConfigurationSection("ui.dummies");
+        // Dummies
+        ConfigurationSection dummiesSection = P.p.getConfig().getConfigurationSection("ui.dummies");
         if (dummiesSection != null) {
             for (String key : dummiesSection.getKeys(false)) {
                 ConfigurationSection section = dummiesSection.getConfigurationSection(key);
@@ -72,8 +80,8 @@ public class FactionUIHandler {
             return null;
         } else {
             ItemUI itemUI = global.get(id);
-            if (itemUI instanceof DynamicItems) {
-                return new DynamicItems(itemUI);
+            if (itemUI instanceof DynamicItem) {
+                return new DynamicItem(itemUI);
             }
             return new ItemUI(itemUI);
         }

@@ -72,7 +72,6 @@ public class P extends MPlugin {
 
     public SeeChunkUtil seeChunkUtil;
     public ParticleProvider particleProvider;
-    public FactionUIHandler factionUIHandler;
 
     public P() {
         p = this;
@@ -175,7 +174,7 @@ public class P extends MPlugin {
             seeChunkUtil = new SeeChunkUtil();
             seeChunkUtil.runTaskTimer(this, 0, (long) delay);
         }
-        factionUIHandler = new FactionUIHandler(this);
+        FactionUIHandler.start();
 
         new TitleAPI();
         setupPlaceholderAPI();

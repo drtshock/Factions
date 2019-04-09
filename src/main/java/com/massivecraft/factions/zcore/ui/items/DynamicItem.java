@@ -2,12 +2,10 @@ package com.massivecraft.factions.zcore.ui.items;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 /**
- *  DynamicItems uses ItemUI merges to handle
+ *  DynamicItem uses ItemUI merges to handle
  *  specific states in some UI menus, for example
  *
  *  PermissableActionUI handles individual actions
@@ -15,12 +13,12 @@ import java.util.List;
  *  these can change depending on what the UI and the config
  *  provide to this class
  */
-public class DynamicItems extends ItemUI {
+public class DynamicItem extends ItemUI {
 
     // May contain incomplete ItemUI but will be used to be merged into this main one
     private HashMap<String, ItemUI> states = new HashMap<>();
 
-    public DynamicItems(Builder builder, ConfigurationSection section) {
+    public DynamicItem(Builder builder, ConfigurationSection section) {
         super(builder);
         for (String key : section.getKeys(false)) {
             // Build a map with all sub states, might be invalid but we won't access them anyways
@@ -28,10 +26,10 @@ public class DynamicItems extends ItemUI {
         }
     }
 
-    public DynamicItems(ItemUI itemUI) {
+    public DynamicItem(ItemUI itemUI) {
         super(itemUI);
-        if (itemUI instanceof DynamicItems) {
-            this.states = ((DynamicItems) itemUI).states;
+        if (itemUI instanceof DynamicItem) {
+            this.states = ((DynamicItem) itemUI).states;
         }
     }
 
