@@ -409,6 +409,21 @@ ui:
     action:
       material: STAINED_CLAY
       name: '&8[&7{action}&8]'
+      # Stages overwrite this item when conditions are met, and don't work on dummies
+      # Stages cannot be overwritten
+      # StageTypes: WARP; ACCESS
+      stage: ACCESS
+      # Each stagetype has different ones executed with different conditions
+      # allow: Action is allowed
+      # deny: Action is denied
+      # undefined: Action is undefined
+      stages:
+        allow:
+          color: LIME
+        deny:
+          color: RED
+        undefined:
+          color: CYAN
       lore:
       - '&8Access:'
       - '&8[{action-access-color}{action-access}&8]'
@@ -420,9 +435,19 @@ ui:
       material: STAINED_GLASS
       color: RED
       name: '&8[&7{warp}&8]'
+      stage: WARP
+      # exist: If the warp exists
+      # non_exist: If the warp does not exist
+      # password: If the warp has a password, will ignore exist
+      stages:
+        exist:
+          color: LIME
+        password:
+          color: BLACK
+          lore:
+          - '&8Password Protected'
       lore:
       -
-  # Dummy items may be used anywhere within the 'dummies', and all values can be replaced
   dummies:
     glass:
       material: STAINED_GLASS_PANE
@@ -431,28 +456,27 @@ ui:
       lore:
       -
     relation-info:
-      material: STAINED_CLAY
-      color: CYAN
+      material: STONE
       name: '&8[{relation-color}{relation}&8]'
       lore:
       -
 
 ############################################################
 # +------------------------------------------------------+ #
-# |                  F Permission UI                     | #
+# |                  F Permission GUI                    | #
 # +------------------------------------------------------+ #
 ############################################################
 
 # TODO: Needs documentation
 fperm-gui:
   relation:
-    # UI Name
-    name: 'Factions Permissions'
+    # GUI Name
+    name: 'Faction Permissions'
     # Amount of inventory rows, No larger than 6
     rows: 3
 
-    # These are the slots where the relations are going to be placed on the first UI
-    # Note: Slots start at 0 and end at (UI_size - 1)
+    # These are the slots where the relations are going to be placed on the first GUI
+    # Note: Slots start at 0 and end at one less that GUI size
     slots:
       recruit: 10
       normal: 11
@@ -462,7 +486,7 @@ fperm-gui:
       ally: 15
       enemy: 16
       neutral: 22
-    # Global item to base upon
+    # Material to be displayed
     items:
       recruit: relation
       normal:
@@ -486,7 +510,7 @@ fperm-gui:
       neutral:
         base: relation
         material: STONE
-    # Dummy items, defined in the 'dummies' ui section (Can be overwritten)
+    # Dummy items, defined in the global ui section (Can be overwritten)
     dummies:
       '0': glass
       '1': glass
@@ -498,7 +522,7 @@ fperm-gui:
       '7': glass
       '8': glass
   action:
-    name: 'Factions Permissions'
+    name: 'Faction Permissions'
     rows: 4
     slots:
       build: 9
@@ -556,9 +580,10 @@ fperm-gui:
       '8': glass
       '35': relation-info
 
+
 ############################################################
 # +------------------------------------------------------+ #
-# |                   Faction Warp UI                    | #
+# |                  Faction Warp GUI                    | #
 # +------------------------------------------------------+ #
 ############################################################
 

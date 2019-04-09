@@ -1,12 +1,11 @@
 package com.massivecraft.factions.zcore.ui;
 
 import com.massivecraft.factions.P;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
+import com.massivecraft.factions.zcore.ui.items.ItemUI;
+import com.massivecraft.factions.zcore.ui.items.StagedItemUI;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 
 public class FactionUIHandler {
 
@@ -27,7 +26,7 @@ public class FactionUIHandler {
         if (globalSection != null) {
             for (String key : globalSection.getKeys(false)) {
                 ConfigurationSection section = globalSection.getConfigurationSection(key);
-                ItemUI itemUI = ItemUI.fromConfigSection(section);
+                ItemUI itemUI = ItemUI.fromConfig(section);
                 if (itemUI != null) {
                     global.put(key, itemUI);
                 }
@@ -38,8 +37,8 @@ public class FactionUIHandler {
         if (dummiesSection != null) {
             for (String key : dummiesSection.getKeys(false)) {
                 ConfigurationSection section = dummiesSection.getConfigurationSection(key);
-                ItemUI itemUI = ItemUI.fromConfigSection(section);
-                if (itemUI != null) {
+                ItemUI itemUI = ItemUI.fromConfig(section);
+                if (itemUI != null && itemUI.isValid()) {
                     dummies.put(key, itemUI);
                 }
             }
@@ -47,12 +46,16 @@ public class FactionUIHandler {
     }
 
     public ItemUI mergeBase(String id, ConfigurationSection object) {
-        ItemUI base = global.get(id);
+        ItemUI base = getBaseItem(id);
+        if (base == null) {
+            return null;
+        }
+        base.merge(ItemUI.fromConfig(object));
         return merge(base, object);
     }
 
     public ItemUI mergeDummyBase(String id, ConfigurationSection object) {
-        ItemUI base = dummies.get(id);
+        ItemUI base = getDummyItem(id);
         return merge(base, object);
     }
 
@@ -60,36 +63,19 @@ public class FactionUIHandler {
         if (base == null) {
             return null;
         }
-        ItemUI merge = new ItemUI(base);
-        if (object.isString("name")) {
-            merge.setName(object.getString("name"));
-        }
-        if (object.isList("lore")) {
-            merge.setLore(object.getStringList("lore"));
-        }
-        if (object.isString("material")) {
-            Material material = Material.matchMaterial(object.getString("material"));
-            if (material != null) {
-                merge.setMaterial(material);
-            }
-        }
-        if (object.isString("color")) {
-            String colorName = object.getString("color");
-            try {
-                merge.setColor(DyeColor.valueOf(colorName));
-            } catch (IllegalArgumentException e) {
-                P.p.log(Level.WARNING, "Invalid Color: " + colorName);
-            }
-        }
-
-        return merge;
+        base.merge(ItemUI.fromConfig(object));
+        return base;
     }
 
     public ItemUI getBaseItem(String id) {
         if (global.get(id) == null) {
             return null;
         } else {
-            return new ItemUI(global.get(id));
+            ItemUI itemUI = global.get(id);
+            if (itemUI instanceof StagedItemUI) {
+                return new StagedItemUI(itemUI);
+            }
+            return new ItemUI(itemUI);
         }
     }
 

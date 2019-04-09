@@ -2,6 +2,9 @@ package com.massivecraft.factions.zcore.ui;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.zcore.ui.items.ItemUI;
+import com.massivecraft.factions.zcore.ui.items.StageableUI;
+import com.massivecraft.factions.zcore.ui.items.StagedItemUI;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
@@ -114,6 +117,12 @@ public abstract class FactionUI<T> implements InventoryHolder {
             // Something went wrong in the merging or getting phase (probably does not exist)
             if (item == null) {
                 continue;
+            }
+            if (this instanceof StageableUI && item instanceof StagedItemUI) {
+                StageableUI ui = (StageableUI) this;
+                String stage = ui.onStage(type);
+                // Merge the stage into the base
+                item = ((StagedItemUI) item).get(stage);
             }
             item = parse(item, type);
 
