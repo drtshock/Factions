@@ -20,6 +20,7 @@ public class CmdReload extends FCommand {
         Conf.load();
         P.p.reloadConfig();
         P.p.loadLang();
+        P.p.factionUIHandler.build();
         long timeReload = (System.currentTimeMillis() - timeInitStart);
 
         context.msg(TL.COMMAND_RELOAD_TIME, timeReload);
