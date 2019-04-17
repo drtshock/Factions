@@ -2,6 +2,7 @@ package com.massivecraft.factions.zcore.fupgrade;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.zcore.fupgrade.cost.FUpgradeCost;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.Listener;
 
@@ -11,11 +12,11 @@ import java.util.logging.Level;
 
 public abstract class FUpgrade implements Listener {
 
-    protected FUpgradeRoot factionUpgrades;
+    protected FUpgradeRoot root;
 
     protected int maxLevel;
     protected ConfigurationSection configSection;
-    protected HashMap<Integer, FUpgradeCost> cost = new HashMap<>();
+    protected HashMap<Integer, HashMap<String, Double>> cost = new HashMap<>();
     protected HashMap<Integer, ConfigurationSection> levelConfigs = new HashMap<>();
 
     // Upgrade information
@@ -23,8 +24,8 @@ public abstract class FUpgrade implements Listener {
     public abstract String translation();
 
 
-    public FUpgrade(FUpgradeRoot factionUpgrades) {
-        this.factionUpgrades = factionUpgrades;
+    public FUpgrade(FUpgradeRoot root) {
+        this.root = root;
         configSection = P.p.getConfig().getConfigurationSection("upgrades.options." + id().toLowerCase());
         if (configSection == null || !configSection.getBoolean("enable", false)) {
             disable(false);
@@ -53,25 +54,26 @@ public abstract class FUpgrade implements Listener {
 
         // Now lets load the costs
         for (Map.Entry<Integer, ConfigurationSection> attrs : levelConfigs.entrySet()) {
-            ConfigurationSection levelCost = attrs.getValue().getConfigurationSection("cost");
+            ConfigurationSection levelCostSection = attrs.getValue().getConfigurationSection("cost");
+            HashMap<String, Double> levelCost = new HashMap<>();
 
-            if (levelCost == null) {
-                cost.put(attrs.getKey(), new FUpgradeCost());
+            if (levelCostSection == null) {
+                cost.put(attrs.getKey(), levelCost);
                 continue;
             }
 
-            FUpgradeCost fUpgradeCost = new FUpgradeCost();
-            for (String key : levelCost.getKeys(false)) {
-                FUpgradeCost.CostType costType = FUpgradeCost.CostType.fromString(key);
-                double value = levelCost.getDouble(key);
+
+            for (String key : levelCostSection.getKeys(false)) {
+                FUpgradeCost costType = root.getCost(key);
+                double value = levelCostSection.getDouble(key);
 
                 if (costType == null) {
                     continue;
                 }
 
-                fUpgradeCost.put(costType, value);
+                levelCost.put(costType.id(), value);
             }
-            cost.put(attrs.getKey(), fUpgradeCost);
+            cost.put(attrs.getKey(), levelCost);
         }
         // Everything is ready, let the upgrade handle the rest
         registerAttributes();
@@ -80,22 +82,23 @@ public abstract class FUpgrade implements Listener {
     protected abstract void registerAttributes();
 
     public boolean pay(int level, FPlayer fme) {
-        FUpgradeCost levelCost = cost.get(level);
-
-        // Didn't build price correctly lets return true
-        if (levelCost == null) {
-            return true;
-        // Else make 'em pay
-        } else {
-            return levelCost.pay(fme);
+        for (Map.Entry<String, Double> cost : cost.get(level).entrySet()) {
+            // If one of the costs doesn't pass return false
+            if (!root.getCost(cost.getKey()).transact(fme, cost.getValue(), true)) {
+                return false;
+            }
         }
+        for (Map.Entry<String, Double> cost : cost.get(level).entrySet()) {
+            root.getCost(cost.getKey()).transact(fme, cost.getValue(), false);
+        }
+        return true;
     }
 
     public void disable(boolean log) {
         if (log) {
             P.p.log("Disabling Upgrade: " + id());
         }
-        factionUpgrades.unregister(this);
+        root.unregister(this);
     }
 
     public int getMaxLevel() {

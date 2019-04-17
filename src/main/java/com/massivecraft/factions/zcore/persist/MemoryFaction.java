@@ -505,7 +505,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
             upgrades.clear();
 
-            for (FUpgrade upgrade : P.p.factionUpgrades.getUpgrades()) {
+            for (FUpgrade upgrade : P.p.factionUpgrades.getUpgrades().values()) {
                 upgrades.put(upgrade.id(), 1);
             }
         }
