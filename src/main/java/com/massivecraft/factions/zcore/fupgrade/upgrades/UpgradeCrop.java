@@ -3,13 +3,11 @@ package com.massivecraft.factions.zcore.fupgrade.upgrades;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
 import com.massivecraft.factions.util.material.FactionMaterial;
 import com.massivecraft.factions.zcore.fupgrade.FUpgrade;
 import com.massivecraft.factions.zcore.fupgrade.FUpgradeRoot;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.CropState;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockGrowEvent;
@@ -18,11 +16,10 @@ import org.bukkit.material.Crops;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.logging.Level;
 
 public class UpgradeCrop extends FUpgrade {
 
-    private HashMap<Integer, Double> rateMap;
+    private HashMap<Integer, Double> cropRate = new HashMap<>();
 
     @Override
     public String id() {
@@ -37,10 +34,9 @@ public class UpgradeCrop extends FUpgrade {
         super(root);
     }
 
-    protected void registerAttributes() {
-        rateMap = new HashMap<>();
-        for (Map.Entry<Integer, ConfigurationSection> entry : levelConfigs.entrySet()) {
-            rateMap.put(entry.getKey(), entry.getValue().getDouble("rate", 1));
+    protected void register() {
+        for (Map.Entry<Integer, ConfigurationSection> entry : levels.entrySet()) {
+            cropRate.put(entry.getKey(), entry.getValue().getDouble("rate", 1));
         }
     }
 
@@ -52,7 +48,7 @@ public class UpgradeCrop extends FUpgrade {
         int level = factionAt.getUpgradeLevel(id());
 
         double random = new Random().nextDouble();
-        double rateChance = rateMap.get(level) - 1;
+        double rateChance = cropRate.get(level) - 1;
 
         if (rateChance >= random) {
             if (event.getBlock().getType() == FactionMaterial.from("CROPS").get()) {

@@ -1,6 +1,5 @@
 package com.massivecraft.factions.zcore.fupgrade.upgrades;
 
-import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
@@ -16,7 +15,7 @@ import java.util.Map;
 
 public class UpgradeExp extends FUpgrade {
 
-    private HashMap<Integer, Double> rateMap;
+    private HashMap<Integer, Double> expRate = new HashMap<>();
 
     @Override
     public String id() {
@@ -32,10 +31,9 @@ public class UpgradeExp extends FUpgrade {
     }
 
     @Override
-    protected void registerAttributes() {
-        rateMap = new HashMap<>();
-        for (Map.Entry<Integer, ConfigurationSection> entry : levelConfigs.entrySet()) {
-            rateMap.put(entry.getKey(), entry.getValue().getDouble("rate", 1));
+    protected void register() {
+        for (Map.Entry<Integer, ConfigurationSection> entry : levels.entrySet()) {
+            expRate.put(entry.getKey(), entry.getValue().getDouble("rate", 1));
         }
     }
 
@@ -47,7 +45,7 @@ public class UpgradeExp extends FUpgrade {
         if (fme.isInOwnTerritory()) {
             int level = faction.getUpgradeLevel(id());
 
-            int xp = (int) (event.getAmount() * rateMap.get(level));
+            int xp = (int) (event.getAmount() * expRate.get(level));
             event.setAmount(xp);
         }
     }

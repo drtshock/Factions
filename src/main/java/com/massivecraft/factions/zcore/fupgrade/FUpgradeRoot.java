@@ -14,12 +14,10 @@ import static org.bukkit.Bukkit.getServer;
 
 public class FUpgradeRoot {
 
-    private P p;
     private HashMap<String, FUpgrade> upgrades = new HashMap<>();
-    private HashSet<FUpgradeCost> costs = new HashSet<>();
+    private HashMap<String, FUpgradeCost> costs = new HashMap<>();
 
     public FUpgradeRoot(P p) {
-        this.p = p;
         p.log("Loading Faction Upgrades");
 
         // Load default upgrades
@@ -27,14 +25,14 @@ public class FUpgradeRoot {
         register(p, new UpgradeSpawner(this));
         register(p, new UpgradeExp(this));
 
-        costs.add(new FUpgradeCost.PlayerEcon());
-        costs.add(new FUpgradeCost.PlayerExp());
-        costs.add(new FUpgradeCost.FactionEcon());
+        register(new FUpgradeCost.PlayerEcon());
+        register(new FUpgradeCost.PlayerExp());
+        register(new FUpgradeCost.FactionEcon());
 
         p.log("Finished loading Faction Upgrades");
+        p.log(upgrades.values());
     }
 
-    // Register the Upgrade into the Set and register the listener
     public void register(JavaPlugin plugin, FUpgrade factionUpgrade) {
         upgrades.put(factionUpgrade.id(), factionUpgrade);
         getServer().getPluginManager().registerEvents(factionUpgrade, plugin);
@@ -45,6 +43,10 @@ public class FUpgradeRoot {
         HandlerList.unregisterAll(factionUpgrade);
     }
 
+    public void register(FUpgradeCost cost) {
+        costs.put(cost.id(), cost);
+    }
+
     public Map<String, FUpgrade> getUpgrades() {
         return Collections.unmodifiableMap(upgrades);
     }
@@ -53,17 +55,12 @@ public class FUpgradeRoot {
         return upgrades.get(upgradeId);
     }
 
-    public Set<FUpgradeCost> getCosts() {
-        return Collections.unmodifiableSet(costs);
+    public Map<String, FUpgradeCost> getCosts() {
+        return Collections.unmodifiableMap(costs);
     }
 
     public FUpgradeCost getCost(String costId) {
-        for (FUpgradeCost cost : costs) {
-            if (cost.id().equalsIgnoreCase(costId)) {
-                return cost;
-            }
-        }
-        return null;
+        return costs.get(costId);
     }
 
 }

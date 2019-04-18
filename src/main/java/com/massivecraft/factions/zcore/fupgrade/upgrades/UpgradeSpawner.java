@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class UpgradeSpawner extends FUpgrade {
 
-    private HashMap<Integer, Double> rateMap;
+    private HashMap<Integer, Double> spawnerRate = new HashMap<>();;
 
     @Override
     public String id() {
@@ -30,10 +30,9 @@ public class UpgradeSpawner extends FUpgrade {
         super(root);
     }
 
-    protected void registerAttributes() {
-        rateMap = new HashMap<>();
-        for (Map.Entry<Integer, ConfigurationSection> entry : levelConfigs.entrySet()) {
-            rateMap.put(entry.getKey(), entry.getValue().getDouble("rate", 1));
+    protected void register() {
+        for (Map.Entry<Integer, ConfigurationSection> entry : levels.entrySet()) {
+            spawnerRate.put(entry.getKey(), entry.getValue().getDouble("rate", 1));
         }
     }
 
@@ -43,7 +42,7 @@ public class UpgradeSpawner extends FUpgrade {
         Faction factionAt = Board.getInstance().getFactionAt(factionLoc);
         int level = factionAt.getUpgradeLevel(id());
 
-        event.getSpawner().setDelay((int) (event.getSpawner().getDelay() / rateMap.get(level)));
+        event.getSpawner().setDelay((int) (event.getSpawner().getDelay() / spawnerRate.get(level)));
     }
 
 }
