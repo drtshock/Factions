@@ -52,10 +52,8 @@ public class ItemUI {
             meta.setLore(lore);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 
-            if (color != null && (itemStack.getData() instanceof Colorable ||
-                    material == FactionMaterial.from("STAINED_GLASS_PANE").get() ||
-                    material == FactionMaterial.from("STAINED_GLASS").get() ||
-                    material == FactionMaterial.from("STAINED_CLAY").get())) {
+            // If a user places a color, they should be expected to put a colorable object
+            if (color != null) {
                 // ItemStack.setData() does not work :(
                 itemStack.setDurability(color.getWoolData());
             }
@@ -89,8 +87,8 @@ public class ItemUI {
             }
         }
 
-        if (section.isString("stage")) {
-            return new DynamicItem(builder, section.getConfigurationSection("stages"));
+        if (section.isConfigurationSection("states")) {
+            return new DynamicItem(builder, section.getConfigurationSection("states"));
         }
 
         return builder.build();

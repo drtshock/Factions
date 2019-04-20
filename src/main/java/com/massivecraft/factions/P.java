@@ -148,6 +148,7 @@ public class P extends MPlugin {
             seeChunkUtil = new SeeChunkUtil();
             seeChunkUtil.runTaskTimer(this, 0, (long) delay);
         }
+        FactionUIHandler.start();
         // End run before registering event handlers.
 
         // Register Event Handlers
@@ -168,13 +169,6 @@ public class P extends MPlugin {
                 log(Level.INFO, "Enabling enemy radius check for f fly every %1s seconds", delay / 20);
             }
         }
-
-        if (P.p.getConfig().getBoolean("see-chunk.particles", true)) {
-            double delay = Math.floor(getConfig().getDouble("f-fly.radius-check", 0.75) * 20);
-            seeChunkUtil = new SeeChunkUtil();
-            seeChunkUtil.runTaskTimer(this, 0, (long) delay);
-        }
-        FactionUIHandler.start();
 
         new TitleAPI();
         setupPlaceholderAPI();

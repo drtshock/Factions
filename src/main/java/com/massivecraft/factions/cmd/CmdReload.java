@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.ui.FactionUIHandler;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdReload extends FCommand {
@@ -20,7 +21,7 @@ public class CmdReload extends FCommand {
         Conf.load();
         P.p.reloadConfig();
         P.p.loadLang();
-        P.p.factionUIHandler.build();
+        FactionUIHandler.instance().build();
         long timeReload = (System.currentTimeMillis() - timeInitStart);
 
         context.msg(TL.COMMAND_RELOAD_TIME, timeReload);

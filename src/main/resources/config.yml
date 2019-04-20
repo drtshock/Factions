@@ -402,64 +402,64 @@ ui:
   # These items may be used as 'base' anywhere and all values can be replaced
   global:
     relation:
-      material: WOOD_SWORD
+      material: WOODEN_SWORD
       name: '&8[{relation-color}{relation}&8]'
       lore:
-      -
+        -
     action:
-      material: STAINED_CLAY
-      name: '&8[&7{action}&8]'
-      # Stages overwrite this item when conditions are met, and don't work on dummies
-      # Stages cannot be overwritten
-      # StageTypes: WARP; ACCESS
-      stage: ACCESS
-      # Each stagetype has different ones executed with different conditions
+      material: TERRACOTTA
+      name: '&8[{action-access-color}{action}&8]'
+      # Depending on where it is used, different states are provided
       # allow: Action is allowed
       # deny: Action is denied
       # undefined: Action is undefined
-      stages:
+      states:
         allow:
           color: LIME
+          material: LIME_TERRACOTTA
         deny:
           color: RED
+          material: RED_TERRACOTTA
         undefined:
           color: CYAN
+          material: CYAN_TERRACOTTA
       lore:
-      - '&8Access:'
-      - '&8[{action-access-color}{action-access}&8]'
-      - ''
-      - '&8Left click to &a&lAllow'
-      - '&8Right click to &c&lDeny'
-      - '&8Middle click to &lUndefine'
+        - '&8Access:'
+        - '&8[{action-access-color}{action-access}&8]'
+        - ''
+        - '&8Left click to &a&lAllow'
+        - '&8Right click to &c&lDeny'
+        - '&8Middle click to &lUndefine'
     warp:
-      material: STAINED_GLASS
+      material: RED_STAINED_GLASS
       color: RED
       name: '&8[&7{warp}&8]'
-      stage: WARP
       # exist: If the warp exists
       # non_exist: If the warp does not exist
       # password: If the warp has a password, will ignore exist
-      stages:
+      states:
         exist:
+          material: LIME_STAINED_GLASS
           color: LIME
         password:
+          material: BLACK_STAINED_GLASS
           color: BLACK
           lore:
-          - '&8Password Protected'
+            - '&8Password Protected'
       lore:
-      -
+        -
   dummies:
     glass:
-      material: STAINED_GLASS_PANE
+      material: BLACK_STAINED_GLASS_PANE
       color: BLACK
       name: ' '
-      lore:
-      -
     relation-info:
       material: STONE
       name: '&8[{relation-color}{relation}&8]'
-      lore:
-      -
+    # Back is a special dummy, which will go to the previous GUI if this able
+    back:
+      material: ARROW
+      name: '&7Back'
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -578,6 +578,7 @@ fperm-gui:
       '6': glass
       '7': glass
       '8': glass
+      '34': back
       '35': relation-info
 
 

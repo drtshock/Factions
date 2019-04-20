@@ -7,9 +7,13 @@ import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.ui.FactionUI;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 
-public class PermissableActionUI extends FactionUI<PermissableAction> implements FactionUI.Dynamic {
+public class PermissableActionUI extends FactionUI<PermissableAction> implements FactionUI.Dynamic, FactionUI.Backable {
 
     private Permissable permissable;
 
@@ -83,4 +87,8 @@ public class PermissableActionUI extends FactionUI<PermissableAction> implements
         return parsed;
     }
 
+    @Override
+    public void onBack() {
+        new PermissableRelationUI(user).open();
+    }
 }

@@ -23,6 +23,7 @@ public abstract class FactionUI<T> implements InventoryHolder {
     protected Inventory inventory;
 
     protected int size;
+    private int back = -1;
 
     private Map<Integer, T> slotMap = new HashMap<>();
 
@@ -49,6 +50,8 @@ public abstract class FactionUI<T> implements InventoryHolder {
     public void click(int slot, ClickType clickType) {
         if (slotMap.containsKey(slot)) {
             onClick(slotMap.get(slot), clickType);
+        } else if (this instanceof Backable && back != -1) {
+            ((Backable) this).onBack();
         }
     }
 
@@ -146,6 +149,9 @@ public abstract class FactionUI<T> implements InventoryHolder {
 
             ItemUI item;
             String base = dummies.getString(key);
+            if (base.equalsIgnoreCase("back") && this instanceof Backable) {
+                back = slot;
+            }
             // If this is null we need to merge it
             if (!dummies.isString(key)) {
                 base = dummies.getString(key + ".base");
@@ -212,5 +218,11 @@ public abstract class FactionUI<T> implements InventoryHolder {
     }
 
     public interface Dynamic {}
+
+    public interface Backable {
+
+        void onBack();
+
+    }
 
 }
