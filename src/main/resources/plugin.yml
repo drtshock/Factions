@@ -249,6 +249,8 @@ permissions:
     description: set yours or other player's titles to be colored.
   factions.version:
     description: see the version of the plugin
+  factions.upgrade:
+    description: purchase faction upgrades
   factions.unclaim:
     description: unclaim the land where you are standing
   factions.unclaimall:

@@ -606,12 +606,23 @@ public enum TL {
     COMMAND_UNCLAIMALL_LOG("%1$s unclaimed everything for the faction: %2$s"),
     COMMAND_UNCLAIMALL_DESCRIPTION("Unclaim all of your factions land"),
 
+    COMMAND_UPGRADE_DESCRIPTION("&eAdd upgrades to your Faction Land"),
+    COMMAND_UPGRADE_LEVEL_CURRENT("&eLevel for &d%1$s &eis: &d%2$s"),
+    COMMAND_UPGRADE_INVALID("&cInvalid faction upgrade &d%1$s"),
+    COMMAND_UPGRADE_LEVEL_MAX("&eLevel for &d%1$s &eis already at max"),
+    COMMAND_UPGRADE_LEVEL_UP("&eLeveled up &d%1$s&e to level: &d%2$s"),
+    COMMAND_UPGRADE_LEVEL_UNABLE("&eUnable to level up &d%1$s&e"),
+
     COMMAND_VERSION_VERSION("&eYou are running %1$s"),
     COMMAND_VERSION_DESCRIPTION("Show plugin and translation version information"),
 
     COMMAND_WARUNCLAIMALL_DESCRIPTION("Unclaim all warzone land"),
     COMMAND_WARUNCLAIMALL_SUCCESS("&eYou unclaimed ALL war zone land."),
     COMMAND_WARUNCLAIMALL_LOG("%1$s unclaimed all war zones."),
+
+    UPGRADE_CROP("Crop"),
+    UPGRADE_SPAWNER("Spawner"),
+    UPGRADE_EXP("Exp"),
 
 
     /**

@@ -9,6 +9,7 @@ import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.fupgrade.FUpgrade;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -157,6 +158,12 @@ public interface Faction extends EconomyParticipator {
     public void resetPerms();
 
     public Map<Permissable, Map<PermissableAction, Access>> getPermissions();
+
+    int getUpgradeLevel(String upgradeId);
+
+    boolean levelUpUpgrade(String upgradeId, FPlayer fme);
+
+    void resetUpgrades();
 
     // -------------------------------
     // Relation and relation colors
