@@ -249,6 +249,10 @@ public class FactionsBlockListener implements Listener {
             return true;
         }
 
+        if (otherFaction.hasChunkAccessAt(loc, me) || otherFaction.hasChunkAccessAt(loc, myFaction)) {
+            return true;
+        }
+
         // hurt the player for building/destroying in other territory?
         if (pain) {
             player.damage(Conf.actionDeniedPainAmount);

@@ -3,6 +3,7 @@ package com.massivecraft.factions;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.struct.BanInfo;
+import com.massivecraft.factions.struct.FactionEntity;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.LazyLocation;
@@ -16,7 +17,7 @@ import org.bukkit.entity.Player;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public interface Faction extends EconomyParticipator {
+public interface Faction extends EconomyParticipator, FactionEntity {
     public HashMap<String, List<String>> getAnnouncements();
 
     public ConcurrentHashMap<String, LazyLocation> getWarps();
@@ -157,6 +158,12 @@ public interface Faction extends EconomyParticipator {
     public void resetPerms();
 
     public Map<Permissable, Map<PermissableAction, Access>> getPermissions();
+
+    public boolean hasChunkAccessAt(FLocation location, FactionEntity entity);
+
+    public void addChunkAccessAt(FLocation location, FactionEntity entity);
+
+    public void removeChunkAccessAt(FLocation location, FactionEntity entity);
 
     // -------------------------------
     // Relation and relation colors

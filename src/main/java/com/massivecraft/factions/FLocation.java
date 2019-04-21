@@ -104,13 +104,10 @@ public class FLocation implements Serializable {
     }
 
     public static FLocation fromString(String string) {
-        int index = string.indexOf(",", 0);
-        int start = 1;
-        String worldName = string.substring(start, index);
-        start = index + 1;
-        index = string.indexOf(",", start);
-        int x = Integer.valueOf(string.substring(start, index));
-        int y = Integer.valueOf(string.substring(index + 1, string.length() - 1));
+        String[] split = string.split(",");
+        String worldName = split[0];
+        int x = Integer.valueOf(split[1]);
+        int y = Integer.valueOf(split[2]);
         return new FLocation(worldName, x, y);
     }
 

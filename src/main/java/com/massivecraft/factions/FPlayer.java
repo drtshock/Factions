@@ -4,6 +4,7 @@ import com.darkblade12.particleeffect.ParticleEffect;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.struct.FactionEntity;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
@@ -28,7 +29,7 @@ import java.util.List;
  * necessary.
  */
 
-public interface FPlayer extends EconomyParticipator {
+public interface FPlayer extends EconomyParticipator, FactionEntity {
     public void login();
 
     public void logout();

@@ -11,6 +11,7 @@ import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.listeners.versionspecific.PortalListenerLegacy;
 import com.massivecraft.factions.listeners.versionspecific.PortalListener_114;
 import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.struct.FactionEntity;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.material.FactionMaterial;
 import com.massivecraft.factions.util.material.MaterialDb;
@@ -19,6 +20,7 @@ import com.massivecraft.factions.util.material.adapter.MaterialAdapter;
 import com.massivecraft.factions.util.particle.BukkitParticleProvider;
 import com.massivecraft.factions.util.particle.PacketParticleProvider;
 import com.massivecraft.factions.util.particle.ParticleProvider;
+import com.massivecraft.factions.util.types.*;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
@@ -269,7 +271,9 @@ public class P extends MPlugin {
                 .registerTypeAdapter(materialType, new MaterialAdapter())
                 .registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter())
                 .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
+                .registerTypeAdapter(FLocation.class, new ChunkLocationTypeAdapter())
                 .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
+                .registerTypeAdapter(FactionEntity.class, new FactionEntityTypeAdapter())
                 .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
 

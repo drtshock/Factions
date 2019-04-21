@@ -4,10 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.struct.BanInfo;
-import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.*;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
@@ -40,6 +37,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected transient long lastPlayerLoggedOffTime;
     protected double money;
     protected double powerBoost;
+    protected Map<FLocation, List<FactionEntity>> chunkAccesses = new HashMap<>();
     protected Map<String, Relation> relationWish = new HashMap<>();
     protected Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<>();
     protected transient Set<FPlayer> fplayers = new HashSet<>();
@@ -214,6 +212,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         permanent = isPermanent;
     }
 
+    public String getName() { return getTag(); }
+
     public String getTag() {
         return this.tag;
     }
@@ -349,6 +349,29 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
 
         return deaths;
+    }
+
+    public boolean hasChunkAccessAt(FLocation location, FactionEntity entity) {
+        if (!chunkAccesses.containsKey(location)) {
+            return false;
+        }
+        return chunkAccesses.get(location).contains(entity);
+    }
+
+    public void addChunkAccessAt(FLocation location, FactionEntity entity) {
+        if (!chunkAccesses.containsKey(location)) {
+            chunkAccesses.put(location, new ArrayList<FactionEntity>());
+        }
+        if (!chunkAccesses.get(location).contains(entity)) {
+            chunkAccesses.get(location).add(entity);
+        }
+    }
+
+    public void removeChunkAccessAt(FLocation location, FactionEntity entity) {
+        if (!chunkAccesses.containsKey(location)) {
+            return;
+        }
+        chunkAccesses.get(location).remove(entity);
     }
 
     // -------------------------------------------- //
@@ -883,6 +906,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void clearClaimOwnership(FLocation loc) {
         claimOwnership.remove(loc);
+        chunkAccesses.remove(loc);
     }
 
     public void clearClaimOwnership(FPlayer player) {
