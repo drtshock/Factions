@@ -15,6 +15,7 @@ public abstract class FUpgrade implements Listener {
     protected FUpgradeRoot root;
 
     protected int maxLevel;
+    public boolean disabled;
 
     protected ConfigurationSection config;
     protected HashMap<Integer, ConfigurationSection> levels = new HashMap<>();
@@ -26,7 +27,7 @@ public abstract class FUpgrade implements Listener {
     public abstract String translation();
 
     protected abstract void register();
-
+    protected void unregister() {}
 
     public FUpgrade(FUpgradeRoot root) {
         this.root = root;
@@ -79,8 +80,6 @@ public abstract class FUpgrade implements Listener {
             }
             cost.put(attrs.getKey(), levelCost);
         }
-        // Everything is ready, let the upgrade handle the rest
-        register();
     }
 
     public boolean pay(int level, FPlayer fme) {
@@ -101,10 +100,15 @@ public abstract class FUpgrade implements Listener {
             P.p.log("Disabling Upgrade: " + id());
         }
         root.unregister(this);
+        disabled = true;
     }
 
     public int getMaxLevel() {
         return maxLevel;
     }
 
+    @Override
+    public String toString() {
+        return id();
+    }
 }

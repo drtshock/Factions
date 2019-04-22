@@ -30,6 +30,7 @@ public class UpgradeSpawner extends FUpgrade {
         super(root);
     }
 
+    @Override
     protected void register() {
         for (Map.Entry<Integer, ConfigurationSection> entry : levels.entrySet()) {
             spawnerRate.put(entry.getKey(), entry.getValue().getDouble("rate", 1));

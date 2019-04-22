@@ -18,8 +18,6 @@ public class FUpgradeRoot {
     private HashMap<String, FUpgradeCost> costs = new HashMap<>();
 
     public FUpgradeRoot(P p) {
-        p.log("Loading Faction Upgrades");
-
         // Load default upgrades
         register(p, new UpgradeCrop(this));
         register(p, new UpgradeSpawner(this));
@@ -29,17 +27,20 @@ public class FUpgradeRoot {
         register(new FUpgradeCost.PlayerExp());
         register(new FUpgradeCost.FactionEcon());
 
-        p.log("Finished loading Faction Upgrades");
-        p.log(upgrades.values());
+        p.log("Loaded Faction Upgrades: " + upgrades.values());
     }
 
     public void register(JavaPlugin plugin, FUpgrade factionUpgrade) {
-        upgrades.put(factionUpgrade.id(), factionUpgrade);
-        getServer().getPluginManager().registerEvents(factionUpgrade, plugin);
+        if (!factionUpgrade.disabled) {
+            factionUpgrade.register();
+            upgrades.put(factionUpgrade.id(), factionUpgrade);
+            getServer().getPluginManager().registerEvents(factionUpgrade, plugin);
+        }
     }
 
     public void unregister(FUpgrade factionUpgrade) {
-        upgrades.remove(factionUpgrade);
+        factionUpgrade.unregister();
+        upgrades.remove(factionUpgrade.id());
         HandlerList.unregisterAll(factionUpgrade);
     }
 
