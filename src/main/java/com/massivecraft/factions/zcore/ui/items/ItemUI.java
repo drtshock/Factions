@@ -72,7 +72,7 @@ public class ItemUI {
         builder.setLore(section.getStringList("lore"));
 
         if (section.isString("material")) {
-            Material material = Material.matchMaterial(section.getString("material"));
+            Material material = FactionMaterial.from(section.getString("material")).get();
             builder.setMaterial(material);
         } else {
             builder.setMaterial(null);
