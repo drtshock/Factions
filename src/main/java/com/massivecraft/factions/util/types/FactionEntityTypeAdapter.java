@@ -13,19 +13,14 @@ public class FactionEntityTypeAdapter implements JsonDeserializer<FactionEntity>
 
     @Override
     public FactionEntity deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        JsonObject obj = json.getAsJsonObject();
-
-        String type = obj.get("type").getAsString();
-        String id = obj.get("id").getAsString();
+        String id = json.getAsString();
 
         FactionEntity entity;
-        if (type.equalsIgnoreCase("f")) {
-            entity = Factions.getInstance().getFactionById(id);
-        } else if (type.equalsIgnoreCase("p")) {
+        if (id.contains("-")) {
+            // Because only player UUID's contain hyphens we are sure that it is a player
             entity = FPlayers.getInstance().getById(id);
         } else {
-            entity = null;
-            P.p.log("Invalid FactionEntity type");
+            entity = Factions.getInstance().getFactionById(id);
         }
 
         return entity;
@@ -33,15 +28,6 @@ public class FactionEntityTypeAdapter implements JsonDeserializer<FactionEntity>
 
     @Override
     public JsonElement serialize(FactionEntity src, Type typeOfSrc, JsonSerializationContext context) {
-        JsonObject obj = new JsonObject();
-
-        if (src instanceof Faction) {
-            obj.addProperty("type", "f");
-        } else {
-            obj.addProperty("type", "p");
-        }
-        obj.addProperty("id", src.getId());
-
-        return obj;
+        return new JsonPrimitive(src.getId());
     }
 }
