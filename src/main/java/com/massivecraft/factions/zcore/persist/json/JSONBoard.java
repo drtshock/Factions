@@ -74,7 +74,7 @@ public class JSONBoard extends MemoryBoard {
         P.p.log("Loading board from disk");
 
         if (!file.exists()) {
-            P.p.log("No board to load from disk. Creating new file.");
+            P.p.log("No board to load from disk. Creating new configFile.");
             forceSave();
             return true;
         }

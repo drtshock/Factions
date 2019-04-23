@@ -22,7 +22,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.text.SimpleDateFormat;
 
 /**
- * An enum for requesting strings from the language file. The contents of this enum file may be subject to frequent
+ * An enum for requesting strings from the language configFile. The contents of this enum configFile may be subject to frequent
  * changes.
  */
 public enum TL {
@@ -475,7 +475,7 @@ public enum TL {
     COMMAND_RELATIONS_PROPOSAL_SENT("%1$s&e were informed that you wish to be %2$s"),
 
     COMMAND_RELOAD_TIME("&eReloaded &dall configuration files &efrom disk, took &d%1$d ms&e."),
-    COMMAND_RELOAD_DESCRIPTION("Reload data file(s) from disk"),
+    COMMAND_RELOAD_DESCRIPTION("Reload data configFile(s) from disk"),
 
     COMMAND_SAFEUNCLAIMALL_DESCRIPTION("Unclaim all safezone land"),
     COMMAND_SAFEUNCLAIMALL_UNCLAIMED("&eYou unclaimed ALL safe zone land."),

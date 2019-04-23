@@ -13,19 +13,19 @@ import java.util.List;
 
 public abstract class Config {
 
-    protected FileConfiguration file;
+    protected FileConfiguration configFile;
     protected ConfigurationSection section;
 
     public boolean usingLegacy = false;
 
     public void load() {
-        file = P.p.getConfig();
+        configFile = P.p.getConfig();
 
         Node classNode = getClass().getAnnotation(Node.class);
         if (classNode != null) {
             section = P.p.getConfig().getConfigurationSection(classNode.path());
         } else {
-            section = file;
+            section = configFile;
         }
 
         for (Field field : getClass().getFields()) {
@@ -87,8 +87,8 @@ public abstract class Config {
         return section;
     }
 
-    public FileConfiguration getFile() {
-        return file;
+    public FileConfiguration getConfigFile() {
+        return configFile;
     }
 
 }

@@ -62,7 +62,7 @@ public class DiscUtil {
         String name = file.getName();
         final Lock lock;
 
-        // Create lock for each file if there isn't already one.
+        // Create lock for each configFile if there isn't already one.
         if (locks.containsKey(name)) {
             lock = locks.get(name);
         } else {

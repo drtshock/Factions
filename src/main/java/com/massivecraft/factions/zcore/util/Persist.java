@@ -33,7 +33,7 @@ public class Persist {
     }
 
     // ------------------------------------------------------------ //
-    // GET FILE - In which file would we like to store this object?
+    // GET FILE - In which configFile would we like to store this object?
     // ------------------------------------------------------------ //
 
     public File getFile(String name) {
@@ -75,12 +75,12 @@ public class Persist {
         if (loaded == null) {
             p.log(Level.WARNING, "Using default as I failed to load: " + file);
 
-            // backup bad file, so user can attempt to recover their changes from it
+            // backup bad configFile, so user can attempt to recover their changes from it
             File backup = new File(file.getPath() + "_bad");
             if (backup.exists()) {
                 backup.delete();
             }
-            p.log(Level.WARNING, "Backing up copy of bad file to: " + backup);
+            p.log(Level.WARNING, "Backing up copy of bad configFile to: " + backup);
             file.renameTo(backup);
 
             return def;
@@ -121,7 +121,7 @@ public class Persist {
 
         try {
             return p.gson.fromJson(content, clazz);
-        } catch (Exception ex) {    // output the error message rather than full stack trace; error parsing the file, most likely
+        } catch (Exception ex) {    // output the error message rather than full stack trace; error parsing the configFile, most likely
             p.log(Level.WARNING, ex.getMessage());
         }
 
@@ -144,7 +144,7 @@ public class Persist {
 
         try {
             return (T) p.gson.fromJson(content, typeOfT);
-        } catch (Exception ex) {    // output the error message rather than full stack trace; error parsing the file, most likely
+        } catch (Exception ex) {    // output the error message rather than full stack trace; error parsing the configFile, most likely
             p.log(Level.WARNING, ex.getMessage());
         }
 

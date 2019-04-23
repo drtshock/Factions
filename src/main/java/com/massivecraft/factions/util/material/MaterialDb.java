@@ -55,7 +55,7 @@ public class MaterialDb {
         Type typeToken = new TypeToken<HashMap<String, MaterialProvider.MaterialData>>() {
         }.getType();
         HashMap<String, MaterialProvider.MaterialData> materialData = P.p.gson.fromJson(reader, typeToken);
-        P.p.getLogger().info(String.format("Found %s material mappings in the materials.json file.", materialData.keySet().size()));
+        P.p.getLogger().info(String.format("Found %s material mappings in the materials.json configFile.", materialData.keySet().size()));
         instance.provider = new MaterialProvider(materialData);
     }
 

@@ -136,7 +136,7 @@ public abstract class MPlugin extends JavaPlugin {
                 }
             } catch (IOException e) {
                 e.printStackTrace(); // So they notice
-                getLogger().severe("[Factions] Couldn't create language file.");
+                getLogger().severe("[Factions] Couldn't create language configFile.");
                 getLogger().severe("[Factions] This is a fatal error. Now disabling");
                 this.setEnabled(false); // Without it loaded, we can't send them messages
             } finally {

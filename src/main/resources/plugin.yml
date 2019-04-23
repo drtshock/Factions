@@ -230,7 +230,7 @@ permissions:
   factions.relation:
     description: set relation wish to another faction
   factions.reload:
-    description: reload data file(s) from disk
+    description: reload data configFile(s) from disk
   factions.save:
     description: save all data to disk
   factions.sethome:
