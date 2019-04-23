@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
+import com.massivecraft.factions.config.FactionConfig;
 import com.massivecraft.factions.integration.*;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
@@ -163,6 +164,9 @@ public class P extends MPlugin {
                 log(Level.INFO, "Enabling enemy radius check for f fly every %1s seconds", delay / 20);
             }
         }
+
+        FactionConfig config = new FactionConfig();
+        config.load();
 
         new TitleAPI();
         setupPlaceholderAPI();
