@@ -1,9 +1,11 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.config.FactionConfig;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
@@ -15,6 +17,9 @@ import java.util.List;
 
 @Singleton
 public class CmdShow extends FCommand {
+
+    @Inject
+    private FactionConfig config;
 
     List<String> defaults = new ArrayList<>();
 
@@ -51,7 +56,7 @@ public class CmdShow extends FCommand {
         }
 
         if (context.fPlayer != null && !context.player.hasPermission("factions.show.bypassexempt")
-                && P.p.getConfig().getStringList("show-exempt").contains(faction.getTag())) {
+                && config.showExempt.contains(faction.getTag())) {
             context.msg(TL.COMMAND_SHOW_EXEMPT);
             return;
         }
@@ -61,7 +66,7 @@ public class CmdShow extends FCommand {
             return;
         }
 
-        List<String> show = P.p.getConfig().getStringList("show");
+        List<String> show = config.show;
         if (show == null || show.isEmpty()) {
             show = defaults;
         }

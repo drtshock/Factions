@@ -1,8 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.config.FactionConfig;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
@@ -13,6 +15,9 @@ import java.util.List;
 
 @Singleton
 public class CmdHelp extends FCommand {
+
+    @Inject
+    private FactionConfig config;
 
     public CmdHelp() {
         super();
@@ -27,7 +32,7 @@ public class CmdHelp extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (P.p.getConfig().getBoolean("use-old-help", true)) {
+        if (config.useOldHelp) {
             if (helpPages == null) {
                 updateHelp();
             }
@@ -44,13 +49,10 @@ public class CmdHelp extends FCommand {
             context.sendMessage(helpPages.get(page));
             return;
         }
-        ConfigurationSection help = P.p.getConfig().getConfigurationSection("help");
+        ConfigurationSection help = config.getConfigFile().getConfigurationSection("help");
         if (help == null) {
-            help = P.p.getConfig().createSection("help"); // create new help section
-            List<String> error = new ArrayList<>();
-            error.add("&cUpdate help messages in config.yml!");
-            error.add("&cSet use-old-help for legacy help messages");
-            help.set("'1'", error); // add default error messages
+            p.getLogger().severe("No Help section, please regen config");
+            return;
         }
         String pageArg = context.argAsString(0, "1");
         List<String> page = help.getStringList(pageArg);

@@ -1,10 +1,12 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.config.FactionConfig;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
@@ -13,6 +15,9 @@ import java.util.*;
 
 @Singleton
 public class CmdList extends FCommand {
+
+    @Inject
+    private FactionConfig config;
 
     private String[] defaults = new String[3];
 
@@ -45,7 +50,7 @@ public class CmdList extends FCommand {
 
         // remove exempt factions
         if (!context.sender.hasPermission("factions.show.bypassexempt")) {
-            List<String> exemptFactions = P.p.getConfig().getStringList("show-exempt");
+            List<String> exemptFactions = config.showExempt;
             Iterator<Faction> factionIterator = factionList.iterator();
             while (factionIterator.hasNext()) {
                 Faction next = factionIterator.next();
@@ -104,16 +109,16 @@ public class CmdList extends FCommand {
         }
 
 
-        String header = p.getConfig().getString("list.header", defaults[0]);
+        String header = config.list.header;
         header = header.replace("{pagenumber}", String.valueOf(pagenumber)).replace("{pagecount}", String.valueOf(pagecount));
         lines.add(p.txt.parse(header));
 
         for (Faction faction : factionList.subList(start, end)) {
             if (faction.isWilderness()) {
-                lines.add(p.txt.parse(TagUtil.parsePlain(faction, p.getConfig().getString("list.factionless", defaults[1]))));
+                lines.add(p.txt.parse(TagUtil.parsePlain(faction, config.list.factionless)));
                 continue;
             }
-            lines.add(p.txt.parse(TagUtil.parsePlain(faction,context.fPlayer, p.getConfig().getString("list.entry", defaults[2]))));
+            lines.add(p.txt.parse(TagUtil.parsePlain(faction,context.fPlayer, config.list.entry)));
         }
         context.sendMessage(lines);
     }

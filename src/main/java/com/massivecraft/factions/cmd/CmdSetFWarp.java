@@ -1,8 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.config.FactionConfig;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -12,6 +14,9 @@ import com.massivecraft.factions.zcore.util.TL;
 
 @Singleton
 public class CmdSetFWarp extends FCommand {
+
+    @Inject
+    private FactionConfig config;
 
     public CmdSetFWarp() {
         super();
@@ -36,9 +41,8 @@ public class CmdSetFWarp extends FCommand {
             return;
         }
 
-        int maxWarps = P.p.getConfig().getInt("max-warps", 5);
-        if (maxWarps <= context.faction.getWarps().size()) {
-            context.fPlayer.msg(TL.COMMAND_SETFWARP_LIMIT, maxWarps);
+        if (config.maxWarps <= context.faction.getWarps().size()) {
+            context.fPlayer.msg(TL.COMMAND_SETFWARP_LIMIT, config.maxWarps);
             return;
         }
 

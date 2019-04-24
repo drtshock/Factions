@@ -1,7 +1,9 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.config.FactionConfig;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.SeeChunkUtil;
 import com.massivecraft.factions.zcore.util.TL;
@@ -9,7 +11,8 @@ import com.massivecraft.factions.zcore.util.TL;
 @Singleton
 public class CmdSeeChunk extends FCommand {
 
-    private boolean useParticles;
+    @Inject
+    private FactionConfig config;
 
     public CmdSeeChunk() {
         super();
@@ -19,13 +22,11 @@ public class CmdSeeChunk extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.SEECHUNK)
                 .playerOnly()
                 .build();
-
-        useParticles = P.p.getConfig().getBoolean("see-chunk.particles", true);
     }
 
     @Override
     public void perform(CommandContext context) {
-        if (useParticles) {
+        if (config.seeChunk.particles) {
             boolean toggle = false;
             if (context.args.size() == 0) {
                 toggle = !context.fPlayer.isSeeingChunk();
