@@ -1,8 +1,10 @@
 package com.massivecraft.factions.config;
 
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public class FactionConfig extends Config {
 
     @Node public boolean debug;
@@ -140,7 +142,7 @@ public class FactionConfig extends Config {
     @Node public FList list = new FList();
 
     @Node(path = "list")
-    static public class FList extends Config {
+    public class FList extends Config {
         @Node public String header = "&e&m----------&r&e[ &2Faction List &9{pagenumber}&e/&9{pagecount} &e]&m----------";
         @Node public String factionless = "<i>Factionless<i> {factionless} online";
         @Node public String entry = "<a>{faction} <i>{online} / {members} online, <a>Land / Power / Maxpower: <i>{chunks}/{power}/{maxPower}";

@@ -10,6 +10,7 @@ import com.massivecraft.factions.cmd.relations.CmdRelationNeutral;
 import com.massivecraft.factions.cmd.relations.CmdRelationTruce;
 import com.massivecraft.factions.cmd.role.CmdDemote;
 import com.massivecraft.factions.cmd.role.CmdPromote;
+import com.massivecraft.factions.config.FactionConfig;
 import com.massivecraft.factions.zcore.util.TL;
 import me.lucko.commodore.CommodoreProvider;
 import org.bukkit.Bukkit;
@@ -17,14 +18,19 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.*;
 import java.util.logging.Level;
 
+@Singleton
 public class FCmdRoot extends FCommand implements CommandExecutor {
+
+    @Inject private FactionConfig config;
 
     public BrigadierManager brigadierManager;
 
-    public CmdAdmin cmdAdmin = new CmdAdmin();
+    @Inject public CmdAdmin cmdAdmin;
     public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
     public CmdBoom cmdBoom = new CmdBoom();
     public CmdBypass cmdBypass = new CmdBypass();
@@ -99,8 +105,11 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdColeader cmdColeader = new CmdColeader();
     public CmdNear cmdNear = new CmdNear();
 
-    public FCmdRoot() {
+    @Inject
+    public FCmdRoot(P p) {
         super();
+        p.injector.injectMembers(this);
+
         if (CommodoreProvider.isSupported()) {
             brigadierManager = new BrigadierManager();
         }
@@ -109,7 +118,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.aliases.removeAll(Collections.<String>singletonList(null));  // remove any nulls from extra commas
 
         this.setHelpShort("The faction base command");
-        this.helpLong.add(P.p.txt.parseTags("<i>This command contains all faction stuff."));
+        this.helpLong.add(p.txt.parseTags("<i>This command contains all faction stuff."));
 
         this.addSubCommand(this.cmdAdmin);
         this.addSubCommand(this.cmdAutoClaim);
@@ -194,7 +203,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             this.addSubCommand(new CmdVault());
         }
 
-        if (P.p.getConfig().getBoolean("f-fly.enable", false)) {
+        if (config.fly.enabled) {
             this.addSubCommand(this.cmdFly);
             P.p.log(Level.INFO, "Enabling /f fly command");
         } else {

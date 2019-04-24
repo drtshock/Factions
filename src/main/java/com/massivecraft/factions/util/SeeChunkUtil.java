@@ -1,18 +1,20 @@
 package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.config.FactionConfig;
 import com.massivecraft.factions.util.particle.ParticleColor;
 import com.massivecraft.factions.util.material.FactionMaterial;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
-@SuppressWarnings("unchecked")
+
 public class SeeChunkUtil extends BukkitRunnable {
 
     private Set<UUID> playersSeeingChunks = new HashSet<>();

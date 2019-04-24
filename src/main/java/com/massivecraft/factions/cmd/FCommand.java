@@ -9,12 +9,15 @@ import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
+@Singleton
 public abstract class FCommand {
 
+    @Inject
     public P p;
     public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
 

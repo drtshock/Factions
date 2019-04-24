@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -20,12 +21,14 @@ public abstract class Config {
 
     private boolean usingLegacy = false;
 
+    @Inject protected P p;
+
     public void load() {
-        configFile = P.p.getConfig();
+        configFile = p.getConfig();
 
         Node classNode = getClass().getAnnotation(Node.class);
         if (classNode != null) {
-            section = P.p.getConfig().getConfigurationSection(classNode.path());
+            section = p.getConfig().getConfigurationSection(classNode.path());
         } else {
             section = configFile;
         }
@@ -95,7 +98,7 @@ public abstract class Config {
         }
 
         if (usingLegacy) {
-            P.p.getLogger().severe("conf.json is still in use, please port your config to respective files");
+            p.getLogger().severe("conf.json is still in use, please port your config to respective files");
         }
     }
 

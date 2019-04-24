@@ -3,11 +3,12 @@ package com.massivecraft.factions;
 import com.earth2me.essentials.IEssentials;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Singleton;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
+import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.config.FactionConfig;
 import com.massivecraft.factions.integration.*;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
@@ -25,14 +26,12 @@ import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -41,14 +40,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+@Singleton
 public class P extends MPlugin {
 
     // Our single plugin instance.
     // Single 4 life.
+    @Inject
     public static P p;
-    public static Permission perms = null;
-
-    public FactionModule module;
+    //public static Permission perms = null;
 
     // Persistence related
     private boolean locked = false;
@@ -64,35 +63,37 @@ public class P extends MPlugin {
 
     private Integer AutoLeaveTask = null;
 
+    @Inject
+    public FactionConfig config;
+
     // Commands
     public FCmdRoot cmdBase;
     public CmdAutoHelp cmdAutoHelp;
 
     private boolean hookedPlayervaults;
-    private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
-    private boolean mvdwPlaceholderAPIManager = false;
+    private Placeholders placeholders;
 
     public SeeChunkUtil seeChunkUtil;
     public ParticleProvider particleProvider;
     public IWorldguard worldguard;
 
-    @Inject FactionConfig config;
+    public Injector injector;
 
     public P() {
-        p = this;
+        //p = this;
     }
 
     @Override
     public void onEnable() {
+        FactionModule module = new FactionModule(this);
+        injector = module.createInjector();
+        injector.injectMembers(this);
+
         // Load Material database
         MaterialDb.load();
         if (!preEnable()) {
             return;
         }
-
-        module = new FactionModule(this);
-        Injector injector = module.createInjector();
-        config = injector.getInstance(FactionConfig.class);
 
         this.loadSuccessful = false;
         saveDefaultConfig();
@@ -129,7 +130,7 @@ public class P extends MPlugin {
         Board.getInstance().clean();
 
         // Add Base Commands
-        this.cmdBase = new FCmdRoot();
+        this.cmdBase = injector.getInstance(FCmdRoot.class);
         this.cmdAutoHelp = new CmdAutoHelp();
         //this.getBaseCommands().add(cmdBase);
 
@@ -178,7 +179,7 @@ public class P extends MPlugin {
         }
 
         new TitleAPI();
-        setupPlaceholderAPI();
+        Placeholders placeholders = new Placeholders(this);
         postEnable();
         this.loadSuccessful = true;
     }
@@ -210,31 +211,16 @@ public class P extends MPlugin {
         return this.worldguard;
     }
 
-    private void setupPlaceholderAPI() {
-        Plugin clip = getServer().getPluginManager().getPlugin("PlaceholderAPI");
-        if (clip != null && clip.isEnabled()) {
-            this.clipPlaceholderAPIManager = new ClipPlaceholderAPIManager();
-            if (this.clipPlaceholderAPIManager.register()) {
-                log(Level.INFO, "Successfully registered placeholders with PlaceholderAPI.");
-            }
-        }
-
-        Plugin mvdw = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
-        if (mvdw != null && mvdw.isEnabled()) {
-            this.mvdwPlaceholderAPIManager = true;
-            log(Level.INFO, "Found MVdWPlaceholderAPI. Adding hooks.");
-        }
-    }
-
     public boolean isClipPlaceholderAPIHooked() {
-        return this.clipPlaceholderAPIManager != null;
+        return placeholders.isClipPlaceholderAPIHooked();
     }
 
     public boolean isMVdWPlaceholderAPIHooked() {
-        return this.mvdwPlaceholderAPIManager;
+        return placeholders.isMVdWPlaceholderAPIHooked();
     }
 
     private boolean setupPermissions() {
+        /*
         try {
             RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
             if (rsp != null) {
@@ -243,7 +229,8 @@ public class P extends MPlugin {
         } catch (NoClassDefFoundError ex) {
             return false;
         }
-        return perms != null;
+        return perms != null;*/
+        return false;
     }
 
     private boolean setupPlayervaults() {
@@ -442,7 +429,7 @@ public class P extends MPlugin {
     }
 
     public String getPrimaryGroup(OfflinePlayer player) {
-        return perms == null || !perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
+        return "shat"; //perms == null || !perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
     }
 
     public void debug(Level level, String s) {

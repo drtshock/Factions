@@ -21,10 +21,8 @@ public class FactionModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        FactionConfig config = new FactionConfig();
-        config.load();
-
-        bind(FactionConfig.class).toInstance(config);
+        bind(P.class).toInstance(plugin);
+        requestStaticInjection(P.class);
     }
 
 }
