@@ -3,6 +3,9 @@ package com.massivecraft.factions;
 import com.earth2me.essentials.IEssentials;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.config.FactionConfig;
@@ -45,6 +48,8 @@ public class P extends MPlugin {
     public static P p;
     public static Permission perms = null;
 
+    public FactionModule module;
+
     // Persistence related
     private boolean locked = false;
 
@@ -71,6 +76,8 @@ public class P extends MPlugin {
     public ParticleProvider particleProvider;
     public IWorldguard worldguard;
 
+    @Inject FactionConfig config;
+
     public P() {
         p = this;
     }
@@ -82,6 +89,11 @@ public class P extends MPlugin {
         if (!preEnable()) {
             return;
         }
+
+        module = new FactionModule(this);
+        Injector injector = module.createInjector();
+        config = injector.getInstance(FactionConfig.class);
+
         this.loadSuccessful = false;
         saveDefaultConfig();
 
@@ -95,7 +107,7 @@ public class P extends MPlugin {
 
         // We set the option to TRUE by default in the config.yml for new users,
         // BUT we leave it set to false for users updating that haven't added it to their config.
-        if (ess != null && getConfig().getBoolean("delete-ess-homes", false)) {
+        if (ess != null && config.deleteEssHomes) {
             P.p.log(Level.INFO, "Found Essentials. We'll delete player homes in their old Faction's when kicked.");
             getServer().getPluginManager().registerEvents(new EssentialsListener(ess), this);
         }
@@ -139,8 +151,8 @@ public class P extends MPlugin {
         }
         log(Level.INFO, "Using %1s as a particle provider", particleProvider.name());
 
-        if (P.p.getConfig().getBoolean("see-chunk.particles", true)) {
-            double delay = Math.floor(getConfig().getDouble("f-fly.radius-check", 0.75) * 20);
+        if (config.seeChunk.particles) {
+            double delay = Math.floor(config.seeChunk.particleUpdateTime * 20);
             seeChunkUtil = new SeeChunkUtil();
             seeChunkUtil.runTaskTimer(this, 0, (long) delay);
         }
@@ -156,17 +168,14 @@ public class P extends MPlugin {
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(refCommand).setExecutor(cmdBase);
 
-        if (getConfig().getBoolean("f-fly.enable", false)) {
-            double delay = getConfig().getDouble("f-fly.radius-check", 1) * 20;
+        if (config.fly.enabled) {
+            double delay = config.fly.radiusCheck * 20;
             // Only run FlightUtil if not 0
             if (delay != 0) {
                 new FlightDisableUtil().runTaskTimer(this, 0, (long) delay);
                 log(Level.INFO, "Enabling enemy radius check for f fly every %1s seconds", delay / 20);
             }
         }
-
-        FactionConfig config = new FactionConfig();
-        config.load();
 
         new TitleAPI();
         setupPlaceholderAPI();
@@ -437,7 +446,7 @@ public class P extends MPlugin {
     }
 
     public void debug(Level level, String s) {
-        if (getConfig().getBoolean("debug", false)) {
+        if (config.debug) {
             getLogger().log(level, s);
         }
     }

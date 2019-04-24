@@ -7,16 +7,18 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import javax.inject.Singleton;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public abstract class Config {
 
     protected FileConfiguration configFile;
     protected ConfigurationSection section;
 
-    public boolean usingLegacy = false;
+    private boolean usingLegacy = false;
 
     public void load() {
         configFile = P.p.getConfig();
@@ -30,6 +32,16 @@ public abstract class Config {
 
         for (Field field : getClass().getFields()) {
             if (field.isAnnotationPresent(Node.class)) {
+                if (Config.class.isAssignableFrom(field.getType())) {
+                    try {
+                        Config group = (Config) field.get(this);
+                        group.load();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    continue;
+                }
+
                 Node node = field.getAnnotation(Node.class);
 
                 String path;
@@ -80,6 +92,10 @@ public abstract class Config {
                     }
                 }
             }
+        }
+
+        if (usingLegacy) {
+            P.p.getLogger().severe("conf.json is still in use, please port your config to respective files");
         }
     }
 
