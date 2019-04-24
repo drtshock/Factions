@@ -17,7 +17,6 @@ import java.util.*;
 @Singleton
 public abstract class FCommand {
 
-    @Inject
     public P p;
     public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
 
@@ -36,6 +35,7 @@ public abstract class FCommand {
 
     public FCommand() {
         p = P.p;
+        //p.injector.injectMembers(this);
 
         requirements = new CommandRequirements.Builder(null).build();
 

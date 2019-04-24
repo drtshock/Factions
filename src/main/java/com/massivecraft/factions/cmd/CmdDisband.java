@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent;
@@ -10,7 +11,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
-
+@Singleton
 public class CmdDisband extends FCommand {
 
     public CmdDisband() {

@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
@@ -10,7 +11,7 @@ import com.massivecraft.factions.zcore.util.TagUtil;
 
 import java.util.*;
 
-
+@Singleton
 public class CmdList extends FCommand {
 
     private String[] defaults = new String[3];

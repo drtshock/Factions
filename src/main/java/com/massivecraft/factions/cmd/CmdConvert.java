@@ -1,11 +1,13 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Conf.Backend;
 import com.massivecraft.factions.zcore.persist.json.FactionsJSON;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.command.ConsoleCommandSender;
 
+@Singleton
 public class CmdConvert extends FCommand {
 
     public CmdConvert() {

@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
@@ -11,6 +12,7 @@ import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+@Singleton
 public class CmdKick extends FCommand {
 
     public CmdKick() {

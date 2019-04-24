@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
@@ -8,6 +9,7 @@ import com.massivecraft.factions.util.FlightDisableUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
 
+@Singleton
 public class CmdFly extends FCommand {
 
     public CmdFly() {

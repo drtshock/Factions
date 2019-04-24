@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
@@ -8,6 +9,7 @@ import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 
+@Singleton
 public class CmdStatus extends FCommand {
 
     public CmdStatus() {

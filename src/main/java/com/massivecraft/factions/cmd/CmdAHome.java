@@ -1,11 +1,13 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+@Singleton
 public class CmdAHome extends FCommand {
 
     public CmdAHome() {

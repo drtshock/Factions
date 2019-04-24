@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FactionRenameEvent;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
@@ -11,9 +12,11 @@ import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 
+@Singleton
 public class CmdTag extends FCommand {
 
     public CmdTag() {
+        super();
         this.aliases.add("tag");
         this.aliases.add("rename");
 

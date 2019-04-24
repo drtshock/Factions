@@ -79,10 +79,6 @@ public class P extends MPlugin {
 
     public Injector injector;
 
-    public P() {
-        //p = this;
-    }
-
     @Override
     public void onEnable() {
         FactionModule module = new FactionModule(this);

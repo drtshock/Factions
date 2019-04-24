@@ -1,10 +1,12 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.SeeChunkUtil;
 import com.massivecraft.factions.zcore.util.TL;
 
+@Singleton
 public class CmdSeeChunk extends FCommand {
 
     private boolean useParticles;

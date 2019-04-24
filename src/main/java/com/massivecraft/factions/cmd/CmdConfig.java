@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
@@ -15,6 +16,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Set;
 
+@Singleton
 public class CmdConfig extends FCommand {
 
     private static HashMap<String, String> properFieldNames = new HashMap<>();

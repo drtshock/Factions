@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
@@ -10,6 +11,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 
 import org.bukkit.ChatColor;
 
+@Singleton
 public class CmdSetMaxVaults extends FCommand {
 
     public CmdSetMaxVaults() {

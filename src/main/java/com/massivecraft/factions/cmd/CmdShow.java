@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
@@ -12,6 +13,7 @@ import mkremins.fanciful.FancyMessage;
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public class CmdShow extends FCommand {
 
     List<String> defaults = new ArrayList<>();

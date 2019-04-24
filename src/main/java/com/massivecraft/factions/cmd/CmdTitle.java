@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
@@ -7,9 +8,11 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
+@Singleton
 public class CmdTitle extends FCommand {
 
     public CmdTitle() {
+        super();
         this.aliases.add("title");
 
         this.requiredArgs.add("player");

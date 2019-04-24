@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
+@Singleton
 public class CmdFWarp extends FCommand {
 
     public CmdFWarp() {

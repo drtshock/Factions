@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
@@ -12,6 +13,7 @@ import org.bukkit.Bukkit;
 
 import java.util.logging.Level;
 
+@Singleton
 public class CmdBan extends FCommand {
 
     public CmdBan() {

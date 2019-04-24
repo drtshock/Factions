@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
@@ -11,7 +12,7 @@ import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 
-
+@Singleton
 public class CmdCreate extends FCommand {
 
     public CmdCreate() {

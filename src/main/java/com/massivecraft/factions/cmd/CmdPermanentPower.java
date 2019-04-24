@@ -1,10 +1,12 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
+@Singleton
 public class CmdPermanentPower extends FCommand {
     public CmdPermanentPower() {
         super();

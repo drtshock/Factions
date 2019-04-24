@@ -1,11 +1,13 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Singleton;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.util.TL;
 
 import java.util.ArrayList;
 
+@Singleton
 public class CmdAutoHelp extends FCommand {
 
     public CmdAutoHelp() {
