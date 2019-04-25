@@ -2,13 +2,18 @@ package com.massivecraft.factions.config;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.config.annotation.ConfigFile;
+import com.massivecraft.factions.config.annotation.Node;
 import com.massivecraft.factions.util.material.FactionMaterial;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +21,8 @@ import java.util.List;
 @Singleton
 public abstract class Config {
 
-    protected FileConfiguration configFile;
+    protected File file;
+    protected YamlConfiguration yamlConfig;
     protected ConfigurationSection section;
 
     private boolean usingLegacy = false;
@@ -24,13 +30,26 @@ public abstract class Config {
     @Inject protected P p;
 
     public void load() {
-        configFile = p.getConfig();
+        String fileName = getClass().getAnnotation(ConfigFile.class).value();
+
+        file = new File(p.getDataFolder(), fileName);
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            p.saveResource(fileName, false);
+        }
+
+        try {
+            yamlConfig = new YamlConfiguration();
+            yamlConfig.load(file);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
 
         Node classNode = getClass().getAnnotation(Node.class);
-        if (classNode != null) {
-            section = p.getConfig().getConfigurationSection(classNode.path());
+        if (classNode != null && !classNode.path().isEmpty()) {
+            section = yamlConfig.getConfigurationSection(classNode.path());
         } else {
-            section = configFile;
+            section = yamlConfig;
         }
 
         for (Field field : getClass().getFields()) {
@@ -54,17 +73,12 @@ public abstract class Config {
                     path = node.path();
                 }
 
-                String legacy = node.legacy();
-                if (classNode != null) {
-                    legacy = classNode.legacy() + legacy;
-                }
-
                 Object defaultValue = null;
                 try {
                     defaultValue = field.get(this);
                     if (section.isSet(path)) {
                         Object configValue = section.get(path, defaultValue);
-                        // Special cases
+                        // Special cases TODO: Make this better for future use
                         if (field.getType() == Material.class) {
                             field.set(this, FactionMaterial.from((String) configValue).get());
                         } else if (field.getType() == List.class && field.getGenericType() == Material.class) {
@@ -76,8 +90,22 @@ public abstract class Config {
                         } else {
                             field.set(this, configValue);
                         }
-                    } else if (!legacy.isEmpty()) {
+                    } else if (!node.legacy().isEmpty() || (classNode != null && !classNode.legacy().isEmpty())) {
                         usingLegacy = true;
+                        String legacy;
+                        if (classNode == null) {
+                            legacy = node.legacy();
+                        } else {
+                            legacy = classNode.legacy();
+                            if (!classNode.legacy().isEmpty()) {
+                                legacy = legacy + node.legacy();
+                            } else {
+                                // Lets uppercase the first letter if a legacy is not provided and the class has legacy
+                                String name = field.getName();
+                                legacy = legacy + name.substring(0,1).toUpperCase() + name.substring(1);
+                            }
+                        }
+
                         Field legacyField = Conf.class.getField(legacy);
                         Object legacyValue = legacyField.get(null);
 
@@ -102,12 +130,16 @@ public abstract class Config {
         }
     }
 
-    public ConfigurationSection getSection() {
-        return section;
+    public File getFile() {
+        return file;
     }
 
-    public FileConfiguration getConfigFile() {
-        return configFile;
+    public YamlConfiguration getYamlConfig() {
+        return yamlConfig;
+    }
+
+    public ConfigurationSection getSection() {
+        return section;
     }
 
 }

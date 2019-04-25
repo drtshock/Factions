@@ -1,13 +1,18 @@
 package com.massivecraft.factions.config;
 
+import com.massivecraft.factions.config.annotation.ConfigFile;
+import com.massivecraft.factions.config.annotation.Node;
+
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
+@ConfigFile("config.yml")
 public class FactionConfig extends Config {
 
-    @Node public boolean debug;
+    @Node
+    public boolean debug;
 
     /* Essentials integration */
     @Node public boolean deleteEssHomes = true;

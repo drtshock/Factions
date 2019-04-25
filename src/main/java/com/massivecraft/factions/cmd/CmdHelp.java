@@ -49,7 +49,7 @@ public class CmdHelp extends FCommand {
             context.sendMessage(helpPages.get(page));
             return;
         }
-        ConfigurationSection help = config.getConfigFile().getConfigurationSection("help");
+        ConfigurationSection help = config.getSection().getConfigurationSection("help");
         if (help == null) {
             p.getLogger().severe("No Help section, please regen config");
             return;
