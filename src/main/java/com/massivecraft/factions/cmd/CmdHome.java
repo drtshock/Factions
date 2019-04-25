@@ -1,7 +1,9 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.config.FactionConfig;
 import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -18,6 +20,9 @@ import java.util.List;
 
 @Singleton
 public class CmdHome extends FCommand {
+
+    @Inject
+    private FactionConfig config;
 
     public CmdHome() {
         super();
@@ -121,7 +126,7 @@ public class CmdHome extends FCommand {
 
                 context.player.teleport(context.faction.getHome());
             }
-        }, this.p.getConfig().getLong("warmups.f-home", 0));
+        }, config.warmups.home);
     }
 
     @Override

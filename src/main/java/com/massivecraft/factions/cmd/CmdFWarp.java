@@ -1,8 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.config.FactionConfig;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
@@ -16,6 +18,9 @@ import java.util.UUID;
 
 @Singleton
 public class CmdFWarp extends FCommand {
+
+    @Inject
+    private FactionConfig config;
 
     public CmdFWarp() {
         super();
@@ -67,7 +72,7 @@ public class CmdFWarp extends FCommand {
                             fPlayer.msg(TL.COMMAND_FWARP_WARPED, warpName);
                         }
                     }
-                }, this.p.getConfig().getLong("warmups.f-warp", 0));
+                }, config.warmups.warp);
             } else {
                 context.fPlayer.msg(TL.COMMAND_FWARP_INVALID_WARP, warpName);
             }
@@ -75,7 +80,7 @@ public class CmdFWarp extends FCommand {
     }
 
     private boolean transact(FPlayer player, CommandContext context) {
-        return !P.p.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || context.payForCommand(P.p.getConfig().getDouble("warp-cost.warp", 5), TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
+        return !config.warpCost.enabled || player.isAdminBypassing() || context.payForCommand(config.warpCost.warp, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
     }
 
 

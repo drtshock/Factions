@@ -1,9 +1,11 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.config.FactionConfig;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.FlightDisableUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
@@ -11,6 +13,9 @@ import com.massivecraft.factions.zcore.util.TL;
 
 @Singleton
 public class CmdFly extends FCommand {
+
+    @Inject
+    private FactionConfig config;
 
     public CmdFly() {
         super();
@@ -53,7 +58,7 @@ public class CmdFly extends FCommand {
                 context.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(context.fPlayer));
             }
             return;
-        } else if (FlightDisableUtil.enemiesNearby(context.fPlayer, P.p.getConfig().getInt("f-fly.enemy-radius", 7))) {
+        } else if (FlightDisableUtil.enemiesNearby(context.fPlayer, config.fly.enemyRadius)) {
             if (notify) {
                 context.msg(TL.COMMAND_FLY_ENEMY_NEARBY);
             }
@@ -65,7 +70,7 @@ public class CmdFly extends FCommand {
             public void run() {
                 context.fPlayer.setFlying(true);
             }
-        }, this.p.getConfig().getLong("warmups.f-fly", 0));
+        }, config.warmups.fly);
     }
 
     @Override

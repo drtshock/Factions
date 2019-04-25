@@ -17,7 +17,7 @@ public class EconomyConfig {
     @Node public double claimAdditionalMultiplier = 0.5;
     @Node public double claimRefundMultiplier = 0.7;
     @Node public double claimUnconnectedFee = 0;
-    
+
     /* Command Costs */
     @Node public Cost cost = new Cost();
 

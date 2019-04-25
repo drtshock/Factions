@@ -62,7 +62,7 @@ public class CmdSetFWarp extends FCommand {
     }
 
     private boolean transact(FPlayer player, CommandContext context) {
-        return !P.p.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || context.payForCommand(P.p.getConfig().getDouble("warp-cost.setwarp", 5), TL.COMMAND_SETFWARP_TOSET.toString(), TL.COMMAND_SETFWARP_FORSET.toString());
+        return !config.warpCost.enabled || player.isAdminBypassing() || context.payForCommand(config.warpCost.setwarp, TL.COMMAND_SETFWARP_TOSET.toString(), TL.COMMAND_SETFWARP_FORSET.toString());
     }
 
     @Override

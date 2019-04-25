@@ -1,14 +1,19 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.config.FactionConfig;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 
 @Singleton
 public class CmdDelFWarp extends FCommand {
+
+    @Inject
+    private FactionConfig config;
 
     public CmdDelFWarp() {
         super();
@@ -39,7 +44,7 @@ public class CmdDelFWarp extends FCommand {
     }
 
     private boolean transact(FPlayer player, CommandContext context) {
-        return !P.p.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || context.payForCommand(P.p.getConfig().getDouble("warp-cost.delwarp", 5), TL.COMMAND_DELFWARP_TODELETE.toString(), TL.COMMAND_DELFWARP_FORDELETE.toString());
+        return !config.warpCost.enabled || player.isAdminBypassing() || context.payForCommand(config.warpCost.delwarp, TL.COMMAND_DELFWARP_TODELETE.toString(), TL.COMMAND_DELFWARP_FORDELETE.toString());
     }
 
     @Override

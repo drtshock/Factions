@@ -1,7 +1,9 @@
 package com.massivecraft.factions.cmd;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.config.FactionConfig;
 import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.SpiralTask;
@@ -15,6 +17,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 @Singleton
 public class CmdStuck extends FCommand {
+
+    @Inject
+    private FactionConfig config;
 
     public CmdStuck() {
         super();
@@ -30,8 +35,8 @@ public class CmdStuck extends FCommand {
         final Player player =context.fPlayer.getPlayer();
         final Location sentAt = player.getLocation();
         final FLocation chunk =context.fPlayer.getLastStoodAt();
-        final long delay = P.p.getConfig().getLong("hcf.stuck.delay", 30);
-        final int radius = P.p.getConfig().getInt("hcf.stuck.radius", 10);
+        final long delay = config.hcf.stuckDelay;
+        final int radius = config.hcf.stuckRadius;
 
         if (P.p.getStuckMap().containsKey(player.getUniqueId())) {
             long wait = P.p.getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
