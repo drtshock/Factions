@@ -57,7 +57,7 @@ public abstract class FactionGUI<T> implements InventoryHolder {
 
     public void build() {
         if (config == null) {
-            P.p.log(Level.WARNING, "Attempted to build UI but config section not present.");
+            P.p.log(Level.WARNING, "Attempted to build GUI for %s but config section not present.", getClass().getName());
             P.p.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
             return;
         }
@@ -98,6 +98,7 @@ public abstract class FactionGUI<T> implements InventoryHolder {
     protected void buildItems() {
         ConfigurationSection items = config.getConfigurationSection("items");
         if (items == null) {
+            P.p.log(Level.WARNING, "Attempted to build GUI for %s but item section not present", getClass().getName());
             return;
         }
         for (Map.Entry<Integer, T> entry : slotMap.entrySet()) {
@@ -134,6 +135,7 @@ public abstract class FactionGUI<T> implements InventoryHolder {
     protected void buildDummyItems() {
         ConfigurationSection dummies = config.getConfigurationSection("dummies");
         if (dummies == null) {
+            P.p.log(Level.WARNING, "Attempted to build GUI for %s but dummies section not present", getClass().getName());
             return;
         }
         for (String key : dummies.getKeys(false)) {
