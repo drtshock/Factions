@@ -5,11 +5,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
-import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.Essentials;
-import com.massivecraft.factions.integration.Worldguard;
+import com.massivecraft.factions.integration.*;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
+import com.massivecraft.factions.listeners.versionspecific.PortalListenerLegacy;
+import com.massivecraft.factions.listeners.versionspecific.PortalListener_114;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.material.FactionMaterial;
@@ -35,7 +35,9 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 public class P extends MPlugin {
@@ -69,6 +71,7 @@ public class P extends MPlugin {
 
     public SeeChunkUtil seeChunkUtil;
     public ParticleProvider particleProvider;
+    public IWorldguard worldguard;
 
     public P() {
         p = this;
@@ -123,9 +126,7 @@ public class P extends MPlugin {
         Econ.setup();
         setupPermissions();
 
-        if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
-            Worldguard.init(this);
-        }
+        loadWorldguard();
 
         EngineDynmap.getInstance().init();
 
@@ -133,7 +134,7 @@ public class P extends MPlugin {
         startAutoLeaveTask(false);
 
         // Run before initializing listeners to handle reloads properly.
-        if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.7")) {
+        if (!Bukkit.getVersion().contains("1.13") && !Bukkit.getVersion().contains("1.14")) {
             particleProvider = new PacketParticleProvider();
         } else {
             particleProvider = new BukkitParticleProvider();
@@ -155,22 +156,53 @@ public class P extends MPlugin {
         getServer().getPluginManager().registerEvents(new FactionsExploitListener(), this);
         getServer().getPluginManager().registerEvents(new FactionsBlockListener(this), this);
 
+        // Version specific portal listener check.
+        if (Bukkit.getVersion().contains("1.14")) {
+            getServer().getPluginManager().registerEvents(new PortalListener_114(), this);
+            P.p.log(Level.WARNING, "Using 1.14 portal support. This means that we'll block ALL portals from being " +
+                    "created in anything but wilderness.");
+        } else {
+            getServer().getPluginManager().registerEvents(new PortalListenerLegacy(), this);
+        }
+
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(refCommand).setExecutor(cmdBase);
 
         if (getConfig().getBoolean("f-fly.enable", false)) {
-            double delay = getConfig().getDouble("f-fly.radius-check", 1) * 20;
-            // Only run FlightUtil if not 0
-            if (delay != 0) {
-                new FlightDisableUtil().runTaskTimer(this, 0, (long) delay);
-                log(Level.INFO, "Enabling enemy radius check for f fly every %1s seconds", delay / 20);
-            }
+            FlightUtil.start();
         }
 
         new TitleAPI();
         setupPlaceholderAPI();
         postEnable();
         this.loadSuccessful = true;
+    }
+
+    private void loadWorldguard() {
+        if (!Conf.worldGuardChecking && !Conf.worldGuardBuildPriority) {
+            log(Level.INFO, "Not enabling WorldGuard check since no options for it are enabled.");
+            return;
+        }
+
+        Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
+        if (plugin != null) {
+            String version = plugin.getDescription().getVersion();
+            if (version.startsWith("6")) {
+                this.worldguard = new Worldguard6();
+                log(Level.INFO, "Found support for WorldGuard version " + version);
+            } else if (version.startsWith("7")) {
+                this.worldguard = new Worldguard7();
+                log(Level.INFO, "Found support for WorldGuard version " + version);
+            } else {
+                P.p.log(Level.WARNING, "Loaded WorldGuard but couldn't support this version: " + version);
+            }
+        } else {
+            P.p.log(Level.WARNING, "WorldGuard checks were turned in on conf.json, but WorldGuard isn't present on the server.");
+        }
+    }
+
+    public IWorldguard getWorldguard() {
+        return this.worldguard;
     }
 
     private void setupPlaceholderAPI() {
@@ -222,10 +254,10 @@ public class P extends MPlugin {
         Type accessTypeAdatper = new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {
         }.getType();
 
-        Type factionMaterialType = new TypeToken<FactionMaterial>(){
+        Type factionMaterialType = new TypeToken<FactionMaterial>() {
         }.getType();
 
-        Type materialType = new TypeToken<Material>(){
+        Type materialType = new TypeToken<Material>() {
         }.getType();
 
         return new GsonBuilder()

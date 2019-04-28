@@ -1,12 +1,11 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.integration.Worldguard;
+import com.massivecraft.factions.integration.Worldguard7;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -192,7 +191,7 @@ public class FactionsBlockListener implements Listener {
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
 
         if (otherFaction.isWilderness()) {
-            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
+            if (Conf.worldGuardBuildPriority && P.p.getWorldguard() != null && P.p.getWorldguard().playerCanBuild(player, location)) {
                 return true;
             }
 
@@ -206,7 +205,7 @@ public class FactionsBlockListener implements Listener {
 
             return false;
         } else if (otherFaction.isSafeZone()) {
-            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
+            if (Conf.worldGuardBuildPriority && P.p.getWorldguard() != null && P.p.getWorldguard().playerCanBuild(player, location)) {
                 return true;
             }
 
@@ -220,7 +219,7 @@ public class FactionsBlockListener implements Listener {
 
             return false;
         } else if (otherFaction.isWarZone()) {
-            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
+            if (Conf.worldGuardBuildPriority && P.p.getWorldguard() != null && P.p.getWorldguard().playerCanBuild(player, location)) {
                 return true;
             }
 
@@ -243,6 +242,12 @@ public class FactionsBlockListener implements Listener {
         boolean online = otherFaction.hasPlayersOnline();
         boolean pain = !justCheck && rel.confPainBuild(online);
         boolean deny = rel.confDenyBuild(online);
+
+        // If the faction hasn't: defined access or denied, fallback to config values
+        Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
+        if (access == Access.ALLOW) {
+            return true;
+        }
 
         // hurt the player for building/destroying in other territory?
         if (pain) {
@@ -278,17 +283,6 @@ public class FactionsBlockListener implements Listener {
 
                 return false;
             }
-        }
-
-        Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
-        if (access != null && access != Access.UNDEFINED) {
-            // TODO: Update this once new access values are added other than just allow / deny.
-            if (access == Access.DENY) {
-                me.msg(TL.GENERIC_NOPERMISSION, action);
-                return false;
-            }
-
-            return true; // has to be allow
         }
 
         return true;

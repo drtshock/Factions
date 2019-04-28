@@ -1,5 +1,6 @@
 package com.massivecraft.factions.zcore.persist;
 
+import com.darkblade12.particleeffect.ParticleEffect;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.LandClaimEvent;
@@ -7,7 +8,7 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Essentials;
-import com.massivecraft.factions.integration.Worldguard;
+import com.massivecraft.factions.integration.Worldguard7;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.sidebar.FInfoSidebar;
 import com.massivecraft.factions.struct.ChatMode;
@@ -63,6 +64,9 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected int mapHeight = 8; // default to old value
     protected boolean isFlying = false;
     protected boolean isAutoFlying = false;
+    protected boolean flyTrailsState = false;
+    protected String flyTrailsEffect = null;
+
     protected boolean seeingChunk = false;
 
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
@@ -731,7 +735,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         int factionBuffer = P.p.getConfig().getInt("hcf.buffer-zone", 0);
         int worldBuffer = P.p.getConfig().getInt("world-border.buffer", 0);
 
-        if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(flocation)) {
+        if (Conf.worldGuardChecking && P.p.getWorldguard() != null && P.p.getWorldguard().checkForRegionsInChunk(flocation)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
             error = P.p.txt.parse(TL.CLAIM_PROTECTED.toString());
         } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
@@ -1010,6 +1014,24 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void setSeeingChunk(boolean seeingChunk) {
         this.seeingChunk = seeingChunk;
         P.p.seeChunkUtil.updatePlayerInfo(UUID.fromString(getId()), seeingChunk);
+    }
+
+    public boolean getFlyTrailsState() {
+        return flyTrailsState;
+    }
+
+    public void setFlyTrailsState(boolean state) {
+        flyTrailsState = state;
+        msg(TL.COMMAND_FLYTRAILS_CHANGE, state ? "enabled" : "disabled");
+    }
+
+    public String getFlyTrailsEffect() {
+        return flyTrailsEffect;
+    }
+
+    public void setFlyTrailsEffect(String effect) {
+        flyTrailsEffect = effect;
+        msg(TL.COMMAND_FLYTRAILS_PARTICLE_CHANGE, effect);
     }
 
     // -------------------------------------------- //

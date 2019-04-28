@@ -98,6 +98,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdBanlist cmdbanlist = new CmdBanlist();
     public CmdColeader cmdColeader = new CmdColeader();
     public CmdNear cmdNear = new CmdNear();
+    public CmdTrail cmdTrail = new CmdTrail();
 
     public FCmdRoot() {
         super();
@@ -196,6 +197,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
         if (P.p.getConfig().getBoolean("f-fly.enable", false)) {
             this.addSubCommand(this.cmdFly);
+            this.addSubCommand(this.cmdTrail);
             P.p.log(Level.INFO, "Enabling /f fly command");
         } else {
             P.p.log(Level.WARNING, "Faction flight set to false in config.yml. Not enabling /f fly command.");
@@ -208,13 +210,13 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
     @Override
     public void perform(CommandContext context) {
-        this.commandChain.add(this);
-        this.cmdHelp.execute(context, this.commandChain);
+        context.commandChain.add(this);
+        this.cmdHelp.execute(context);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        this.execute(new CommandContext(sender, new ArrayList<>(Arrays.asList(args)), label), new ArrayList<FCommand>());
+        this.execute(new CommandContext(sender, new ArrayList<>(Arrays.asList(args)), label));
         return true;
     }
 
