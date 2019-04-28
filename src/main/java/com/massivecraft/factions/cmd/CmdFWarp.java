@@ -7,7 +7,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.ui.warp.WarpUI;
+import com.massivecraft.factions.zcore.gui.warp.WarpGUI;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -41,7 +41,7 @@ public class CmdFWarp extends FCommand {
         }
 
         if (context.args.size() == 0) {
-            WarpUI ui = new WarpUI(context.fPlayer);
+            WarpGUI ui = new WarpGUI(context.fPlayer);
             ui.open();
         } else if (context.args.size() > 2) {
             context.msg(TL.COMMAND_FWARP_COMMANDFORMAT);

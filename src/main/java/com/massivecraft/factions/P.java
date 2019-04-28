@@ -23,14 +23,11 @@ import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.ui.FactionUIHandler;
-import com.massivecraft.factions.zcore.util.TextUtil;
+import com.massivecraft.factions.zcore.gui.FactionGUIHandler;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
@@ -148,7 +145,7 @@ public class P extends MPlugin {
             seeChunkUtil = new SeeChunkUtil();
             seeChunkUtil.runTaskTimer(this, 0, (long) delay);
         }
-        FactionUIHandler.start();
+        FactionGUIHandler.start();
         // End run before registering event handlers.
 
         // Register Event Handlers

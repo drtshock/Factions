@@ -1,11 +1,11 @@
-package com.massivecraft.factions.zcore.ui.warp;
+package com.massivecraft.factions.zcore.gui.warp;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.WarmUpUtil;
-import com.massivecraft.factions.zcore.ui.FactionUI;
+import com.massivecraft.factions.zcore.gui.FactionGUI;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.conversations.*;
@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class WarpUI extends FactionUI<Integer> implements FactionUI.Dynamic {
+public class WarpGUI extends FactionGUI<Integer> implements FactionGUI.Dynamic {
 
     private List<String> warps;
     private int maxWarps;
 
-    public WarpUI(FPlayer user) {
+    public WarpGUI(FPlayer user) {
         super("fwarp-gui", user);
         warps = new ArrayList<>(user.getFaction().getWarps().keySet());
         maxWarps = P.p.getConfig().getInt("max-warps", 5);

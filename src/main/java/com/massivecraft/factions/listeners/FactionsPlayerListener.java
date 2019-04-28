@@ -13,8 +13,8 @@ import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.util.material.FactionMaterial;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.gui.FactionGUI;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
-import com.massivecraft.factions.zcore.ui.FactionUI;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
@@ -659,16 +659,16 @@ public class FactionsPlayerListener implements Listener {
         if (event.getClickedInventory() == null) {
             return;
         }
-        if (event.getClickedInventory().getHolder() instanceof FactionUI) {
+        if (event.getClickedInventory().getHolder() instanceof FactionGUI) {
             event.setCancelled(true);
-            FactionUI ui = (FactionUI) event.getClickedInventory().getHolder();
+            FactionGUI ui = (FactionGUI) event.getClickedInventory().getHolder();
             ui.click(event.getRawSlot(), event.getClick());
         }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMoveGUI(InventoryDragEvent event) {
-        if (event.getInventory().getHolder() instanceof FactionUI) {
+        if (event.getInventory().getHolder() instanceof FactionGUI) {
             event.setCancelled(true);
         }
     }

@@ -1,15 +1,15 @@
-package com.massivecraft.factions.zcore.ui.perm;
+package com.massivecraft.factions.zcore.gui.perm;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Permissable;
-import com.massivecraft.factions.zcore.ui.FactionUI;
+import com.massivecraft.factions.zcore.gui.FactionGUI;
 import org.bukkit.event.inventory.ClickType;
 
-public class PermissableRelationUI extends FactionUI<Permissable> {
+public class PermissableRelationGUI extends FactionGUI<Permissable> {
 
-    public PermissableRelationUI(FPlayer user) {
+    public PermissableRelationGUI(FPlayer user) {
         super("fperm-gui.relation", user);
         build();
     }
@@ -42,7 +42,7 @@ public class PermissableRelationUI extends FactionUI<Permissable> {
 
     @Override
     protected void onClick(Permissable permissable, ClickType clickType) {
-        new PermissableActionUI(user, permissable).open();
+        new PermissableActionGUI(user, permissable).open();
     }
 
 }

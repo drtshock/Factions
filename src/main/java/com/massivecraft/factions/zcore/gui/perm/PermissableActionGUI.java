@@ -1,23 +1,19 @@
-package com.massivecraft.factions.zcore.ui.perm;
+package com.massivecraft.factions.zcore.gui.perm;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.ui.FactionUI;
+import com.massivecraft.factions.zcore.gui.FactionGUI;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 
-public class PermissableActionUI extends FactionUI<PermissableAction> implements FactionUI.Dynamic, FactionUI.Backable {
+public class PermissableActionGUI extends FactionGUI<PermissableAction> implements FactionGUI.Dynamic, FactionGUI.Backable {
 
     private Permissable permissable;
 
-    public PermissableActionUI(FPlayer user, Permissable permissable) {
+    public PermissableActionGUI(FPlayer user, Permissable permissable) {
         super("fperm-gui.action", user);
         this.permissable = permissable;
         build();
@@ -89,6 +85,6 @@ public class PermissableActionUI extends FactionUI<PermissableAction> implements
 
     @Override
     public void onBack() {
-        new PermissableRelationUI(user).open();
+        new PermissableRelationGUI(user).open();
     }
 }

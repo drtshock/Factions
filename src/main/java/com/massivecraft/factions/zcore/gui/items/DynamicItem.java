@@ -1,22 +1,22 @@
-package com.massivecraft.factions.zcore.ui.items;
+package com.massivecraft.factions.zcore.gui.items;
 
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
 
 /**
- *  DynamicItem uses ItemUI merges to handle
+ *  DynamicItem uses ItemGUI merges to handle
  *  specific states in some UI menus, for example
  *
- *  PermissableActionUI handles individual actions
+ *  PermissableActionGUI handles individual actions
  *  that have states related to the user
  *  these can change depending on what the UI and the config
  *  provide to this class
  */
-public class DynamicItem extends ItemUI {
+public class DynamicItem extends ItemGUI {
 
-    // May contain incomplete ItemUI but will be used to be merged into this main one
-    private HashMap<String, ItemUI> states = new HashMap<>();
+    // May contain incomplete ItemGUI but will be used to be merged into this main one
+    private HashMap<String, ItemGUI> states = new HashMap<>();
 
     public DynamicItem(Builder builder, ConfigurationSection section) {
         super(builder);
@@ -26,16 +26,16 @@ public class DynamicItem extends ItemUI {
         }
     }
 
-    public DynamicItem(ItemUI itemUI) {
-        super(itemUI);
-        if (itemUI instanceof DynamicItem) {
-            this.states = ((DynamicItem) itemUI).states;
+    public DynamicItem(ItemGUI itemGUI) {
+        super(itemGUI);
+        if (itemGUI instanceof DynamicItem) {
+            this.states = ((DynamicItem) itemGUI).states;
         }
     }
 
-    // Merges the ItemUI from the state into a clone of this (Clone or it might leave some data from other states)
-    public ItemUI get(String stage) {
-        ItemUI clone = new ItemUI(this);
+    // Merges the ItemGUI from the state into a clone of this (Clone or it might leave some data from other states)
+    public ItemGUI get(String stage) {
+        ItemGUI clone = new ItemGUI(this);
         if (states.containsKey(stage)) {
             clone.merge(states.get(stage));
         }

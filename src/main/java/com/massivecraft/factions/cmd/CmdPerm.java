@@ -7,8 +7,8 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.ui.perm.PermissableActionUI;
-import com.massivecraft.factions.zcore.ui.perm.PermissableRelationUI;
+import com.massivecraft.factions.zcore.gui.perm.PermissableActionGUI;
+import com.massivecraft.factions.zcore.gui.perm.PermissableRelationGUI;
 import com.massivecraft.factions.zcore.util.TL;
 
 import java.util.Arrays;
@@ -37,11 +37,11 @@ public class CmdPerm extends FCommand {
     @Override
     public void perform(CommandContext context) {
         if (context.args.size() == 0) {
-            PermissableRelationUI ui = new PermissableRelationUI(context.fPlayer);
+            PermissableRelationGUI ui = new PermissableRelationGUI(context.fPlayer);
             ui.open();
             return;
         } else if (context.args.size() == 1 && getPermissable(context.argAsString(0)) != null) {
-            PermissableActionUI ui = new PermissableActionUI(context.fPlayer, getPermissable(context.argAsString(0)));
+            PermissableActionGUI ui = new PermissableActionGUI(context.fPlayer, getPermissable(context.argAsString(0)));
             ui.open();
             return;
         }

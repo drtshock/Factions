@@ -1,9 +1,9 @@
-package com.massivecraft.factions.zcore.ui;
+package com.massivecraft.factions.zcore.gui;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.zcore.ui.items.DynamicItem;
-import com.massivecraft.factions.zcore.ui.items.ItemUI;
+import com.massivecraft.factions.zcore.gui.items.DynamicItem;
+import com.massivecraft.factions.zcore.gui.items.ItemGUI;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-public abstract class FactionUI<T> implements InventoryHolder {
+public abstract class FactionGUI<T> implements InventoryHolder {
 
     protected Inventory inventory;
 
@@ -30,7 +30,7 @@ public abstract class FactionUI<T> implements InventoryHolder {
     protected FPlayer user;
     protected ConfigurationSection config;
 
-    public FactionUI(String path, FPlayer user) {
+    public FactionGUI(String path, FPlayer user) {
         this.user = user;
         this.config = P.p.getConfig().getConfigurationSection(path);
     }
@@ -41,7 +41,7 @@ public abstract class FactionUI<T> implements InventoryHolder {
     // Convert a Type to a config String
     protected abstract String convert(T type);
 
-    // Parse all the placeholder values in this String, will be injected into the ItemUI and return it
+    // Parse all the placeholder values in this String, will be injected into the ItemGUI and return it
     protected abstract String parse(String toParse, T type);
 
     protected abstract void onClick(T action, ClickType clickType);
@@ -70,7 +70,7 @@ public abstract class FactionUI<T> implements InventoryHolder {
         }
         size *= 9;
 
-        String guiName = parseDefault(config.getString("name", "FactionUI"));
+        String guiName = parseDefault(config.getString("name", "FactionGUI"));
         inventory = Bukkit.createInventory(this, size, guiName);
 
         // Generates a map that relates | int slot -> T type
@@ -103,7 +103,7 @@ public abstract class FactionUI<T> implements InventoryHolder {
         for (Map.Entry<Integer, T> entry : slotMap.entrySet()) {
             T type = entry.getValue();
 
-            ItemUI item;
+            ItemGUI item;
             String base = items.getString(convert(type));
             // If this is null we need to merge it
             if (!items.isString(convert(type))) {
@@ -112,9 +112,9 @@ public abstract class FactionUI<T> implements InventoryHolder {
                 if (base == null) {
                     continue;
                 }
-                item = FactionUIHandler.instance().mergeBase(base, items.getConfigurationSection(convert(type)));
+                item = FactionGUIHandler.instance().mergeBase(base, items.getConfigurationSection(convert(type)));
             } else {
-                item = FactionUIHandler.instance().getBaseItem(base);
+                item = FactionGUIHandler.instance().getBaseItem(base);
             }
             // Something went wrong in the merging or getting phase (probably does not exist)
             if (item == null) {
@@ -147,7 +147,7 @@ public abstract class FactionUI<T> implements InventoryHolder {
                 continue;
             }
 
-            ItemUI item;
+            ItemGUI item;
             String base = dummies.getString(key);
             if (base.equalsIgnoreCase("back") && this instanceof Backable) {
                 back = slot;
@@ -159,9 +159,9 @@ public abstract class FactionUI<T> implements InventoryHolder {
                 if (base == null) {
                     continue;
                 }
-                item = FactionUIHandler.instance().mergeDummyBase(base, dummies.getConfigurationSection(key));
+                item = FactionGUIHandler.instance().mergeDummyBase(base, dummies.getConfigurationSection(key));
             } else {
-                item = FactionUIHandler.instance().getDummyItem(base);
+                item = FactionGUIHandler.instance().getDummyItem(base);
             }
             // Something went wrong in the merging or getting phase (probably does not exist)
             if (item == null) {
@@ -179,14 +179,14 @@ public abstract class FactionUI<T> implements InventoryHolder {
     }
 
     // Will parse default faction stuff, ie: Faction Name, Power, Colors etc
-    protected ItemUI parse(ItemUI itemUI, T type) {
-        itemUI.setName(parseDefault(itemUI.getName()));
+    protected ItemGUI parse(ItemGUI itemGUI, T type) {
+        itemGUI.setName(parseDefault(itemGUI.getName()));
         if (type != null) {
-            itemUI.setName(parse(itemUI.getName(), type));
+            itemGUI.setName(parse(itemGUI.getName(), type));
         }
-        itemUI.setLore(parseList(itemUI.getLore(), type));
+        itemGUI.setLore(parseList(itemGUI.getLore(), type));
 
-        return itemUI;
+        return itemGUI;
     }
 
     protected List<String> parseList(List<String> stringList, T type) {

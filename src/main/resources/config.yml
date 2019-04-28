@@ -398,7 +398,7 @@ help:
 ############################################################
 
 # Global Faction UI stuff.
-ui:
+gui:
   # These items may be used as 'base' anywhere and all values can be replaced
   global:
     relation:
@@ -510,7 +510,7 @@ fperm-gui:
       neutral:
         base: relation
         material: STONE
-    # Dummy items, defined in the global ui section (Can be overwritten)
+    # Dummy items, defined in the global gui section (Can be overwritten)
     dummies:
       '0': glass
       '1': glass

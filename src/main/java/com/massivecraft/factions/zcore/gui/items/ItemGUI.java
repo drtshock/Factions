@@ -1,4 +1,4 @@
-package com.massivecraft.factions.zcore.ui.items;
+package com.massivecraft.factions.zcore.gui.items;
 
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.util.material.FactionMaterial;
@@ -8,7 +8,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.Colorable;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -19,25 +18,25 @@ import java.util.logging.Level;
  *  to a respective ItemStack, also has utility methods
  *  to merge, clone, etc
  */
-public class ItemUI {
+public class ItemGUI {
 
     private String name;
     private List<String> lore;
     private Material material;
     private DyeColor color;
 
-    public ItemUI(Builder builder) {
+    public ItemGUI(Builder builder) {
         this.name = builder.name;
         this.lore = builder.lore;
         this.material = builder.material;
         this.color = builder.color;
     }
 
-    public ItemUI(ItemUI itemUI) {
-        this.name = itemUI.name;
-        this.lore = itemUI.lore;
-        this.material = itemUI.material;
-        this.color = itemUI.color;
+    public ItemGUI(ItemGUI itemGUI) {
+        this.name = itemGUI.name;
+        this.lore = itemGUI.lore;
+        this.material = itemGUI.material;
+        this.color = itemGUI.color;
     }
 
     public ItemStack get() {
@@ -65,7 +64,7 @@ public class ItemUI {
         }
     }
 
-    public static ItemUI fromConfig(ConfigurationSection section) {
+    public static ItemGUI fromConfig(ConfigurationSection section) {
         Builder builder = new Builder();
         // Allowing null values to pass, to facilitate merging. Getting an ItemStack does not work with essential values being null
         builder.setName(section.getString("name"));
@@ -94,8 +93,8 @@ public class ItemUI {
         return builder.build();
     }
 
-    // All non null values in 'from' will be merged into this ItemUI
-    public void merge(ItemUI from) {
+    // All non null values in 'from' will be merged into this ItemGUI
+    public void merge(ItemGUI from) {
         if (from.material != null) {
             material = from.material;
         }
@@ -175,8 +174,8 @@ public class ItemUI {
             return this;
         }
 
-        public ItemUI build() {
-            return new ItemUI(this);
+        public ItemGUI build() {
+            return new ItemGUI(this);
         }
 
     }
