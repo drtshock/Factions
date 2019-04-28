@@ -37,7 +37,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected transient long lastPlayerLoggedOffTime;
     protected double money;
     protected double powerBoost;
-    protected Map<FLocation, List<FactionEntity>> chunkAccesses = new HashMap<>();
+    protected Map<FLocation, List<FactionEntity>> access = new HashMap<>();
     protected Map<String, Relation> relationWish = new HashMap<>();
     protected Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<>();
     protected transient Set<FPlayer> fplayers = new HashSet<>();
@@ -352,26 +352,26 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean hasChunkAccessAt(FLocation location, FactionEntity entity) {
-        if (!chunkAccesses.containsKey(location)) {
+        if (!access.containsKey(location)) {
             return false;
         }
-        return chunkAccesses.get(location).contains(entity);
+        return access.get(location).contains(entity);
     }
 
     public void addChunkAccessAt(FLocation location, FactionEntity entity) {
-        if (!chunkAccesses.containsKey(location)) {
-            chunkAccesses.put(location, new ArrayList<FactionEntity>());
+        if (!access.containsKey(location)) {
+            access.put(location, new ArrayList<FactionEntity>());
         }
-        if (!chunkAccesses.get(location).contains(entity)) {
-            chunkAccesses.get(location).add(entity);
+        if (!access.get(location).contains(entity)) {
+            access.get(location).add(entity);
         }
     }
 
     public void removeChunkAccessAt(FLocation location, FactionEntity entity) {
-        if (!chunkAccesses.containsKey(location)) {
+        if (!access.containsKey(location)) {
             return;
         }
-        chunkAccesses.get(location).remove(entity);
+        access.get(location).remove(entity);
     }
 
     // -------------------------------------------- //
@@ -906,7 +906,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void clearClaimOwnership(FLocation loc) {
         claimOwnership.remove(loc);
-        chunkAccesses.remove(loc);
+        access.remove(loc);
     }
 
     public void clearClaimOwnership(FPlayer player) {

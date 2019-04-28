@@ -50,7 +50,7 @@ public class CmdAccess extends FCommand {
         }
     }
 
-    public FactionEntity getEntity(CommandContext context) {
+    private FactionEntity getEntity(CommandContext context) {
         String type = context.argAsString(1);
         FactionEntity entity = null;
         if (type.equalsIgnoreCase("f") || type.equalsIgnoreCase("faction")) {
