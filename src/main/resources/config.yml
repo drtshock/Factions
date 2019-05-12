@@ -81,6 +81,8 @@ f-fly:
   radius-check: 1
   # Should we disable flight if the player has suffered generic damage
   disable-generic-damage: false
+  # Should we enable flight if a player had it enabled before logout
+  enable-flight-on-login: true
   # Trails show below the players foot when flying, faction.fly.trails
   # Players can enable them with /f trail on/off
   # Players can also set which effect to show /f trail effect <particle> only if they have faction.fly.trails.<particle>

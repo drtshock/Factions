@@ -102,6 +102,13 @@ public class FactionsPlayerListener implements Listener {
             P.p.log(Level.INFO, "Found %s on admin Bypass without permission on login. Disabled it for them.", player.getName());
         }
 
+        // If they last logged off with faction fly enabled, we can re-enable it so they don't fall and die
+        if (P.p.getConfig().getBoolean("f-fly.enable-flight-on-login")) {
+            if (me.isFlying() || me.isAutoFlying()) {
+                me.setFlying(true);
+            }
+        }
+
         // If they have the permission, don't let them autoleave. Bad inverted setter :\
         me.setAutoLeave(!player.hasPermission(Permission.AUTO_LEAVE_BYPASS.node));
         me.setTakeFallDamage(true);
