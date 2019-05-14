@@ -24,6 +24,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
     public BrigadierManager brigadierManager;
 
+    public CmdAccess cmdAccess = new CmdAccess();
     public CmdAdmin cmdAdmin = new CmdAdmin();
     public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
     public CmdBoom cmdBoom = new CmdBoom();
@@ -112,6 +113,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.setHelpShort("The faction base command");
         this.helpLong.add(P.p.txt.parseTags("<i>This command contains all faction stuff."));
 
+        this.addSubCommand(this.cmdAccess);
         this.addSubCommand(this.cmdAdmin);
         this.addSubCommand(this.cmdAutoClaim);
         this.addSubCommand(this.cmdBoom);

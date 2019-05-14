@@ -50,6 +50,14 @@ public enum TL {
     /**
      * Command translations
      */
+    COMMAND_ACCESS_NOT_OWN("&cYou do not own this land"),
+    COMMAND_ACCESS_NOT_FOUND("&cCould not find %1$s %2$s"),
+    COMMAND_ACCESS_GRANTED("&eGranted access of chunk &d%1$s:%2$s &eto %3$s"),
+    COMMAND_ACCESS_REVOKED("&eRevoked access of chunk &d%1$s:%2$s &eto %3$s"),
+    COMMAND_ACCESS_INVALID_TYPE("&cPlease specify a valid target: f, p, faction, player"),
+    COMMAND_ACCESS_INVALID_ACTION("&cPlease specify a valid action: add, remove"),
+    COMMAND_ACCESS_DESCRIPTION("Grant access of this chunk to a player or faction"),
+
     COMMAND_ADMIN_NOTMEMBER("%1$s&e is not a member in your faction."),
     COMMAND_ADMIN_NOTADMIN("&cYou are not the faction admin."),
     COMMAND_ADMIN_TARGETSELF("&cThe target player musn't be yourself."),
