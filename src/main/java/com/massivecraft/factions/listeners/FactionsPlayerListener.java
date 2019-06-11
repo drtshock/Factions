@@ -425,6 +425,21 @@ public class FactionsPlayerListener implements Listener {
 
         PermissableAction action = null;
 
+        if (Bukkit.getVersion().contains("1.14")) {
+            switch (block.getType().name()) {
+                case "BARREL":
+                case "BLAST_FURNACE":
+                case "CARTOGRAPHY_TABLE":
+                case "GRINDSTONE":
+                case "SMOKER":
+                case "STONECUTTER":
+                    action = PermissableAction.CONTAINER;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         switch (block.getType()) {
             case LEVER:
                 action = PermissableAction.LEVER;
