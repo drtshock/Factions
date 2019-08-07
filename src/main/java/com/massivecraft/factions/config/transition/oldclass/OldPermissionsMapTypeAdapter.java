@@ -1,14 +1,14 @@
 package com.massivecraft.factions.config.transition.oldclass;
 
-import com.google.gson.*;
-import com.massivecraft.factions.P;
-import com.massivecraft.factions.zcore.util.TL;
-
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
+
+import com.google.gson.*;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class OldPermissionsMapTypeAdapter implements JsonDeserializer<Map<OldPermissable, Map<OldPermissableAction, Access>>> {
 

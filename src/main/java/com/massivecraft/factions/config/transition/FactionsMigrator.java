@@ -1,11 +1,11 @@
 package com.massivecraft.factions.config.transition;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gson.Gson;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.config.transition.oldclass.OldMemoryFaction;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class FactionsMigrator {
     public static class OldFactions {

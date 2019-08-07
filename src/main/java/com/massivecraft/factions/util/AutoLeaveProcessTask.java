@@ -1,12 +1,15 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.*;
-import com.massivecraft.factions.struct.Role;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.logging.Level;
+
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.Role;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class AutoLeaveProcessTask extends BukkitRunnable {
 

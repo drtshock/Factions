@@ -1,5 +1,8 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
@@ -17,9 +20,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class CmdShow extends FCommand {
 

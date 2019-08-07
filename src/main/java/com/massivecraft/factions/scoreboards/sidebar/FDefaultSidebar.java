@@ -1,12 +1,12 @@
 package com.massivecraft.factions.scoreboards.sidebar;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.P;
-import com.massivecraft.factions.scoreboards.FSidebarProvider;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.scoreboards.FSidebarProvider;
 
 public class FDefaultSidebar extends FSidebarProvider {
 

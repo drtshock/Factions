@@ -1,5 +1,9 @@
 package com.massivecraft.factions.listeners;
 
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
+
 import com.earth2me.essentials.IEssentials;
 import com.earth2me.essentials.User;
 import com.massivecraft.factions.Board;
@@ -10,10 +14,6 @@ import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-
-import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
 
 public class EssentialsListener implements Listener {
 

@@ -1,5 +1,9 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.claim.*;
 import com.massivecraft.factions.cmd.money.CmdMoney;
@@ -15,10 +19,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 public class FCmdRoot extends FCommand implements CommandExecutor {
 

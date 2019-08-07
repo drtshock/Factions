@@ -1,11 +1,11 @@
 package com.massivecraft.factions.util.material;
 
+import java.util.HashMap;
+import java.util.logging.Level;
+
 import com.google.gson.annotations.SerializedName;
 import com.massivecraft.factions.P;
 import org.bukkit.Material;
-
-import java.util.HashMap;
-import java.util.logging.Level;
 
 public class MaterialProvider {
 

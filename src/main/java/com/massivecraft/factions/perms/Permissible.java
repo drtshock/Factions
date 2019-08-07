@@ -1,5 +1,8 @@
 package com.massivecraft.factions.perms;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.tag.Tag;
@@ -9,9 +12,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public interface Permissible {
 

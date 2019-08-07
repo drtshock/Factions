@@ -1,5 +1,11 @@
 package com.massivecraft.factions.zcore.persist.json;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.logging.Level;
+
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -12,12 +18,6 @@ import com.massivecraft.factions.zcore.util.DiscUtil;
 import com.massivecraft.factions.zcore.util.UUIDFetcher;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.logging.Level;
 
 public class JSONFPlayers extends MemoryFPlayers {
     // Info on how to persist

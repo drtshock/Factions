@@ -1,12 +1,10 @@
 package com.massivecraft.factions.config.transition.oldclass;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.*;
+
 import com.google.common.collect.Sets;
-import com.massivecraft.factions.integration.dynmap.DynmapStyle;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-
-import java.util.*;
 
 public class OldConf {
     public List<String> baseCommandAliases = new ArrayList<>();

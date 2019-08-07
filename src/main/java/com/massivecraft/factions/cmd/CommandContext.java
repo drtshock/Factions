@@ -1,5 +1,8 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Role;
@@ -9,9 +12,6 @@ import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /*
     Object that contains information about a command being executed,

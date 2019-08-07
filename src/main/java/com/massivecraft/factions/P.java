@@ -1,5 +1,18 @@
 package com.massivecraft.factions;
 
+import java.io.IOException;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 import com.earth2me.essentials.IEssentials;
 import com.google.common.base.Charsets;
 import com.google.gson.GsonBuilder;
@@ -41,19 +54,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.RegisteredServiceProvider;
-
-import java.io.IOException;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class P extends MPlugin {
 

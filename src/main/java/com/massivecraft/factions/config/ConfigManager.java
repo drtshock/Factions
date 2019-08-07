@@ -1,12 +1,12 @@
 package com.massivecraft.factions.config;
 
+import java.io.IOException;
+
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.config.file.DefaultOfflinePermissionsConfig;
 import com.massivecraft.factions.config.file.DefaultPermissionsConfig;
 import com.massivecraft.factions.config.file.MainConfig;
 import com.massivecraft.factions.config.transition.Transitioner;
-
-import java.io.IOException;
 
 public class ConfigManager {
     private final P plugin;

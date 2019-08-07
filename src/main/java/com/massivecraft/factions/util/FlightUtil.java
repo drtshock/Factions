@@ -1,5 +1,7 @@
 package com.massivecraft.factions.util;
 
+import java.util.List;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.P;
@@ -10,8 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.List;
 
 public class FlightUtil {
 

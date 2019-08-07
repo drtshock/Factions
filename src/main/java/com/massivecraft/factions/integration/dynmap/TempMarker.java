@@ -1,10 +1,5 @@
 package com.massivecraft.factions.integration.dynmap;
 
-import org.dynmap.markers.Marker;
-import org.dynmap.markers.MarkerAPI;
-import org.dynmap.markers.MarkerIcon;
-import org.dynmap.markers.MarkerSet;
-
 public class TempMarker {/* TODO
     // -------------------------------------------- //
     // FIELDS

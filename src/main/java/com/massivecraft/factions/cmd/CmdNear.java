@@ -1,5 +1,8 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.P;
@@ -8,9 +11,6 @@ import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CmdNear extends FCommand {
 

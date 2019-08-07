@@ -1,5 +1,8 @@
 package com.massivecraft.factions.scoreboards;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.P;
@@ -8,9 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class FScoreboard {
     private static final Map<FPlayer, FScoreboard> fscoreboards = new HashMap<>();

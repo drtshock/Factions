@@ -1,5 +1,7 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.UUID;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.gui.WarpGUI;
@@ -10,8 +12,6 @@ import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 public class CmdFWarp extends FCommand {
 

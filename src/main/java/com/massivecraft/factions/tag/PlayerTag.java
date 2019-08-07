@@ -1,12 +1,12 @@
 package com.massivecraft.factions.tag;
 
+import java.util.function.Function;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.ChatColor;
-
-import java.util.function.Function;
 
 public enum PlayerTag implements Tag {
     LAST_SEEN("{lastSeen}", (fp) -> {

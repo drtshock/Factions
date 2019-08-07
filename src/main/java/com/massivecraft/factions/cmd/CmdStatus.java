@@ -1,12 +1,12 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.ArrayList;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.ChatColor;
-
-import java.util.ArrayList;
 
 public class CmdStatus extends FCommand {
 

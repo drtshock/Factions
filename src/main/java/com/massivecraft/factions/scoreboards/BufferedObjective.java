@@ -1,14 +1,14 @@
 package com.massivecraft.factions.scoreboards;
 
+import java.lang.reflect.Method;
+import java.util.*;
+
 import com.google.common.base.Splitter;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-
-import java.lang.reflect.Method;
-import java.util.*;
 
 public class BufferedObjective {
     private static final Method addEntryMethod;

@@ -1,12 +1,12 @@
 package com.massivecraft.factions.zcore.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.massivecraft.factions.zcore.MPlugin;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class PermUtil {

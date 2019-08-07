@@ -1,15 +1,15 @@
 package com.massivecraft.factions;
 
-import com.massivecraft.factions.util.MiscUtil;
-import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import com.massivecraft.factions.util.MiscUtil;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 public class FLocation implements Serializable {
     private static final long serialVersionUID = -8292915234027387983L;

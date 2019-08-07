@@ -1,5 +1,7 @@
 package com.massivecraft.factions.tag;
 
+import java.util.*;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
@@ -9,8 +11,6 @@ import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.QuadFunction;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
-
-import java.util.*;
 
 public enum FancyTag implements Tag {
     ALLIES_LIST("{allies-list}", (target, fme, prefix, gm) -> processRelation(prefix, target, fme, Relation.ALLY)),

@@ -1,12 +1,12 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.P;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.massivecraft.factions.P;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 /**
  * With help from https://www.spigotmc.org/threads/send-titles-to-players-using-spigot-1-8-1-11-2.48819/

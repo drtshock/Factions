@@ -1,14 +1,14 @@
 package com.massivecraft.factions.tag;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
-
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public enum FactionTag implements Tag {
     HOME_X("{x}", (fac) -> fac.hasHome() ? String.valueOf(fac.getHome().getBlockX()) : Tag.isMinimalShow() ? null : "{ig}"),

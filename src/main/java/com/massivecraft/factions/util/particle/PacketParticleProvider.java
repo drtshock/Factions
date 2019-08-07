@@ -1,11 +1,11 @@
 package com.massivecraft.factions.util.particle;
 
+import java.util.ArrayList;
+
 import com.darkblade12.particleeffect.ParticleEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
 
 public class PacketParticleProvider implements ParticleProvider<ParticleEffect> {
 

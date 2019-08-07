@@ -1,11 +1,11 @@
 package com.massivecraft.factions.util.material.adapter;
 
+import java.io.IOException;
+
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.massivecraft.factions.util.material.FactionMaterial;
-
-import java.io.IOException;
 
 public class FactionMaterialAdapter extends TypeAdapter<FactionMaterial> {
 

@@ -1,14 +1,14 @@
 package com.massivecraft.factions.config.transition;
 
-import com.massivecraft.factions.config.annotation.Comment;
-import com.massivecraft.factions.config.transition.oldclass.OldConf;
-import org.bukkit.Material;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.massivecraft.factions.config.annotation.Comment;
+import com.massivecraft.factions.config.transition.oldclass.OldConf;
+import org.bukkit.Material;
 
 public class TransitionConfig {
     public class Colors {

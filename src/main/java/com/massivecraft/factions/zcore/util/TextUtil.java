@@ -1,15 +1,15 @@
 package com.massivecraft.factions.zcore.util;
 
-import mkremins.fanciful.FancyMessage;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import mkremins.fanciful.FancyMessage;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 
 public class TextUtil {
 

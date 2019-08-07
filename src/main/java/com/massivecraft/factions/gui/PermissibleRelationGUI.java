@@ -1,16 +1,16 @@
 package com.massivecraft.factions.gui;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.material.FactionMaterial;
 import org.bukkit.event.inventory.ClickType;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class PermissibleRelationGUI extends GUI<Permissible> {
     private static Map<Permissible, SimpleItem> items;

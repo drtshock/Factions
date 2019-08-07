@@ -1,5 +1,7 @@
 package com.massivecraft.factions.listeners;
 
+import java.util.*;
+
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.PowerLossEvent;
 import com.massivecraft.factions.perms.PermissibleAction;
@@ -22,8 +24,6 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
-
-import java.util.*;
 
 
 public class FactionsEntityListener extends AbstractListener {

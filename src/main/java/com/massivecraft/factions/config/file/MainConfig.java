@@ -1,12 +1,12 @@
 package com.massivecraft.factions.config.file;
 
+import java.util.*;
+
 import com.google.common.collect.ImmutableList;
 import com.massivecraft.factions.config.annotation.Comment;
 import com.massivecraft.factions.util.material.FactionMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-
-import java.util.*;
 
 public class MainConfig {
     public class Colors {

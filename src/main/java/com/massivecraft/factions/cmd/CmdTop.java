@@ -1,5 +1,7 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.ArrayList;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
@@ -7,8 +9,6 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
 
 public class CmdTop extends FCommand {
 

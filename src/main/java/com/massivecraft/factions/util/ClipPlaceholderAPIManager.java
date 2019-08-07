@@ -1,5 +1,7 @@
 package com.massivecraft.factions.util;
 
+import java.util.UUID;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
@@ -13,8 +15,6 @@ import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements Relational {
 

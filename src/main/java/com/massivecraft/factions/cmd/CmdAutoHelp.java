@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.ArrayList;
+
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.util.TL;
-
-import java.util.ArrayList;
 
 public class CmdAutoHelp extends FCommand {
 

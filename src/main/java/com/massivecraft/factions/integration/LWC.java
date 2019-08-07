@@ -1,5 +1,9 @@
 package com.massivecraft.factions.integration;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import com.griefcraft.lwc.LWCPlugin;
 import com.griefcraft.model.Protection;
 import com.massivecraft.factions.FLocation;
@@ -12,10 +16,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.plugin.Plugin;
-
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 public class LWC {
     private static com.griefcraft.lwc.LWC lwc;

@@ -1,5 +1,8 @@
 package com.massivecraft.factions;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.perms.Permissible;
@@ -11,9 +14,6 @@ import com.massivecraft.factions.util.LazyLocation;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public interface Faction extends EconomyParticipator {
     HashMap<String, List<String>> getAnnouncements();

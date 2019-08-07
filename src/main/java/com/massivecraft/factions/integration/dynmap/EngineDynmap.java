@@ -1,19 +1,8 @@
 package com.massivecraft.factions.integration.dynmap;
 
-import com.massivecraft.factions.*;
-import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.persist.MemoryBoard;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.plugin.Plugin;
 import org.dynmap.DynmapAPI;
-import org.dynmap.markers.*;
-import org.dynmap.utils.TileFlags;
-
-import java.util.*;
-import java.util.Map.Entry;
+import org.dynmap.markers.MarkerAPI;
+import org.dynmap.markers.MarkerSet;
 
 // This source code is a heavily modified version of mikeprimms plugin Dynmap-Factions.
 public class EngineDynmap {

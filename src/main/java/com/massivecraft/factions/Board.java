@@ -1,11 +1,11 @@
 package com.massivecraft.factions;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import com.massivecraft.factions.zcore.persist.json.JSONBoard;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.World;
-
-import java.util.ArrayList;
-import java.util.Set;
 
 
 public abstract class Board {

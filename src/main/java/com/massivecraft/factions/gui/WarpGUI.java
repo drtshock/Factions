@@ -1,5 +1,7 @@
 package com.massivecraft.factions.gui;
 
+import java.util.*;
+
 import com.google.common.collect.ImmutableList;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
@@ -13,8 +15,6 @@ import org.bukkit.DyeColor;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-
-import java.util.*;
 
 public class WarpGUI extends GUI<Integer> {
     private static SimpleItem warpItem;

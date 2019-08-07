@@ -1,5 +1,9 @@
 package com.massivecraft.factions.gui;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.massivecraft.factions.FPlayer;
@@ -11,10 +15,6 @@ import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.event.inventory.ClickType;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.Backable {
     private static SimpleItem backItem = SimpleItem.builder().setMaterial(FactionMaterial.from("ARROW").get()).setName("BACK").build();

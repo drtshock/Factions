@@ -3,7 +3,6 @@ package com.massivecraft.factions.listeners;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.util.material.FactionMaterial;
 import com.massivecraft.factions.util.material.MaterialDb;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -11,7 +10,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-
 
 public abstract class AbstractListener implements Listener {
     public boolean canPlayerUseBlock(Player player, Material material, Location location, boolean justCheck) {

@@ -1,9 +1,9 @@
 package com.massivecraft.factions.util.material;
 
+import java.util.logging.Level;
+
 import com.massivecraft.factions.P;
 import org.bukkit.Material;
-
-import java.util.logging.Level;
 
 public class FactionMaterial {
 

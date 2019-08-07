@@ -1,5 +1,8 @@
 package com.massivecraft.factions.cmd;
 
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
@@ -10,9 +13,6 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 
 public abstract class FCommand {

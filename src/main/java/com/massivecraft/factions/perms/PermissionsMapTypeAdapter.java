@@ -1,16 +1,16 @@
 package com.massivecraft.factions.perms;
 
-import com.google.gson.*;
-import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.util.TL;
-
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
+
+import com.google.gson.*;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.util.TL;
 
 public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissible, Map<PermissibleAction, Boolean>>> {
 

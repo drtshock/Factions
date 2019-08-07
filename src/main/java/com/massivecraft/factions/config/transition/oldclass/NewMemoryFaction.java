@@ -1,5 +1,8 @@
 package com.massivecraft.factions.config.transition.oldclass;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
@@ -7,9 +10,6 @@ import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.LazyLocation;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class NewMemoryFaction {
     private String id;

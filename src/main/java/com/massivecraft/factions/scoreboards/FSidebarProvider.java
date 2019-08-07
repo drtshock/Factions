@@ -1,12 +1,12 @@
 package com.massivecraft.factions.scoreboards;
 
+import java.util.List;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.util.TL;
-
-import java.util.List;
 
 public abstract class FSidebarProvider {
 

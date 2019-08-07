@@ -1,5 +1,10 @@
 package com.massivecraft.factions.gui;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -7,11 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public abstract class GUI<T> implements InventoryHolder {
     protected Inventory inventory;

@@ -1,17 +1,17 @@
 package com.massivecraft.factions.config;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.nio.file.Path;
+import java.util.*;
+
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.config.annotation.Comment;
 import com.massivecraft.factions.config.annotation.ConfigName;
 import com.typesafe.config.ConfigRenderOptions;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.nio.file.Path;
-import java.util.*;
 
 public class Loader {
     public static void load(String file, Object config, String comment) throws IOException, IllegalAccessException {

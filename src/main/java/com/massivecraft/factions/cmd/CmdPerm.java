@@ -1,5 +1,9 @@
 package com.massivecraft.factions.cmd;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.gui.PermissibleActionGUI;
 import com.massivecraft.factions.gui.PermissibleRelationGUI;
@@ -9,10 +13,6 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 public class CmdPerm extends FCommand {
 

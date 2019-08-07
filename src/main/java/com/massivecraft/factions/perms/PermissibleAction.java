@@ -1,10 +1,10 @@
 package com.massivecraft.factions.perms;
 
-import com.massivecraft.factions.config.file.DefaultPermissionsConfig;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import com.massivecraft.factions.config.file.DefaultPermissionsConfig;
 
 public enum PermissibleAction {
     BUILD(DefaultPermissionsConfig.Permissions::getBuild),
