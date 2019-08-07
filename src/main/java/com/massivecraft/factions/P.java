@@ -193,7 +193,9 @@ public class P extends MPlugin {
             getLogger().info("Using Vault with permissions plugin " + perms.getName());
         }
         if (getServer().getPluginManager().getPlugin("PermissionsEx") != null) {
-            getLogger().warning("Notice: PermissionsEx died in early 2017. The author suggests using LuckPerms instead. https://luckperms.github.io/");
+            if (getServer().getPluginManager().getPlugin("PermissionsEx").getDescription().getVersion().startsWith("1")) {
+                getLogger().warning("Notice: PermissionsEx version 1.x is dead. We suggest using LuckPerms (or PEX 2.0 when available). https://luckperms.github.io/");
+            }
         }
         if (getServer().getPluginManager().getPlugin("GroupManager") != null) {
             getLogger().warning("Notice: GroupManager died in 2014. We suggest using LuckPerms instead. https://luckperms.github.io/");
