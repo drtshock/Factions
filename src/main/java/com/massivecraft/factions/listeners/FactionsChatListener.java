@@ -34,7 +34,7 @@ public class FactionsChatListener implements Listener {
         if (chat == ChatMode.MOD) {
             Faction myFaction = me.getFaction();
 
-            String message = String.format(Conf.modChatFormat, ChatColor.stripColor(me.getNameAndTag()), msg);
+            String message = String.format(P.p.conf().factions().chat().getModChatFormat(), ChatColor.stripColor(me.getNameAndTag()), msg);
 
             //Send to all mods
             for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
@@ -51,7 +51,7 @@ public class FactionsChatListener implements Listener {
         } else if (chat == ChatMode.FACTION) {
             Faction myFaction = me.getFaction();
 
-            String message = String.format(Conf.factionChatFormat, me.describeTo(myFaction), msg);
+            String message = String.format(P.p.conf().factions().chat().getFactionChatFormat(), me.describeTo(myFaction), msg);
             myFaction.sendMessage(message);
 
             Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("FactionChat " + myFaction.getTag() + ": " + message));
@@ -67,7 +67,7 @@ public class FactionsChatListener implements Listener {
         } else if (chat == ChatMode.ALLIANCE) {
             Faction myFaction = me.getFaction();
 
-            String message = String.format(Conf.allianceChatFormat, ChatColor.stripColor(me.getNameAndTag()), msg);
+            String message = String.format(P.p.conf().factions().chat().getAllianceChatFormat(), ChatColor.stripColor(me.getNameAndTag()), msg);
 
             //Send message to our own faction
             myFaction.sendMessage(message);
@@ -87,7 +87,7 @@ public class FactionsChatListener implements Listener {
         } else if (chat == ChatMode.TRUCE) {
             Faction myFaction = me.getFaction();
 
-            String message = String.format(Conf.truceChatFormat, ChatColor.stripColor(me.getNameAndTag()), msg);
+            String message = String.format(P.p.conf().factions().chat().getTruceChatFormat(), ChatColor.stripColor(me.getNameAndTag()), msg);
 
             //Send message to our own faction
             myFaction.sendMessage(message);
@@ -111,7 +111,7 @@ public class FactionsChatListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         // Are we to insert the Faction tag into the format?
         // If we are not to insert it - we are done.
-        if (!Conf.chatTagEnabled || Conf.chatTagHandledByAnotherPlugin) {
+        if (P.p.isAnotherPluginHandlingChat()) {
             return;
         }
 
@@ -119,44 +119,46 @@ public class FactionsChatListener implements Listener {
         String msg = event.getMessage();
         String eventFormat = event.getFormat();
         FPlayer me = FPlayers.getInstance().getByPlayer(talkingPlayer);
-        int InsertIndex = Conf.chatTagInsertIndex;
+        int InsertIndex = P.p.conf().factions().chat().getTagInsertIndex();
 
-        if (!Conf.chatTagReplaceString.isEmpty() && eventFormat.contains(Conf.chatTagReplaceString)) {
+        boolean padBefore = P.p.conf().factions().chat().isTagPadBefore();
+        boolean padAfter = P.p.conf().factions().chat().isTagPadAfter();
+
+        if (!P.p.conf().factions().chat().getTagReplaceString().isEmpty() && eventFormat.contains(P.p.conf().factions().chat().getTagReplaceString())) {
             // we're using the "replace" method of inserting the faction tags
             if (eventFormat.contains("[FACTION_TITLE]")) {
                 eventFormat = eventFormat.replace("[FACTION_TITLE]", me.getTitle());
             }
-            InsertIndex = eventFormat.indexOf(Conf.chatTagReplaceString);
-            eventFormat = eventFormat.replace(Conf.chatTagReplaceString, "");
-            Conf.chatTagPadAfter = false;
-            Conf.chatTagPadBefore = false;
-        } else if (!Conf.chatTagInsertAfterString.isEmpty() && eventFormat.contains(Conf.chatTagInsertAfterString)) {
+            InsertIndex = eventFormat.indexOf(P.p.conf().factions().chat().getTagReplaceString());
+            eventFormat = eventFormat.replace(P.p.conf().factions().chat().getTagReplaceString(), "");
+            padBefore = false;
+            padAfter=false;
+        } else if (!P.p.conf().factions().chat().getTagInsertAfterString().isEmpty() && eventFormat.contains(P.p.conf().factions().chat().getTagInsertAfterString())) {
             // we're using the "insert after string" method
-            InsertIndex = eventFormat.indexOf(Conf.chatTagInsertAfterString) + Conf.chatTagInsertAfterString.length();
-        } else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString)) {
+            InsertIndex = eventFormat.indexOf(P.p.conf().factions().chat().getTagInsertAfterString()) + P.p.conf().factions().chat().getTagInsertAfterString().length();
+        } else if (!P.p.conf().factions().chat().getTagInsertBeforeString().isEmpty() && eventFormat.contains(P.p.conf().factions().chat().getTagInsertBeforeString())) {
             // we're using the "insert before string" method
-            InsertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
-        } else if (!Conf.alwaysShowChatTag) {
+            InsertIndex = eventFormat.indexOf(P.p.conf().factions().chat().getTagInsertBeforeString());
+        } else if (!P.p.conf().factions().chat().isAlwaysShowChatTag()) {
             return;
         }
 
-        String formatStart = eventFormat.substring(0, InsertIndex) + ((Conf.chatTagPadBefore && !me.getChatTag().isEmpty()) ? " " : "");
-        String formatEnd = ((Conf.chatTagPadAfter && !me.getChatTag().isEmpty()) ? " " : "") + eventFormat.substring(InsertIndex);
+        String formatStart = eventFormat.substring(0, InsertIndex) + ((padBefore && !me.getChatTag().isEmpty()) ? " " : "");
+        String formatEnd = ((padAfter && !me.getChatTag().isEmpty()) ? " " : "") + eventFormat.substring(InsertIndex);
 
         String nonColoredMsgFormat = formatStart + me.getChatTag().trim() + formatEnd;
 
         // Relation Colored?
-        if (Conf.chatTagRelationColored) {
+        if (P.p.conf().factions().chat().isTagRelationColored()) {
             for (Player listeningPlayer : event.getRecipients()) {
                 FPlayer you = FPlayers.getInstance().getByPlayer(listeningPlayer);
                 String yourFormat = formatStart + me.getChatTag(you).trim() + formatEnd;
                 try {
                     listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
                 } catch (UnknownFormatConversionException ex) {
-                    Conf.chatTagInsertIndex = 0;
+
                     P.p.log(Level.SEVERE, "Critical error in chat message formatting!");
-                    P.p.log(Level.SEVERE, "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.");
-                    P.p.log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
+                    P.p.log(Level.SEVERE, "NOTE: This can be fixed right now by setting chat tagInsertIndex to 0.");
                     return;
                 }
             }

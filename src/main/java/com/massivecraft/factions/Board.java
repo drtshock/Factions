@@ -17,11 +17,7 @@ public abstract class Board {
     public abstract String getIdAt(FLocation flocation);
 
     private static Board getBoardImpl() {
-        switch (Conf.backEnd) {
-            case JSON:
-                return new JSONBoard();
-        }
-        return null;
+        return new JSONBoard(); // TODO switch on configuration backend
     }
 
     public static Board getInstance() {

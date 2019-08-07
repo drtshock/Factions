@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
@@ -21,7 +21,7 @@ public class CmdInvite extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.INVITE)
                 .memberOnly()
                 .withRole(Role.MODERATOR)
-                .withAction(PermissableAction.INVITE)
+                .withAction(PermissibleAction.INVITE)
                 .build();
     }
 
@@ -39,7 +39,7 @@ public class CmdInvite extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!context.payForCommand(Conf.econCostInvite, TL.COMMAND_INVITE_TOINVITE.toString(), TL.COMMAND_INVITE_FORINVITE.toString())) {
+        if (!context.payForCommand(P.p.conf().economy().getCostInvite(), TL.COMMAND_INVITE_TOINVITE.toString(), TL.COMMAND_INVITE_FORINVITE.toString())) {
             return;
         }
 
@@ -56,13 +56,13 @@ public class CmdInvite extends FCommand {
         // Tooltips, colors, and commands only apply to the string immediately before it.
         FancyMessage message = new FancyMessage(context.fPlayer.describeTo(target, true))
                 .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
-                .command("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag())
+                .command("/" + P.p.conf().getCommandBase().get(0) + " join " + context.faction.getTag())
                 .then(TL.COMMAND_INVITE_INVITEDYOU.toString())
                 .color(ChatColor.YELLOW)
                 .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
-                .command("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag())
+                .command("/" + P.p.conf().getCommandBase().get(0) + " join " + context.faction.getTag())
                 .then(context.faction.describeTo(target)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
-                .command("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag());
+                .command("/" + P.p.conf().getCommandBase().get(0) + " join " + context.faction.getTag());
 
         message.send(target.getPlayer());
 

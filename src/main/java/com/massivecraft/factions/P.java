@@ -6,6 +6,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
+import com.massivecraft.factions.config.ConfigManager;
+import com.massivecraft.factions.config.file.MainConfig;
 import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.event.FactionEvent;
 import com.massivecraft.factions.event.FactionRelationEvent;
@@ -15,6 +17,9 @@ import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.listeners.versionspecific.PortalHandler;
 import com.massivecraft.factions.listeners.versionspecific.PortalListenerLegacy;
 import com.massivecraft.factions.listeners.versionspecific.PortalListener_114;
+import com.massivecraft.factions.perms.Permissible;
+import com.massivecraft.factions.perms.PermissibleAction;
+import com.massivecraft.factions.perms.PermissionsMapTypeAdapter;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.material.FactionMaterial;
@@ -25,14 +30,11 @@ import com.massivecraft.factions.util.particle.BukkitParticleProvider;
 import com.massivecraft.factions.util.particle.PacketParticleProvider;
 import com.massivecraft.factions.util.particle.ParticleProvider;
 import com.massivecraft.factions.zcore.MPlugin;
-import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.Permissable;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.gui.FactionGUIHandler;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -65,6 +67,8 @@ public class P extends MPlugin {
         return version;
     }
 
+    private ConfigManager configManager = new ConfigManager(this);
+
     // Persistence related
     private boolean locked = false;
 
@@ -86,10 +90,12 @@ public class P extends MPlugin {
     private boolean hookedPlayervaults;
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
+    private boolean anotherPluginChat;
 
     public SeeChunkUtil seeChunkUtil;
     public ParticleProvider particleProvider;
     public IWorldguard worldguard;
+    private Set<EntityType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(EntityType.class);
 
     private Metrics metrics;
 
@@ -143,8 +149,9 @@ public class P extends MPlugin {
         saveDefaultConfig();
 
         // Load Conf from disk
-        Conf.preLoad();
-        Conf.load();
+        this.setNerfedEntities();
+        this.configManager.startup();
+        this.anotherPluginChat = this.conf().factions().chat().isTagHandledByAnotherPlugin();
         getLogger().info(txt.parse("Running material provider in %1s mode", MaterialDb.getInstance().legacy ? "LEGACY" : "STANDARD"));
         MaterialDb.getInstance().test();
 
@@ -182,6 +189,15 @@ public class P extends MPlugin {
         Econ.setup();
         LWC.setup();
         setupPermissions();
+        if (perms != null) {
+            getLogger().info("Using Vault with permissions plugin " + perms.getName());
+        }
+        if (getServer().getPluginManager().getPlugin("PermissionsEx") != null) {
+            getLogger().warning("Notice: PermissionsEx died in early 2017. The author suggests using LuckPerms instead. https://luckperms.github.io/");
+        }
+        if (getServer().getPluginManager().getPlugin("GroupManager") != null) {
+            getLogger().warning("Notice: GroupManager died in 2014. We suggest using LuckPerms instead. https://luckperms.github.io/");
+        }
 
         loadWorldguard();
 
@@ -203,7 +219,6 @@ public class P extends MPlugin {
             seeChunkUtil = new SeeChunkUtil();
             seeChunkUtil.runTaskTimer(this, 0, (long) delay);
         }
-        FactionGUIHandler.start();
         // End run before registering event handlers.
 
         // Register Event Handlers
@@ -266,7 +281,7 @@ public class P extends MPlugin {
         this.metricsDrillPie("essentials", () -> this.metricsPluginInfo(ess));
         if (ess != null) {
             this.metricsSimplePie("essentials_delete_homes", () -> "" + getConfig().getBoolean("delete-ess-homes", false));
-            this.metricsSimplePie("essentials_home_teleport", () -> "" + Conf.homesTeleportCommandEssentialsIntegration);
+            this.metricsSimplePie("essentials_home_teleport", () -> "" + this.conf().factions().homes().isTeleportCommandEssentialsIntegration());
         }
 
         // LWC
@@ -290,7 +305,7 @@ public class P extends MPlugin {
                 Map<String, Map<String, Integer>> map = new HashMap<>();
                 Map<String, Integer> entry = new HashMap<>();
                 entry.put(Econ.getEcon() == null ? "none" : Econ.getEcon().getName(), 1);
-                map.put((Conf.econEnabled && Econ.getEcon() != null) ? "enabled" : "disabled", entry);
+                map.put((this.conf().economy().isEnabled() && Econ.getEcon() != null) ? "enabled" : "disabled", entry);
                 return map;
             });
         }
@@ -339,6 +354,48 @@ public class P extends MPlugin {
         });
     }
 
+    private void setNerfedEntities() {
+        safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
+        safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);
+        safeZoneNerfedCreatureTypes.add(EntityType.CREEPER);
+        safeZoneNerfedCreatureTypes.add(EntityType.ENDER_DRAGON);
+        safeZoneNerfedCreatureTypes.add(EntityType.ENDERMITE);
+        safeZoneNerfedCreatureTypes.add(EntityType.ENDERMAN);
+        safeZoneNerfedCreatureTypes.add(EntityType.GHAST);
+        safeZoneNerfedCreatureTypes.add(EntityType.GUARDIAN);
+        safeZoneNerfedCreatureTypes.add(EntityType.MAGMA_CUBE);
+        safeZoneNerfedCreatureTypes.add(EntityType.PIG_ZOMBIE);
+        safeZoneNerfedCreatureTypes.add(EntityType.SILVERFISH);
+        safeZoneNerfedCreatureTypes.add(EntityType.SKELETON);
+        safeZoneNerfedCreatureTypes.add(EntityType.SPIDER);
+        safeZoneNerfedCreatureTypes.add(EntityType.SLIME);
+        safeZoneNerfedCreatureTypes.add(EntityType.WITCH);
+        safeZoneNerfedCreatureTypes.add(EntityType.WITHER);
+        safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE);
+        if (P.getVersion() >= 900) {
+            safeZoneNerfedCreatureTypes.add(EntityType.SHULKER);
+        }
+        if (P.getVersion() >= 1000) {
+            safeZoneNerfedCreatureTypes.add(EntityType.HUSK);
+            safeZoneNerfedCreatureTypes.add(EntityType.STRAY);
+        }
+        if (P.getVersion() >= 1100) {
+            safeZoneNerfedCreatureTypes.add(EntityType.ELDER_GUARDIAN);
+            safeZoneNerfedCreatureTypes.add(EntityType.EVOKER);
+            safeZoneNerfedCreatureTypes.add(EntityType.VEX);
+            safeZoneNerfedCreatureTypes.add(EntityType.VINDICATOR);
+            safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE_VILLAGER);
+        }
+        if (P.getVersion() >= 1300) {
+            safeZoneNerfedCreatureTypes.add(EntityType.DROWNED);
+            safeZoneNerfedCreatureTypes.add(EntityType.PHANTOM);
+        }
+        if (P.getVersion() >= 1400) {
+            safeZoneNerfedCreatureTypes.add(EntityType.PILLAGER);
+            safeZoneNerfedCreatureTypes.add(EntityType.RAVAGER);
+        }
+    }
+
     private Set<Plugin> getPlugins(HandlerList... handlerLists) {
         Set<Plugin> plugins = new HashSet<>();
         for (HandlerList handlerList : handlerLists) {
@@ -376,7 +433,7 @@ public class P extends MPlugin {
     }
 
     private void loadWorldguard() {
-        if (!Conf.worldGuardChecking && !Conf.worldGuardBuildPriority) {
+        if (!this.conf().worldGuard().isChecking() && !this.conf().worldGuard().isBuildPriority()) {
             getLogger().info("Not enabling WorldGuard check since no options for it are enabled.");
             return;
         }
@@ -396,6 +453,18 @@ public class P extends MPlugin {
         } else {
             log(Level.WARNING, "WorldGuard checks were turned in on conf.json, but WorldGuard isn't present on the server.");
         }
+    }
+
+    public ConfigManager getConfigManager() {
+        return this.configManager;
+    }
+
+    public MainConfig conf() {
+        return this.configManager.getMainConfig();
+    }
+
+    public Set<EntityType> getSafeZoneNerfedCreatureTypes() {
+        return safeZoneNerfedCreatureTypes;
     }
 
     public IWorldguard getWorldguard() {
@@ -448,7 +517,7 @@ public class P extends MPlugin {
         Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {
         }.getType();
 
-        Type accessTypeAdatper = new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {
+        Type accessType = new TypeToken<Map<Permissible, Map<PermissibleAction, Boolean>>>() {
         }.getType();
 
         Type factionMaterialType = new TypeToken<FactionMaterial>() {
@@ -464,7 +533,7 @@ public class P extends MPlugin {
                 .excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
                 .registerTypeAdapter(factionMaterialType, new FactionMaterialAdapter())
                 .registerTypeAdapter(materialType, new MaterialAdapter())
-                .registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter())
+                .registerTypeAdapter(accessType, new PermissionsMapTypeAdapter())
                 .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
                 .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
                 .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
@@ -474,7 +543,7 @@ public class P extends MPlugin {
     public void onDisable() {
         // only save data if plugin actually completely loaded successfully
         if (this.loadSuccessful) {
-            Conf.save();
+            // TODO save data
         }
         if (AutoLeaveTask != null) {
             this.getServer().getScheduler().cancelTask(AutoLeaveTask);
@@ -492,8 +561,8 @@ public class P extends MPlugin {
             this.getServer().getScheduler().cancelTask(AutoLeaveTask);
         }
 
-        if (Conf.autoLeaveRoutineRunsEveryXMinutes > 0.0) {
-            long ticks = (long) (20 * 60 * Conf.autoLeaveRoutineRunsEveryXMinutes);
+        if (this.conf().factions().getAutoLeaveRoutineRunsEveryXMinutes() > 0.0) {
+            long ticks = (long) (20 * 60 * this.conf().factions().getAutoLeaveRoutineRunsEveryXMinutes());
             AutoLeaveTask = getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoLeaveTask(), ticks, ticks);
         }
     }
@@ -501,12 +570,11 @@ public class P extends MPlugin {
     @Override
     public void postAutoSave() {
         //Board.getInstance().forceSave(); Not sure why this was there as it's called after the board is already saved.
-        Conf.save();
     }
 
     @Override
     public boolean logPlayerCommands() {
-        return Conf.logPlayerCommands;
+        return this.conf().logging().isPlayerCommands();
     }
 
     // -------------------------------------------- //
@@ -515,12 +583,16 @@ public class P extends MPlugin {
 
     // This value will be updated whenever new hooks are added
     public int hookSupportVersion() {
-        return 3;
+        return 4;
     }
 
     // If another plugin is handling insertion of chat tags, this should be used to notify Factions
     public void handleFactionTagExternally(boolean notByFactions) {
-        Conf.chatTagHandledByAnotherPlugin = notByFactions;
+        this.anotherPluginChat = notByFactions;
+    }
+
+    public boolean isAnotherPluginHandlingChat() {
+        return this.anotherPluginChat;
     }
 
     // Simply put, should this chat event be left for Factions to handle? For now, that means players with Faction Chat
@@ -568,7 +640,7 @@ public class P extends MPlugin {
         }
 
         // if listener isn't set, or config option is disabled, give back uncolored tag
-        if (listener == null || !Conf.chatTagRelationColored) {
+        if (listener == null || !this.conf().factions().chat().isTagRelationColored()) {
             tag = me.getChatTag().trim();
         } else {
             FPlayer you = FPlayers.getInstance().getByPlayer(listener);

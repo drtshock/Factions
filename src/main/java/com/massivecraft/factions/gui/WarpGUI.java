@@ -1,50 +1,71 @@
-package com.massivecraft.factions.zcore.gui.warp;
+package com.massivecraft.factions.gui;
 
-import com.massivecraft.factions.Conf;
+import com.google.common.collect.ImmutableList;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.WarmUpUtil;
-import com.massivecraft.factions.zcore.gui.FactionGUI;
+import com.massivecraft.factions.util.material.FactionMaterial;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
-public class WarpGUI extends FactionGUI<Integer> implements FactionGUI.Dynamic {
+public class WarpGUI extends GUI<Integer> {
+    private static SimpleItem warpItem;
+    private static SimpleItem passwordModifier;
+
+    static {
+        warpItem = SimpleItem.builder()
+                .setName("&8[&7{warp}&8]")
+                .setMaterial(FactionMaterial.from("LIME_STAINED_GLASS").get())
+                .setColor(DyeColor.LIME)
+                .build();
+        passwordModifier = SimpleItem.builder()
+                .setMaterial(FactionMaterial.from("BLACK_STAINED_GLASS").get())
+                .setColor(DyeColor.BLACK)
+                .setLore(ImmutableList.of("&8Password Protected"))
+                .build();
+    }
 
     private List<String> warps;
-    private int maxWarps;
+    private final String name;
+    private int page = 0;
 
     public WarpGUI(FPlayer user) {
-        super("fwarp-gui", user);
+        this(user, -1);
+    }
+
+    private WarpGUI(FPlayer user, int page) {
+        super(user, getRows(user.getFaction()));
+        name = user.getFaction().getTag() + " warps";
         warps = new ArrayList<>(user.getFaction().getWarps().keySet());
-        maxWarps = P.p.getConfig().getInt("max-warps", 5);
+        if (page == -1 && warps.size() > (5 * 9)) {
+            page = 0;
+        }
+        this.page = page;
         build();
     }
 
     @Override
-    protected Integer convert(String key) {
-        try {
-            int index = Integer.parseInt(key);
-            // Only register the warp index if it's within bounds
-            if (maxWarps > index && 0 <= index) {
-                return index;
-            }
-            return null;
-        } catch (NumberFormatException e) {
-            return null;
-        }
+    public String getName() {
+        return name;
     }
 
-    @Override
-    protected String convert(Integer integer) {
-        return integer.toString();
+    private static int getRows(Faction faction) {
+        int warpCount = faction.getWarps().size();
+        if (warpCount == 0) {
+            return 1;
+        }
+        if (warpCount > (5 * 9)) {
+            return 6;
+        }
+        return (int) Math.ceil(((double) warpCount) / 9D);
     }
 
     @Override
@@ -59,6 +80,16 @@ public class WarpGUI extends FactionGUI<Integer> implements FactionGUI.Dynamic {
 
     @Override
     protected void onClick(Integer index, ClickType clickType) {
+        if (index == -1) {
+            int targetPage = page + 1;
+            new WarpGUI(this.user, targetPage).open();
+            return;
+        }
+        if (index == -2) {
+            int targetPage = page - 1;
+            new WarpGUI(this.user, targetPage).open();
+            return;
+        }
         // Check if there are enough faction warps for this index
         if (warps.size() > index) {
             String warp = warps.get(index);
@@ -76,7 +107,7 @@ public class WarpGUI extends FactionGUI<Integer> implements FactionGUI.Dynamic {
                         .withInitialSessionData(sessionData)
                         .withFirstPrompt(passwordPrompt)
                         .addConversationAbandonedListener(passwordPrompt)
-                        .withTimeout(config.getInt("password-timeout", 5));
+                        .withTimeout(5);// TODO get config.getInt("password-timeout", 5)
 
                 user.getPlayer().closeInventory();
                 inputFactory.buildConversation(user.getPlayer()).begin();
@@ -85,16 +116,61 @@ public class WarpGUI extends FactionGUI<Integer> implements FactionGUI.Dynamic {
     }
 
     @Override
-    public String getState(Integer index) {
-        if (warps.size() > index) {
-            if (user.getFaction().hasWarpPassword(warps.get(index))) {
-                return "password";
-            } else {
-                return "exist";
-            }
+    protected Map<Integer, Integer> createSlotMap() {
+        Map<Integer, Integer> map = new HashMap<>();
+        final int num;
+        final int startingIndex;
+        if (page == -1) {
+            num = warps.size();
+            startingIndex = 0;
         } else {
-            return "non_exist";
+            num = Math.min(warps.size() - ((5 * 9) * page), 20);
+            startingIndex = (5 * 9) * page;
+            if (page > 0) {
+                map.put(45, -2);
+            }
+            if (page < getMaxPages()) {
+                map.put(53, -1);
+            }
         }
+        int modifier = 0;
+        for (int warpIndex = startingIndex, count = 0; warpIndex < num; warpIndex++, count++) {
+            if (count % 9 == 0) {
+                int remaining = num - count;
+                if (remaining < 9) {
+                    modifier = (9 - remaining) / 2;
+                }
+            }
+            map.put(count + modifier, warpIndex);
+        }
+        return map;
+    }
+
+    @Override
+    protected SimpleItem getItem(Integer index) {
+        if (index == -1) {
+            return SimpleItem.builder().setName("NEXT").setMaterial(FactionMaterial.from("ARROW").get()).build();
+        }
+        if (index == -2) {
+            return SimpleItem.builder().setName("BACK").setMaterial(FactionMaterial.from("ARROW").get()).build();
+        }
+        SimpleItem item = new SimpleItem(warpItem);
+        if (user.getFaction().hasWarpPassword(warps.get(index))) {
+            item.merge(passwordModifier);
+        }
+        return item;
+    }
+
+    private int getMaxPages() {
+        if (warps.size() <= (5 * 9)) {
+            return 0;
+        }
+        return (int) Math.ceil(((double) warps.size()) / (5d * 9d));
+    }
+
+    @Override
+    protected Map<Integer, SimpleItem> createDummyItems() {
+            return Collections.emptyMap();
     }
 
     private class PasswordPrompt extends StringPrompt implements ConversationAbandonedListener {
@@ -150,7 +226,7 @@ public class WarpGUI extends FactionGUI<Integer> implements FactionGUI.Dynamic {
             return true;
         }
 
-        if (Conf.bankEnabled && Conf.bankFactionPaysCosts && user.hasFaction()) {
+        if (P.p.conf().economy().isBankEnabled() && P.p.conf().economy().isBankFactionPaysCosts() && user.hasFaction()) {
             return Econ.modifyMoney(user.getFaction(), -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
         } else {
             return Econ.modifyMoney(user, -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());

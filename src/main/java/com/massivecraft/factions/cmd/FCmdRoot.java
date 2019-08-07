@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.claim.*;
 import com.massivecraft.factions.cmd.money.CmdMoney;
@@ -32,7 +31,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdChat cmdChat = new CmdChat();
     public CmdChatSpy cmdChatSpy = new CmdChatSpy();
     public CmdClaim cmdClaim = new CmdClaim();
-    public CmdConfig cmdConfig = new CmdConfig();
     public CmdCreate cmdCreate = new CmdCreate();
     public CmdDeinvite cmdDeinvite = new CmdDeinvite();
     public CmdDescription cmdDescription = new CmdDescription();
@@ -79,7 +77,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdShowInvites cmdShowInvites = new CmdShowInvites();
     public CmdAnnounce cmdAnnounce = new CmdAnnounce();
     public CmdSeeChunk cmdSeeChunk = new CmdSeeChunk();
-    public CmdConvert cmdConvert = new CmdConvert();
     public CmdFWarp cmdFWarp = new CmdFWarp();
     public CmdSetFWarp cmdSetFWarp = new CmdSetFWarp();
     public CmdDelFWarp cmdDelFWarp = new CmdDelFWarp();
@@ -107,7 +104,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             brigadierManager = new BrigadierManager();
         }
 
-        this.aliases.addAll(Conf.baseCommandAliases);
+        this.aliases.addAll(P.p.conf().getCommandBase());
         this.aliases.removeAll(Collections.<String>singletonList(null));  // remove any nulls from extra commas
 
         this.setHelpShort("The faction base command");
@@ -121,7 +118,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdToggleAllianceChat);
         this.addSubCommand(this.cmdChatSpy);
         this.addSubCommand(this.cmdClaim);
-        this.addSubCommand(this.cmdConfig);
         this.addSubCommand(this.cmdCreate);
         this.addSubCommand(this.cmdDeinvite);
         this.addSubCommand(this.cmdDescription);
@@ -166,7 +162,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdShowInvites);
         this.addSubCommand(this.cmdAnnounce);
         this.addSubCommand(this.cmdSeeChunk);
-        this.addSubCommand(this.cmdConvert);
         this.addSubCommand(this.cmdFWarp);
         this.addSubCommand(this.cmdSetFWarp);
         this.addSubCommand(this.cmdDelFWarp);

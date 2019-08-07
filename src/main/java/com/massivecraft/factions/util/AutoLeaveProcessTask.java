@@ -18,13 +18,13 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
     public AutoLeaveProcessTask() {
         ArrayList<FPlayer> fplayers = (ArrayList<FPlayer>) FPlayers.getInstance().getAllFPlayers();
         this.iterator = fplayers.listIterator();
-        this.toleranceMillis = Conf.autoLeaveAfterDaysOfInactivity * 24 * 60 * 60 * 1000;
+        this.toleranceMillis = P.p.conf().factions().getAutoLeaveAfterDaysOfInactivity() * 24 * 60 * 60 * 1000;
         this.readyToGo = true;
         this.finished = false;
     }
 
     public void run() {
-        if (Conf.autoLeaveAfterDaysOfInactivity <= 0.0 || Conf.autoLeaveRoutineMaxMillisecondsPerTick <= 0.0) {
+        if (P.p.conf().factions().getAutoLeaveAfterDaysOfInactivity() <= 0.0 || P.p.conf().factions().getAutoLeaveRoutineMaxMillisecondsPerTick() <= 0.0) {
             this.stop();
             return;
         }
@@ -41,7 +41,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
             long now = System.currentTimeMillis();
 
             // if this iteration has been running for maximum time, stop to take a breather until next tick
-            if (now > loopStartTime + Conf.autoLeaveRoutineMaxMillisecondsPerTick) {
+            if (now > loopStartTime + P.p.conf().factions().getAutoLeaveRoutineMaxMillisecondsPerTick()) {
                 readyToGo = true;
                 return;
             }
@@ -55,7 +55,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
             }
 
             if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis) {
-                if (Conf.logFactionLeave || Conf.logFactionKick) {
+                if (P.p.conf().logging().isFactionLeave() || P.p.conf().logging().isFactionKick()) {
                     P.p.log("Player " + fplayer.getName() + " was auto-removed due to inactivity.");
                 }
 
@@ -69,7 +69,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
 
                 fplayer.leave(false);
                 iterator.remove();  // go ahead and remove this list's link to the FPlayer object
-                if (Conf.autoLeaveDeleteFPlayerData) {
+                if (P.p.conf().factions().isAutoLeaveDeleteFPlayerData()) {
                     fplayer.remove();
                 }
             }

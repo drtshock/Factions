@@ -2,12 +2,11 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.gui.WarpGUI;
+import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
-import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.gui.warp.WarpGUI;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -25,7 +24,7 @@ public class CmdFWarp extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.WARP)
                 .memberOnly()
-                .withAction(PermissableAction.WARP)
+                .withAction(PermissibleAction.WARP)
                 .withRole(Role.NORMAL)
                 .build();
     }
@@ -33,9 +32,8 @@ public class CmdFWarp extends FCommand {
     @Override
     public void perform(CommandContext context) {
         // TODO: check if in combat.
-        Access access = context.faction.getAccess(context.fPlayer, PermissableAction.WARP);
 
-        if (access == Access.DENY) {
+        if (!context.faction.hasAccess(context.fPlayer, PermissibleAction.WARP)) {
             context.msg(TL.GENERIC_NOPERMISSION, "warp");
             return;
         }

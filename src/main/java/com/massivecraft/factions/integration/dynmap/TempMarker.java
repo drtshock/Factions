@@ -1,12 +1,11 @@
 package com.massivecraft.factions.integration.dynmap;
 
-import com.massivecraft.factions.Conf;
 import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 
-public class TempMarker {
+public class TempMarker {/* TODO
     // -------------------------------------------- //
     // FIELDS
     // -------------------------------------------- //
@@ -70,5 +69,5 @@ public class TempMarker {
         }
         return ret;
     }
-
+*/
 }

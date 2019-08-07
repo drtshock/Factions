@@ -46,12 +46,12 @@ public class CmdCreate extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-        if (!context.canAffordCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE.toString())) {
+        if (!context.canAffordCommand(P.p.conf().economy().getCostCreate(), TL.COMMAND_CREATE_TOCREATE.toString())) {
             return;
         }
 
         // then make 'em pay (if applicable)
-        if (!context.payForCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE, TL.COMMAND_CREATE_FORCREATE)) {
+        if (!context.payForCommand(P.p.conf().economy().getCostCreate(), TL.COMMAND_CREATE_TOCREATE, TL.COMMAND_CREATE_FORCREATE)) {
             return;
         }
 
@@ -85,7 +85,7 @@ public class CmdCreate extends FCommand {
 
         context.msg(TL.COMMAND_CREATE_YOUSHOULD, p.cmdBase.cmdDescription.getUseageTemplate(context));
 
-        if (Conf.logFactionCreate) {
+        if (P.p.conf().logging().isFactionCreate()) {
             P.p.log(context.fPlayer.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag);
         }
     }

@@ -64,6 +64,8 @@ public abstract class MemoryBoard extends Board {
         }
     }
 
+    private char[] mapKeyChrs = "\\/#$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz?".toCharArray();
+
     public MemoryBoardMap flocationIds = new MemoryBoardMap();
 
     //----------------------------------------------//
@@ -267,14 +269,14 @@ public abstract class MemoryBoard extends Board {
         // Get the compass
         ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, P.p.txt.parse("<a>"));
 
-        int halfWidth = Conf.mapWidth / 2;
+        int halfWidth = P.p.conf().map().getWidth() / 2;
         // Use player's value for height
         int halfHeight = fplayer.getMapHeight() / 2;
         FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
         int width = halfWidth * 2 + 1;
         int height = halfHeight * 2 + 1;
 
-        if (Conf.showMapFactionKey) {
+        if (P.p.conf().map().isShowFactionKey()) {
             height--;
         }
 
@@ -300,17 +302,17 @@ public abstract class MemoryBoard extends Board {
                     Faction factionHere = getFactionAt(flocationHere);
                     Relation relation = fplayer.getRelationTo(factionHere);
                     if (factionHere.isWilderness()) {
-                        row.then("-").color(Conf.colorWilderness);
+                        row.then("-").color(P.p.conf().colors().factions().getWilderness());
                     } else if (factionHere.isSafeZone()) {
-                        row.then("+").color(Conf.colorSafezone);
+                        row.then("+").color(P.p.conf().colors().factions().getSafezone());
                     } else if (factionHere.isWarZone()) {
-                        row.then("+").color(Conf.colorWar);
+                        row.then("+").color(P.p.conf().colors().factions().getWarzone());
                     } else if (factionHere == faction || factionHere == factionLoc || relation.isAtLeast(Relation.ALLY) ||
-                            (Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL)) ||
-                            (Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY)) ||
-                            Conf.showTruceFactionsOnMap && relation.equals(Relation.TRUCE)) {
+                            (P.p.conf().map().isShowNeutralFactionsOnMap() && relation.equals(Relation.NEUTRAL)) ||
+                            (P.p.conf().map().isShowEnemyFactions() && relation.equals(Relation.ENEMY)) ||
+                            P.p.conf().map().isShowTruceFactions() && relation.equals(Relation.TRUCE)) {
                         if (!fList.containsKey(factionHere.getTag())) {
-                            fList.put(factionHere.getTag(), Conf.mapKeyChrs[Math.min(chrIdx++, Conf.mapKeyChrs.length - 1)]);
+                            fList.put(factionHere.getTag(), this.mapKeyChrs[Math.min(chrIdx++, this.mapKeyChrs.length - 1)]);
                         }
                         char tag = fList.get(factionHere.getTag());
                         row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction));
@@ -323,7 +325,7 @@ public abstract class MemoryBoard extends Board {
         }
 
         // Add the faction key
-        if (Conf.showMapFactionKey) {
+        if (P.p.conf().map().isShowFactionKey()) {
             FancyMessage fRow = new FancyMessage("");
             for (String key : fList.keySet()) {
                 fRow.then(String.format("%s: %s ", fList.get(key), key)).color(ChatColor.GRAY);

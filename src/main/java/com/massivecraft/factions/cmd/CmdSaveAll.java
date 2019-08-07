@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
@@ -22,7 +21,6 @@ public class CmdSaveAll extends FCommand {
         FPlayers.getInstance().forceSave(false);
         Factions.getInstance().forceSave(false);
         Board.getInstance().forceSave(false);
-        Conf.save();
         context.msg(TL.COMMAND_SAVEALL_SUCCESS);
     }
 

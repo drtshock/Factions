@@ -1,10 +1,13 @@
 package com.massivecraft.factions.zcore.persist;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.config.file.DefaultPermissionsConfig;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.LWC;
+import com.massivecraft.factions.perms.Permissible;
+import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -12,9 +15,6 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.Permissable;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -51,7 +51,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private long lastDeath;
     protected int maxVaults;
     protected Role defaultRole;
-    protected Map<Permissable, Map<PermissableAction, Access>> permissions = new HashMap<>();
+    protected Map<Permissible, Map<PermissibleAction, Boolean>> permissions = new HashMap<>();
+    protected Map<Permissible, Map<PermissibleAction, Boolean>> permissionsOffline = new HashMap<>();
     protected Set<BanInfo> bans = new HashSet<>();
 
     public HashMap<String, List<String>> getAnnouncements() {
@@ -231,7 +232,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void setTag(String str) {
-        if (Conf.factionTagForceUpperCase) {
+        if (P.p.conf().factions().isTagForceUpperCase()) {
             str = str.toUpperCase();
         }
         this.tag = str;
@@ -274,7 +275,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void confirmValidHome() {
-        if (!Conf.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getInstance().getFactionAt(new FLocation(this.home.getLocation())) == this)) {
+        if (!P.p.conf().factions().homes().isMustBeInClaimedTerritory() || this.home == null || (this.home.getLocation() != null && Board.getInstance().getFactionAt(new FLocation(this.home.getLocation())) == this)) {
             return;
         }
 
@@ -350,59 +351,121 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // -------------------------------------------- //
 
 
-    public Access getAccess(Permissable permissable, PermissableAction permissableAction) {
-        if (permissable == null || permissableAction == null) {
-            return Access.UNDEFINED;
+    public boolean hasAccess(boolean online, Permissible permissible, PermissibleAction permissibleAction) {
+        if (permissible == null || permissibleAction == null) {
+            return false; // Fail in a safe way
+        }
+        if (permissible == Role.ADMIN) {
+            return true;
         }
 
-        Map<PermissableAction, Access> accessMap = permissions.get(permissable);
-        if (accessMap != null && accessMap.containsKey(permissableAction)) {
-            return accessMap.get(permissableAction);
+        Map<Permissible, Map<PermissibleAction, Boolean>> permissionsMap = this.getPermissionsMap(online);
+
+        DefaultPermissionsConfig.Permissions.PermissiblePermInfo permInfo = this.getPermInfo(online, permissible, permissibleAction);
+        if (permInfo == null) { // Not valid lookup, like a role-only lookup of a relation
+            return false;
+        }
+        if (permInfo.isLocked()) { // Locked, so ignore the faction's setting
+            return permInfo.defaultAllowed();
         }
 
-        return Access.UNDEFINED;
+        Map<PermissibleAction, Boolean> accessMap = permissionsMap.get(permissible);
+        if (accessMap != null && accessMap.containsKey(permissibleAction)) {
+            return accessMap.get(permissibleAction);
+        }
+
+        return permInfo.defaultAllowed(); // Fall back on default if something went wrong
+    }
+
+    public boolean isLocked(boolean online, Permissible permissible, PermissibleAction permissibleAction) {
+        DefaultPermissionsConfig.Permissions.PermissiblePermInfo permInfo = this.getPermInfo(online, permissible, permissibleAction);
+        if (permInfo == null) { // Not valid lookup, like a role-only lookup of a relation
+            return false;
+        }
+        return permInfo.isLocked();
+    }
+
+    private DefaultPermissionsConfig.Permissions.PermissiblePermInfo getPermInfo(boolean online, Permissible permissible, PermissibleAction permissibleAction) {
+        DefaultPermissionsConfig.Permissions defaultPermissions = this.getDefaultPermissions(online);
+        if (permissibleAction.isFactionOnly()) {
+            if (permissible instanceof Role) {
+                return permissibleAction.getFactionOnly(defaultPermissions).get(permissible);
+            } else {
+                return null; // Can't do things faction only if not in the faction.
+            }
+        } else {
+            return permissibleAction.getFullPerm(defaultPermissions).get(permissible);
+        }
+    }
+
+    private Map<Permissible, Map<PermissibleAction, Boolean>> getPermissionsMap(boolean online) {
+        // TODO test if online is even enabled
+        if (online /* || offlineDisabled */) {
+            return this.permissions;
+        } else {
+            return this.permissionsOffline;
+        }
+    }
+
+    private DefaultPermissionsConfig.Permissions getDefaultPermissions(boolean online) {
+        // TODO test if online is even enabled
+        if (online /* || offlineDisabled */) {
+            return P.p.getConfigManager().getPermissionsConfig().getPermissions();
+        } else {
+            return P.p.getConfigManager().getOfflinePermissionsConfig().getPermissions();
+        }
     }
 
     /**
      * Get the Access of a player. Will use player's Role if they are a faction member. Otherwise, uses their Relation.
      *
      * @param player            player
-     * @param permissableAction permissible
+     * @param permissibleAction permissible
      * @return player's access
      */
-    public Access getAccess(FPlayer player, PermissableAction permissableAction) {
-        if (player == null || permissableAction == null) {
-            return Access.UNDEFINED;
+    public boolean hasAccess(FPlayer player, PermissibleAction permissibleAction) {
+        if (player == null || permissibleAction == null) {
+            return false; // Fail in a safe way
         }
 
-        Permissable perm;
-
+        Permissible perm;
+        boolean online = true;
         if (player.getFaction() == this) {
             perm = player.getRole();
         } else {
             perm = player.getFaction().getRelationTo(this);
+            online = this.hasPlayersOnline();
         }
 
-        Map<PermissableAction, Access> accessMap = permissions.get(perm);
-        if (accessMap != null && accessMap.containsKey(permissableAction)) {
-            return accessMap.get(permissableAction);
-        }
-
-        return Access.UNDEFINED;
+        return this.hasAccess(online, perm, permissibleAction);
     }
 
-    public void setPermission(Permissable permissable, PermissableAction permissableAction, Access access) {
-        Map<PermissableAction, Access> accessMap = permissions.get(permissable);
+    public boolean setPermission(boolean online, Permissible permissible, PermissibleAction permissibleAction, boolean value) {
+        Map<Permissible, Map<PermissibleAction, Boolean>> permissionsMap = this.getPermissionsMap(online);
+        DefaultPermissionsConfig.Permissions defaultPermissions = this.getDefaultPermissions(online);
+
+        DefaultPermissionsConfig.Permissions.PermissiblePermInfo permInfo = this.getPermInfo(online, permissible, permissibleAction);
+        if (permInfo == null || permInfo.isLocked()) {
+            return false; // Locked, can't continue;
+        }
+
+        Map<PermissibleAction, Boolean> accessMap = permissionsMap.get(permissible);
         if (accessMap == null) {
             accessMap = new HashMap<>();
         }
 
-        accessMap.put(permissableAction, access);
+        accessMap.put(permissibleAction, value);
+        return true;
     }
 
     public void resetPerms() {
         P.p.log(Level.WARNING, "Resetting permissions for Faction: " + tag);
 
+        this.resetPerms(this.permissions, P.p.getConfigManager().getPermissionsConfig().getPermissions());
+        this.resetPerms(this.permissionsOffline, P.p.getConfigManager().getOfflinePermissionsConfig().getPermissions());
+    }
+
+    private void resetPerms(Map<Permissible, Map<PermissibleAction, Boolean>> permissions, DefaultPermissionsConfig.Permissions defaults) {
         permissions.clear();
 
         for (Relation relation : Relation.values()) {
@@ -416,10 +479,15 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             }
         }
 
-        for (Map.Entry<Permissable, Map<PermissableAction, Access>> entry : permissions.entrySet()) {
-            Map<PermissableAction, Access> defMap = Conf.defaultPermissions.get(entry.getKey());
-            for (PermissableAction permissableAction : PermissableAction.values()) {
-                entry.getValue().computeIfAbsent(permissableAction, k -> defMap == null ? Access.UNDEFINED : defMap.getOrDefault(k, Access.UNDEFINED));
+        for (Map.Entry<Permissible, Map<PermissibleAction, Boolean>> entry : permissions.entrySet()) {
+            for (PermissibleAction permissibleAction : PermissibleAction.values()) {
+                if (permissibleAction.isFactionOnly()) {
+                    if (!(entry.getKey() instanceof Relation)) {
+                        entry.getValue().put(permissibleAction, permissibleAction.getFactionOnly(defaults).get(entry.getKey()).defaultAllowed());
+                    }
+                } else {
+                    entry.getValue().put(permissibleAction, permissibleAction.getFullPerm(defaults).get(entry.getKey()).defaultAllowed());
+                }
             }
         }
     }
@@ -429,8 +497,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
      *
      * @return map of permissions
      */
-    public Map<Permissable, Map<PermissableAction, Access>> getPermissions() {
+    public Map<Permissible, Map<PermissibleAction, Boolean>> getPermissions() {
         return Collections.unmodifiableMap(permissions);
+    }
+
+    public Map<Permissible, Map<PermissibleAction, Boolean>> getOfflinePermissions() {
+        return Collections.unmodifiableMap(permissionsOffline);
     }
 
     public Role getDefaultRole() {
@@ -444,12 +516,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // -------------------------------------------- //
     // Construct
     // -------------------------------------------- //
-    public MemoryFaction() {
+    protected MemoryFaction() {
     }
 
     public MemoryFaction(String id) {
         this.id = id;
-        this.open = Conf.newFactionsDefaultOpen;
+        this.open = P.p.conf().factions().isNewFactionsDefaultOpen();
         this.tag = "???";
         this.description = TL.GENERIC_DEFAULTDESCRIPTION.toString();
         this.lastPlayerLoggedOffTime = 0;
@@ -459,7 +531,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.money = 0.0;
         this.powerBoost = 0.0;
         this.foundedDate = System.currentTimeMillis();
-        this.maxVaults = Conf.defaultMaxVaults;
+        this.maxVaults = P.p.conf().playerVaults().getDefaultMaxVaults();
         this.defaultRole = Role.NORMAL;
 
         resetPerms(); // Reset on new Faction so it has default values.
@@ -493,11 +565,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // Extra Getters And Setters
     // -------------------------------------------- //
     public boolean noPvPInTerritory() {
-        return isSafeZone() || (peaceful && Conf.peacefulTerritoryDisablePVP);
+        return isSafeZone() || (peaceful && P.p.conf().factions().specialCase().isPeacefulTerritoryDisablePVP());
     }
 
     public boolean noMonstersInTerritory() {
-        return isSafeZone() || (peaceful && Conf.peacefulTerritoryDisableMonsters);
+        return isSafeZone() || (peaceful && P.p.conf().factions().specialCase().isPeacefulTerritoryDisableMonsters());
     }
 
     // -------------------------------
@@ -594,8 +666,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         for (FPlayer fplayer : fplayers) {
             ret += fplayer.getPower();
         }
-        if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax) {
-            ret = Conf.powerFactionMax;
+        if (P.p.conf().factions().landRaidControl().power().getFactionMax() > 0 && ret > P.p.conf().factions().landRaidControl().power().getFactionMax()) {
+            ret = P.p.conf().factions().landRaidControl().power().getFactionMax();
         }
         return ret + this.powerBoost;
     }
@@ -609,8 +681,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         for (FPlayer fplayer : fplayers) {
             ret += fplayer.getPowerMax();
         }
-        if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax) {
-            ret = Conf.powerFactionMax;
+        if (P.p.conf().factions().landRaidControl().power().getFactionMax() > 0 && ret > P.p.conf().factions().landRaidControl().power().getFactionMax()) {
+            ret = P.p.conf().factions().landRaidControl().power().getFactionMax();
         }
         return ret + this.powerBoost;
     }
@@ -774,7 +846,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         // even if all players are technically logged off, maybe someone was on
         // recently enough to not consider them officially offline yet
-        return Conf.considerFactionsReallyOfflineAfterXMinutes > 0 && System.currentTimeMillis() < lastPlayerLoggedOffTime + (Conf.considerFactionsReallyOfflineAfterXMinutes * 60000);
+        return P.p.conf().factions().getConsiderFactionsReallyOfflineAfterXMinutes() > 0 && System.currentTimeMillis() < lastPlayerLoggedOffTime + (P.p.conf().factions().getConsiderFactionsReallyOfflineAfterXMinutes() * 60000);
     }
 
     public void memberLoggedOff() {
@@ -789,7 +861,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (!this.isNormal()) {
             return;
         }
-        if (this.isPermanent() && Conf.permanentFactionsDisableLeaderPromotion) {
+        if (this.isPermanent() && P.p.conf().factions().specialCase().isPermanentFactionsDisableLeaderPromotion()) {
             return;
         }
 
@@ -814,7 +886,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             }
 
             // no members left and faction isn't permanent, so disband it
-            if (Conf.logFactionDisband) {
+            if (P.p.conf().logging().isFactionDisband()) {
                 P.p.log("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left.");
             }
 
@@ -970,7 +1042,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc) {
         // in own faction, with sufficient role or permission to bypass
         // ownership?
-        if (fplayer.getFaction() == this && (fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.ADMIN) || Permission.OWNERSHIP_BYPASS.has(fplayer.getPlayer()))) {
+        if (fplayer.getFaction() == this && (fplayer.getRole().isAtLeast(P.p.conf().factions().ownedArea().isModeratorsBypass() ? Role.MODERATOR : Role.ADMIN) || Permission.OWNERSHIP_BYPASS.has(fplayer.getPlayer()))) {
             return true;
         }
 

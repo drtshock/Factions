@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
@@ -97,7 +96,7 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.cmdBase.cmdSethome.getUseageTemplate(context, true));
         helpPages.add(pageLines);
 
-        if (Econ.isSetup() && Conf.econEnabled && Conf.bankEnabled) {
+        if (Econ.isSetup() && P.p.conf().economy().isEnabled() && P.p.conf().economy().isBankEnabled()) {
             pageLines = new ArrayList<>();
             pageLines.add("");
             pageLines.add(p.txt.parse(TL.COMMAND_HELP_BANK_1.toString()));
@@ -191,7 +190,6 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.cmdBase.cmdPermanent.getUseageTemplate(context, true));
         pageLines.add(p.cmdBase.cmdPermanentPower.getUseageTemplate(context, true));
         pageLines.add(p.cmdBase.cmdPowerBoost.getUseageTemplate(context, true));
-        pageLines.add(p.cmdBase.cmdConfig.getUseageTemplate(context, true));
         helpPages.add(pageLines);
 
         pageLines = new ArrayList<>();

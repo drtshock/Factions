@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd.claim;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -35,8 +35,8 @@ public class CmdClaimLine extends FCommand {
         // Args
         Integer amount = context.argAsInt(0, 1); // Default to 1
 
-        if (amount > Conf.lineClaimLimit) {
-            context.msg(TL.COMMAND_CLAIMLINE_ABOVEMAX, Conf.lineClaimLimit);
+        if (amount > P.p.conf().factions().claims().getLineClaimLimit()) {
+            context.msg(TL.COMMAND_CLAIMLINE_ABOVEMAX, P.p.conf().factions().claims().getLineClaimLimit());
             return;
         }
 

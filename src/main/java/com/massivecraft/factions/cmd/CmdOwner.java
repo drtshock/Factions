@@ -29,17 +29,17 @@ public class CmdOwner extends FCommand {
             return;
         }
 
-        if (!Conf.ownedAreasEnabled) {
+        if (!P.p.conf().factions().ownedArea().isEnabled()) {
             context.msg(TL.COMMAND_OWNER_DISABLED);
             return;
         }
 
-        if (!hasBypass && Conf.ownedAreasLimitPerFaction > 0 && context.faction.getCountOfClaimsWithOwners() >= Conf.ownedAreasLimitPerFaction) {
-            context.msg(TL.COMMAND_OWNER_LIMIT, Conf.ownedAreasLimitPerFaction);
+        if (!hasBypass && P.p.conf().factions().ownedArea().getLimitPerFaction() > 0 && context.faction.getCountOfClaimsWithOwners() >= P.p.conf().factions().ownedArea().getLimitPerFaction()) {
+            context.msg(TL.COMMAND_OWNER_LIMIT, P.p.conf().factions().ownedArea().getLimitPerFaction());
             return;
         }
 
-        if (!hasBypass && !context.assertMinRole(Conf.ownedAreasModeratorsCanSet ? Role.MODERATOR : Role.ADMIN)) {
+        if (!hasBypass && !context.assertMinRole(P.p.conf().factions().ownedArea().isModeratorsCanSet() ? Role.MODERATOR : Role.ADMIN)) {
             return;
         }
 
@@ -85,7 +85,7 @@ public class CmdOwner extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!context.payForCommand(Conf.econCostOwner, TL.COMMAND_OWNER_TOSET, TL.COMMAND_OWNER_FORSET)) {
+        if (!context.payForCommand(P.p.conf().economy().getCostOwner(), TL.COMMAND_OWNER_TOSET, TL.COMMAND_OWNER_FORSET)) {
             return;
         }
 

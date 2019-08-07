@@ -42,7 +42,7 @@ public class CmdTag extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-        if (!context.canAffordCommand(Conf.econCostTag, TL.COMMAND_TAG_TOCHANGE.toString())) {
+        if (!context.canAffordCommand(P.p.conf().economy().getCostTag(), TL.COMMAND_TAG_TOCHANGE.toString())) {
             return;
         }
 
@@ -54,7 +54,7 @@ public class CmdTag extends FCommand {
         }
 
         // then make 'em pay (if applicable)
-        if (!context.payForCommand(Conf.econCostTag, TL.COMMAND_TAG_TOCHANGE, TL.COMMAND_TAG_FORCHANGE)) {
+        if (!context.payForCommand(P.p.conf().economy().getCostTag(), TL.COMMAND_TAG_TOCHANGE, TL.COMMAND_TAG_FORCHANGE)) {
             return;
         }
 
@@ -69,7 +69,7 @@ public class CmdTag extends FCommand {
             }
 
             // Broadcast the tag change (if applicable)
-            if (Conf.broadcastTagChanges) {
+            if (P.p.conf().factions().chat().isBroadcastTagChanges()) {
                 Faction faction = fplayer.getFaction();
                 fplayer.msg(TL.COMMAND_TAG_CHANGED, context.fPlayer.getColorTo(faction) + oldtag, context.faction.getTag(faction));
             }

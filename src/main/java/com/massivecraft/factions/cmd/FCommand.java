@@ -77,7 +77,7 @@ public abstract class FCommand {
     }
 
     public boolean isEnabled(CommandContext context) {
-        if (P.p.getLocked() && requirements.disableOnLock) {
+        if (P.p.getLocked() && requirements.isDisableOnLock()) {
             context.msg("<b>Factions was locked by an admin. Please try again later.");
             return false;
         }
@@ -93,7 +93,7 @@ public abstract class FCommand {
             return false;
         }
 
-        if (context.args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.requirements.errorOnManyArgs) {
+        if (context.args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.requirements.isErrorOnManyArgs()) {
             if (context.sender != null) {
                 // Get the to many string slice
                 List<String> theToMany = context.args.subList(this.requiredArgs.size() + this.optionalArgs.size(), context.args.size());

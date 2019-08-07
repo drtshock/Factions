@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd.money;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
@@ -38,7 +37,7 @@ public class CmdMoneyTransferFf extends MoneyCommand {
 
         boolean success = Econ.transferMoney(context.fPlayer, from, to, amount);
 
-        if (success && Conf.logMoneyTransactions) {
+        if (success && P.p.conf().logging().isMoneyTransactions()) {
             String name = context.sender instanceof Player ? context.fPlayer.getName() : context.sender.getName();
             P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYTRANSFERFF_TRANSFER.toString(), name, Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
         }

@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd.money;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.FCommand;
 
@@ -11,12 +11,12 @@ public abstract class MoneyCommand extends FCommand {
             return false;
         }
 
-        if (!Conf.econEnabled) {
+        if (!P.p.conf().economy().isEnabled()) {
             context.msg("<b>Faction economy features are disabled on this server.");
             return false;
         }
 
-        if (!Conf.bankEnabled) {
+        if (!P.p.conf().economy().isBankEnabled()) {
             context.msg("<b>The faction bank system is disabled on this server.");
             return false;
         }

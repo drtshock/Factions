@@ -38,9 +38,9 @@ public class BrigadierManager {
         for (String alias : subCommand.aliases) {
             LiteralArgumentBuilder<Object> literal = LiteralArgumentBuilder.literal(alias);
 
-            if (subCommand.requirements.brigadier != null) {
+            if (subCommand.requirements.getBrigadier() != null) {
                 // If the requirements explicitly provide a BrigadierProvider then use it
-                Class<? extends BrigadierProvider> brigadierProvider = subCommand.requirements.brigadier;
+                Class<? extends BrigadierProvider> brigadierProvider = subCommand.requirements.getBrigadier();
 
                 try {
                     Constructor<? extends BrigadierProvider> constructor = brigadierProvider.getDeclaredConstructor(subCommand.getClass());

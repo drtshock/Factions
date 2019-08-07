@@ -1,16 +1,12 @@
-package com.massivecraft.factions.zcore.gui.items;
+package com.massivecraft.factions.gui;
 
-import com.massivecraft.factions.P;
-import com.massivecraft.factions.util.material.FactionMaterial;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * This class implements an easy way to map
@@ -18,25 +14,24 @@ import java.util.logging.Level;
  * to a respective ItemStack, also has utility methods
  * to merge, clone, etc
  */
-public class ItemGUI {
-
+public class SimpleItem {
     private String name;
     private List<String> lore;
     private Material material;
     private DyeColor color;
 
-    public ItemGUI(Builder builder) {
+    SimpleItem(Builder builder) {
         this.name = builder.name;
         this.lore = builder.lore;
         this.material = builder.material;
         this.color = builder.color;
     }
 
-    public ItemGUI(ItemGUI itemGUI) {
-        this.name = itemGUI.name;
-        this.lore = itemGUI.lore;
-        this.material = itemGUI.material;
-        this.color = itemGUI.color;
+    public SimpleItem(SimpleItem item) {
+        this.name = item.name;
+        this.lore = item.lore;
+        this.material = item.material;
+        this.color = item.color;
     }
 
     public ItemStack get() {
@@ -64,37 +59,8 @@ public class ItemGUI {
         }
     }
 
-    public static ItemGUI fromConfig(ConfigurationSection section) {
-        Builder builder = new Builder();
-        // Allowing null values to pass, to facilitate merging. Getting an ItemStack does not work with essential values being null
-        builder.setName(section.getString("name"));
-        builder.setLore(section.getStringList("lore"));
-
-        if (section.isString("material")) {
-            Material material = FactionMaterial.from(section.getString("material")).get();
-            builder.setMaterial(material);
-        } else {
-            builder.setMaterial(null);
-        }
-
-        String colorName = section.getString("color");
-        if (colorName != null) {
-            try {
-                builder.setColor(DyeColor.valueOf(colorName.toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                P.p.log(Level.WARNING, "Invalid Color: " + colorName);
-            }
-        }
-
-        if (section.isConfigurationSection("states")) {
-            return new DynamicItem(builder, section.getConfigurationSection("states"));
-        }
-
-        return builder.build();
-    }
-
     // All non null values in 'from' will be merged into this ItemGUI
-    public void merge(ItemGUI from) {
+    public void merge(SimpleItem from) {
         if (from.material != null) {
             material = from.material;
         }
@@ -146,13 +112,18 @@ public class ItemGUI {
         this.color = color;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
 
     public static class Builder {
-
         private Material material;
         private String name;
         private List<String> lore;
         private DyeColor color;
+
+        private Builder() {
+        }
 
         public Builder setColor(DyeColor color) {
             this.color = color;
@@ -174,10 +145,8 @@ public class ItemGUI {
             return this;
         }
 
-        public ItemGUI build() {
-            return new ItemGUI(this);
+        public SimpleItem build() {
+            return new SimpleItem(this);
         }
-
     }
-
 }

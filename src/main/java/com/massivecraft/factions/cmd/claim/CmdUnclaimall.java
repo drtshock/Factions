@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd.claim;
 
 import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
@@ -29,7 +28,7 @@ public class CmdUnclaimall extends FCommand {
     public void perform(CommandContext context) {
         if (Econ.shouldBeUsed()) {
             double refund = Econ.calculateTotalLandRefund(context.faction.getLandRounded());
-            if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
+            if (P.p.conf().economy().isBankEnabled() && P.p.conf().economy().isBankFactionPaysLandCosts()) {
                 if (!Econ.modifyMoney(context.faction, refund, TL.COMMAND_UNCLAIMALL_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIMALL_FORUNCLAIM.toString())) {
                     return;
                 }
@@ -49,7 +48,7 @@ public class CmdUnclaimall extends FCommand {
         Board.getInstance().unclaimAll(context.faction.getId());
         context.faction.msg(TL.COMMAND_UNCLAIMALL_UNCLAIMED, context.fPlayer.describeTo(context.faction, true));
 
-        if (Conf.logLandUnclaims) {
+        if (P.p.conf().logging().isLandUnclaims()) {
             P.p.log(TL.COMMAND_UNCLAIMALL_LOG.format(context.fPlayer.getName(), context.faction.getTag()));
         }
     }

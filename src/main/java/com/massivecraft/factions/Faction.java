@@ -2,13 +2,12 @@ package com.massivecraft.factions;
 
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
+import com.massivecraft.factions.perms.Permissible;
+import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.LazyLocation;
-import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.Permissable;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -148,15 +147,17 @@ public interface Faction extends EconomyParticipator {
 
     int getDeaths();
 
-    Access getAccess(Permissable permissable, PermissableAction permissableAction);
+    boolean hasAccess(boolean online, Permissible permissable, PermissibleAction permissableAction);
 
-    Access getAccess(FPlayer player, PermissableAction permissableAction);
+    boolean hasAccess(FPlayer player, PermissibleAction permissableAction);
 
-    void setPermission(Permissable permissable, PermissableAction permissableAction, Access access);
+    boolean isLocked(boolean online, Permissible permissible, PermissibleAction permissibleAction);
+
+    boolean setPermission(boolean online, Permissible permissable, PermissibleAction permissableAction, boolean value);
 
     void resetPerms();
 
-    Map<Permissable, Map<PermissableAction, Access>> getPermissions();
+    Map<Permissible, Map<PermissibleAction, Boolean>> getPermissions();
 
     // -------------------------------
     // Relation and relation colors

@@ -1,6 +1,5 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Role;
@@ -66,12 +65,12 @@ public class MiscUtil {
     public static ArrayList<String> validateTag(String str) {
         ArrayList<String> errors = new ArrayList<>();
 
-        if (getComparisonString(str).length() < Conf.factionTagLengthMin) {
-            errors.add(P.p.txt.parse(TL.GENERIC_FACTIONTAG_TOOSHORT.toString(), Conf.factionTagLengthMin));
+        if (getComparisonString(str).length() < P.p.conf().factions().getTagLengthMin()) {
+            errors.add(P.p.txt.parse(TL.GENERIC_FACTIONTAG_TOOSHORT.toString(), P.p.conf().factions().getTagLengthMin()));
         }
 
-        if (str.length() > Conf.factionTagLengthMax) {
-            errors.add(P.p.txt.parse(TL.GENERIC_FACTIONTAG_TOOLONG.toString(), Conf.factionTagLengthMax));
+        if (str.length() > P.p.conf().factions().getTagLengthMax()) {
+            errors.add(P.p.txt.parse(TL.GENERIC_FACTIONTAG_TOOLONG.toString(), P.p.conf().factions().getTagLengthMax()));
         }
 
         for (char c : str.toCharArray()) {

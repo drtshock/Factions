@@ -1,6 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
@@ -46,8 +49,8 @@ public class CmdJoin extends FCommand {
             return;
         }
 
-        if (Conf.factionMemberLimit > 0 && faction.getFPlayers().size() >= Conf.factionMemberLimit) {
-            context.msg(TL.COMMAND_JOIN_ATLIMIT, faction.getTag(context.fPlayer), Conf.factionMemberLimit, fplayer.describeTo(context.fPlayer, false));
+        if (P.p.conf().factions().getFactionMemberLimit() > 0 && faction.getFPlayers().size() >= P.p.conf().factions().getFactionMemberLimit()) {
+            context.msg(TL.COMMAND_JOIN_ATLIMIT, faction.getTag(context.fPlayer), P.p.conf().factions().getFactionMemberLimit(), fplayer.describeTo(context.fPlayer, false));
             return;
         }
 
@@ -57,7 +60,7 @@ public class CmdJoin extends FCommand {
             return;
         }
 
-        if (!Conf.canLeaveWithNegativePower && fplayer.getPower() < 0) {
+        if (!P.p.conf().factions().isCanLeaveWithNegativePower() && fplayer.getPower() < 0) {
             context.msg(TL.COMMAND_JOIN_NEGATIVEPOWER, fplayer.describeTo(context.fPlayer, true));
             return;
         }
@@ -71,7 +74,7 @@ public class CmdJoin extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-        if (samePlayer && !context.canAffordCommand(Conf.econCostJoin, TL.COMMAND_JOIN_TOJOIN.toString())) {
+        if (samePlayer && !context.canAffordCommand(P.p.conf().economy().getCostJoin(), TL.COMMAND_JOIN_TOJOIN.toString())) {
             return;
         }
 
@@ -89,7 +92,7 @@ public class CmdJoin extends FCommand {
         }
 
         // then make 'em pay (if applicable)
-        if (samePlayer && !context.payForCommand(Conf.econCostJoin, TL.COMMAND_JOIN_TOJOIN.toString(), TL.COMMAND_JOIN_FORJOIN.toString())) {
+        if (samePlayer && !context.payForCommand(P.p.conf().economy().getCostJoin(), TL.COMMAND_JOIN_TOJOIN.toString(), TL.COMMAND_JOIN_FORJOIN.toString())) {
             return;
         }
 
@@ -105,7 +108,7 @@ public class CmdJoin extends FCommand {
         faction.deinvite(fplayer);
         fplayer.setRole(faction.getDefaultRole());
 
-        if (Conf.logFactionJoin) {
+        if (P.p.conf().logging().isFactionJoin()) {
             if (samePlayer) {
                 P.p.log(TL.COMMAND_JOIN_JOINEDLOG.toString(), fplayer.getName(), faction.getTag());
             } else {

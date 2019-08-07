@@ -1,6 +1,5 @@
 package com.massivecraft.factions.tag;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
@@ -37,14 +36,14 @@ public enum FactionTag implements Tag {
             boolean raidable = fac.getLandRounded() >= fac.getPowerRounded();
             String str = raidable ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
             if (P.p.getConfig().getBoolean("hcf.dtr", false)) {
-                int dtr = raidable ? 0 : (int) Math.ceil(((double) (fac.getPowerRounded() - fac.getLandRounded())) / Conf.powerPerDeath);
+                int dtr = raidable ? 0 : (int) Math.ceil(((double) (fac.getPowerRounded() - fac.getLandRounded())) / P.p.conf().factions().landRaidControl().power().getLossPerDeath());
                 str += ' ' + TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE.format(dtr);
             }
             return str;
         }
         return null;
     }),
-    PEACEFUL("{peaceful}", (fac) -> fac.isPeaceful() ? Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString() : ""),
+    PEACEFUL("{peaceful}", (fac) -> fac.isPeaceful() ? P.p.conf().colors().relations().getPeaceful() + TL.COMMAND_SHOW_PEACEFUL.toString() : ""),
     PERMANENT("permanent", (fac) -> fac.isPermanent() ? "permanent" : "{notPermanent}"), // no braces needed
     LAND_VALUE("{land-value}", (fac) -> Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandValue(fac.getLandRounded())) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("value")),
     DESCRIPTION("{description}", Faction::getDescription),
@@ -52,7 +51,7 @@ public enum FactionTag implements Tag {
     LAND_REFUND("{land-refund}", (fac) -> Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandRefund(fac.getLandRounded())) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("refund")),
     BANK_BALANCE("{faction-balance}", (fac) -> {
         if (Econ.shouldBeUsed()) {
-            return Conf.bankEnabled ? Econ.moneyString(Econ.getBalance(fac.getAccountId())) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("balance");
+            return P.p.conf().economy().isBankEnabled() ? Econ.moneyString(Econ.getBalance(fac.getAccountId())) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("balance");
         }
         return Tag.isMinimalShow() ? null : TL.ECON_OFF.format("balance");
     }),

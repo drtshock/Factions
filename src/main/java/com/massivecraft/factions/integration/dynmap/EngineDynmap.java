@@ -63,6 +63,10 @@ public class EngineDynmap {
     }
 
     public void init() {
+        return;
+    }
+}
+        /* TODO
         Plugin dynmap = Bukkit.getServer().getPluginManager().getPlugin("dynmap");
 
         if (dynmap == null || !dynmap.isEnabled()) {
@@ -614,7 +618,7 @@ public class EngineDynmap {
         // Money
 
         String money = "unavailable";
-        if (Conf.bankEnabled && Conf.dynmapDescriptionMoney) {
+        if (P.p.conf().economy().isBankEnabled() && Conf.dynmapDescriptionMoney) {
             money = String.format("%.2f", Econ.getBalance(faction.getAccountId()));
         }
         ret = ret.replace("%money%", money);
@@ -776,3 +780,4 @@ public class EngineDynmap {
         return cnt;
     }
 }
+*/

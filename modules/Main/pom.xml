@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>Factions</artifactId>
-    <version>1.6.9.5-U0.4.3</version>
+    <version>1.6.9.5-U0.4.9</version>
     <packaging>jar</packaging>
 
     <name>Factions</name>
@@ -38,6 +38,7 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
+                    <minimizeJar>true</minimizeJar>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <artifactSet>
                         <excludes>
@@ -50,7 +51,7 @@
                             <shadedPattern>com.massivecraft.factions.shade.mkremins.fanciful</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.google.gson</pattern>
+                            <pattern>com.google.gson.</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.com.google.gson</shadedPattern>
                         </relocation>
                         <relocation>
@@ -63,7 +64,15 @@
                         </relocation>
                         <relocation>
                             <pattern>me.lucko.commodore</pattern>
-                            <shadedPattern>com.massivecraft.factions.shade.commodore</shadedPattern>
+                            <shadedPattern>com.massivecraft.factions.shade.me.lucko.commodore</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.typesafe</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.com.typesafe</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>ninja.leaping</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.ninja.leaping</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -338,7 +347,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>10.0.1</version>
+            <version>21.0</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -350,7 +359,7 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.6.2</version>
+            <version>2.8.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -368,7 +377,7 @@
         <dependency>
             <groupId>be.maximvdw</groupId>
             <artifactId>MVdWPlaceholderAPI</artifactId>
-            <version>2.2.3-SNAPSHOT</version>
+            <version>2.2.3-fuuid</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -380,7 +389,7 @@
         <dependency>
             <groupId>com.darkblade12</groupId>
             <artifactId>particleeffect</artifactId>
-            <version>1.8.0-SNAPSHOT</version>
+            <version>1.8.0-fuuid</version>
         </dependency>
         <dependency>
             <groupId>me.lucko</groupId>
@@ -394,12 +403,23 @@
             <version>2.1.4</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.spongepowered</groupId>
+            <artifactId>configurate-hocon</artifactId>
+            <version>3.6.1</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>checker-qual</artifactId>
+                    <groupId>org.checkerframework</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <repositories>
         <repository>
-            <id>vault-repo</id>
-            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+            <id>fuuid-repo</id>
+            <url>https://github.com/factions-site/repo/raw/public</url>
         </repository>
         <repository>
             <id>ess-repo</id>
@@ -418,12 +438,8 @@
             <url>http://repo.mikeprimm.com/</url>
         </repository>
         <repository>
-            <id>placeholderapi</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
-        <repository>
-            <id>mvdw-software</id>
-            <url>http://repo.mvdw-software.be/content/groups/public/</url>
+            <id>sponge</id>
+            <url>https://repo.spongepowered.org/maven</url>
         </repository>
         <repository>
             <id>minecraft-libraries</id>

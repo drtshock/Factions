@@ -1,11 +1,10 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.material.FactionMaterial;
 import com.massivecraft.factions.util.material.MaterialDb;
-import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Location;
@@ -16,7 +15,7 @@ import org.bukkit.event.Listener;
 
 public abstract class AbstractListener implements Listener {
     public boolean canPlayerUseBlock(Player player, Material material, Location location, boolean justCheck) {
-        if (Conf.playersWhoBypassAllProtection.contains(player.getName())) {
+        if (P.p.conf().factions().protection().getPlayersWhoBypassAllProtection().contains(player.getName())) {
             return true;
         }
 
@@ -37,11 +36,11 @@ public abstract class AbstractListener implements Listener {
             return true;
         }
 
-        PermissableAction action = null;
+        PermissibleAction action = null;
 
         switch (material) {
             case LEVER:
-                action = PermissableAction.LEVER;
+                action = PermissibleAction.LEVER;
                 break;
             case STONE_BUTTON:
             case BIRCH_BUTTON:
@@ -50,7 +49,7 @@ public abstract class AbstractListener implements Listener {
             case JUNGLE_BUTTON:
             case OAK_BUTTON:
             case SPRUCE_BUTTON:
-                action = PermissableAction.BUTTON;
+                action = PermissibleAction.BUTTON;
                 break;
             case DARK_OAK_DOOR:
             case ACACIA_DOOR:
@@ -66,7 +65,7 @@ public abstract class AbstractListener implements Listener {
             case JUNGLE_TRAPDOOR:
             case OAK_TRAPDOOR:
             case SPRUCE_TRAPDOOR:
-                action = PermissableAction.DOOR;
+                action = PermissibleAction.DOOR;
                 break;
             case CHEST:
             case ENDER_CHEST:
@@ -86,27 +85,29 @@ public abstract class AbstractListener implements Listener {
             case ITEM_FRAME:
             case JUKEBOX:
             case ARMOR_STAND:
-                action = PermissableAction.CONTAINER;
+            case REPEATER:
+            case ENCHANTING_TABLE:
+            case FARMLAND:
+            case BEACON:
+            case ANVIL:
+                action = PermissibleAction.CONTAINER;
                 break;
             default:
                 // Check for doors that might have diff material name in old version.
-                if (material.name().contains("DOOR")) {
-                    action = PermissableAction.DOOR;
+                if (material.name().contains("DOOR") || material.name().contains("GATE")) {
+                    action = PermissibleAction.DOOR;
                 }
                 // Lazier than checking all the combinations
                 if (material.name().contains("SHULKER_BOX") || material.name().contains("ANVIL")) {
-                    action = PermissableAction.CONTAINER;
+                    action = PermissibleAction.CONTAINER;
                 }
                 break;
         }
 
         // F PERM check runs through before other checks.
-        Access access = otherFaction.getAccess(me, action);
-        if (access == null || access == Access.DENY) {
+        if (!otherFaction.hasAccess(me, action)) {
             me.msg(TL.GENERIC_NOPERMISSION, action);
             return false;
-        } else if (access == Access.ALLOW) {
-            return true; // explicitly allowed
         }
 
         // Dupe fix.
@@ -121,28 +122,8 @@ public abstract class AbstractListener implements Listener {
             }
         }
 
-        // We only care about some material types.
-        if (otherFaction.hasPlayersOnline()) {
-            if (!Conf.territoryProtectedMaterials.contains(material)) {
-                return true;
-            }
-        } else {
-            if (!Conf.territoryProtectedMaterialsWhenOffline.contains(material)) {
-                return true;
-            }
-        }
-
-        // You may use any block unless it is another faction's territory...
-        if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials) || (rel.isTruce() && Conf.territoryTruceProtectMaterials)) {
-            if (!justCheck) {
-                me.msg(TL.PLAYER_USE_TERRITORY, (material == FactionMaterial.from("FARMLAND").get() ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
-            }
-
-            return false;
-        }
-
         // Also cancel if player doesn't have ownership rights for this claim
-        if (Conf.ownedAreasEnabled && Conf.ownedAreaProtectMaterials && !otherFaction.playerHasOwnershipRights(me, loc)) {
+        if (P.p.conf().factions().ownedArea().isEnabled() && P.p.conf().factions().ownedArea().isProtectMaterials() && !otherFaction.playerHasOwnershipRights(me, loc)) {
             if (!justCheck) {
                 me.msg(TL.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
             }

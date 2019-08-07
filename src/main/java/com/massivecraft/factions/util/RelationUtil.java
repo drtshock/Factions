@@ -1,8 +1,8 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
@@ -101,15 +101,15 @@ public class RelationUtil {
         Faction thatFaction = getFaction(that);
         if (thatFaction != null) {
             if (thatFaction.isPeaceful() && thatFaction != getFaction(me)) {
-                return Conf.colorPeaceful;
+                return P.p.conf().colors().relations().getPeaceful();
             }
 
             if (thatFaction.isSafeZone() && thatFaction != getFaction(me)) {
-                return Conf.colorPeaceful;
+                return P.p.conf().colors().factions().getSafezone();
             }
 
             if (thatFaction.isWarZone() && thatFaction != getFaction(me)) {
-                return Conf.colorWar;
+                return P.p.conf().colors().factions().getWarzone();
             }
         }
 

@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd.claim;
 
 import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.CommandContext;
@@ -41,7 +40,7 @@ public class CmdWarunclaimall extends FCommand {
             Board.getInstance().unclaimAllInWorld(id, world);
         }
 
-        if (Conf.logLandUnclaims) {
+        if (P.p.conf().logging().isLandUnclaims()) {
             P.p.log(TL.COMMAND_WARUNCLAIMALL_LOG.format(context.fPlayer.getName()));
         }
     }

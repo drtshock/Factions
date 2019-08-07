@@ -388,7 +388,7 @@ public class CommandContext {
             return true;
         }
 
-        if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fPlayer.hasFaction()) {
+        if (P.p.conf().economy().isBankEnabled() && P.p.conf().economy().isBankFactionPaysCosts() && fPlayer.hasFaction()) {
             return Econ.modifyMoney(faction, -cost, toDoThis, forDoingThis);
         } else {
             return Econ.modifyMoney(fPlayer, -cost, toDoThis, forDoingThis);
@@ -405,7 +405,7 @@ public class CommandContext {
             return true;
         }
 
-        if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fPlayer.hasFaction()) {
+        if (P.p.conf().economy().isBankEnabled() && P.p.conf().economy().isBankFactionPaysCosts() && fPlayer.hasFaction()) {
             return Econ.hasAtLeast(faction, cost, toDoThis);
         } else {
             return Econ.hasAtLeast(fPlayer, cost, toDoThis);

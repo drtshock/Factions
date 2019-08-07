@@ -1,12 +1,7 @@
-package com.massivecraft.factions.util;
+package com.massivecraft.factions.config.transition.oldclass;
 
 import com.google.gson.*;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.Permissable;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
 import java.lang.reflect.Type;
@@ -15,10 +10,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
-public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissable, Map<PermissableAction, Access>>> {
+public class OldPermissionsMapTypeAdapter implements JsonDeserializer<Map<OldPermissable, Map<OldPermissableAction, Access>>> {
 
     @Override
-    public Map<Permissable, Map<PermissableAction, Access>> deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+    public Map<OldPermissable, Map<OldPermissableAction, Access>> deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
 
         try {
             JsonObject obj = json.getAsJsonObject();
@@ -26,30 +21,30 @@ public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissab
                 return null;
             }
 
-            Map<Permissable, Map<PermissableAction, Access>> permissionsMap = new ConcurrentHashMap<>();
+            Map<OldPermissable, Map<OldPermissableAction, Access>> permissionsMap = new ConcurrentHashMap<>();
 
             // Top level is Relation
             for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
-                Permissable permissable = getPermissable(entry.getKey());
+                OldPermissable permissable = getPermissable(entry.getKey());
 
                 if (permissable == null) {
                     continue;
                 }
 
                 // Second level is the map between action -> access
-                Map<PermissableAction, Access> accessMap = new HashMap<>();
+                Map<OldPermissableAction, Access> accessMap = new HashMap<>();
                 for (Map.Entry<String, JsonElement> entry2 : entry.getValue().getAsJsonObject().entrySet()) {
-                    PermissableAction permissableAction = PermissableAction.fromString(entry2.getKey());
+                    OldPermissableAction permissableAction = OldPermissableAction.fromString(entry2.getKey());
                     if (permissableAction == null) {
                         switch (entry2.getKey()) {
                             case "frostwalk":
-                                permissableAction = PermissableAction.FROST_WALK;
+                                permissableAction = OldPermissableAction.FROST_WALK;
                                 break;
                             case "painbuild":
-                                permissableAction = PermissableAction.PAIN_BUILD;
+                                permissableAction = OldPermissableAction.PAIN_BUILD;
                                 break;
                             case "items":
-                                permissableAction = PermissableAction.ITEM;
+                                permissableAction = OldPermissableAction.ITEM;
                                 break;
                         }
                     }
@@ -68,29 +63,29 @@ public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissab
         }
     }
 
-    private Permissable getPermissable(String name) {
+    private OldPermissable getPermissable(String name) {
         // If name is uppercase then it is (probably, no way to completely know) valid if not begin conversion
         if (name.equals(name.toUpperCase())) {
-            if (Role.fromString(name.toUpperCase()) != null) {
-                return Role.fromString(name.toUpperCase());
-            } else if (Relation.fromString(name.toUpperCase()) != null) {
-                return Relation.fromString(name.toUpperCase());
+            if (OldRole.fromString(name.toUpperCase()) != null) {
+                return OldRole.fromString(name.toUpperCase());
+            } else if (OldRelation.fromString(name.toUpperCase()) != null) {
+                return OldRelation.fromString(name.toUpperCase());
             } else {
                 return null;
             }
         } else {
             if (name.equals(TL.ROLE_RECRUIT.toString())) {
-                return Role.RECRUIT;
+                return OldRole.RECRUIT;
             } else if (name.equals(TL.ROLE_NORMAL.toString())) {
-                return Role.NORMAL;
+                return OldRole.NORMAL;
             } else if (name.equals(TL.ROLE_MODERATOR.toString())) {
-                return Role.MODERATOR;
+                return OldRole.MODERATOR;
             } else {
                 // If it is explicitly member and its old data then it refers to relation member not role, skip it
                 if (name.equals("member")) {
                     return null;
                 }
-                return Relation.fromString(name);
+                return OldRelation.fromString(name);
             }
         }
     }

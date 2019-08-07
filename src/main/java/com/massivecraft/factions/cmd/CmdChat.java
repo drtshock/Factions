@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -26,7 +26,7 @@ public class CmdChat extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (!Conf.factionOnlyChat) {
+        if (!P.p.conf().factions().chat().isFactionOnlyChat()) {
             context.msg(TL.COMMAND_CHAT_DISABLED.toString());
             return;
         }

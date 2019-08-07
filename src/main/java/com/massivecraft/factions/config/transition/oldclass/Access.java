@@ -1,4 +1,4 @@
-package com.massivecraft.factions.zcore.fperms;
+package com.massivecraft.factions.config.transition.oldclass;
 
 import org.bukkit.ChatColor;
 
@@ -43,5 +43,4 @@ public enum Access {
     public String toString() {
         return name();
     }
-
 }

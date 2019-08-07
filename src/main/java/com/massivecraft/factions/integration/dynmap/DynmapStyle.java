@@ -1,12 +1,11 @@
 package com.massivecraft.factions.integration.dynmap;
 
-import com.massivecraft.factions.Conf;
 
 public class DynmapStyle {
     // -------------------------------------------- //
     // FIELDS
     // -------------------------------------------- //
-
+/* TODO
     public String lineColor = null;
 
     public int getLineColor() {
@@ -109,5 +108,5 @@ public class DynmapStyle {
         }
         return ret;
     }
-
+*/
 }

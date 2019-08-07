@@ -1,23 +1,12 @@
 package com.massivecraft.factions.struct;
 
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.tag.Tag;
-import com.massivecraft.factions.zcore.fperms.Permissable;
+import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
-public enum Relation implements Permissable {
+public enum Relation implements Permissible {
     MEMBER(4, TL.RELATION_MEMBER_SINGULAR.toString()),
     ALLY(3, TL.RELATION_ALLY_SINGULAR.toString()),
     TRUCE(2, TL.RELATION_TRUCE_SINGULAR.toString()),
@@ -98,142 +87,29 @@ public enum Relation implements Permissable {
     }
 
     public ChatColor getColor() {
-        if (this == MEMBER) {
-            return Conf.colorMember;
-        } else if (this == ALLY) {
-            return Conf.colorAlly;
-        } else if (this == NEUTRAL) {
-            return Conf.colorNeutral;
-        } else if (this == TRUCE) {
-            return Conf.colorTruce;
-        } else {
-            return Conf.colorEnemy;
-        }
-    }
-
-    // return appropriate Conf setting for DenyBuild based on this relation and their online status
-    public boolean confDenyBuild(boolean online) {
-        if (isMember()) {
-            return false;
-        }
-
-        if (online) {
-            if (isEnemy()) {
-                return Conf.territoryEnemyDenyBuild;
-            } else if (isAlly()) {
-                return Conf.territoryAllyDenyBuild;
-            } else if (isTruce()) {
-                return Conf.territoryTruceDenyBuild;
-            } else {
-                return Conf.territoryDenyBuild;
-            }
-        } else {
-            if (isEnemy()) {
-                return Conf.territoryEnemyDenyBuildWhenOffline;
-            } else if (isAlly()) {
-                return Conf.territoryAllyDenyBuildWhenOffline;
-            } else if (isTruce()) {
-                return Conf.territoryTruceDenyBuildWhenOffline;
-            } else {
-                return Conf.territoryDenyBuildWhenOffline;
-            }
-        }
-    }
-
-    // return appropriate Conf setting for PainBuild based on this relation and their online status
-    public boolean confPainBuild(boolean online) {
-        if (isMember()) {
-            return false;
-        }
-
-        if (online) {
-            if (isEnemy()) {
-                return Conf.territoryEnemyPainBuild;
-            } else if (isAlly()) {
-                return Conf.territoryAllyPainBuild;
-            } else if (isTruce()) {
-                return Conf.territoryTrucePainBuild;
-            } else {
-                return Conf.territoryPainBuild;
-            }
-        } else {
-            if (isEnemy()) {
-                return Conf.territoryEnemyPainBuildWhenOffline;
-            } else if (isAlly()) {
-                return Conf.territoryAllyPainBuildWhenOffline;
-            } else if (isTruce()) {
-                return Conf.territoryTrucePainBuildWhenOffline;
-            } else {
-                return Conf.territoryPainBuildWhenOffline;
-            }
-        }
-    }
-
-    // return appropriate Conf setting for DenyUseage based on this relation
-    public boolean confDenyUseage() {
-        if (isMember()) {
-            return false;
-        } else if (isEnemy()) {
-            return Conf.territoryEnemyDenyUseage;
-        } else if (isAlly()) {
-            return Conf.territoryAllyDenyUseage;
-        } else if (isTruce()) {
-            return Conf.territoryTruceDenyUseage;
-        } else {
-            return Conf.territoryDenyUseage;
+        switch (this) {
+            case MEMBER:
+                return P.p.conf().colors().relations().getMember();
+            case ALLY:
+                return P.p.conf().colors().relations().getAlly();
+            case NEUTRAL:
+                return P.p.conf().colors().relations().getNeutral();
+            case TRUCE:
+                return P.p.conf().colors().relations().getTruce();
+            default:
+                return P.p.conf().colors().relations().getEnemy();
         }
     }
 
     public double getRelationCost() {
         if (isEnemy()) {
-            return Conf.econCostEnemy;
+            return P.p.conf().economy().getCostEnemy();
         } else if (isAlly()) {
-            return Conf.econCostAlly;
+            return P.p.conf().economy().getCostAlly();
         } else if (isTruce()) {
-            return Conf.econCostTruce;
+            return P.p.conf().economy().getCostTruce();
         } else {
-            return Conf.econCostNeutral;
+            return P.p.conf().economy().getCostNeutral();
         }
-    }
-
-    // Utility method to build items for F Perm GUI
-    @Override
-    public ItemStack buildItem(FPlayer fme) {
-        final ConfigurationSection RELATION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
-
-        String displayName = replacePlaceholders(RELATION_CONFIG.getString("placeholder-item.name", ""), fme);
-        List<String> lore = new ArrayList<>();
-
-        Material material = Material.matchMaterial(RELATION_CONFIG.getString("materials." + name().toLowerCase()));
-        if (material == null) {
-            return null;
-        }
-
-        ItemStack item = new ItemStack(material);
-        ItemMeta itemMeta = item.getItemMeta();
-
-        for (String loreLine : RELATION_CONFIG.getStringList("placeholder-item.lore")) {
-            lore.add(replacePlaceholders(loreLine, fme));
-        }
-
-        itemMeta.setDisplayName(displayName);
-        itemMeta.setLore(lore);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        item.setItemMeta(itemMeta);
-
-        return item;
-    }
-
-    public String replacePlaceholders(String string, FPlayer fme) {
-        string = ChatColor.translateAlternateColorCodes('&', string);
-        string = Tag.parsePlain(fme, string);
-        string = Tag.parsePlain(fme.getFaction(), string);
-
-        String permissableName = nicename.substring(0, 1).toUpperCase() + nicename.substring(1);
-
-        string = string.replace("{relation-color}", getColor().toString());
-        string = string.replace("{relation}", permissableName);
-
-        return string;
     }
 }

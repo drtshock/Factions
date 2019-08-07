@@ -1,21 +1,11 @@
 package com.massivecraft.factions.struct;
 
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.zcore.fperms.Permissable;
+import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public enum Role implements Permissable {
+public enum Role implements Permissible {
     ADMIN(4, TL.ROLE_ADMIN),
     COLEADER(3, TL.ROLE_COLEADER),
     MODERATOR(2, TL.ROLE_MODERATOR),
@@ -25,7 +15,6 @@ public enum Role implements Permissable {
     public final int value;
     public final String nicename;
     public final TL translation;
-
 
     Role(final int value, final TL translation) {
         this.value = value;
@@ -94,23 +83,23 @@ public enum Role implements Permissable {
 
     public String getPrefix() {
         if (this == Role.ADMIN) {
-            return Conf.prefixAdmin;
+            return P.p.conf().factions().prefixes().getAdmin();
         }
 
         if (this == Role.COLEADER) {
-            return Conf.prefixColeader;
+            return P.p.conf().factions().prefixes().getColeader();
         }
 
         if (this == Role.MODERATOR) {
-            return Conf.prefixMod;
+            return P.p.conf().factions().prefixes().getMod();
         }
 
         if (this == Role.NORMAL) {
-            return Conf.prefixNormal;
+            return P.p.conf().factions().prefixes().getNormal();
         }
 
         if (this == Role.RECRUIT) {
-            return Conf.prefixRecruit;
+            return P.p.conf().factions().prefixes().getRecruit();
         }
 
         return "";
@@ -120,44 +109,4 @@ public enum Role implements Permissable {
     public ChatColor getColor() {
         return Relation.MEMBER.getColor();
     }
-
-    // Utility method to build items for F Perm GUI
-    @Override
-    public ItemStack buildItem(FPlayer fme) {
-        final ConfigurationSection RELATION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
-
-        String displayName = replacePlaceholders(RELATION_CONFIG.getString("placeholder-item.name", ""), fme);
-        List<String> lore = new ArrayList<>();
-
-        Material material = Material.matchMaterial(RELATION_CONFIG.getString("materials." + name().toLowerCase(), "STAINED_CLAY"));
-        if (material == null) {
-            return null;
-        }
-
-        ItemStack item = new ItemStack(material);
-        ItemMeta itemMeta = item.getItemMeta();
-
-        for (String loreLine : RELATION_CONFIG.getStringList("placeholder-item.lore")) {
-            lore.add(replacePlaceholders(loreLine, fme));
-        }
-
-        itemMeta.setDisplayName(displayName);
-        itemMeta.setLore(lore);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        item.setItemMeta(itemMeta);
-
-        return item;
-    }
-
-    public String replacePlaceholders(String string, FPlayer fme) {
-        string = ChatColor.translateAlternateColorCodes('&', string);
-
-        String permissableName = nicename.substring(0, 1).toUpperCase() + nicename.substring(1);
-
-        string = string.replace("{relation-color}", ChatColor.GREEN.toString());
-        string = string.replace("{relation}", permissableName);
-
-        return string;
-    }
-
 }

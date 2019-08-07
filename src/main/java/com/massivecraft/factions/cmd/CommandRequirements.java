@@ -1,36 +1,35 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CommandRequirements {
 
     // Permission required to execute command
-    public Permission permission;
+    private Permission permission;
 
     // Must be player
-    public boolean playerOnly;
+    private boolean playerOnly;
     // Must be member of faction
-    public boolean memberOnly;
+    private boolean memberOnly;
 
-    // Must be atleast this role
-    public Role role;
+    // Must be at least this role
+    private Role role;
 
-    // PermissableAction check if the player has allow for this before checking the role
-    public PermissableAction action;
+    // PermissibleAction check if the player has allow for this before checking the role
+    private PermissibleAction action;
 
     // Commodore stuffs
-    public Class<? extends BrigadierProvider> brigadier;
+    private Class<? extends BrigadierProvider> brigadier;
 
     // Edge case handling
-    public boolean errorOnManyArgs;
-    public boolean disableOnLock;
+    private boolean errorOnManyArgs;
+    private boolean disableOnLock;
 
-    private CommandRequirements(Permission permission, boolean playerOnly, boolean memberOnly, Role role, PermissableAction action, Class<? extends BrigadierProvider> brigadier) {
+    private CommandRequirements(Permission permission, boolean playerOnly, boolean memberOnly, Role role, PermissibleAction action, Class<? extends BrigadierProvider> brigadier) {
         this.permission = permission;
         this.playerOnly = playerOnly;
         this.memberOnly = memberOnly;
@@ -58,25 +57,14 @@ public class CommandRequirements {
                 return false;
             }
 
-            // Permissable Action provided compute that before role
+            // Permissible Action provided compute that before role
             if (action != null) {
-                Access access = context.faction.getAccess(context.fPlayer, action);
-                if (access == Access.DENY) {
+                boolean access = context.faction.hasAccess(context.fPlayer, action);
+                if (!access) {
                     if (informIfNot) {
-                        context.msg(TL.GENERIC_NOPERMISSION, action.getName());
+                        context.msg(TL.GENERIC_NOPERMISSION, action.name());
                     }
                     return false;
-                }
-
-                if (access != Access.ALLOW) {
-                    // They have undefined assert their role
-                    if (role != null && !context.fPlayer.getRole().isAtLeast(role)) {
-                        // They do not fullfill the role
-                        if (informIfNot) {
-                            context.msg(TL.GENERIC_YOUMUSTBE, role.translation);
-                        }
-                        return false;
-                    }
                 }
                 // They have been explicitly allowed
                 return true;
@@ -97,6 +85,18 @@ public class CommandRequirements {
         }
     }
 
+    public boolean isErrorOnManyArgs() {
+        return errorOnManyArgs;
+    }
+
+    public boolean isDisableOnLock() {
+        return disableOnLock;
+    }
+
+    public Class<? extends BrigadierProvider> getBrigadier() {
+        return brigadier;
+    }
+
     public static class Builder {
 
         private Permission permission;
@@ -105,7 +105,7 @@ public class CommandRequirements {
         private boolean memberOnly = false;
 
         private Role role = null;
-        private PermissableAction action;
+        private PermissibleAction action;
 
         private Class<? extends BrigadierProvider> brigadier;
 
@@ -132,7 +132,7 @@ public class CommandRequirements {
             return this;
         }
 
-        public Builder withAction(PermissableAction action) {
+        public Builder withAction(PermissibleAction action) {
             this.action = action;
             return this;
         }

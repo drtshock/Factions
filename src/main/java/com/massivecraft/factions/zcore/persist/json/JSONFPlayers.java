@@ -34,7 +34,7 @@ public class JSONFPlayers extends MemoryFPlayers {
     private File file;
 
     public JSONFPlayers() {
-        file = new File(P.p.getDataFolder(), "players.json");
+        file = new File(P.p.getDataFolder(), "data/players.json");
         gson = P.p.gson;
     }
 

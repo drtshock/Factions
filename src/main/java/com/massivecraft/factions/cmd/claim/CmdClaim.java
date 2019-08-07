@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd.claim;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -49,7 +49,7 @@ public class CmdClaim extends FCommand {
 
             new SpiralTask(new FLocation(context.player), radius) {
                 private int failCount = 0;
-                private final int limit = Conf.radiusClaimFailureLimit - 1;
+                private final int limit = P.p.conf().factions().claims().getRadiusClaimFailureLimit() - 1;
 
                 @Override
                 public boolean work() {
