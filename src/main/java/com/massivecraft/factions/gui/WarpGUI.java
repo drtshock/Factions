@@ -1,6 +1,10 @@
 package com.massivecraft.factions.gui;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 import com.massivecraft.factions.FPlayer;
@@ -12,7 +16,14 @@ import com.massivecraft.factions.util.material.FactionMaterial;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
-import org.bukkit.conversations.*;
+import org.bukkit.conversations.ConversationAbandonedEvent;
+import org.bukkit.conversations.ConversationAbandonedListener;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.conversations.InactivityConversationCanceller;
+import org.bukkit.conversations.ManuallyAbandonedConversationCanceller;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 

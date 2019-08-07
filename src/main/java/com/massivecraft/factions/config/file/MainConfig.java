@@ -1,6 +1,10 @@
 package com.massivecraft.factions.config.file;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 import com.massivecraft.factions.config.annotation.Comment;

@@ -1,8 +1,17 @@
 package com.massivecraft.factions.scoreboards;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.OfflinePlayer;
