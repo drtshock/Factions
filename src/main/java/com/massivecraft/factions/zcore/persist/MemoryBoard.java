@@ -326,7 +326,8 @@ public abstract class MemoryBoard extends Board {
         if (Conf.showMapFactionKey) {
             FancyMessage fRow = new FancyMessage("");
             for (String key : fList.keySet()) {
-                fRow.then(String.format("%s: %s ", fList.get(key), key)).color(ChatColor.GRAY);
+                final Relation relation = fplayer.getRelationTo(Factions.getInstance().getByTag(key));
+                fRow.then(String.format("%s: %s ", fList.get(key), key)).color(relation.getColor());
             }
             ret.add(fRow);
         }
