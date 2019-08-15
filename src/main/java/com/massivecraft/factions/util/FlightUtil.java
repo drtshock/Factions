@@ -74,6 +74,13 @@ public class FlightUtil {
                         continue;
                     }
                     if (playerNearby.getRelationTo(target) == Relation.ENEMY) {
+                        if (playerNearby.isFlying()) {
+                            playerNearby.msg(TL.COMMAND_FLY_ENEMY_DISABLE);
+                            playerNearby.setFlying(false);
+                            if (playerNearby.isAutoFlying()) {
+                                playerNearby.setAutoFlying(false);
+                            }
+                        }
                         return true;
                     }
                 }
