@@ -54,11 +54,26 @@ public class FlightUtil {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 FPlayer pilot = FPlayers.getInstance().getByPlayer(player);
                 if (pilot.isFlying() && !pilot.isAdminBypassing()) {
-                    if (enemiesNearby(pilot, 5)) {
-                        pilot.msg(TL.COMMAND_FLY_ENEMY_DISABLE);
-                        pilot.setFlying(false);
-                        if (pilot.isAutoFlying()) {
-                            pilot.setAutoFlying(false);
+                    findAndDisable(pilot, 5);
+                }
+            }
+        }
+
+        private void findAndDisable(FPlayer target, int radius) {
+            final List<Entity> nearbyEntities = target.getPlayer().getNearbyEntities(radius, radius, radius);
+            for (Entity entity : nearbyEntities) {
+                if (entity instanceof Player) {
+                    final FPlayer playerNearby = FPlayers.getInstance().getByPlayer((Player) entity);
+                    if (playerNearby.isAdminBypassing()) {
+                        continue;
+                    }
+                    if (playerNearby.getRelationTo(target) == Relation.ENEMY) {
+                        if (target.isFlying()) {
+                            disableFlight(target);
+                        }
+
+                        if (playerNearby.isFlying()) {
+                            disableFlight(playerNearby);
                         }
                     }
                 }
@@ -66,19 +81,30 @@ public class FlightUtil {
         }
 
         public boolean enemiesNearby(FPlayer target, int radius) {
-            List<Entity> nearbyEntities = target.getPlayer().getNearbyEntities(radius, radius, radius);
+            final List<Entity> nearbyEntities = target.getPlayer().getNearbyEntities(radius, radius, radius);
             for (Entity entity : nearbyEntities) {
                 if (entity instanceof Player) {
-                    FPlayer playerNearby = FPlayers.getInstance().getByPlayer((Player) entity);
+                    final FPlayer playerNearby = FPlayers.getInstance().getByPlayer((Player) entity);
                     if (playerNearby.isAdminBypassing()) {
                         continue;
                     }
                     if (playerNearby.getRelationTo(target) == Relation.ENEMY) {
+                        if (playerNearby.isFlying()) {
+                            disableFlight(playerNearby);
+                        }
                         return true;
                     }
                 }
             }
             return false;
+        }
+
+        private void disableFlight(FPlayer target) {
+            target.msg(TL.COMMAND_FLY_ENEMY_DISABLE);
+            target.setFlying(false);
+            if (target.isAutoFlying()) {
+                target.setAutoFlying(false);
+            }
         }
     }
 
