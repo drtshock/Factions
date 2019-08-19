@@ -78,6 +78,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdSafeunclaimall cmdSafeunclaimall = new CmdSafeunclaimall();
     public CmdSaveAll cmdSaveAll = new CmdSaveAll();
     public CmdSethome cmdSethome = new CmdSethome();
+    public CmdDelhome cmdDelhome = new CmdDelhome();
     public CmdShow cmdShow = new CmdShow();
     public CmdStatus cmdStatus = new CmdStatus();
     public CmdStuck cmdStuck = new CmdStuck();
@@ -168,6 +169,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdSafeunclaimall);
         this.addSubCommand(this.cmdSaveAll);
         this.addSubCommand(this.cmdSethome);
+        this.addSubCommand(this.cmdDelhome);
         this.addSubCommand(this.cmdShow);
         this.addSubCommand(this.cmdStatus);
         this.addSubCommand(this.cmdStuck);

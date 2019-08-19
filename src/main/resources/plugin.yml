@@ -89,6 +89,7 @@ permissions:
       factions.power.any: true
       factions.relation: true
       factions.sethome: true
+      factions.delhome: true
       factions.show: true
       factions.stuck: true
       factions.tag: true
@@ -238,6 +239,8 @@ permissions:
     description: save all data to disk
   factions.sethome:
     description: set the faction home
+  factions.delhome:
+    description: unset the faction home
   factions.sethome.any:
     description: set faction home for another faction
   factions.show:

@@ -99,6 +99,8 @@ public interface Faction extends EconomyParticipator {
 
     void setHome(Location home);
 
+    void delHome();
+
     boolean hasHome();
 
     Location getHome();

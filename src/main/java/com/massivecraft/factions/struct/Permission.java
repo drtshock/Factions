@@ -27,6 +27,7 @@ public enum Permission {
     CREATE("create"),
     DEFAULTRANK("defaultrank"),
     DEINVITE("deinvite"),
+    DELHOME("delhome"),
     DESCRIPTION("description"),
     DISBAND("disband"),
     DISBAND_ANY("disband.any"),
