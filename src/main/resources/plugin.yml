@@ -108,6 +108,7 @@ permissions:
       factions.fly: true
       factions.coleader: true
       factions.near: true
+      factions.permissions: true
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:
@@ -299,3 +300,5 @@ permissions:
     description: Allow use of /f near to show nearby faction members
   factions.updates:
     description: Be informed of available updates to the plugin
+  factions.permissions:
+    description: Use /f perms

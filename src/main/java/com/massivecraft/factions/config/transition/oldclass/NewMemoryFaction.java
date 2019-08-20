@@ -9,7 +9,6 @@ import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.util.LazyLocation;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,12 +51,12 @@ public class NewMemoryFaction {
         this.home = old.home;
         this.foundedDate = old.foundedDate;
         this.powerBoost = old.powerBoost;
-        this.relationWish = old.relationWish = new HashMap<>();
-        this.claimOwnership = old.claimOwnership = new ConcurrentHashMap<>();
-        this.invites = old.invites = new HashSet<>();
-        this.announcements = old.announcements = new HashMap<>();
-        this.warps = old.warps = new ConcurrentHashMap<>();
-        this.warpPasswords = old.warpPasswords = new ConcurrentHashMap<>();
+        this.relationWish = old.relationWish;
+        this.claimOwnership = old.claimOwnership;
+        this.invites = old.invites;
+        this.announcements = old.announcements;
+        this.warps = old.warps;
+        this.warpPasswords = old.warpPasswords;
         this.lastDeath = old.lastDeath;
         this.maxVaults = old.maxVaults;
         this.defaultRole = old.defaultRole;
@@ -73,6 +72,6 @@ public class NewMemoryFaction {
             this.permissions.put(permiss.newPermissible(), newMap);
             this.permissionsOffline.put(permiss.newPermissible(), newMap);
         });
-        this.bans = old.bans = new HashSet<>();
+        this.bans = old.bans;
     }
 }

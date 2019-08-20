@@ -55,9 +55,9 @@ public class WarpGUI extends GUI<Integer> {
     }
 
     private WarpGUI(FPlayer user, int page, Faction faction) {
-        super(user, getRows(user.getFaction()));
+        super(user, getRows(faction));
         this.faction = faction;
-        warps = new ArrayList<>(user.getFaction().getWarps().keySet());
+        warps = new ArrayList<>(faction.getWarps().keySet());
         if (page == -1 && warps.size() > (5 * 9)) {
             page = 0;
         }
@@ -113,7 +113,7 @@ public class WarpGUI extends GUI<Integer> {
         // Check if there are enough faction warps for this index
         if (warps.size() > index) {
             String warp = warps.get(index);
-            if (!user.getFaction().hasWarpPassword(warp)) {
+            if (!faction.hasWarpPassword(warp)) {
                 if (transact()) {
                     doWarmup(warp);
                 }
@@ -175,7 +175,7 @@ public class WarpGUI extends GUI<Integer> {
             return SimpleItem.builder().setName(TL.GUI_BUTTON_PREV.toString()).setMaterial(FactionMaterial.from("ARROW").get()).build();
         }
         SimpleItem item = new SimpleItem(warpItem);
-        if (user.getFaction().hasWarpPassword(warps.get(index))) {
+        if (faction.hasWarpPassword(warps.get(index))) {
             item.merge(passwordModifier);
         }
         return item;
@@ -203,7 +203,7 @@ public class WarpGUI extends GUI<Integer> {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
             String warp = (String) context.getSessionData("warp");
-            if (user.getFaction().isWarpPassword(warp, input)) {
+            if (faction.isWarpPassword(warp, input)) {
                 // Valid Password, make em pay
                 if (transact()) {
                     doWarmup(warp);
@@ -233,7 +233,7 @@ public class WarpGUI extends GUI<Integer> {
                     user.msg(TL.COMMAND_FWARP_NOACCESS, faction.getTag(user));
                     return;
                 }
-                player.teleport(user.getFaction().getWarp(warp).getLocation());
+                player.teleport(faction.getWarp(warp).getLocation());
                 user.msg(TL.COMMAND_FWARP_WARPED, warp);
             }
         }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-warp", 0));

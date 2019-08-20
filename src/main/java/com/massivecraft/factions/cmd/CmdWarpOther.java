@@ -68,7 +68,7 @@ public class CmdWarpOther extends FCommand {
                 context.doWarmUp(WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warpName, () -> {
                     Player player = Bukkit.getPlayer(uuid);
                     if (player != null) {
-                        player.teleport(fPlayer.getFaction().getWarp(warpName).getLocation());
+                        player.teleport(faction.getWarp(warpName).getLocation());
                         fPlayer.msg(TL.COMMAND_FWARP_WARPED, warpName);
                     }
                 }, this.plugin.getConfig().getLong("warmups.f-warp", 0));
