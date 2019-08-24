@@ -995,6 +995,7 @@ public class MainConfig {
         private double costCreate = 100.0;
         private double costOwner = 15.0;
         private double costSethome = 30.0;
+        private double costDelhome = 30.0;
         private double costJoin = 0.0;
         private double costLeave = 0.0;
         private double costKick = 0.0;
@@ -1066,6 +1067,10 @@ public class MainConfig {
 
         public double getCostSethome() {
             return costSethome;
+        }
+
+        public double getCostDelhome() {
+            return costDelhome;
         }
 
         public double getCostJoin() {

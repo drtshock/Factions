@@ -193,6 +193,8 @@ public enum TL {
 
     COMMAND_DELHOME_DEL("%1$s&e unset the home for your faction."),
     COMMAND_DELHOME_DESCRIPTION("Unset the faction home"),
+    COMMAND_DELHOME_TOSET("to unset the faction home"),
+    COMMAND_DELHOME_FORSET("for unsetting the faction home"),
 
     COMMAND_DESCRIPTION_CHANGES("You have changed the description for &d%1$s&e to:"),
     COMMAND_DESCRIPTION_CHANGED("&eThe faction %1$s&e changed their description to:"),

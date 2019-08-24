@@ -30,6 +30,10 @@ public class CmdDelhome extends FCommand {
             return;
         }
 
+        if (!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostDelhome(), TL.COMMAND_DELHOME_TOSET, TL.COMMAND_DELHOME_FORSET)) {
+            return;
+        }
+
         context.faction.delHome();
 
         context.faction.msg(TL.COMMAND_DELHOME_DEL, context.fPlayer.describeTo(context.faction, true));
