@@ -99,7 +99,7 @@ public class Econ {
         to.sendMessage(String.format("%s's balance is %s.", about.getTag(), Econ.moneyString(econ.getBalance(about.getAccountId()))));
     }
 
-    public static boolean canIControllYou(EconomyParticipator i, EconomyParticipator you) {
+    public static boolean canIControlYou(EconomyParticipator i, EconomyParticipator you) {
         Faction fI = RelationUtil.getFaction(i);
         Faction fYou = RelationUtil.getFaction(you);
 
@@ -160,7 +160,7 @@ public class Econ {
         }
 
         // Check the rights
-        if (!canIControllYou(invoker, from)) {
+        if (!canIControlYou(invoker, from)) {
             return false;
         }
 

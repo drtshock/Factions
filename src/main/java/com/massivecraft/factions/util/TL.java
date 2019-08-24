@@ -177,6 +177,12 @@ public enum TL {
     COMMAND_CREATE_CREATEDLOG(" created a new faction: "),
     COMMAND_CREATE_DESCRIPTION("Create a new faction"),
 
+    COMMAND_DEBUG_RUNNING("&eNow running..."),
+    COMMAND_DEBUG_COMPLETE("&eDebug generated! Share this URL: %s"),
+    COMMAND_DEBUG_DESCRIPTION("Create a debug paste"),
+    COMMAND_DEBUG_DELETIONKEY("&eDeletion key: %s"),
+    COMMAND_DEBUG_FAIL("&eERROR! Could not debug. See console for why."),
+
     COMMAND_DEINVITE_CANDEINVITE("Players you can deinvite: "),
     COMMAND_DEINVITE_CLICKTODEINVITE("Click to revoke invite for %1$s"),
     COMMAND_DEINVITE_ALREADYMEMBER("%1$s&e is already a member of %2$s"),

@@ -81,6 +81,7 @@ public abstract class AbstractListener implements Listener {
             case HOPPER:
             case BLAST_FURNACE:
             case CAULDRON:
+            case CAMPFIRE:
             case BREWING_STAND:
             case CARTOGRAPHY_TABLE:
             case GRINDSTONE:
@@ -102,6 +103,9 @@ public abstract class AbstractListener implements Listener {
                 // Check for doors that might have diff material name in old version.
                 if (material.name().contains("DOOR") || material.name().contains("GATE")) {
                     action = PermissibleAction.DOOR;
+                }
+                if (material.name().contains("BUTTON")) {
+                    action = PermissibleAction.BUTTON;
                 }
                 // Lazier than checking all the combinations
                 if (material.name().contains("SHULKER") || material.name().contains("ANVIL") || material.name().startsWith("POTTED")) {
@@ -131,7 +135,8 @@ public abstract class AbstractListener implements Listener {
         // Dupe fix.
         Faction myFaction = me.getFaction();
         Relation rel = myFaction.getRelationTo(otherFaction);
-        if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc)) {
+        if (FactionsPlugin.getInstance().conf().exploits().doPreventDuping() &&
+           (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc))) {
             Material mainHand = player.getItemInHand().getType();
 
             // Check if material is at risk for dupe in either hand.

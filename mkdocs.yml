@@ -1,0 +1,60 @@
+# Project information
+site_name: 'FactionsUUID'
+site_description: 'Premium Factions for premium people.'
+site_author: 'MOSS'
+site_url: 'https://factions-support.cf/'
+
+# Repository
+repo_name: 'GitHub'
+repo_url: 'https://github.com/drtshock/Factions'
+
+# Copyright
+copyright: 'Copyright &copy; 2019 MOSS'
+
+# Configuration
+theme:
+  name: 'material'
+  language: 'en'
+  palette:
+    primary: 'green'
+    accent: 'light green'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+
+extra_css:
+  - stylesheets/dark_theme.css
+  - stylesheets/codehilite.css
+
+# Page tree
+nav:
+  - Home: index.md
+  - Support: support.md
+  - Introduction: introduction.md
+  - First Steps: firststeps.md
+
+# Customization
+extra:
+  social:
+    - type: 'globe'
+      link: 'https://discord.gg/PHpuzZS'
+
+# Plugins
+plugins:
+  - search
+  - minify:
+      minify_html: true
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - pymdownx.critic
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - toc:
+      permalink: true

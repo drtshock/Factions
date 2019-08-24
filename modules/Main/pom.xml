@@ -43,7 +43,6 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
-                    <minimizeJar>true</minimizeJar>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <artifactSet>
                         <excludes>
@@ -78,6 +77,14 @@
                         <relocation>
                             <pattern>ninja.leaping</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.ninja.leaping</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.apache.http</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.org.apache.http</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.kitteh</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.org.kitteh</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -418,6 +425,12 @@
                     <groupId>org.checkerframework</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.kitteh</groupId>
+            <artifactId>paste-gg-api</artifactId>
+            <version>0.9.0</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

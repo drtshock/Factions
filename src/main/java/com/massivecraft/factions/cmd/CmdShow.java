@@ -64,7 +64,7 @@ public class CmdShow extends FCommand {
             return;
         }
 
-        if (context.fPlayer != null && !context.player.hasPermission("factions.show.bypassexempt")
+        if (context.fPlayer != null && !context.player.hasPermission(Permission.SHOW_BYPASS_EXEMPT.toString())
                 && FactionsPlugin.getInstance().getConfig().getStringList("show-exempt").contains(faction.getTag())) {
             context.msg(TL.COMMAND_SHOW_EXEMPT);
             return;

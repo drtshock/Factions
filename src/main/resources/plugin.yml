@@ -22,6 +22,7 @@ permissions:
       factions.ahome: true
       factions.setmaxvaults: true
       factions.updates: true
+      factions.debug: true
   factions.*:
     description: This is just an alias for factions.kit.admin
     children:
@@ -302,3 +303,5 @@ permissions:
     description: Be informed of available updates to the plugin
   factions.permissions:
     description: Use /f perms
+  factions.debug:
+    description: Use /f debug

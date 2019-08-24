@@ -80,6 +80,7 @@ public enum Permission {
     SETHOME("sethome"),
     SETHOME_ANY("sethome.any"),
     SHOW("show"),
+    SHOW_BYPASS_EXEMPT("show.bypassexempt"),
     STATUS("status"),
     STUCK("stuck"),
     TAG("tag"),
@@ -97,7 +98,9 @@ public enum Permission {
     SETMAXVAULTS("setmaxvaults"),
     NEAR("near"),
     WARP("warp"),
-    UPDATES("updates");
+    UPDATES("updates"),
+    DEBUG("debug")
+    ;
 
     public final String node;
 

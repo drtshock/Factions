@@ -284,6 +284,9 @@ public class FactionsPlayerListener extends AbstractListener {
             case TRADER_LLAMA:
             case PIG:
             case LEASH_HITCH:
+            case MINECART_CHEST:
+            case MINECART_FURNACE:
+            case MINECART_HOPPER:
                 if (!this.playerCanInteractHere(event.getPlayer(), event.getRightClicked().getLocation())) {
                     event.setCancelled(true);
                 }

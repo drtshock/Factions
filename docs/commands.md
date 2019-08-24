@@ -1,0 +1,5 @@
+# Commands
+
+## Territory
+
+#### /f claim

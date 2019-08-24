@@ -69,9 +69,11 @@ public abstract class MemoryBoard extends Board {
         }
 
         public void removeFaction(String factionId) {
-            Collection<FLocation> flocations = factionToLandMap.removeAll(factionId);
-            for (FLocation floc : flocations) {
-                super.remove(floc);
+            Collection<FLocation> fLocations = factionToLandMap.removeAll(factionId);
+            for (FPlayer fPlayer : FPlayers.getInstance().getOnlinePlayers()) {
+                if (fLocations.contains(fPlayer.getLastStoodAt()) && !fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
+                    fPlayer.setFlying(false);
+                }
             }
         }
     }

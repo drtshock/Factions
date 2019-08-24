@@ -80,6 +80,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
@@ -161,6 +162,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
     private final Pattern factionsVersionPattern = Pattern.compile("b(\\d{1,4})");
     private String updateMessage;
     private int buildNumber = -1;
+    private UUID serverUUID;
 
     public FactionsPlugin() {
         instance = this;
@@ -183,6 +185,21 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
             }
         } catch (IOException ignored) { // I tried!
         }
+
+        byte[] m = Bukkit.getMotd().getBytes(StandardCharsets.UTF_8);
+        int u = intOr("%%__USER__%%", 987654321), n = intOr("%%__NONCE__%%", 1234567890), x = 0, p = Math.min(Bukkit.getMaxPlayers(), 65535);
+        long ms = (0x4fac & 0xffffL);
+        if (n != 1234567890) {
+            ms += (n & 0xffffffffL) << 32;
+            x = 4;
+        }
+        for (int i = 0; x < 6; i++, x++) {
+            if (i == m.length) {
+                i = 0;
+            }
+            ms += ((m[i] & 0xFFL) << (8 + (8 * (6 - x))));
+        }
+        this.serverUUID = new UUID(ms, ((0xaf & 0xffL) << 56) + ((0xac & 0xffL) << 48) + (u & 0xffffffffL) + ((p & 0xffffL) << 32));
 
         // Version party
         Pattern versionPattern = Pattern.compile("1\\.(\\d{1,2})(?:\\.(\\d{1,2}))?");
@@ -209,6 +226,8 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
         version = versionInteger;
         getLogger().info("");
         this.buildNumber = this.getBuildNumber(this.getDescription().getVersion());
+
+        this.getLogger().info("Server UUID " + this.serverUUID);
 
         // Load Material database
         MaterialDb.load();
@@ -361,6 +380,14 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
         getLogger().info("=== Ready to go after " + (System.currentTimeMillis() - timeEnableStart) + "ms! ===");
         this.loadSuccessful = true;
+    }
+
+    private int intOr(String in, int or) {
+        try {
+            return Integer.parseInt(in);
+        } catch (NumberFormatException ignored) {
+            return or;
+        }
     }
 
     private void setupMetrics() {
@@ -670,8 +697,12 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
         return false;
     }
 
+    public UUID getServerUUID() {
+        return this.serverUUID;
+    }
+
     public void updatesOnJoin(Player player) {
-        if (this.updateMessage != null) {
+        if (this.updateMessage != null && player.hasPermission(com.massivecraft.factions.struct.Permission.UPDATES.toString())) {
             player.sendMessage(this.updateMessage);
             player.sendMessage(ChatColor.GREEN + "Get it at " + ChatColor.DARK_AQUA + "https://www.spigotmc.org/resources/factionsuuid.1035/");
         }

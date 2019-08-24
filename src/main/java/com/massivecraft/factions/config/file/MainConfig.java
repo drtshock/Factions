@@ -961,6 +961,7 @@ public class MainConfig {
         private boolean interactionSpam = true;
         private boolean tntWaterlog = false;
         private boolean liquidFlow = false;
+        private boolean preventDuping = true;
 
         public boolean isObsidianGenerators() {
             return obsidianGenerators;
@@ -980,6 +981,10 @@ public class MainConfig {
 
         public boolean isLiquidFlow() {
             return liquidFlow;
+        }
+
+        public boolean doPreventDuping() {
+            return preventDuping;
         }
     }
 

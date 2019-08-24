@@ -41,12 +41,12 @@ public class CmdList extends FCommand {
         }
 
         ArrayList<Faction> factionList = Factions.getInstance().getAllFactions();
-        factionList.remove(Factions.getInstance().getNone());
+        factionList.remove(Factions.getInstance().getWilderness());
         factionList.remove(Factions.getInstance().getSafeZone());
         factionList.remove(Factions.getInstance().getWarZone());
 
         // remove exempt factions
-        if (!context.sender.hasPermission("factions.show.bypassexempt")) {
+        if (!context.sender.hasPermission(Permission.SHOW_BYPASS_EXEMPT.toString())) {
             List<String> exemptFactions = FactionsPlugin.getInstance().getConfig().getStringList("show-exempt");
             factionList.removeIf(next -> exemptFactions.contains(next.getTag()));
         }
@@ -59,7 +59,7 @@ public class CmdList extends FCommand {
 
         ArrayList<String> lines = new ArrayList<>();
 
-        factionList.add(0, Factions.getInstance().getNone());
+        factionList.add(0, Factions.getInstance().getWilderness());
 
         final int pageheight = 9;
         int pagenumber = context.argAsInt(0, 1);

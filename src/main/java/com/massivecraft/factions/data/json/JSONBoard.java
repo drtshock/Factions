@@ -72,8 +72,6 @@ public class JSONBoard extends MemoryBoard {
     }
 
     public boolean load() {
-        FactionsPlugin.getInstance().getLogger().info("Loading board from disk");
-
         if (!file.exists()) {
             FactionsPlugin.getInstance().getLogger().info("No board to load from disk. Creating new file.");
             forceSave();
