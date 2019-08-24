@@ -187,13 +187,13 @@ public class FLocation implements Serializable {
             return false;
         }
 
-        WorldBorder border = getWorld().getWorldBorder();
-        Chunk chunk = border.getCenter().getChunk();
+        final WorldBorder border = getWorld().getWorldBorder();
+        final Chunk chunk = border.getCenter().getChunk();
+        final int lim = FLocation.chunkToRegion((int) border.getSize()) - buffer;
+        final int diffX = chunk.getX() - x;
+        final int diffZ = chunk.getZ() - z;
 
-        int lim = FLocation.chunkToRegion((int) border.getSize()) - buffer;
-        int diffX = Math.abs(chunk.getX() - x);
-        int diffZ = Math.abs(chunk.getZ() - z);
-        return diffX > lim || diffZ > lim;
+        return (diffX > lim || diffZ > lim) || (-diffX >= lim || -diffZ >= lim);
     }
 
     //----------------------------------------------//
