@@ -9,6 +9,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.config.file.MainConfig;
 import com.massivecraft.factions.integration.LWC;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
@@ -27,7 +28,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 
 public abstract class MemoryBoard extends Board {
 
@@ -272,81 +272,84 @@ public abstract class MemoryBoard extends Board {
      * The map is relative to a coord and a faction north is in the direction of decreasing x east is in the direction
      * of decreasing z
      */
-    public ArrayList<FancyMessage> getMap(FPlayer fplayer, FLocation flocation, double inDegrees) {
-        Faction faction = fplayer.getFaction();
-        ArrayList<FancyMessage> ret = new ArrayList<>();
-        Faction factionLoc = getFactionAt(flocation);
-        ret.add(new FancyMessage(FactionsPlugin.getInstance().txt().titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer))));
+    public ArrayList<FancyMessage> getMap(FPlayer fPlayer, FLocation fLocation, double inDegrees) {
+        final MainConfig conf = FactionsPlugin.getInstance().conf();
+        final ArrayList<FancyMessage> out = new ArrayList<>();
 
-        // Get the compass
-        ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, FactionsPlugin.getInstance().txt().parse("<a>"));
+        final Faction senderFaction = fPlayer.getFaction();
+        final Faction senderFactionAtLocation = getFactionAt(fLocation);
 
-        int halfWidth = FactionsPlugin.getInstance().conf().map().getWidth() / 2;
-        // Use player's value for height
-        int halfHeight = fplayer.getMapHeight() / 2;
-        FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
-        int width = halfWidth * 2 + 1;
-        int height = halfHeight * 2 + 1;
+        out.add(new FancyMessage(FactionsPlugin.getInstance()
+            .txt().titleize("(" + fLocation.getCoordString() + ") " + senderFactionAtLocation.getTag(fPlayer))));
 
-        if (FactionsPlugin.getInstance().conf().map().isShowFactionKey()) {
-            height--;
-        }
+        final ArrayList<String> compass =
+            AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, FactionsPlugin.getInstance().txt().parse("<a>"));
 
-        Map<String, Character> fList = new HashMap<>();
+        final int halfMapWidth = FactionsPlugin.getInstance().conf().map().getWidth() / 2;
+        final int halfMapHeight = fPlayer.getMapHeight() / 2;
+        final int mapWidth = halfMapWidth * 2 + 1;
+        final int mapHeight = FactionsPlugin.getInstance().conf().map().isShowFactionKey() ? halfMapHeight * 2 : halfMapHeight * 2 + 1;
+
+        final FLocation topLeft = fLocation.getRelative(-halfMapWidth, -halfMapHeight);
+        final Map<String, Character> factionsList = new HashMap<>();
+
         int chrIdx = 0;
 
-        // For each row
-        for (int dz = 0; dz < height; dz++) {
-            // Draw and add that row
-            FancyMessage row = new FancyMessage("");
+        // ... for each row
+        for (int dz = 0; dz < mapHeight; dz++) {
+            final FancyMessage row = new FancyMessage("");
 
-            if (dz < 3) {
-                row.then(asciiCompass.get(dz));
-            }
-            for (int dx = (dz < 3 ? 6 : 3); dx < width; dx++) {
-                if (dx == halfWidth && dz == halfHeight) {
-                    row.then("+").color(ChatColor.AQUA);
-                    if (false) {
-                        row.tooltip(TL.CLAIM_YOUAREHERE.toString());
+            // ... add ascii compass
+            if (dz < 3) row.then(compass.get(dz));
+
+            for (int dx = (dz < 3 ? 6 : 3); dx < mapWidth; dx++) {
+                // ... current chunk fplayer is standing in
+                if (dx == halfMapWidth && dz == halfMapHeight) {
+                    row.then("+").color(ChatColor.AQUA).tooltip(TL.CLAIM_YOUAREHERE.toString());
+                    continue;
+                }
+
+                final Faction factionAt = getFactionAt(topLeft.getRelative(dx, dz));
+                final Relation relation = fPlayer.getRelationTo(factionAt);
+
+                if (factionAt.isWilderness()) {
+                    row.then("-").color(FactionsPlugin.getInstance().conf().colors().factions().getWilderness());
+                } else if (factionAt.isSafeZone()) {
+                    row.then("+").color(FactionsPlugin.getInstance().conf().colors().factions().getSafezone());
+                } else if (factionAt.isWarZone()) {
+                    row.then("+").color(FactionsPlugin.getInstance().conf().colors().factions().getWarzone());
+                }
+
+                // ... check relations
+                else if (factionAt == senderFaction || factionAt == senderFactionAtLocation || relation.isAtLeast(Relation.ALLY) ||
+                    conf.map().isShowNeutralFactions() && relation.equals(Relation.NEUTRAL) ||
+                    conf.map().isShowEnemyFactions() && relation.equals(Relation.ENEMY) ||
+                    conf.map().isShowTruceFactions() && relation.equals(Relation.TRUCE)) {
+
+                    if (!factionsList.containsKey(factionAt.getTag())) {
+                        factionsList.put(factionAt.getTag(), this.mapKeyChrs[Math.min(chrIdx++, this.mapKeyChrs.length - 1)]);
                     }
+
+                    final char tag = factionsList.get(factionAt.getTag());
+                    row.then(String.valueOf(tag)).color(factionAt.getColorTo(senderFaction));
                 } else {
-                    FLocation flocationHere = topLeft.getRelative(dx, dz);
-                    Faction factionHere = getFactionAt(flocationHere);
-                    Relation relation = fplayer.getRelationTo(factionHere);
-                    if (factionHere.isWilderness()) {
-                        row.then("-").color(FactionsPlugin.getInstance().conf().colors().factions().getWilderness());
-                    } else if (factionHere.isSafeZone()) {
-                        row.then("+").color(FactionsPlugin.getInstance().conf().colors().factions().getSafezone());
-                    } else if (factionHere.isWarZone()) {
-                        row.then("+").color(FactionsPlugin.getInstance().conf().colors().factions().getWarzone());
-                    } else if (factionHere == faction || factionHere == factionLoc || relation.isAtLeast(Relation.ALLY) ||
-                            (FactionsPlugin.getInstance().conf().map().isShowNeutralFactionsOnMap() && relation.equals(Relation.NEUTRAL)) ||
-                            (FactionsPlugin.getInstance().conf().map().isShowEnemyFactions() && relation.equals(Relation.ENEMY)) ||
-                            FactionsPlugin.getInstance().conf().map().isShowTruceFactions() && relation.equals(Relation.TRUCE)) {
-                        if (!fList.containsKey(factionHere.getTag())) {
-                            fList.put(factionHere.getTag(), this.mapKeyChrs[Math.min(chrIdx++, this.mapKeyChrs.length - 1)]);
-                        }
-                        char tag = fList.get(factionHere.getTag());
-                        row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction));
-                    } else {
-                        row.then("-").color(ChatColor.GRAY);
-                    }
+                    row.then("-").color(ChatColor.GRAY);
                 }
             }
-            ret.add(row);
+            out.add(row);
         }
 
-        // Add the faction key
+        // ... add each factions' name with key
         if (FactionsPlugin.getInstance().conf().map().isShowFactionKey()) {
-            FancyMessage fRow = new FancyMessage("");
-            for (String key : fList.keySet()) {
-                final Relation relation = fplayer.getRelationTo(Factions.getInstance().getByTag(key));
-                fRow.then(String.format("%s: %s ", fList.get(key), key)).color(relation.getColor());
+            final FancyMessage row = new FancyMessage("");
+            for (String key : factionsList.keySet()) {
+                final Relation relation = fPlayer.getRelationTo(Factions.getInstance().getByTag(key));
+                row.then(String.format("%s: %s ", factionsList.get(key), key)).color(relation.getColor());
             }
-            ret.add(fRow);
+            out.add(row);
         }
 
-        return ret;
+        return out;
     }
 
     public abstract void convertFrom(MemoryBoard old);
