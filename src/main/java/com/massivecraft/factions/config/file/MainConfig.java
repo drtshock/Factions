@@ -1165,7 +1165,7 @@ public class MainConfig {
         private int height = 17;
         private int width = 49;
         private boolean showFactionKey = true;
-        private boolean showNeutralFactionsOnMap = true;
+        private boolean showNeutralFactions = true;
         private boolean showEnemyFactions = true;
         private boolean showTruceFactions = true;
 
@@ -1181,8 +1181,8 @@ public class MainConfig {
             return showFactionKey;
         }
 
-        public boolean isShowNeutralFactionsOnMap() {
-            return showNeutralFactionsOnMap;
+        public boolean isShowNeutralFactions() {
+            return showNeutralFactions;
         }
 
         public boolean isShowEnemyFactions() {
