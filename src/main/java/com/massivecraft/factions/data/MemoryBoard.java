@@ -293,7 +293,7 @@ public abstract class MemoryBoard extends Board {
         final FLocation topLeft = fLocation.getRelative(-halfMapWidth, -halfMapHeight);
         final Map<String, Character> factionsList = new HashMap<>();
 
-        int chrIdx = 0;
+        int charIndex = 0;
 
         // ... for each row
         for (int dz = 0; dz < mapHeight; dz++) {
@@ -327,7 +327,7 @@ public abstract class MemoryBoard extends Board {
                     conf.map().isShowTruceFactions() && relation.equals(Relation.TRUCE)) {
 
                     if (!factionsList.containsKey(factionAt.getTag())) {
-                        factionsList.put(factionAt.getTag(), this.mapKeyChrs[Math.min(chrIdx++, this.mapKeyChrs.length - 1)]);
+                        factionsList.put(factionAt.getTag(), this.mapKeyChrs[Math.min(charIndex++, this.mapKeyChrs.length - 1)]);
                     }
 
                     final char tag = factionsList.get(factionAt.getTag());
