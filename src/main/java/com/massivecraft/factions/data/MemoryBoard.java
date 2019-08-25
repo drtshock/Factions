@@ -285,10 +285,10 @@ public abstract class MemoryBoard extends Board {
         final ArrayList<String> compass =
             AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, FactionsPlugin.getInstance().txt().parse("<a>"));
 
-        final int halfMapWidth = FactionsPlugin.getInstance().conf().map().getWidth() / 2;
+        final int halfMapWidth = conf.map().getWidth() / 2;
         final int halfMapHeight = fPlayer.getMapHeight() / 2;
         final int mapWidth = halfMapWidth * 2 + 1;
-        final int mapHeight = FactionsPlugin.getInstance().conf().map().isShowFactionKey() ? halfMapHeight * 2 : halfMapHeight * 2 + 1;
+        final int mapHeight = conf.map().isShowFactionKey() ? halfMapHeight * 2 : halfMapHeight * 2 + 1;
 
         final FLocation topLeft = fLocation.getRelative(-halfMapWidth, -halfMapHeight);
         final Map<String, Character> factionsList = new HashMap<>();
@@ -313,11 +313,11 @@ public abstract class MemoryBoard extends Board {
                 final Relation relation = fPlayer.getRelationTo(factionAt);
 
                 if (factionAt.isWilderness()) {
-                    row.then("-").color(FactionsPlugin.getInstance().conf().colors().factions().getWilderness());
+                    row.then("-").color(conf.colors().factions().getWilderness());
                 } else if (factionAt.isSafeZone()) {
-                    row.then("+").color(FactionsPlugin.getInstance().conf().colors().factions().getSafezone());
+                    row.then("+").color(conf.colors().factions().getSafezone());
                 } else if (factionAt.isWarZone()) {
-                    row.then("+").color(FactionsPlugin.getInstance().conf().colors().factions().getWarzone());
+                    row.then("+").color(conf.colors().factions().getWarzone());
                 }
 
                 // ... check relations
