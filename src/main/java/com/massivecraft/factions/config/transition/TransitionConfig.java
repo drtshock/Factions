@@ -389,7 +389,7 @@ public class TransitionConfig {
         private int height = 17;
         private int width = 49;
         private boolean showFactionKey = true;
-        private boolean showNeutralFactionsOnMap = true;
+        private boolean showNeutralFactions = true;
         private boolean showEnemyFactions = true;
         private boolean showTruceFactions = true;
     }
@@ -637,7 +637,7 @@ public class TransitionConfig {
         this.map.height = c.mapHeight;
         this.map.width = c.mapWidth;
         this.map.showFactionKey = c.showMapFactionKey;
-        this.map.showNeutralFactionsOnMap = c.showNeutralFactionsOnMap;
+        this.map.showNeutralFactions = c.showNeutralFactionsOnMap;
         this.map.showEnemyFactions = c.showEnemyFactionsOnMap;
         this.map.showTruceFactions = c.showTruceFactionsOnMap;
 
