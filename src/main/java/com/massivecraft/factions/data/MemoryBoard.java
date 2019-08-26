@@ -340,7 +340,7 @@ public abstract class MemoryBoard extends Board {
         }
 
         // ... add each factions' name with key
-        if (FactionsPlugin.getInstance().conf().map().isShowFactionKey()) {
+        if (conf.map().isShowFactionKey()) {
             final FancyMessage row = new FancyMessage("");
             for (Entry<String, Character> entry : factionsList.entrySet()) {
                 final Relation relation = fPlayer.getRelationTo(Factions.getInstance().getByTag(entry.getKey()));
