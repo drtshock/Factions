@@ -30,6 +30,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -63,8 +64,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private long lastDeath;
     protected int maxVaults;
     protected Role defaultRole;
-    protected Map<Permissible, Map<PermissibleAction, Boolean>> permissions = new HashMap<>();
-    protected Map<Permissible, Map<PermissibleAction, Boolean>> permissionsOffline = new HashMap<>();
+    protected Map<Permissible, EnumMap<PermissibleAction, Boolean>> permissions = new HashMap<>();
+    protected Map<Permissible, EnumMap<PermissibleAction, Boolean>> permissionsOffline = new HashMap<>();
     protected Set<BanInfo> bans = new HashSet<>();
 
     public HashMap<String, List<String>> getAnnouncements() {
@@ -370,7 +371,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             return true;
         }
 
-        Map<Permissible, Map<PermissibleAction, Boolean>> permissionsMap = this.getPermissionsMap(online);
+        Map<Permissible, EnumMap<PermissibleAction, Boolean>> permissionsMap = this.getPermissionsMap(online);
 
         DefaultPermissionsConfig.Permissions.PermissiblePermInfo permInfo = this.getPermInfo(online, permissible, permissibleAction);
         if (permInfo == null) { // Not valid lookup, like a role-only lookup of a relation
@@ -380,7 +381,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             return permInfo.defaultAllowed();
         }
 
-        Map<PermissibleAction, Boolean> accessMap = permissionsMap.get(permissible);
+        EnumMap<PermissibleAction, Boolean> accessMap = permissionsMap.get(permissible);
         if (accessMap != null && accessMap.containsKey(permissibleAction)) {
             return accessMap.get(permissibleAction);
         }
@@ -409,7 +410,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
     }
 
-    private Map<Permissible, Map<PermissibleAction, Boolean>> getPermissionsMap(boolean online) {
+    private Map<Permissible, EnumMap<PermissibleAction, Boolean>> getPermissionsMap(boolean online) {
         if (online || !FactionsPlugin.getInstance().conf().factions().isSeparateOfflinePerms()) {
             return this.permissions;
         } else {
@@ -450,17 +451,17 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean setPermission(boolean online, Permissible permissible, PermissibleAction permissibleAction, boolean value) {
-        Map<Permissible, Map<PermissibleAction, Boolean>> permissionsMap = this.getPermissionsMap(online);
+        Map<Permissible, EnumMap<PermissibleAction, Boolean>> permissionsMap = this.getPermissionsMap(online);
         DefaultPermissionsConfig.Permissions defaultPermissions = this.getDefaultPermissions(online);
 
         DefaultPermissionsConfig.Permissions.PermissiblePermInfo permInfo = this.getPermInfo(online, permissible, permissibleAction);
         if (permInfo == null || permInfo.isLocked()) {
-            return false; // Locked, can't continue;
+            return false;
         }
 
-        Map<PermissibleAction, Boolean> accessMap = permissionsMap.get(permissible);
+        EnumMap<PermissibleAction, Boolean> accessMap = permissionsMap.get(permissible);
         if (accessMap == null) {
-            accessMap = new HashMap<>();
+            accessMap = new EnumMap<>(PermissibleAction.class);
         }
 
         accessMap.put(permissibleAction, value);
@@ -474,23 +475,23 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.resetPerms(this.permissionsOffline, FactionsPlugin.getInstance().getConfigManager().getOfflinePermissionsConfig().getPermissions(), false);
     }
 
-    private void resetPerms(Map<Permissible, Map<PermissibleAction, Boolean>> permissions, DefaultPermissionsConfig.Permissions defaults, boolean online) {
+    private void resetPerms(Map<Permissible, EnumMap<PermissibleAction, Boolean>> permissions, DefaultPermissionsConfig.Permissions defaults, boolean online) {
         permissions.clear();
 
         for (Relation relation : Relation.values()) {
             if (relation != Relation.MEMBER) {
-                permissions.put(relation, new HashMap<>());
+                permissions.put(relation, new EnumMap<>(PermissibleAction.class));
             }
         }
         if (online) {
             for (Role role : Role.values()) {
                 if (role != Role.ADMIN) {
-                    permissions.put(role, new HashMap<>());
+                    permissions.put(role, new EnumMap<>(PermissibleAction.class));
                 }
             }
         }
 
-        for (Map.Entry<Permissible, Map<PermissibleAction, Boolean>> entry : permissions.entrySet()) {
+        for (Map.Entry<Permissible, EnumMap<PermissibleAction, Boolean>> entry : permissions.entrySet()) {
             for (PermissibleAction permissibleAction : PermissibleAction.values()) {
                 if (permissibleAction.isFactionOnly()) {
                     if (online && !(entry.getKey() instanceof Relation)) {
