@@ -3,6 +3,7 @@ package com.massivecraft.factions.config;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.config.file.DefaultOfflinePermissionsConfig;
 import com.massivecraft.factions.config.file.DefaultPermissionsConfig;
+import com.massivecraft.factions.config.file.DynmapConfig;
 import com.massivecraft.factions.config.file.MainConfig;
 import com.massivecraft.factions.config.transition.Transitioner;
 
@@ -21,6 +22,8 @@ public class ConfigManager {
             "# Website https://www.spigotmc.org/resources/factionsuuid.1035/\n" +
             "\n" +
             "# Made with love <3";
+    private final DynmapConfig dynmapConfig = new DynmapConfig();
+    private static final String dynmapConfigComment = "Default permissions for Dynmap";
 
     public ConfigManager(FactionsPlugin plugin) {
         this.plugin = plugin;
@@ -36,9 +39,10 @@ public class ConfigManager {
 
     public void loadConfigs() {
         try {
-            Loader.load("default_permissions", this.permissionsConfig, this.permissionsConfigComment);
-            Loader.load("default_permissions_offline", this.offlinePermissionsConfig, this.offlinePermissionsConfigComment);
-            Loader.load("main", this.mainConfig, this.mainConfigComment);
+            Loader.load("default_permissions", this.permissionsConfig, permissionsConfigComment);
+            Loader.load("default_permissions_offline", this.offlinePermissionsConfig, offlinePermissionsConfigComment);
+            Loader.load("main", this.mainConfig, mainConfigComment);
+            Loader.load("dynmap", this.dynmapConfig, dynmapConfigComment);
         } catch (IOException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -54,5 +58,9 @@ public class ConfigManager {
 
     public MainConfig getMainConfig() {
         return this.mainConfig;
+    }
+
+    public DynmapConfig getDynmapConfig() {
+        return dynmapConfig;
     }
 }

@@ -1,8 +1,38 @@
 package com.massivecraft.factions.integration.dynmap;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.plugin.Plugin;
 import org.dynmap.DynmapAPI;
+import org.dynmap.markers.AreaMarker;
+import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerSet;
+import org.dynmap.markers.PlayerSet;
+import org.dynmap.utils.TileFlags;
+
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.config.file.DynmapConfig;
+import com.massivecraft.factions.data.MemoryBoard;
+import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.perms.Role;
 
 // This source code is a heavily modified version of mikeprimms plugin Dynmap-Factions.
 public class EngineDynmap {
@@ -30,12 +60,10 @@ public class EngineDynmap {
     // -------------------------------------------- //
 
     private static EngineDynmap i = new EngineDynmap();
+    private DynmapConfig dynmapConf = FactionsPlugin.getInstance().getConfigManager().getDynmapConfig();
 
     public static EngineDynmap getInstance() {
         return i;
-    }
-
-    private EngineDynmap() {
     }
 
     public DynmapAPI dynmapApi;
@@ -52,10 +80,6 @@ public class EngineDynmap {
     }
 
     public void init() {
-        return;
-    }
-}
-        /* TODO
         Plugin dynmap = Bukkit.getServer().getPluginManager().getPlugin("dynmap");
 
         if (dynmap == null || !dynmap.isEnabled()) {
@@ -65,7 +89,7 @@ public class EngineDynmap {
         this.dynmapApi = (DynmapAPI) dynmap;
 
         // Should we even use dynmap?
-        if (!Conf.dynmapUse) {
+        if (!dynmapConf.dynmap().isEnabled()) {
             if (this.markerset != null) {
                 this.markerset.deleteMarkerSet();
                 this.markerset = null;
@@ -74,7 +98,7 @@ public class EngineDynmap {
         }
 
         // Shedule non thread safe sync at the end!
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, () -> {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.getInstance(), () -> {
 
             final Map<String, TempMarker> homes = createHomes();
             final Map<String, TempAreaMarker> areas = createAreas();
@@ -119,10 +143,10 @@ public class EngineDynmap {
     // Thread Safe / Asynchronous: Yes
     public TempMarkerSet createLayer() {
         TempMarkerSet ret = new TempMarkerSet();
-        ret.label = Conf.dynmapLayerName;
-        ret.minimumZoom = Conf.dynmapLayerMinimumZoom;
-        ret.priority = Conf.dynmapLayerPriority;
-        ret.hideByDefault = !Conf.dynmapLayerVisible;
+        ret.label = dynmapConf.dynmap().getLayerName();
+        ret.minimumZoom = dynmapConf.dynmap().getLayerMinimumZoom();
+        ret.priority = dynmapConf.dynmap().getLayerPriority();
+        ret.hideByDefault = !dynmapConf.dynmap().isLayerVisible();
         return ret;
     }
 
@@ -518,7 +542,7 @@ public class EngineDynmap {
 
     // Thread Safe / Asynchronous: Yes
     public Map<String, Set<String>> createPlayersets() {
-        if (!Conf.dynmapVisibilityByFaction) {
+        if (!dynmapConf.dynmap().isVisibilityByFaction()) {
             return null;
         }
 
@@ -590,7 +614,7 @@ public class EngineDynmap {
 
     // Thread Safe / Asynchronous: Yes
     private String getDescription(Faction faction) {
-        String ret = "<div class=\"regioninfo\">" + Conf.dynmapDescription + "</div>";
+        String ret = "<div class=\"regioninfo\">" + dynmapConf.dynmap().getDescription() + "</div>";
 
         // Name
         String name = faction.getTag();
@@ -607,7 +631,7 @@ public class EngineDynmap {
         // Money
 
         String money = "unavailable";
-        if (P.getInstance().conf().economy().isBankEnabled() && Conf.dynmapDescriptionMoney) {
+        if (FactionsPlugin.getInstance().conf().economy().isBankEnabled() && dynmapConf.dynmap().isDescriptionMoney()) {
             money = String.format("%.2f", Econ.getBalance(faction.getAccountId()));
         }
         ret = ret.replace("%money%", money);
@@ -621,16 +645,16 @@ public class EngineDynmap {
         FPlayer playersLeaderObject = faction.getFPlayerAdmin();
         String playersLeader = getHtmlPlayerName(playersLeaderObject);
 
-        ArrayList<FPlayer> playersAdminsList = faction.getFPlayersWhereRole(Role.ADMIN);
+        List<FPlayer> playersAdminsList = faction.getFPlayersWhereRole(Role.ADMIN);
         String playersAdminsCount = String.valueOf(playersAdminsList.size());
         String playersAdmins = getHtmlPlayerString(playersAdminsList);
 
-        ArrayList<FPlayer> playersModeratorsList = faction.getFPlayersWhereRole(Role.MODERATOR);
+        List<FPlayer> playersModeratorsList = faction.getFPlayersWhereRole(Role.MODERATOR);
         String playersModeratorsCount = String.valueOf(playersModeratorsList.size());
         String playersModerators = getHtmlPlayerString(playersModeratorsList);
 
 
-        ArrayList<FPlayer> playersNormalsList = faction.getFPlayersWhereRole(Role.NORMAL);
+        List<FPlayer> playersNormalsList = faction.getFPlayersWhereRole(Role.NORMAL);
         String playersNormalsCount = String.valueOf(playersNormalsList.size());
         String playersNormals = getHtmlPlayerString(playersNormalsList);
 
@@ -695,8 +719,8 @@ public class EngineDynmap {
             return false;
         }
 
-        Set<String> visible = Conf.dynmapVisibleFactions;
-        Set<String> hidden = Conf.dynmapHiddenFactions;
+        Set<String> visible = dynmapConf.dynmap().getVisibleFactions();
+        Set<String> hidden = dynmapConf.dynmap().getHiddenFactions();
 
         if (!visible.isEmpty() && !visible.contains(factionId) && !visible.contains(factionName) && !visible.contains("world:" + world)) {
             return false;
@@ -709,17 +733,17 @@ public class EngineDynmap {
     public DynmapStyle getStyle(Faction faction) {
         DynmapStyle ret;
 
-        ret = Conf.dynmapFactionStyles.get(faction.getId());
+        ret = dynmapConf.dynmap().getFactionStyles().get(faction.getId());
         if (ret != null) {
             return ret;
         }
 
-        ret = Conf.dynmapFactionStyles.get(faction.getTag());
+        ret = dynmapConf.dynmap().getFactionStyles().get(faction.getTag());
         if (ret != null) {
             return ret;
         }
 
-        return Conf.dynmapDefaultStyle;
+        return dynmapConf.style().getDefaultStyle();
     }
 
     // Thread Safe / Asynchronous: Yes
@@ -769,4 +793,3 @@ public class EngineDynmap {
         return cnt;
     }
 }
-*/

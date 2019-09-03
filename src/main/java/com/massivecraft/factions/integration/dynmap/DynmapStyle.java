@@ -1,15 +1,17 @@
 package com.massivecraft.factions.integration.dynmap;
 
+import com.massivecraft.factions.FactionsPlugin;
 
 public class DynmapStyle {
     // -------------------------------------------- //
     // FIELDS
     // -------------------------------------------- //
-/* TODO
     public String lineColor = null;
 
     public int getLineColor() {
-        return getColor(coalesce(this.lineColor, Conf.dynmapDefaultStyle.lineColor, Conf.DYNMAP_STYLE_LINE_COLOR));
+        return getColor(coalesce(this.lineColor,
+                FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().getLineColor(),
+                FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().getDefaultStyle().lineColor));
     }
 
     public DynmapStyle setStrokeColor(String strokeColor) {
@@ -20,7 +22,9 @@ public class DynmapStyle {
     public Double lineOpacity = null;
 
     public double getLineOpacity() {
-        return coalesce(this.lineOpacity, Conf.dynmapDefaultStyle.lineOpacity, Conf.DYNMAP_STYLE_LINE_OPACITY);
+        return coalesce(this.lineOpacity,
+                FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().getLineOpacity(),
+                FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().getDefaultStyle().lineOpacity);
     }
 
     public DynmapStyle setLineOpacity(Double strokeOpacity) {
@@ -31,7 +35,9 @@ public class DynmapStyle {
     public Integer lineWeight = null;
 
     public int getLineWeight() {
-        return coalesce(this.lineWeight, Conf.dynmapDefaultStyle.lineWeight, Conf.DYNMAP_STYLE_LINE_WEIGHT);
+        return coalesce(this.lineWeight,
+                FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().getLineWeight(),
+                FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().getDefaultStyle().lineWeight);
     }
 
     public DynmapStyle setLineWeight(Integer strokeWeight) {
@@ -42,7 +48,9 @@ public class DynmapStyle {
     public String fillColor = null;
 
     public int getFillColor() {
-        return getColor(coalesce(this.fillColor, Conf.dynmapDefaultStyle.fillColor, Conf.DYNMAP_STYLE_FILL_COLOR));
+        return getColor(coalesce(this.fillColor,
+                FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().getFillColor(),
+                FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().getDefaultStyle().fillColor));
     }
 
     public DynmapStyle setFillColor(String fillColor) {
@@ -53,7 +61,9 @@ public class DynmapStyle {
     public Double fillOpacity = null;
 
     public double getFillOpacity() {
-        return coalesce(this.fillOpacity, Conf.dynmapDefaultStyle.fillOpacity, Conf.DYNMAP_STYLE_FILL_OPACITY);
+        return coalesce(this.fillOpacity,
+                FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().getFillOpacity(),
+                FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().getDefaultStyle().fillOpacity);
     }
 
     public DynmapStyle setFillOpacity(Double fillOpacity) {
@@ -67,7 +77,9 @@ public class DynmapStyle {
     public String homeMarker = null;
 
     public String getHomeMarker() {
-        return coalesce(this.homeMarker, Conf.dynmapDefaultStyle.homeMarker, Conf.DYNMAP_STYLE_HOME_MARKER);
+        return coalesce(this.homeMarker,
+                FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().getHomeMarker(),
+                FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().getDefaultStyle().homeMarker);
     }
 
     public DynmapStyle setHomeMarker(String homeMarker) {
@@ -78,7 +90,9 @@ public class DynmapStyle {
     public Boolean boost = null;
 
     public boolean getBoost() {
-        return coalesce(this.boost, Conf.dynmapDefaultStyle.boost, Conf.DYNMAP_STYLE_BOOST);
+        return coalesce(this.boost,
+                FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().isStyleBoost(),
+                FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().getDefaultStyle().boost);
     }
 
     public DynmapStyle setBoost(Boolean boost) {
@@ -108,5 +122,4 @@ public class DynmapStyle {
         }
         return ret;
     }
-*/
 }

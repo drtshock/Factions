@@ -1,6 +1,13 @@
 package com.massivecraft.factions.integration.dynmap;
 
-public class TempMarker {/* TODO
+import org.dynmap.markers.Marker;
+import org.dynmap.markers.MarkerAPI;
+import org.dynmap.markers.MarkerIcon;
+import org.dynmap.markers.MarkerSet;
+
+import com.massivecraft.factions.FactionsPlugin;
+
+public class TempMarker {
     // -------------------------------------------- //
     // FIELDS
     // -------------------------------------------- //
@@ -60,9 +67,8 @@ public class TempMarker {/* TODO
     public static MarkerIcon getMarkerIcon(MarkerAPI markerApi, String name) {
         MarkerIcon ret = markerApi.getMarkerIcon(name);
         if (ret == null) {
-            ret = markerApi.getMarkerIcon(Conf.DYNMAP_STYLE_HOME_MARKER);
+            ret = markerApi.getMarkerIcon(FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style().getHomeMarker());
         }
         return ret;
     }
-*/
 }
