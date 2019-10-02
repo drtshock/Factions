@@ -1,5 +1,6 @@
 package com.massivecraft.factions.integration;
 
+import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
@@ -78,6 +79,10 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
         Faction faction = fPlayer.getFaction();
+        if (placeholder.contains("faction_territory")) {
+            faction = Board.getInstance().getFactionAt(fPlayer.getLastStoodAt());
+            placeholder = placeholder.replace("_territory", "");
+        }
         switch (placeholder) {
             // First list player stuff
             case "player_name":
