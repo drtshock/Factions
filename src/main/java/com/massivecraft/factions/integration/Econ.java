@@ -17,6 +17,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.text.DecimalFormat;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -405,14 +406,17 @@ public class Econ {
         return econ.getBalance(account);
     }
 
+    public static Optional<Double> getBalance(UUID uuid) {
+        OfflinePlayer offline = Bukkit.getOfflinePlayer(uuid);
+        if (offline.getName() == null)
+            return Optional.empty();
+        return Optional.of(econ.getBalance(offline));
+    }
+
     private static final DecimalFormat format = new DecimalFormat(TL.ECON_FORMAT.toString());
 
     public static String getFriendlyBalance(UUID uuid) {
-        OfflinePlayer offline = Bukkit.getOfflinePlayer(uuid);
-        if (offline.getName() == null) {
-            return "0";
-        }
-        return format.format(econ.getBalance(offline));
+        return getBalance(uuid).map(format::format).orElse("0");
     }
 
     public static String getFriendlyBalance(FPlayer player) {
