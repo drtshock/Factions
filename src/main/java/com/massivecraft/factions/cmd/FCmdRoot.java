@@ -80,6 +80,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdSethome cmdSethome = new CmdSethome();
     public CmdDelhome cmdDelhome = new CmdDelhome();
     public CmdShow cmdShow = new CmdShow();
+    public CmdShowClaims cmdShowClaims = new CmdShowClaims();
     public CmdStatus cmdStatus = new CmdStatus();
     public CmdStuck cmdStuck = new CmdStuck();
     public CmdTag cmdTag = new CmdTag();
@@ -172,6 +173,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdSethome);
         this.addSubCommand(this.cmdDelhome);
         this.addSubCommand(this.cmdShow);
+        this.addSubCommand(this.cmdShowClaims);
         this.addSubCommand(this.cmdStatus);
         this.addSubCommand(this.cmdStuck);
         this.addSubCommand(this.cmdTag);

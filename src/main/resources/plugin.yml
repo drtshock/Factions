@@ -92,6 +92,7 @@ permissions:
       factions.sethome: true
       factions.delhome: true
       factions.show: true
+      factions.showclaims: true
       factions.stuck: true
       factions.tag: true
       factions.title: true

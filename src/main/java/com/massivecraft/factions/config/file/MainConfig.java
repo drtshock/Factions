@@ -760,6 +760,35 @@ public class MainConfig {
             }
         }
 
+        public class Commands {
+
+            public class ShowClaims {
+                private List<String> show = new ArrayList<String>() {
+                    {
+                        this.add("{header}");
+                        this.add("&2&lOverworld {showclaims_world}");
+                        this.add("&4&lNether {showclaims_world_nether}");
+                        this.add("&5&lThe End {showclaims_world_the_end}");
+                    }
+                };
+                private String coordinate = "&8&l(&a{x}&8:&a{z}&8&l) ";
+
+                public List<String> getShow() {
+                    return show;
+                }
+
+                public String getCoordinate() {
+                    return coordinate;
+                }
+            }
+
+            private ShowClaims showClaims = new ShowClaims();
+
+            public ShowClaims showClaims() {
+                return showClaims;
+            }
+        }
+
         private Chat chat = new Chat();
         private Homes homes = new Homes();
         private PVP pvp = new PVP();
@@ -771,6 +800,7 @@ public class MainConfig {
         @Comment("Displayed prefixes for different roles within a faction")
         private Prefix prefixes = new Prefix();
         private LandRaidControl landRaidControl = new LandRaidControl();
+        private Commands commands = new Commands();
 
         private boolean allowMultipleColeaders = false;
 
@@ -839,6 +869,10 @@ public class MainConfig {
 
         public LandRaidControl landRaidControl() {
             return landRaidControl;
+        }
+
+        public Commands commands() {
+            return commands;
         }
 
         public boolean isAllowMultipleColeaders() {
