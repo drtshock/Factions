@@ -543,6 +543,8 @@ public enum TL {
     COMMAND_SHOWINVITES_CLICKTOREVOKE("Click to revoke invite for %1$s"),
     COMMAND_SHOWINVITES_DESCRIPTION("Show pending faction invites"),
 
+    COMMAND_SHOWCLAIMS_DESCRIPTION("Show all faction claims"),
+
     COMMAND_STATUS_FORMAT("%1$s Power: %2$s Last Seen: %3$s"),
     COMMAND_STATUS_ONLINE("Online"),
     COMMAND_STATUS_AGOSUFFIX(" ago."),

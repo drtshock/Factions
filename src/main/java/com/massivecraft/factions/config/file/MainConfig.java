@@ -763,22 +763,29 @@ public class MainConfig {
         public class Commands {
 
             public class ShowClaims {
-                private List<String> show = new ArrayList<String>() {
-                    {
-                        this.add("{header}");
-                        this.add("&2&lOverworld {showclaims_world}");
-                        this.add("&4&lNether {showclaims_world_nether}");
-                        this.add("&5&lThe End {showclaims_world_the_end}");
-                    }
-                };
+                private List<String> show = defaultShow();
                 private String coordinate = "&8&l(&a{x}&8:&a{z}&8&l) ";
 
                 public List<String> getShow() {
+                    if (show == null) {
+                        return defaultShow();
+                    }
                     return show;
                 }
 
                 public String getCoordinate() {
                     return coordinate;
+                }
+
+                private List<String> defaultShow() {
+                    return new ArrayList<String>() {
+                        {
+                            this.add("{header}");
+                            this.add("&2&lOverworld {showclaims_world}");
+                            this.add("&4&lNether {showclaims_world_nether}");
+                            this.add("&5&lThe End {showclaims_world_the_end}");
+                        }
+                    };
                 }
             }
 

@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.perms.Role;
+import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.TL;
@@ -24,7 +24,7 @@ public class CmdShowClaims extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.SHOWCLAIMS)
                 .memberOnly()
-                .withRole(Role.MODERATOR)
+                .withAction(PermissibleAction.TERRITORY)
                 .noDisableOnLock()
                 .build();
     }
@@ -50,6 +50,8 @@ public class CmdShowClaims extends FCommand {
                     for (FLocation claim : worldClaims.get(world)) {
                         claims.append(parseLocation(claim));
                     }
+                } else {
+                    continue;
                 }
                 line = line.replace(matcher.group(0), claims.toString());
             }
@@ -65,7 +67,7 @@ public class CmdShowClaims extends FCommand {
 
     @Override
     public TL getUsageTranslation() {
-        return TL.COMMAND_SHOW_COMMANDDESCRIPTION;
+        return TL.COMMAND_SHOWCLAIMS_DESCRIPTION;
     }
 
 }
