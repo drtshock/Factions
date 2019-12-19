@@ -3,6 +3,7 @@ Factions info into other plugins.
 
 ## Internal Placeholders
 Spots that you can use placeholders from other plugins in FactionsUUID text:
+
 * `/f show`
 * scoreboards
 * name tag prefix
