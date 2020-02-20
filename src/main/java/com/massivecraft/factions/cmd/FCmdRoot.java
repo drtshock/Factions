@@ -49,6 +49,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdChat cmdChat = new CmdChat();
     public CmdChatSpy cmdChatSpy = new CmdChatSpy();
     public CmdClaim cmdClaim = new CmdClaim();
+    public CmdCoords cmdCoords = new CmdCoords();
     public CmdCreate cmdCreate = new CmdCreate();
     public CmdDeinvite cmdDeinvite = new CmdDeinvite();
     public CmdDescription cmdDescription = new CmdDescription();
@@ -145,6 +146,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdToggleAllianceChat);
         this.addSubCommand(this.cmdChatSpy);
         this.addSubCommand(this.cmdClaim);
+        this.addSubCommand(this.cmdCoords);
         this.addSubCommand(this.cmdCreate);
         this.addSubCommand(this.cmdDeinvite);
         this.addSubCommand(this.cmdDescription);

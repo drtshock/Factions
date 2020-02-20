@@ -147,6 +147,9 @@ public enum TL {
     COMMAND_CONVERT_BACKEND_INVALID("Invalid backend"),
     COMMAND_CONVERT_DESCRIPTION("Convert the plugin backend"),
 
+    COMMAND_COORDS_MESSAGE("&c&l[COORDS] &e{player}&7's location: &c{x}&7,&c{y}&7,&c{z}&7 [&c{world}&7]"),
+    COMMAND_COORDS_DESCRIPTION("broadcast your current position to your faction"),
+
     COMMAND_CREATE_MUSTLEAVE("&cYou must leave your current faction first."),
     COMMAND_CREATE_INUSE("&cThat tag is already in use."),
     COMMAND_CREATE_TOCREATE("to create a new faction"),
@@ -264,8 +267,8 @@ public enum TL {
     COMMAND_HELP_PERMISSIONS_7("&ealso use this to create member only areas."),
     COMMAND_HELP_PERMISSIONS_8("&eAs dispensers are protected, you can create traps without"),
     COMMAND_HELP_PERMISSIONS_9("&eworrying about those arrows getting stolen."),
-    COMMAND_HELP_ADMIN_1("&b/f claim safezone &eclaim land for the Safe Zone"),
-    COMMAND_HELP_ADMIN_2("&b/f claim warzone &eclaim land for the War Zone"),
+    COMMAND_HELP_ADMIN_1("&b/f claim safezone &eclaim land for the SafeZone"),
+    COMMAND_HELP_ADMIN_2("&b/f claim warzone &eclaim land for the WarZone"),
     COMMAND_HELP_ADMIN_3("&b/f autoclaim [safezone|warzone] &etake a guess"),
     COMMAND_HELP_MOAR_1("Finally some commands for the server admins:"),
     COMMAND_HELP_MOAR_2("&eMore commands for server admins:"),
@@ -429,7 +432,7 @@ public enum TL {
     COMMAND_PERM_INVALID_SET("&cCannot set a locked permission"),
     COMMAND_PERM_TOP("RCT MEM OFF ALLY TRUCE NEUT ENEMY"),
 
-    COMMAND_PERMANENT_DESCRIPTION("Toggles a faction's permanence"), //TODO: Real word?
+    COMMAND_PERMANENT_DESCRIPTION("Toggles the permanent status of a faction"),
     COMMAND_PERMANENT_GRANT("added permanent status to"),
     COMMAND_PERMANENT_REVOKE("removed permanent status from"),
     COMMAND_PERMANENT_YOURS("%1$s has %2$s your faction"),
@@ -439,7 +442,7 @@ public enum TL {
     COMMAND_PROMOTE_PROMOTED("promoted"),
     COMMAND_PROMOTE_DEMOTED("demoted"),
 
-    COMMAND_PERMANENTPOWER_DESCRIPTION("Toggle faction power permanence"), //TODO: This a real word?
+    COMMAND_PERMANENTPOWER_DESCRIPTION("Toggle the permanentpower status of a faction"),
     COMMAND_PERMANENTPOWER_GRANT("added permanentpower status to"),
     COMMAND_PERMANENTPOWER_REVOKE("removed permanentpower status from"),
     COMMAND_PERMANENTPOWER_SUCCESS("&eYou %s &d%s&e."),
@@ -487,8 +490,8 @@ public enum TL {
     COMMAND_RELOAD_DESCRIPTION("Reload data file(s) from disk"),
 
     COMMAND_SAFEUNCLAIMALL_DESCRIPTION("Unclaim all safezone land"),
-    COMMAND_SAFEUNCLAIMALL_UNCLAIMED("&eYou unclaimed ALL safe zone land."),
-    COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG("%1$s unclaimed all safe zones."),
+    COMMAND_SAFEUNCLAIMALL_UNCLAIMED("&eYou unclaimed ALL SafeZone land."),
+    COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG("%1$s unclaimed all SafeZones."),
 
     COMMAND_SAVEALL_SUCCESS("&eFactions saved to disk!"),
     COMMAND_SAVEALL_DESCRIPTION("Save all data to disk"),
@@ -618,10 +621,10 @@ public enum TL {
     COMMAND_UNBAN_UNBANNED("&e%1$s &cunbanned &7%2$s"),
     COMMAND_UNBAN_TARGET("&aYou were unbanned from &r%s"),
 
-    COMMAND_UNCLAIM_SAFEZONE_SUCCESS("&eSafe zone was unclaimed."),
-    COMMAND_UNCLAIM_SAFEZONE_NOPERM("&cThis is a safe zone. You lack permissions to unclaim."),
-    COMMAND_UNCLAIM_WARZONE_SUCCESS("&eWar zone was unclaimed."),
-    COMMAND_UNCLAIM_WARZONE_NOPERM("&cThis is a war zone. You lack permissions to unclaim."),
+    COMMAND_UNCLAIM_SAFEZONE_SUCCESS("&eSafeZone was unclaimed."),
+    COMMAND_UNCLAIM_SAFEZONE_NOPERM("&cThis is a SafeZone. You lack permissions to unclaim."),
+    COMMAND_UNCLAIM_WARZONE_SUCCESS("&eWarZone was unclaimed."),
+    COMMAND_UNCLAIM_WARZONE_NOPERM("&cThis is a WarZone. You lack permissions to unclaim."),
     COMMAND_UNCLAIM_UNCLAIMED("%1$s&e unclaimed some of your land."),
     COMMAND_UNCLAIM_UNCLAIMS("&eYou unclaimed this land."),
     COMMAND_UNCLAIM_WRONGFACTIONOTHER("&cAttempted to unclaim land for incorrect faction"),
@@ -641,9 +644,9 @@ public enum TL {
     COMMAND_VERSION_VERSION("&eYou are running %1$s"),
     COMMAND_VERSION_DESCRIPTION("Show plugin and translation version information"),
 
-    COMMAND_WARUNCLAIMALL_DESCRIPTION("Unclaim all warzone land"),
-    COMMAND_WARUNCLAIMALL_SUCCESS("&eYou unclaimed ALL war zone land."),
-    COMMAND_WARUNCLAIMALL_LOG("%1$s unclaimed all war zones."),
+    COMMAND_WARUNCLAIMALL_DESCRIPTION("Unclaim all WarZone land"),
+    COMMAND_WARUNCLAIMALL_SUCCESS("&eYou unclaimed ALL WarZone land."),
+    COMMAND_WARUNCLAIMALL_LOG("%1$s unclaimed all WarZones."),
 
 
     /**
@@ -667,8 +670,8 @@ public enum TL {
     CLAIM_ALREADYOWN("%s&e already own this land."),
     CLAIM_MUSTBE("&cYou must be &d%s&c to claim land."),
     CLAIM_MEMBERS("Factions must have at least &d%s&c members to claim land."),
-    CLAIM_SAFEZONE("&cYou can not claim a Safe Zone."),
-    CLAIM_WARZONE("&cYou can not claim a War Zone."),
+    CLAIM_SAFEZONE("&cYou can not claim a SafeZone."),
+    CLAIM_WARZONE("&cYou can not claim a WarZone."),
     CLAIM_POWER("&cYou can't claim more land! You need more power!"),
     CLAIM_DTR_LAND("&cYou can't claim more land!"),
     CLAIM_LIMIT("&cLimit reached. You can't claim more land!"),
@@ -809,12 +812,12 @@ public enum TL {
      * In the player and entity listeners
      */
     PLAYER_CANTHURT("&eYou may not harm other players in %s"),
-    PLAYER_SAFEAUTO("&eThis land is now a safe zone."),
-    PLAYER_WARAUTO("&eThis land is now a war zone."),
+    PLAYER_SAFEAUTO("&eThis land is now a SafeZone."),
+    PLAYER_WARAUTO("&eThis land is now a WarZone."),
     PLAYER_OUCH("&cOuch, that is starting to hurt. You should give it a rest."),
     PLAYER_USE_WILDERNESS("&cYou can't use &d%s&c in the wilderness."),
-    PLAYER_USE_SAFEZONE("&cYou can't use &d%s&c in a safe zone."),
-    PLAYER_USE_WARZONE("&cYou can't use &d%s&c in a war zone."),
+    PLAYER_USE_SAFEZONE("&cYou can't use &d%s&c in a SafeZone."),
+    PLAYER_USE_WARZONE("&cYou can't use &d%s&c in a WarZone."),
     PLAYER_USE_TERRITORY("&cYou can't &d%s&c in the territory of &d%s&c."),
     PLAYER_USE_OWNED("&cYou can't use &d%s&c in this territory, it is owned by: %s&c."),
     PLAYER_COMMAND_WARZONE("&cYou can't use the command '%s' in warzone."),
@@ -829,8 +832,8 @@ public enum TL {
     PLAYER_POWER_NOLOSS_PEACEFUL("&eYou didn't lose any power since you are in a peaceful faction."),
     PLAYER_POWER_NOLOSS_WORLD("&eYou didn't lose any power due to the world you died in."),
     PLAYER_POWER_NOLOSS_WILDERNESS("&eYou didn't lose any power since you were in the wilderness."),
-    PLAYER_POWER_NOLOSS_WARZONE("&eYou didn't lose any power since you were in a war zone."),
-    PLAYER_POWER_LOSS_WARZONE("&cThe world you are in has power loss normally disabled, but you still lost power since you were in a war zone.\n&eYour power is now &d%d / %d"),
+    PLAYER_POWER_NOLOSS_WARZONE("&eYou didn't lose any power since you were in a WarZone."),
+    PLAYER_POWER_LOSS_WARZONE("&cThe world you are in has power loss normally disabled, but you still lost power since you were in a WarZone.\n&eYour power is now &d%d / %d"),
     PLAYER_POWER_NOW("&eYour power is now &d%d / %d"),
 
     PLAYER_PVP_LOGIN("&eYou can't hurt other players for %d seconds after logging in."),
@@ -896,8 +899,8 @@ public enum TL {
     PERM_SHORT_OWNER("set ownership"),
 
     PERM_DENIED_WILDERNESS("&cYou can't %s in the wilderness"),
-    PERM_DENIED_SAFEZONE("&c>You can't %s in a safe zone"),
-    PERM_DENIED_WARZONE("&cYou can't %s in a war zone"),
+    PERM_DENIED_SAFEZONE("&c>You can't %s in a SafeZone"),
+    PERM_DENIED_WARZONE("&cYou can't %s in a WarZone"),
     PERM_DENIED_TERRITORY("&cYou can't %s in the territory of %s"),
     PERM_DENIED_PAINTERRITORY("&cIt is painful to %s in the territory of %s"),
     PERM_DENIED_OWNED("&cYou can't %s in this territory, it is owned by: %s"),
