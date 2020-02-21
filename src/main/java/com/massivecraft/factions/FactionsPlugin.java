@@ -11,13 +11,7 @@ import com.massivecraft.factions.data.SaveTask;
 import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.event.FactionEvent;
 import com.massivecraft.factions.event.FactionRelationEvent;
-import com.massivecraft.factions.integration.ClipPlaceholderAPIManager;
-import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.Essentials;
-import com.massivecraft.factions.integration.IWorldguard;
-import com.massivecraft.factions.integration.LWC;
-import com.massivecraft.factions.integration.Worldguard6;
-import com.massivecraft.factions.integration.Worldguard7;
+import com.massivecraft.factions.integration.*;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.landraidcontrol.LandRaidControl;
 import com.massivecraft.factions.listeners.EssentialsListener;
@@ -349,6 +343,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
         Econ.setup();
         LWC.setup();
+        SuperVanish.setup();
         setupPermissions();
         if (perms != null) {
             getLogger().info("Using Vault with permissions plugin " + perms.getName());

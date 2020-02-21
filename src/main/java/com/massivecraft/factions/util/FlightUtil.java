@@ -73,7 +73,7 @@ public class FlightUtil {
             for (Entity entity : nearbyEntities) {
                 if (entity instanceof Player) {
                     FPlayer playerNearby = FPlayers.getInstance().getByPlayer((Player) entity);
-                    if (playerNearby.isAdminBypassing()) {
+                    if (playerNearby.isAdminBypassing() || VanishUtil.isVanished(playerNearby.getPlayer())) {
                         continue;
                     }
                     if (playerNearby.getRelationTo(target) == Relation.ENEMY) {

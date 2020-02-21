@@ -24,10 +24,7 @@ import com.massivecraft.factions.scoreboards.sidebar.FInfoSidebar;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.tag.Tag;
-import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.factions.util.TL;
-import com.massivecraft.factions.util.TitleAPI;
-import com.massivecraft.factions.util.WarmUpUtil;
+import com.massivecraft.factions.util.*;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -215,7 +212,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public boolean isVanished() {
-        return Essentials.isVanished(getPlayer());
+        return VanishUtil.isVanished(getPlayer());
     }
 
     public void setIsAdminBypassing(boolean val) {
