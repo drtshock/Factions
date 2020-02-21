@@ -147,7 +147,7 @@ public enum TL {
     COMMAND_CONVERT_BACKEND_INVALID("Invalid backend"),
     COMMAND_CONVERT_DESCRIPTION("Convert the plugin backend"),
 
-    COMMAND_COORDS_MESSAGE("&c&l[COORDS] &e{player}&7's location: &c{x}&7,&c{y}&7,&c{z}&7 [&c{world}&7]"),
+    COMMAND_COORDS_MESSAGE("&c&l[COORDS] &e{player}&7's location: &c%x&7,&c%y&7,&c%z&7 [&c%world&7]"),
     COMMAND_COORDS_DESCRIPTION("broadcast your current position to your faction"),
 
     COMMAND_CREATE_MUSTLEAVE("&cYou must leave your current faction first."),

@@ -21,8 +21,8 @@ public class CmdCoords extends FCommand {
     @Override
     public void perform(CommandContext context) {
         Location location = context.player.getLocation();
-        String message = TL.COMMAND_COORDS_MESSAGE.toString().replace("{player}", context.player.getDisplayName()).replace("{x}", (int) location.getX() + "")
-                .replace("{y}", (int) location.getY() + "").replace("{z}", (int) location.getZ() + "").replace("{world}", location.getWorld().getName());
+        String message = TL.COMMAND_COORDS_MESSAGE.toString().replace("%p", context.player.getDisplayName()).replace("%x", (int) location.getX() + "")
+                .replace("%y", (int) location.getY() + "").replace("%z", (int) location.getZ() + "").replace("%w", location.getWorld().getName());
         for (FPlayer fPlayer : context.faction.getFPlayers()) {
             fPlayer.sendMessage(message);
         }
