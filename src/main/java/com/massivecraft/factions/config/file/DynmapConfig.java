@@ -1,8 +1,12 @@
 package com.massivecraft.factions.config.file;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.reflect.TypeToken;
 import com.massivecraft.factions.config.annotation.Comment;
+import com.massivecraft.factions.config.annotation.DefinedType;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
+import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,12 +57,20 @@ public class DynmapConfig {
         // If empty all regions are shown.
         // Specify Faction either by name or UUID.
         // To show all regions on a given world, add 'world:<worldname>' to the list.
-        private Set<String> visibleFactions = new HashSet<>();
+        private Set<String> visibleFactions = new HashSet<String>(){
+            {
+                this.add("exampleFaction-Name!");
+            }
+        };
 
         // Optional setting to hide specific Factions.
         // Specify Faction either by name or UUID.
         // To hide all regions on a given world, add 'world:<worldname>' to the list.
-        private Set<String> hiddenFactions = new HashSet<>();
+        private Set<String> hiddenFactions = new HashSet<String>(){
+            {
+                this.add("exampleFaction-Name!");
+            }
+        };
 
         public boolean isEnabled() {
             return enabled;
@@ -101,10 +113,14 @@ public class DynmapConfig {
         }
 
         @Comment("Per-faction overrides")
+        @DefinedType
         private Map<String, Style> factionStyles = ImmutableMap.of(
                 "SafeZone", new DynmapConfig.Style("#FF00FF", "#FF00FF"),
                 "WarZone", new DynmapConfig.Style("#FF0000", "#FF0000")
         );
+
+        private transient TypeToken<Map<String, Style>> factionStylesToken = new TypeToken<Map<String, Style>>() {
+        };
 
         private transient Map<String, DynmapStyle> styles;
 
@@ -125,14 +141,22 @@ public class DynmapConfig {
         }
     }
 
+    @ConfigSerializable
     public class Style {
         // Region Style
+        @Setting
         private String lineColor = DynmapStyle.DEFAULT_LINE_COLOR;
+        @Setting
         private double lineOpacity = DynmapStyle.DEFAULT_LINE_OPACITY;
+        @Setting
         private int lineWeight = DynmapStyle.DEFAULT_LINE_WEIGHT;
+        @Setting
         private String fillColor = DynmapStyle.DEFAULT_FILL_COLOR;
+        @Setting
         private double fillOpacity = DynmapStyle.DEFAULT_FILL_OPACITY;
+        @Setting
         private String homeMarker = DynmapStyle.DEFAULT_HOME_MARKER;
+        @Setting
         private boolean styleBoost = DynmapStyle.DEFAULT_BOOST;
 
         private Style() {

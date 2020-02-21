@@ -18,7 +18,7 @@ public class FInfoSidebar extends FSidebarProvider {
 
     @Override
     public String getTitle(FPlayer fplayer) {
-        return faction.getRelationTo(fplayer).getColor() + faction.getTag();
+        return replaceTags(this.faction, fplayer, FactionsPlugin.getInstance().conf().scoreboard().info().getTitle());
     }
 
     @Override

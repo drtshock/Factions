@@ -1,11 +1,15 @@
 package com.massivecraft.factions.config;
 
+import com.google.common.reflect.TypeToken;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.config.annotation.Comment;
 import com.massivecraft.factions.config.annotation.ConfigName;
+import com.massivecraft.factions.config.annotation.DefinedType;
 import com.typesafe.config.ConfigRenderOptions;
+import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -32,6 +36,7 @@ public class Loader {
         Path path = configFolder.resolve(file + ".conf");
         return HoconConfigurationLoader.builder()
                 .setPath(path)
+                .setDefaultOptions(ConfigurationOptions.defaults().setAcceptedTypes(null))
                 .setRenderOptions(ConfigRenderOptions.defaults().setComments(true).setOriginComments(false).setJson(false))
                 .build();
     }
@@ -76,6 +81,7 @@ public class Loader {
             field.setAccessible(true);
             ConfigName configName = field.getAnnotation(ConfigName.class);
             Comment comment = field.getAnnotation(Comment.class);
+            DefinedType definedType = field.getAnnotation(DefinedType.class);
             String confName = configName == null || configName.value().isEmpty() ? field.getName() : configName.value();
             CommentedConfigurationNode curNode = current.getNode(confName);
             CommentedConfigurationNode newNewNode = newNode.getNode(confName);
@@ -86,7 +92,17 @@ public class Loader {
             Object defaultValue = field.get(object);
             if (types.contains(field.getType())) {
                 if (needsValue) {
-                    newNewNode.setValue(defaultValue);
+                    if (definedType == null) {
+                        newNewNode.setValue(defaultValue);
+                    } else {
+                        try {
+                            Field tokenField = field.getDeclaringClass().getDeclaredField(field.getName() + "Token");
+                            tokenField.setAccessible(true);
+                            newNewNode.setValue((TypeToken<Object>) tokenField.get(object), defaultValue);
+                        } catch (ObjectMappingException | NoSuchFieldException e) {
+                            System.out.println("Failed horrifically to handle " + confName);
+                        }
+                    }
                 } else {
                     try {
                         if (Set.class.isAssignableFrom(field.getType()) && List.class.isAssignableFrom(curNode.getValue().getClass())) {

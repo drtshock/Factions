@@ -647,7 +647,11 @@ public class MainConfig {
                 @Comment("If greater than 0, used as a cap for how much power a faction can have\nAdditional power from players beyond this acts as a \"buffer\" of sorts")
                 private double factionMax = 0.0;
                 private boolean respawnHomeFromNoPowerLossWorlds = true;
-                private Set<String> worldsNoPowerLoss = new HashSet<>();
+                private Set<String> worldsNoPowerLoss = new HashSet<String>(){
+                    {
+                        this.add("exampleWorld");
+                    }
+                };
                 private boolean peacefulMembersDisablePowerLoss = true;
                 private boolean warZonePowerLoss = true;
                 private boolean wildernessPowerLoss = true;
@@ -962,7 +966,11 @@ public class MainConfig {
             private boolean disablePVPForFactionlessPlayers = false;
             private boolean enablePVPAgainstFactionlessInAttackersLand = false;
             private int noPVPDamageToOthersForXSecondsAfterLogin = 3;
-            private Set<String> worldsIgnorePvP = new HashSet<>();
+            private Set<String> worldsIgnorePvP = new HashSet<String>() {
+                {
+                    this.add("exampleWorldName");
+                }
+            };
 
             public boolean isDisablePVPBetweenNeutralFactions() {
                 return disablePVPBetweenNeutralFactions;
@@ -991,7 +999,11 @@ public class MainConfig {
             private boolean peacefulTerritoryDisableBoom = false;
             private boolean permanentFactionsDisableLeaderPromotion = false;
             @Comment("Material names of things whose placement is ignored in faction territory")
-            private Set<String> ignoreBuildMaterials = new HashSet<>();
+            private Set<String> ignoreBuildMaterials = new HashSet<String>() {
+                {
+                    this.add("exampleMaterial");
+                }
+            };
             private transient Set<Material> ignoreBuildMaterialsMat;
 
             public Set<Material> getIgnoreBuildMaterials() {
@@ -1050,7 +1062,11 @@ public class MainConfig {
             private int fillClaimMaxDistance = 5;
             @Comment("If someone is doing a radius claim and the process fails to claim land this many times in a row, it will exit")
             private int radiusClaimFailureLimit = 9;
-            private Set<String> worldsNoClaiming = new HashSet<>();
+            private Set<String> worldsNoClaiming = new HashSet<String>() {
+                {
+                    this.add("exampleWorldName");
+                }
+            };
             @Comment("Buffer Zone is an chunk area required between claims of different Factions.\n" +
                     "This is default to 0 and has always been that way. Meaning Factions can have\n" +
                     "  claims that border each other.\n" +
@@ -1112,10 +1128,18 @@ public class MainConfig {
 
         public class Protection {
             @Comment("Commands which will be prevented if the player is a member of a permanent faction")
-            private Set<String> permanentFactionMemberDenyCommands = new HashSet<>();
+            private Set<String> permanentFactionMemberDenyCommands = new HashSet<String>(){
+                {
+                    this.add("exampleCommand");
+                }
+            };
 
             @Comment("Commands which will be prevented when in claimed territory of a neutral faction")
-            private Set<String> territoryNeutralDenyCommands = new HashSet<>();
+            private Set<String> territoryNeutralDenyCommands = new HashSet<String>(){
+                {
+                    this.add("exampleCommand");
+                }
+            };
             @Comment("Commands which will be prevented when in claimed territory of an enemy faction")
             private Set<String> territoryEnemyDenyCommands = new HashSet<String>() {
                 {
@@ -1128,11 +1152,23 @@ public class MainConfig {
                 }
             };
             @Comment("Commands which will be prevented when in claimed territory of an ally faction")
-            private Set<String> territoryAllyDenyCommands = new HashSet<>();
+            private Set<String> territoryAllyDenyCommands = new HashSet<String>(){
+                {
+                    this.add("exampleCommand");
+                }
+            };
             @Comment("Commands which will be prevented when in warzone")
-            private Set<String> warzoneDenyCommands = new HashSet<>();
+            private Set<String> warzoneDenyCommands = new HashSet<String>(){
+                {
+                    this.add("exampleCommand");
+                }
+            };
             @Comment("Commands which will be prevented when in wilderness")
-            private Set<String> wildernessDenyCommands = new HashSet<>();
+            private Set<String> wildernessDenyCommands = new HashSet<String>(){
+                {
+                    this.add("exampleCommand");
+                }
+            };
 
             private boolean territoryBlockCreepers = false;
             private boolean territoryBlockCreepersWhenOffline = false;
@@ -1174,8 +1210,16 @@ public class MainConfig {
             private transient Set<Material> territoryDenyUsageMaterialsWhenOfflineMat;
 
             @Comment("Mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections")
-            private Set<String> playersWhoBypassAllProtection = new HashSet<>();
-            private Set<String> worldsNoWildernessProtection = new HashSet<>();
+            private Set<String> playersWhoBypassAllProtection = new HashSet<String>(){
+                {
+                    this.add("example-player-name");
+                }
+            };
+            private Set<String> worldsNoWildernessProtection = new HashSet<String>(){
+                {
+                    this.add("exampleWorld");
+                }
+            };
 
             private Protection() {
                 protectUsage("FIRE_CHARGE");
@@ -2001,7 +2045,11 @@ public class MainConfig {
         @Comment("If restrictWorlds is true, this setting determines if the world list below is a whitelist or blacklist.\n" +
                 "True for whitelist, false for blacklist.")
         private boolean whitelist = true;
-        private Set<String> worldList = new HashSet<>();
+        private Set<String> worldList = new HashSet<String>(){
+            {
+                this.add("exampleWorld");
+            }
+        };
 
         public boolean isRestrictWorlds() {
             return restrictWorlds;
@@ -2090,6 +2138,7 @@ public class MainConfig {
                     this.add("{chunks}");
                 }
             };
+            private String title = "{faction-relation-color}{faction}";
 
             public boolean isAlsoSendChat() {
                 return alsoSendChat;
@@ -2105,6 +2154,10 @@ public class MainConfig {
 
             public List<String> getContent() {
                 return content != null ? Collections.unmodifiableList(content) : Collections.emptyList();
+            }
+
+            public String getTitle() {
+                return title;
             }
         }
 
