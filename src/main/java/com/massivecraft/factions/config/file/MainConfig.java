@@ -450,7 +450,7 @@ public class MainConfig {
             private List<String> player = new ArrayList<String>() {
                 {
                     this.add("&6Last Seen: &f{lastSeen}");
-                    this.add("&6Power: &f{power}");
+                    this.add("&6Power: &f{player-power}");
                     this.add("&6Rank: &f{group}");
                     this.add("&6Balance: &a${balance}");
                 }
