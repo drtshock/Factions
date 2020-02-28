@@ -57,7 +57,7 @@ public class DynmapConfig {
         // If empty all regions are shown.
         // Specify Faction either by name or UUID.
         // To show all regions on a given world, add 'world:<worldname>' to the list.
-        private Set<String> visibleFactions = new HashSet<String>(){
+        private Set<String> visibleFactions = new HashSet<String>() {
             {
                 this.add("exampleFaction-Name!");
             }
@@ -66,7 +66,7 @@ public class DynmapConfig {
         // Optional setting to hide specific Factions.
         // Specify Faction either by name or UUID.
         // To hide all regions on a given world, add 'world:<worldname>' to the list.
-        private Set<String> hiddenFactions = new HashSet<String>(){
+        private Set<String> hiddenFactions = new HashSet<String>() {
             {
                 this.add("exampleFaction-Name!");
             }

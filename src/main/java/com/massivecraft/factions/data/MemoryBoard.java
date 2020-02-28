@@ -70,10 +70,14 @@ public abstract class MemoryBoard extends Board {
 
         public void removeFaction(String factionId) {
             Collection<FLocation> fLocations = factionToLandMap.removeAll(factionId);
-            if (FactionsPlugin.getInstance().conf().commands().fly().isEnable()) {
-                for (FPlayer fPlayer : FPlayers.getInstance().getOnlinePlayers()) {
-                    if (fLocations.contains(fPlayer.getLastStoodAt()) && !fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
+            for (FPlayer fPlayer : FPlayers.getInstance().getOnlinePlayers()) {
+                if (fLocations.contains(fPlayer.getLastStoodAt())) {
+                    if (FactionsPlugin.getInstance().conf().commands().fly().isEnable() && !fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
                         fPlayer.setFlying(false);
+                    }
+                    if (fPlayer.isWarmingUp()) {
+                        fPlayer.clearWarmup();
+                        fPlayer.msg(TL.WARMUPS_CANCELLED);
                     }
                 }
             }
@@ -124,6 +128,10 @@ public abstract class MemoryBoard extends Board {
                 FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) entity);
                 if (!fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
                     fPlayer.setFlying(false);
+                }
+                if (fPlayer.isWarmingUp()) {
+                    fPlayer.clearWarmup();
+                    fPlayer.msg(TL.WARMUPS_CANCELLED);
                 }
             }
         }

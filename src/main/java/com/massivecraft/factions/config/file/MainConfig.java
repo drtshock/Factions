@@ -647,7 +647,7 @@ public class MainConfig {
                 @Comment("If greater than 0, used as a cap for how much power a faction can have\nAdditional power from players beyond this acts as a \"buffer\" of sorts")
                 private double factionMax = 0.0;
                 private boolean respawnHomeFromNoPowerLossWorlds = true;
-                private Set<String> worldsNoPowerLoss = new HashSet<String>(){
+                private Set<String> worldsNoPowerLoss = new HashSet<String>() {
                     {
                         this.add("exampleWorld");
                     }
@@ -1080,9 +1080,15 @@ public class MainConfig {
             @Comment("Should we allow Factions to over claim if they are raidable?\n" +
                     "This has always been true, allowing factions to over claim others.")
             private boolean allowOverClaim = true;
+            @Comment("If true (and allowOverClaim is true, claiming over another faction's land will ignore buffer zone settings.")
+            private boolean allowOverClaimIgnoringBuffer = false;
 
             public boolean isAllowOverClaim() {
                 return allowOverClaim;
+            }
+
+            public boolean isAllowOverClaimAndIgnoringBuffer() {
+                return allowOverClaim && allowOverClaimIgnoringBuffer;
             }
 
             public int getBufferZone() {
@@ -1128,14 +1134,14 @@ public class MainConfig {
 
         public class Protection {
             @Comment("Commands which will be prevented if the player is a member of a permanent faction")
-            private Set<String> permanentFactionMemberDenyCommands = new HashSet<String>(){
+            private Set<String> permanentFactionMemberDenyCommands = new HashSet<String>() {
                 {
                     this.add("exampleCommand");
                 }
             };
 
             @Comment("Commands which will be prevented when in claimed territory of a neutral faction")
-            private Set<String> territoryNeutralDenyCommands = new HashSet<String>(){
+            private Set<String> territoryNeutralDenyCommands = new HashSet<String>() {
                 {
                     this.add("exampleCommand");
                 }
@@ -1152,19 +1158,19 @@ public class MainConfig {
                 }
             };
             @Comment("Commands which will be prevented when in claimed territory of an ally faction")
-            private Set<String> territoryAllyDenyCommands = new HashSet<String>(){
+            private Set<String> territoryAllyDenyCommands = new HashSet<String>() {
                 {
                     this.add("exampleCommand");
                 }
             };
             @Comment("Commands which will be prevented when in warzone")
-            private Set<String> warzoneDenyCommands = new HashSet<String>(){
+            private Set<String> warzoneDenyCommands = new HashSet<String>() {
                 {
                     this.add("exampleCommand");
                 }
             };
             @Comment("Commands which will be prevented when in wilderness")
-            private Set<String> wildernessDenyCommands = new HashSet<String>(){
+            private Set<String> wildernessDenyCommands = new HashSet<String>() {
                 {
                     this.add("exampleCommand");
                 }
@@ -1210,12 +1216,12 @@ public class MainConfig {
             private transient Set<Material> territoryDenyUsageMaterialsWhenOfflineMat;
 
             @Comment("Mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections")
-            private Set<String> playersWhoBypassAllProtection = new HashSet<String>(){
+            private Set<String> playersWhoBypassAllProtection = new HashSet<String>() {
                 {
                     this.add("example-player-name");
                 }
             };
-            private Set<String> worldsNoWildernessProtection = new HashSet<String>(){
+            private Set<String> worldsNoWildernessProtection = new HashSet<String>() {
                 {
                     this.add("exampleWorld");
                 }
@@ -2045,7 +2051,7 @@ public class MainConfig {
         @Comment("If restrictWorlds is true, this setting determines if the world list below is a whitelist or blacklist.\n" +
                 "True for whitelist, false for blacklist.")
         private boolean whitelist = true;
-        private Set<String> worldList = new HashSet<String>(){
+        private Set<String> worldList = new HashSet<String>() {
             {
                 this.add("exampleWorld");
             }
