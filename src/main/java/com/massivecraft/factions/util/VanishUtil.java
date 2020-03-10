@@ -8,6 +8,7 @@ import org.bukkit.metadata.MetadataValue;
 public class VanishUtil {
 
     public static boolean isVanished(Player player) {
+        if (player == null) return false;
         if (Essentials.getEssentials() != null && Essentials.isVanished(player)) return true;
         if (SuperVanish.isSetup() && SuperVanish.isVanished(player)) return true;
         return hasVanishedMetadata(player);
@@ -19,6 +20,7 @@ public class VanishUtil {
     }
 
     private static boolean hasVanishedMetadata(Player player) {
+        if (player == null) return false;
         if (!player.hasMetadata("vanished")) {
             return false;
         }

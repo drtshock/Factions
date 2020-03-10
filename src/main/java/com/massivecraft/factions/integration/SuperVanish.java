@@ -17,7 +17,7 @@ public class SuperVanish {
     }
 
     public static boolean isVanished(Player player) {
-        if (!isSetup) return false;
+        if (!isSetup || player == null) return false;
         return VanishAPI.isInvisible(player);
     }
 

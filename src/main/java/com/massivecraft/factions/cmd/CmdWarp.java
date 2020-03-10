@@ -36,7 +36,7 @@ public class CmdWarp extends FCommand {
             return;
         }
 
-        if (context.args.size() == 0) {
+        if (context.args.isEmpty()) {
             WarpGUI ui = new WarpGUI(context.fPlayer, context.faction);
             ui.open();
         } else if (context.args.size() > 2) {
