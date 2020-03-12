@@ -173,7 +173,7 @@ Command | Permission | Meaning
 `/f open` | factions.open | Toggle allowing anyone being able to join the faction.
 `/f owner [name]` | factions.owner | Set claim ownership for this chunk. Admins can specify a target player.
 `/f ownerlist` | factions.ownerlist | Get the current owner of the chunk you're in if it's in your faction.
-`/f peaceful <faction>` | factions.peaceful | Set a faction to being peaceful.
+`/f peaceful <faction>` | factions.setpeaceful | Set a faction to being peaceful.
 `/f perm [relation] [action] [access]` | factions.permissions | Manage permissions for your Faction. Example /f perm recruit build deny.
 `/f permanent <faction>` | factions.setpermanent | Set a faction to permanent status. This will make the faction stay if there are zero members.
 `/f permanentpower <faction> [power]` | factions.setpermanentpower | Set permanent power to a faction.
