@@ -58,11 +58,11 @@ public class EngineDynmap {
     // INSTANCE & CONSTRUCT
     // -------------------------------------------- //
 
-    private static EngineDynmap i = new EngineDynmap();
+    private static EngineDynmap instance = new EngineDynmap();
     private DynmapConfig dynmapConf = FactionsPlugin.getInstance().getConfigManager().getDynmapConfig();
 
     public static EngineDynmap getInstance() {
-        return i;
+        return instance;
     }
 
     public DynmapAPI dynmapApi;

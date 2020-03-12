@@ -24,22 +24,21 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class JSONFPlayers extends MemoryFPlayers {
-    // Info on how to persist
-    private Gson gson;
-
     public Gson getGson() {
-        return gson;
+        return FactionsPlugin.getInstance().getGson();
     }
 
     public void setGson(Gson gson) {
-        this.gson = gson;
+        // NOOP
     }
 
     private File file;
 
     public JSONFPlayers() {
+        if (FactionsPlugin.getInstance().getServerUUID() == null) {
+            FactionsPlugin.getInstance().grumpException(new RuntimeException());
+        }
         file = new File(FactionsPlugin.getInstance().getDataFolder(), "data/players.json");
-        gson = FactionsPlugin.getInstance().getGson();
     }
 
     public void convertFrom(MemoryFPlayers old) {
@@ -64,7 +63,7 @@ public class JSONFPlayers extends MemoryFPlayers {
     }
 
     private boolean saveCore(File target, Map<String, JSONFPlayer> data, boolean sync) {
-        return DiscUtil.writeCatch(target, this.gson.toJson(data), sync);
+        return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().getGson().toJson(data), sync);
     }
 
     public int load() {
@@ -87,7 +86,7 @@ public class JSONFPlayers extends MemoryFPlayers {
             return null;
         }
 
-        Map<String, JSONFPlayer> data = this.gson.fromJson(content, new TypeToken<Map<String, JSONFPlayer>>() {
+        Map<String, JSONFPlayer> data = FactionsPlugin.getInstance().getGson().fromJson(content, new TypeToken<Map<String, JSONFPlayer>>() {
         }.getType());
         Set<String> list = new HashSet<>();
         Set<String> invalidList = new HashSet<>();

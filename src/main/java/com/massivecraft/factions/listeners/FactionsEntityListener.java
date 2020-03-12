@@ -186,9 +186,25 @@ public class FactionsEntityListener extends AbstractListener {
                     if (explosionDisallowed(boomer, target.getLocation())) {
                         continue;
                     }
-                    int id = target.getType().getId();
-                    // ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet
-                    if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 90 && id != 116 && id != 119 && id != 120 && id != 130) {
+                    boolean go = true;
+                    // TODO get resistance value via NMS for future-proofing
+                    switch (target.getType()) {
+                        case AIR:
+                        case BEDROCK:
+                        case WATER:
+                        case LAVA:
+                        case OBSIDIAN:
+                        case NETHER_PORTAL:
+                        case ENCHANTING_TABLE:
+                        case ANVIL:
+                        case CHIPPED_ANVIL:
+                        case DAMAGED_ANVIL:
+                        case END_PORTAL:
+                        case END_PORTAL_FRAME:
+                        case ENDER_CHEST:
+                            go = false;
+                    }
+                    if (go) {
                         target.breakNaturally();
                     }
                 }

@@ -24,11 +24,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class JSONFactions extends MemoryFactions {
-    // Info on how to persist
-    private final Gson gson;
-
     public Gson getGson() {
-        return gson;
+        return FactionsPlugin.getInstance().getGson();
     }
 
     private final File file;
@@ -42,8 +39,10 @@ public class JSONFactions extends MemoryFactions {
     // -------------------------------------------- //
 
     public JSONFactions() {
+        if (FactionsPlugin.getInstance().getServerUUID() == null) {
+            FactionsPlugin.getInstance().grumpException(new RuntimeException());
+        }
         this.file = new File(FactionsPlugin.getInstance().getDataFolder(), "data/factions.json");
-        this.gson = FactionsPlugin.getInstance().getGson();
         this.nextId = 1;
     }
 
@@ -61,7 +60,7 @@ public class JSONFactions extends MemoryFactions {
     }
 
     private boolean saveCore(File target, Map<String, JSONFaction> entities, boolean sync) {
-        return DiscUtil.writeCatch(target, this.gson.toJson(entities), sync);
+        return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().getGson().toJson(entities), sync);
     }
 
     public int load() {
@@ -85,7 +84,7 @@ public class JSONFactions extends MemoryFactions {
             return null;
         }
 
-        Map<String, JSONFaction> data = this.gson.fromJson(content, new TypeToken<Map<String, JSONFaction>>() {
+        Map<String, JSONFaction> data = FactionsPlugin.getInstance().getGson().fromJson(content, new TypeToken<Map<String, JSONFaction>>() {
         }.getType());
 
         this.nextId = 1;

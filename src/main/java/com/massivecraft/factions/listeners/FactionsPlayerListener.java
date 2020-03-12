@@ -226,8 +226,7 @@ public class FactionsPlayerListener extends AbstractListener {
         }
 
         if (me.isMapAutoUpdating()) {
-            if (showTimes.containsKey(player.getUniqueId()) && (showTimes.get(player.getUniqueId()) > System.currentTimeMillis()) && !me.isFlying()) {
-            } else {
+            if (!showTimes.containsKey(player.getUniqueId()) || (showTimes.get(player.getUniqueId()) < System.currentTimeMillis())) {
                 me.sendFancyMessage(Board.getInstance().getMap(me, to, player.getLocation().getYaw()));
                 showTimes.put(player.getUniqueId(), System.currentTimeMillis() + FactionsPlugin.getInstance().conf().commands().map().getCooldown());
             }

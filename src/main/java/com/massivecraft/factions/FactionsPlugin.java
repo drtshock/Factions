@@ -78,12 +78,14 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -132,6 +134,10 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
         return worldUtil;
     }
 
+    public void grumpException(RuntimeException e) {
+        this.grumpyExceptions.add(e);
+    }
+
     private PermUtil permUtil;
 
     // Persist related
@@ -166,6 +172,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
     private UUID serverUUID;
     private String startupLog;
     private String startupExceptionLog;
+    private List<RuntimeException> grumpyExceptions = new ArrayList<>();
 
     public FactionsPlugin() {
         instance = this;
@@ -202,6 +209,10 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
         getLogger().addHandler(handler);
         getLogger().info("=== Starting up! ===");
         long timeEnableStart = System.currentTimeMillis();
+
+        if (!this.grumpyExceptions.isEmpty()) {
+            this.grumpyExceptions.forEach(e -> getLogger().log(Level.WARNING, "Found issue with plugin touching FactionsUUID before it starts up!", e));
+        }
 
         // Ensure basefolder exists!
         this.getDataFolder().mkdirs();
@@ -351,13 +362,13 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
         if (getServer().getPluginManager().getPlugin("PermissionsEx") != null) {
             if (getServer().getPluginManager().getPlugin("PermissionsEx").getDescription().getVersion().startsWith("1")) {
                 getLogger().info(" ");
-                getLogger().warning("Notice: PermissionsEx version 1.x is dead. We suggest using LuckPerms (or PEX 2.0 when available). https://luckperms.github.io/");
+                getLogger().warning("Notice: PermissionsEx version 1.x is dead. We suggest using LuckPerms (or PEX 2.0 when available). https://luckperms.net/");
                 getLogger().info(" ");
             }
         }
         if (getServer().getPluginManager().getPlugin("GroupManager") != null) {
             getLogger().info(" ");
-            getLogger().warning("Notice: GroupManager died in 2014. We suggest using LuckPerms instead. https://luckperms.github.io/");
+            getLogger().warning("Notice: GroupManager died in 2014. We suggest using LuckPerms instead. https://luckperms.net/");
             getLogger().info(" ");
         }
         Plugin lwc = getServer().getPluginManager().getPlugin("LWC");

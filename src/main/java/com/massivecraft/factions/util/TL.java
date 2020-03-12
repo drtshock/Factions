@@ -123,6 +123,11 @@ public enum TL {
 
     COMMAND_CLAIMFILL_DESCRIPTION("Claim land filling in a gap in claims"),
     COMMAND_CLAIMFILL_ABOVEMAX("&cThe maximum limit for claim fill is %s."),
+    COMMAND_CLAIMFILL_ALREADYCLAIMED("&cCannot claim fill using already claimed land!"),
+    COMMAND_CLAIMFILL_TOOFAR("&cThis fill would exceed the maximum distance of %.2f"),
+    COMMAND_CLAIMFILL_PASTLIMIT("&cThis claim would exceed the limit!"),
+    COMMAND_CLAIMFILL_NOTENOUGHLANDLEFT("%s &cdoes not have enough land left to make %d claims"),
+    COMMAND_CLAIMFILL_TOOMUCHFAIL("&cAborting claim fill after %d failures"),
 
     COMMAND_CLAIMLINE_INVALIDRADIUS("&cIf you specify a distance, it must be at least 1."),
     COMMAND_CLAIMLINE_DENIED("&cYou do not have permission to claim in a line."),

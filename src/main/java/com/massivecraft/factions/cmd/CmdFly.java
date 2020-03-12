@@ -45,21 +45,31 @@ public class CmdFly extends FCommand {
             return;
         }
         // Do checks if true
+        if (!flyTest(context, notify)) {
+            return;
+        }
+
+        context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", () -> {
+            if (flyTest(context, notify)) {
+                context.fPlayer.setFlying(true);
+            }
+        }, this.plugin.conf().commands().fly().getDelay());
+    }
+
+    private boolean flyTest(final CommandContext context, boolean notify) {
         if (!context.fPlayer.canFlyAtLocation()) {
             if (notify) {
                 Faction factionAtLocation = Board.getInstance().getFactionAt(context.fPlayer.getLastStoodAt());
                 context.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(context.fPlayer));
             }
-            return;
+            return false;
         } else if (FlightUtil.instance().enemiesNearby(context.fPlayer, FactionsPlugin.getInstance().conf().commands().fly().getEnemyRadius())) {
             if (notify) {
                 context.msg(TL.COMMAND_FLY_ENEMY_NEARBY);
             }
-            return;
+            return false;
         }
-
-        context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", () ->
-                context.fPlayer.setFlying(true), this.plugin.conf().commands().fly().getDelay());
+        return true;
     }
 
     @Override

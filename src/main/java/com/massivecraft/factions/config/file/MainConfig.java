@@ -2,6 +2,7 @@ package com.massivecraft.factions.config.file;
 
 import com.google.common.collect.ImmutableList;
 import com.massivecraft.factions.config.annotation.Comment;
+import com.massivecraft.factions.config.annotation.WipeOnReload;
 import com.massivecraft.factions.util.material.FactionMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -36,16 +37,22 @@ public class MainConfig {
     public class Colors {
         public class Relations {
             private String member = "GREEN";
+            @WipeOnReload
             private transient ChatColor memberColor;
             private String ally = "LIGHT_PURPLE";
+            @WipeOnReload
             private transient ChatColor allyColor;
             private String truce = "DARK_PURPLE";
+            @WipeOnReload
             private transient ChatColor truceColor;
             private String neutral = "WHITE";
+            @WipeOnReload
             private transient ChatColor neutralColor;
             private String enemy = "RED";
+            @WipeOnReload
             private transient ChatColor enemyColor;
             private String peaceful = "GOLD";
+            @WipeOnReload
             private transient ChatColor peacefulColor;
 
             public ChatColor getMember() {
@@ -75,10 +82,13 @@ public class MainConfig {
 
         public class Factions {
             private String wilderness = "GRAY";
+            @WipeOnReload
             private transient ChatColor wildernessColor;
             private String safezone = "GOLD";
+            @WipeOnReload
             private transient ChatColor safezoneColor;
             private String warzone = "DARK_RED";
+            @WipeOnReload
             private transient ChatColor warzoneColor;
 
             public ChatColor getWilderness() {
@@ -1004,6 +1014,7 @@ public class MainConfig {
                     this.add("exampleMaterial");
                 }
             };
+            @WipeOnReload
             private transient Set<Material> ignoreBuildMaterialsMat;
 
             public Set<Material> getIgnoreBuildMaterials() {
@@ -1212,7 +1223,9 @@ public class MainConfig {
 
             private Set<String> territoryDenyUsageMaterials = new HashSet<>();
             private Set<String> territoryDenyUsageMaterialsWhenOffline = new HashSet<>();
+            @WipeOnReload
             private transient Set<Material> territoryDenyUsageMaterialsMat;
+            @WipeOnReload
             private transient Set<Material> territoryDenyUsageMaterialsWhenOfflineMat;
 
             @Comment("Mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections")

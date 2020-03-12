@@ -5,6 +5,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.config.annotation.Comment;
 import com.massivecraft.factions.config.annotation.ConfigName;
 import com.massivecraft.factions.config.annotation.DefinedType;
+import com.massivecraft.factions.config.annotation.WipeOnReload;
 import com.typesafe.config.ConfigRenderOptions;
 import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -75,7 +76,14 @@ public class Loader {
 
     private static void loadNode(CommentedConfigurationNode current, CommentedConfigurationNode newNode, Object object) throws IllegalAccessException {
         for (Field field : getFields(object.getClass())) {
-            if ((field.getModifiers() & Modifier.TRANSIENT) != 0 || field.isSynthetic()) {
+            if (field.isSynthetic()) {
+                continue;
+            }
+            if ((field.getModifiers() & Modifier.TRANSIENT) != 0) {
+                if (field.getAnnotation(WipeOnReload.class) != null) {
+                    field.setAccessible(true);
+                    field.set(object, null);
+                }
                 continue;
             }
             field.setAccessible(true);
