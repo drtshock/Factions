@@ -16,13 +16,13 @@
     <build>
         <defaultGoal>clean package install</defaultGoal>
         <finalName>${project.name}</finalName>
-        <sourceDirectory>../../src/main/java</sourceDirectory>
-        <testSourceDirectory>../../src/test/java</testSourceDirectory>
-        <directory>../../target</directory>
+        <sourceDirectory>${project.basedir}/../../src/main/java</sourceDirectory>
+        <testSourceDirectory>${project.basedir}/../../src/test/java</testSourceDirectory>
+        <directory>${project.basedir}/../../target</directory>
         <resources>
             <resource>
                 <filtering>true</filtering>
-                <directory>../../src/main/resources/</directory>
+                <directory>${project.basedir}/../../src/main/resources/</directory>
             </resource>
         </resources>
         <plugins>
