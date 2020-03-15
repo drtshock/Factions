@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.event.FPlayerTeleportEvent;
 import com.massivecraft.factions.gui.WarpGUI;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
@@ -58,7 +59,11 @@ public class CmdWarpOther extends FCommand {
                     context.fPlayer.msg(TL.COMMAND_FWARP_INVALID_PASSWORD);
                     return;
                 }
-
+                FPlayerTeleportEvent tpEvent = new FPlayerTeleportEvent(context.fPlayer, FPlayerTeleportEvent.PlayerTeleportReason.WARP);
+                Bukkit.getServer().getPluginManager().callEvent(tpEvent);
+                if (tpEvent.isCancelled()) {
+                    return;
+                }
                 // Check transaction AFTER password check.
                 if (!transact(context.fPlayer, context)) {
                     return;
