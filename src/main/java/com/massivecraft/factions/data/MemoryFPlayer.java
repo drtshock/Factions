@@ -12,7 +12,6 @@ import com.massivecraft.factions.event.LandClaimEvent;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.integration.LWC;
 import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.landraidcontrol.PowerControl;
@@ -614,12 +613,12 @@ public abstract class MemoryFPlayer implements FPlayer {
             int stay = FactionsPlugin.getInstance().conf().factions().enterTitles().getStay();
             int out = FactionsPlugin.getInstance().conf().factions().enterTitles().getFadeOut();
 
-            String title = Tag.parsePlain(toShow, this, FactionsPlugin.getInstance().conf().factions().enterTitles().getTitle());
-            String sub = FactionsPlugin.getInstance().txt().parse(Tag.parsePlain(toShow, this, FactionsPlugin.getInstance().conf().factions().enterTitles().getSubtitle()));
+            String titleText = Tag.parsePlain(toShow, this, FactionsPlugin.getInstance().conf().factions().enterTitles().getTitle());
+            String subtitleText = FactionsPlugin.getInstance().txt().parse(Tag.parsePlain(toShow, this, FactionsPlugin.getInstance().conf().factions().enterTitles().getSubtitle()));
 
             // We send null instead of empty because Spigot won't touch the title if it's null, but clears if empty.
             // We're just trying to be as unintrusive as possible.
-            TitleAPI.getInstance().sendTitle(player, title, sub, in, stay, out);
+            TitleAPI.getInstance().sendTitle(player, titleText, subtitleText, in, stay, out);
 
             showChat = FactionsPlugin.getInstance().conf().factions().enterTitles().isAlsoShowChat();
         }
@@ -968,6 +967,9 @@ public abstract class MemoryFPlayer implements FPlayer {
             // Otherwise, start a timer and have this cancel after a few seconds.
             // Short task so we're just doing it in method. Not clean but eh.
             if (cooldown > 0) {
+                if (player != null) {
+                    player.setFallDistance(-10000);
+                }
                 setTakeFallDamage(false);
                 new BukkitRunnable() {
                     @Override

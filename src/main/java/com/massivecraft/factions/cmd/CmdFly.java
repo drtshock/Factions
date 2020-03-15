@@ -23,7 +23,7 @@ public class CmdFly extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (context.args.size() == 0) {
+        if (context.args.isEmpty()) {
             toggleFlight(context, !context.fPlayer.isFlying(), true);
         } else if (context.args.size() == 1) {
             if (context.argAsString(0).equalsIgnoreCase("auto")) {
