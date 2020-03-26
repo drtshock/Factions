@@ -1511,6 +1511,11 @@ public class MainConfig {
                     "  in order to be able to execute commands if the default relation is neutral.")
             private String defaultRelation = "neutral";
 
+            @Comment("Default Role allows you to change the default Role of a Player\n" +
+                    "  when he joins a Faction. Any Faction can customize the default Role\n" +
+                    "  later with the command /f defaultrole anyways, after its creation.")
+            private String defaultRole = "normal";
+
             @Comment("If true, disables pistons entirely within faction territory.\n" +
                     "Prevents flying piston machines in faction territory.")
             private boolean disablePistonsInTerritory = false;
@@ -1537,6 +1542,10 @@ public class MainConfig {
 
             public String getDefaultRelation() {
                 return defaultRelation;
+            }
+
+            public String getDefaultRole() {
+                return defaultRole;
             }
 
             public boolean isSeparateOfflinePerms() {
