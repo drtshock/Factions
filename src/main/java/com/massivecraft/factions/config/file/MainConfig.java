@@ -1008,6 +1008,7 @@ public class MainConfig {
             private boolean peacefulTerritoryDisableMonsters = false;
             private boolean peacefulTerritoryDisableBoom = false;
             private boolean permanentFactionsDisableLeaderPromotion = false;
+            private boolean peacefulIsDefaultOnFactionCreate = false;
             @Comment("Material names of things whose placement is ignored in faction territory")
             private Set<String> ignoreBuildMaterials = new HashSet<String>() {
                 {
@@ -1042,6 +1043,9 @@ public class MainConfig {
             public boolean isPermanentFactionsDisableLeaderPromotion() {
                 return permanentFactionsDisableLeaderPromotion;
             }
+            public boolean isPeacefulIsDefaultOnFactionCreate() {
+                return peacefulIsDefaultOnFactionCreate;
+            }  
         }
 
         public class Portals {

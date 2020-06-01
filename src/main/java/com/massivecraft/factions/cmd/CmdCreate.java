@@ -69,7 +69,7 @@ public class CmdCreate extends FCommand {
 
         // finish setting up the Faction
         faction.setTag(tag);
-
+        if(FactionsPlugin.getInstance().conf().factions().specialCase().isPeacefulIsDefaultOnFactionCreate()) faction.setPeaceful(true);
         // trigger the faction join event for the creator
         FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.CREATE);
         Bukkit.getServer().getPluginManager().callEvent(joinEvent);
