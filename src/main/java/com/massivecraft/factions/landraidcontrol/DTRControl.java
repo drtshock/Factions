@@ -6,7 +6,9 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.config.file.MainConfig;
+import com.massivecraft.factions.event.DTRLossEvent;
 import com.massivecraft.factions.util.TL;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
@@ -95,12 +97,21 @@ public class DTRControl implements LandRaidControl {
 
     @Override
     public void onDeath(Player player) {
+        FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
         Faction faction = FPlayers.getInstance().getByPlayer(player).getFaction();
         if (!faction.isNormal()) {
             return;
         }
-        faction.setDTR(Math.max(conf().getMinDTR(), faction.getDTR() - conf().getLossPerDeath(player.getWorld())));
-        faction.setFrozenDTR(System.currentTimeMillis() + (conf().getFreezeTime() * 1000));
+
+        DTRLossEvent dtrLossEvent = new DTRLossEvent(faction, fplayer);
+
+        // call Event
+        Bukkit.getPluginManager().callEvent(dtrLossEvent);
+
+        if (!dtrLossEvent.isCancelled()) {
+            faction.setDTR(Math.max(conf().getMinDTR(), faction.getDTR() - conf().getLossPerDeath(player.getWorld())));
+            faction.setFrozenDTR(System.currentTimeMillis() + (conf().getFreezeTime() * 1000));
+        }
     }
 
     @Override
