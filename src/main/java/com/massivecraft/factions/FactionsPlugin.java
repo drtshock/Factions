@@ -162,8 +162,8 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
     private boolean mvdwPlaceholderAPIManager = false;
     private final Set<String> pluginsHandlingChat = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-    private SeeChunkUtil seeChunkUtil;
-    private ParticleProvider particleProvider;
+    private SeeChunkUtil<?> seeChunkUtil;
+    private ParticleProvider<?> particleProvider;
     private IWorldguard worldguard;
     private LandRaidControl landRaidControl;
     private boolean luckPermsSetup;
@@ -367,17 +367,12 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
         // Run before initializing listeners to handle reloads properly.
         if (mcVersion < 1300) { // Before 1.13
-            particleProvider = new PacketParticleProvider();
+            particleProvider = this.particleProvider(new PacketParticleProvider());
         } else {
-            particleProvider = new BukkitParticleProvider();
+            particleProvider = this.particleProvider(new BukkitParticleProvider());
         }
         getLogger().info(txt.parse("Using %1s as a particle provider", particleProvider.name()));
 
-        if (conf().commands().seeChunk().isParticles()) {
-            double delay = Math.floor(conf().commands().seeChunk().getParticleUpdateTime() * 20);
-            seeChunkUtil = new SeeChunkUtil();
-            seeChunkUtil.runTaskTimer(this, 0, (long) delay);
-        }
         // End run before registering event handlers.
 
         // Register Event Handlers
@@ -399,10 +394,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(refCommand).setExecutor(cmdBase);
-
-        if (conf().commands().fly().isEnable()) {
-            FlightUtil.start();
-        }
 
         new TitleAPI();
 
@@ -446,6 +437,18 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
         getLogger().info("=== Ready to go after " + (System.currentTimeMillis() - timeEnableStart) + "ms! ===");
         this.loadSuccessful = true;
+    }
+
+    private <E> ParticleProvider<E> particleProvider(ParticleProvider<E> particleProvider) {
+        if (conf().commands().seeChunk().isParticles()) {
+            double delay = Math.floor(conf().commands().seeChunk().getParticleUpdateTime() * 20);
+            seeChunkUtil = new SeeChunkUtil<>(particleProvider);
+            seeChunkUtil.runTaskTimer(this, 0, (long) delay);
+        }
+        if (conf().commands().fly().isEnable()) {
+            FlightUtil.start(particleProvider);
+        }
+        return particleProvider;
     }
 
     private int intOr(String in, int or) {
@@ -726,11 +729,11 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
         return gson;
     }
 
-    public SeeChunkUtil getSeeChunkUtil() {
+    public SeeChunkUtil<?> getSeeChunkUtil() {
         return seeChunkUtil;
     }
 
-    public ParticleProvider getParticleProvider() {
+    public ParticleProvider<?> getParticleProvider() {
         return particleProvider;
     }
 

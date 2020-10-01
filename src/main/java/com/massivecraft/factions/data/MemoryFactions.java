@@ -153,9 +153,10 @@ public abstract class MemoryFactions extends Factions {
         return new ArrayList<>(factions.values());
     }
 
+    @Deprecated
     @Override
     public Faction getNone() {
-        return factions.get("0");
+        return this.getWilderness();
     }
 
     @Override

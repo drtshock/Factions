@@ -1,13 +1,15 @@
 package com.massivecraft.factions.struct;
 
+import java.util.UUID;
+
 public class BanInfo {
 
     // FPlayer IDs
-    private final String banner;
-    private final String banned;
+    private final UUID banner;
+    private final UUID banned;
     private final long time;
 
-    public BanInfo(String banner, String banned, long time) {
+    public BanInfo(UUID banner, UUID banned, long time) {
         this.banner = banner;
         this.banned = banned;
         this.time = time;
@@ -18,7 +20,7 @@ public class BanInfo {
      *
      * @return FPlayer ID.
      */
-    public String getBanner() {
+    public UUID getBanner() {
         return this.banner;
     }
 
@@ -27,7 +29,7 @@ public class BanInfo {
      *
      * @return FPlayer ID.
      */
-    public String getBanned() {
+    public UUID getBanned() {
         return banned;
     }
 

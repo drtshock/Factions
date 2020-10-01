@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.SeeChunkUtil;
 import com.massivecraft.factions.util.TL;
 
 public class CmdSeeChunk extends FCommand {
@@ -33,7 +32,7 @@ public class CmdSeeChunk extends FCommand {
             context.fPlayer.setSeeingChunk(toggle);
             context.msg(TL.COMMAND_SEECHUNK_TOGGLE, toggle ? "enabled" : "disabled");
         } else {
-            SeeChunkUtil.showPillars(context.player, context.fPlayer, null, false);
+            FactionsPlugin.getInstance().getSeeChunkUtil().showPillars(context.player, context.fPlayer, null, false);
         }
     }
 

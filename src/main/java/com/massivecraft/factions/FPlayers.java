@@ -5,6 +5,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.UUID;
 
 public abstract class FPlayers {
     protected static FPlayers instance = getFPlayersImpl();
@@ -32,7 +33,12 @@ public abstract class FPlayers {
 
     public abstract FPlayer getByOfflinePlayer(OfflinePlayer player);
 
+    @Deprecated
     public abstract FPlayer getById(String string);
 
+    public abstract FPlayer getById(UUID uuid);
+
     public abstract int load();
+
+    public abstract void remove(FPlayer player);
 }

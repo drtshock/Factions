@@ -244,7 +244,7 @@ public class FactionsBlockListener implements Listener {
             return true;
         }
 
-        FPlayer me = FPlayers.getInstance().getById(player.getUniqueId().toString());
+        FPlayer me = FPlayers.getInstance().getById(player.getUniqueId());
         if (me.isAdminBypassing()) {
             return true;
         }

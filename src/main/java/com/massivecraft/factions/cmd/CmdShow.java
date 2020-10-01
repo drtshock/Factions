@@ -206,7 +206,7 @@ public class CmdShow extends FCommand {
             this.messageList = messageList;
             this.sender = sender;
             this.faction = faction;
-            this.players = faction.getFPlayers().stream().map(fp -> Bukkit.getOfflinePlayer(UUID.fromString(fp.getId()))).collect(Collectors.toSet());
+            this.players = faction.getFPlayers().stream().map(fp -> Bukkit.getOfflinePlayer(fp.getUniqueId())).collect(Collectors.toSet());
         }
 
         @Override

@@ -58,7 +58,7 @@ public class DynmapConfig {
         private Set<String> visibleFactions = new HashSet<>();
 
         @Comment("To hide all factions in a world, use 'world:worldnamehere'")
-        private Set<String> hiddenFactions = new HashSet<String>();
+        private Set<String> hiddenFactions = new HashSet<>();
 
         public boolean isEnabled() {
             return enabled;

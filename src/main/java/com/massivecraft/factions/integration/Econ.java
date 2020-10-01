@@ -9,7 +9,6 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.util.TL;
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -306,7 +305,7 @@ public class Econ {
             // The player should loose money
             // The player might not have enough.
 
-            if (has(acc, -delta) && withdraw(acc,  -delta)) {
+            if (has(acc, -delta) && withdraw(acc, -delta)) {
                 // There is enough money to pay
                 modifyUniverseMoney(-delta);
                 if (forDoingThis != null && !forDoingThis.isEmpty()) {

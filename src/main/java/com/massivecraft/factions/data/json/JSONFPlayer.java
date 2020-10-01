@@ -5,19 +5,26 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.data.MemoryFPlayer;
 import com.massivecraft.factions.landraidcontrol.PowerControl;
 
+import java.util.UUID;
+
 public class JSONFPlayer extends MemoryFPlayer {
 
     public JSONFPlayer(MemoryFPlayer arg0) {
         super(arg0);
     }
 
+    @Deprecated
     public JSONFPlayer(String id) {
+        super(id);
+    }
+
+    public JSONFPlayer(UUID id) {
         super(id);
     }
 
     @Override
     public void remove() {
-        ((JSONFPlayers) FPlayers.getInstance()).fPlayers.remove(getId());
+        FPlayers.getInstance().remove(this);
     }
 
     public boolean shouldBeSaved() {

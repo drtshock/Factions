@@ -45,7 +45,7 @@ public class CmdBan extends FCommand {
 
         // Check if the user is already banned
         for (BanInfo banInfo : context.faction.getBannedPlayers()) {
-            if (banInfo.getBanned().equals(target.getId())) {
+            if (banInfo.getBanned().equals(target.getUniqueId())) {
                 context.msg(TL.COMMAND_BAN_ALREADYBANNED, target.getName());
                 return;
             }

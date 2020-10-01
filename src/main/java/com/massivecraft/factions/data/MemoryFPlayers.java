@@ -14,10 +14,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public abstract class MemoryFPlayers extends FPlayers {
-    public Map<String, FPlayer> fPlayers = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
+    protected Map<UUID, FPlayer> fPlayers = new ConcurrentSkipListMap<>();
 
     public void clean() {
         for (FPlayer fplayer : this.fPlayers.values()) {
@@ -38,7 +39,7 @@ public abstract class MemoryFPlayers extends FPlayers {
 
     @Override
     public FPlayer getByPlayer(Player player) {
-        return getById(player.getUniqueId().toString());
+        return getById(player.getUniqueId());
     }
 
     @Override
@@ -48,11 +49,17 @@ public abstract class MemoryFPlayers extends FPlayers {
 
     @Override
     public FPlayer getByOfflinePlayer(OfflinePlayer player) {
-        return getById(player.getUniqueId().toString());
+        return getById(player.getUniqueId());
+    }
+
+    @Deprecated
+    @Override
+    public FPlayer getById(String id) {
+        return getById(UUID.fromString(id));
     }
 
     @Override
-    public FPlayer getById(String id) {
+    public FPlayer getById(UUID id) {
         FPlayer player = fPlayers.get(id);
         if (player == null) {
             player = generateFPlayer(id);
@@ -60,7 +67,12 @@ public abstract class MemoryFPlayers extends FPlayers {
         return player;
     }
 
-    protected abstract FPlayer generateFPlayer(String id);
+    @Override
+    public void remove(FPlayer player) {
+        this.fPlayers.remove(player.getUniqueId());
+    }
+
+    protected abstract FPlayer generateFPlayer(UUID id);
 
     public abstract void convertFrom(MemoryFPlayers old);
 }

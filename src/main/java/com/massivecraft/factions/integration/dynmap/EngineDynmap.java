@@ -527,7 +527,7 @@ public class EngineDynmap {
 
         for (FPlayer fplayer : faction.getFPlayers()) {
             // NOTE: We add both UUID and name. This might be a good idea for future proofing.
-            ret.add(fplayer.getId());
+            ret.add(fplayer.getUniqueId().toString());
             ret.add(fplayer.getName());
         }
 

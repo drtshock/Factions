@@ -137,7 +137,7 @@ public class FactionsPlayerListener extends AbstractListener {
         }
 
         if (FactionsPlugin.getInstance().getSeeChunkUtil() != null) {
-            FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(UUID.fromString(me.getId()), me.isSeeingChunk());
+            FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(me.getUniqueId(), me.isSeeingChunk());
         }
     }
 
@@ -174,7 +174,7 @@ public class FactionsPlayerListener extends AbstractListener {
         FScoreboard.remove(me, event.getPlayer());
 
         if (FactionsPlugin.getInstance().getSeeChunkUtil() != null) {
-            FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(UUID.fromString(me.getId()), false);
+            FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(me.getUniqueId(), false);
         }
         me.setOfflinePlayer(null);
     }

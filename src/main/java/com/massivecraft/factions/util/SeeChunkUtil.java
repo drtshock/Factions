@@ -7,6 +7,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.material.MaterialDb;
 import com.massivecraft.factions.util.particle.ParticleColor;
+import com.massivecraft.factions.util.particle.ParticleProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,19 +20,20 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@SuppressWarnings("unchecked")
-public class SeeChunkUtil extends BukkitRunnable {
+public class SeeChunkUtil<E> extends BukkitRunnable {
 
     private final Set<UUID> playersSeeingChunks = new HashSet<>();
     private final boolean useColor;
-    private final Object effect;
+    private final E effect;
+    private final ParticleProvider<E> particleProvider;
 
-    public SeeChunkUtil() {
+    public SeeChunkUtil(ParticleProvider<E> particleProvider) {
+        this.particleProvider = particleProvider;
         String effectName = FactionsPlugin.getInstance().conf().commands().seeChunk().getParticleName();
-        this.effect = FactionsPlugin.getInstance().getParticleProvider().effectFromString(effectName);
+        this.effect = this.particleProvider.effectFromString(effectName);
         this.useColor = FactionsPlugin.getInstance().conf().commands().seeChunk().isRelationalColor();
 
-        FactionsPlugin.getInstance().getLogger().info(FactionsPlugin.getInstance().txt().parse("Using %s as the ParticleEffect for /f sc", FactionsPlugin.getInstance().getParticleProvider().effectName(effect)));
+        FactionsPlugin.getInstance().getLogger().info(FactionsPlugin.getInstance().txt().parse("Using %s as the ParticleEffect for /f sc", this.particleProvider.effectName(effect)));
     }
 
     @Override
@@ -55,7 +57,7 @@ public class SeeChunkUtil extends BukkitRunnable {
         }
     }
 
-    public static void showPillars(Player me, FPlayer fme, Object effect, boolean useColor) {
+    public void showPillars(Player me, FPlayer fme, E effect, boolean useColor) {
         World world = me.getWorld();
         FLocation flocation = new FLocation(me);
         int chunkX = (int) flocation.getX();
@@ -87,7 +89,7 @@ public class SeeChunkUtil extends BukkitRunnable {
         showPillar(me, world, blockX, blockZ, effect, color);
     }
 
-    public static void showPillar(Player player, World world, int blockX, int blockZ, Object effect, ParticleColor color) {
+    public void showPillar(Player player, World world, int blockX, int blockZ, E effect, ParticleColor color) {
         // Lets start at the player's Y spot -30 to optimize
         for (int blockY = player.getLocation().getBlockY() - 30; blockY < player.getLocation().getBlockY() + 30; blockY++) {
             Location loc = new Location(world, blockX, blockY, blockZ);
@@ -97,9 +99,9 @@ public class SeeChunkUtil extends BukkitRunnable {
 
             if (effect != null) {
                 if (color == null) {
-                    FactionsPlugin.getInstance().getParticleProvider().playerSpawn(player, effect, loc, 1);
+                    this.particleProvider.playerSpawn(player, effect, loc, 1);
                 } else {
-                    FactionsPlugin.getInstance().getParticleProvider().playerSpawn(player, effect, loc, color);
+                    this.particleProvider.playerSpawn(player, effect, loc, color);
                 }
             } else {
                 Material mat = blockY % 5 == 0 ? MaterialDb.get("REDSTONE_LAMP") : MaterialDb.get("GLASS_PANE");

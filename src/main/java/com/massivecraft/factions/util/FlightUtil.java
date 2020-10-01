@@ -5,6 +5,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.particle.ParticleProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -12,13 +13,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collection;
 
-public class FlightUtil {
+public class FlightUtil<E> {
 
-    private static FlightUtil instance;
+    private static FlightUtil<?> instance;
 
     private EnemiesTask enemiesTask;
+    private final ParticleProvider<E> particleProvider;
 
-    private FlightUtil() {
+    private FlightUtil(ParticleProvider<E> particleProvider) {
+        this.particleProvider = particleProvider;
         double enemyCheck = FactionsPlugin.getInstance().conf().commands().fly().getRadiusCheck() * 20;
         if (enemyCheck > 0) {
             enemiesTask = new EnemiesTask();
@@ -31,11 +34,11 @@ public class FlightUtil {
         }
     }
 
-    public static void start() {
-        instance = new FlightUtil();
+    public static <E> void start(ParticleProvider<E> particleProvider) {
+        instance = new FlightUtil<>(particleProvider);
     }
 
-    public static FlightUtil instance() {
+    public static FlightUtil<?> instance() {
         return instance;
     }
 
@@ -110,8 +113,8 @@ public class FlightUtil {
                 FPlayer pilot = FPlayers.getInstance().getByPlayer(player);
                 if (pilot.isFlying()) {
                     if (pilot.getFlyTrailsEffect() != null && Permission.FLY_TRAILS.has(player) && pilot.getFlyTrailsState()) {
-                        Object effect = FactionsPlugin.getInstance().getParticleProvider().effectFromString(pilot.getFlyTrailsEffect());
-                        FactionsPlugin.getInstance().getParticleProvider().spawn(effect, player.getLocation(), amount, speed, 0, 0, 0);
+                        E effect = particleProvider.effectFromString(pilot.getFlyTrailsEffect());
+                        particleProvider.spawn(effect, player.getLocation(), amount, speed, 0, 0, 0);
                     }
                 }
             }
