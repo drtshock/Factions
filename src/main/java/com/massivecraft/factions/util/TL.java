@@ -479,6 +479,7 @@ public enum TL {
     COMMAND_POWERBOOST_BOOST("&e%1$s now has a power bonus/penalty of %2$d to min and max power levels."),
     COMMAND_POWERBOOST_BOOSTLOG("%1$s has set the power bonus/penalty for %2$s to %3$d."),
     COMMAND_POWERBOOST_DESCRIPTION("Apply permanent power bonus/penalty to specified player or faction"),
+    COMMAND_POWERBOOST_UNKNOWN_SUBCOMMAND("&cUnknown subcommand &d%1$s&c, You can only use&d set&c or&d add"),
 
     COMMAND_RELATIONS_ALLTHENOPE("&cNope! You can't."),
     COMMAND_RELATIONS_MORENOPE("&cNope! You can't declare a relation to yourself :)"),
