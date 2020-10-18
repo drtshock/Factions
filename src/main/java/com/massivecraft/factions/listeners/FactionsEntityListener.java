@@ -12,14 +12,7 @@ import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Monster;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Wither;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -211,7 +204,19 @@ public class FactionsEntityListener extends AbstractListener {
         if (thrower instanceof Player) {
             Player player = (Player) thrower;
             FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-            if (badjuju && fPlayer.getFaction().isPeaceful()) {
+            if (fPlayer.getFaction().isPeaceful()) {
+                for (PotionEffect effect : event.getPotion().getEffects()) {
+                    if (effect.getType().equals(PotionEffectType.WEAKNESS)) {
+                        // make sure this weakness potion only affects zombie villagers
+                        for (LivingEntity target : event.getAffectedEntities()) {
+                            if (target.getType() != EntityType.ZOMBIE_VILLAGER) {
+                                event.setIntensity(target, 0);
+                            }
+                        }
+                        return;
+                    }
+                }
+
                 event.setCancelled(true);
                 return;
             }
