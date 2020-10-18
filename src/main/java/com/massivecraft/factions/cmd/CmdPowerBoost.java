@@ -19,9 +19,9 @@ public class CmdPowerBoost extends FCommand {
         super();
         this.aliases.add("powerboost");
 
-        this.requiredArgs.add("p/f/player/faction | set/add");
-        this.requiredArgs.add("name | p/f/player/faction");
-        this.requiredArgs.add("#/reset | name");
+        this.requiredArgs.add("set/add");
+        this.requiredArgs.add("p/f/player/faction");
+        this.requiredArgs.add("name");
         this.optionalArgs.put("#/reset", "");
 
         this.requirements = new CommandRequirements.Builder(Permission.POWERBOOST)
@@ -97,7 +97,7 @@ public class CmdPowerBoost extends FCommand {
         }
     }
 
-    protected class PowerBoostBrigadier implements BrigadierProvider {
+    static protected class PowerBoostBrigadier implements BrigadierProvider {
         @Override
         public ArgumentBuilder<Object, ?> get(ArgumentBuilder<Object, ?> parent) {
             ArgumentCommandNode<Object, ?> generic = RequiredArgumentBuilder.argument("p/f/player/faction", StringArgumentType.word())
