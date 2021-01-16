@@ -5,7 +5,7 @@
 ### Maven details:  
 Repository: `https://ci.ender.zone/plugin/repository/everything/`  
 groupId: `com.massivecraft`  
-artificatId: `Factions`  
+artifactId: `Factions`  
 version: `1.6.9.5-U0.5.20`
 
 ## FLocation
