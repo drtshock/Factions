@@ -9,6 +9,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.config.file.DefaultPermissionsConfig;
 import com.massivecraft.factions.event.FactionAutoDisbandEvent;
+import com.massivecraft.factions.event.FactionNewAdminEvent;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
@@ -1013,6 +1014,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
             Factions.getInstance().removeFaction(getId());
         } else { // promote new faction admin
+            Bukkit.getServer().getPluginManager().callEvent(new FactionNewAdminEvent(replacements.get(0), this));
+
             if (oldLeader != null) {
                 oldLeader.setRole(Role.COLEADER);
             }

@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
+import com.massivecraft.factions.event.FactionNewAdminEvent;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
@@ -66,6 +67,8 @@ public class CmdAdmin extends FCommand {
             fyou.msg(TL.COMMAND_ADMIN_DEMOTED, context.player == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fyou, true));
             return;
         }
+
+        Bukkit.getServer().getPluginManager().callEvent(new FactionNewAdminEvent(fyou, targetFaction));
 
         // promote target player, and demote existing admin if one exists
         if (admin != null) {
